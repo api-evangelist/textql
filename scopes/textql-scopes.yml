@@ -1,0 +1,126 @@
+generated: '2026-08-30'
+method: probed
+source: https://app.textql.com/.well-known/oauth-authorization-server
+docs: https://docs.textql.com/core/how-it-works/mcp/client-setup
+note: >-
+  Read verbatim from TextQL's live OAuth 2.1 authorization-server metadata document, not derived from
+  an OpenAPI securityScheme — the published OpenAPIs declare only bearer/apiKey schemes and carry no
+  oauth2 flows, so derive-oauth-scopes.py found nothing. The scope list below is what the provider
+  actually advertises at the discovery endpoint. Scope DESCRIPTIONS are not published; the resource
+  each scope governs is stated from the matching platform surface and is marked as inferred where it
+  is not spelled out in the docs.
+authorization_server: https://app.textql.com
+scope_count: 34
+scopes:
+- name: openid
+  category: identity
+  description: OpenID Connect — request an ID token.
+- name: profile
+  category: identity
+  description: Basic profile claims (name, given_name, family_name, picture).
+- name: email
+  category: identity
+  description: Email address and verification status.
+- name: api:read
+  category: platform
+  description: Read access to the platform API.
+- name: api:write
+  category: platform
+  description: Write access to the platform API.
+- name: mcp:tools
+  category: mcp
+  description: >-
+    Call Ana's MCP tools. This is the only scope declared by the /mcp protected-resource metadata
+    document, so it is the scope an MCP client actually needs.
+- name: mcp:read
+  category: mcp
+  description: Read registered external MCP server configuration.
+- name: mcp:write
+  category: mcp
+  description: Register, toggle and delete external MCP servers in Ana's context.
+- name: agent:read
+  category: agents
+  description: Read agents (long-running monitors that watch data and post to the feed).
+- name: agent:write
+  category: agents
+  description: Create, edit and trigger agents.
+- name: chat:read
+  category: chat
+  description: Read chats/threads, messages, cells and generated assets.
+- name: chat:write
+  category: chat
+  description: Create chats, ask questions, stream and cancel runs.
+- name: connector:read
+  category: connectors
+  description: List connectors and connector types.
+- name: connector:write
+  category: connectors
+  description: Create, test, update and delete connectors, and manage connector access grants.
+- name: connector:raw_sql
+  category: connectors
+  description: >-
+    Execute raw SQL against a connector. Broken out as its own scope because organizations can turn
+    raw SQL off entirely and query only through TQL and the Ontology.
+- name: context:read
+  category: context
+  description: Read the organization/role/personal context stack.
+- name: context:write
+  category: context
+  description: Author and edit context files.
+- name: context_policy:read
+  category: context
+  description: Read context policies.
+- name: context_policy:write
+  category: context
+  description: Write context policies.
+- name: dashboard:read
+  category: dashboards
+  description: Read dashboards and data apps.
+- name: dashboard:write
+  category: dashboards
+  description: Create, update and publish dashboards and data apps.
+- name: dataset:read
+  category: datasets
+  description: Read datasets.
+- name: dataset:write
+  category: datasets
+  description: Create and modify datasets.
+- name: feed:read
+  category: feed
+  description: Read the shared activity feed agents and teams publish insights to.
+- name: feed:write
+  category: feed
+  description: Post to the feed.
+- name: observability:read
+  category: observability
+  description: Read observability data for the platform.
+- name: observability:write
+  category: observability
+  description: Configure observability.
+- name: ontology:read
+  category: ontology
+  description: Read the Ontology semantic layer and its pending changes.
+- name: ontology:write
+  category: ontology
+  description: Propose, approve, deny and restore Ontology changes.
+- name: playbook:read
+  category: playbooks
+  description: Read playbooks (scheduled automated analyses).
+- name: playbook:write
+  category: playbooks
+  description: Create, update, run, deploy and delete playbooks.
+- name: sandbox:read
+  category: sandbox
+  description: Read sandcastle status, files and execution history.
+- name: sandbox:write
+  category: sandbox
+  description: Start and stop sandcastles, execute code, load data and upload files.
+- name: usage:read
+  category: billing
+  description: Read usage/consumption (ACU) data.
+inferred_descriptions: true
+inferred_note: >-
+  TextQL publishes scope NAMES at the discovery endpoint but no scope reference page with
+  descriptions. Each description above states the platform surface the scope name maps to, read from
+  the matching API reference section. The names, the count and the grouping are provider-published
+  fact; the one-line descriptions are ours.

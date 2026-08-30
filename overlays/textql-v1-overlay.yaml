@@ -1,0 +1,54 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enrichment overlay for the TextQL Platform API (v1)
+  version: 1.0.0
+extends: ../openapi/textql-chat-v1-openapi.yml
+x-generated: '2026-08-30'
+x-method: generated
+x-source: >-
+  API Evangelist enrichment pass 2026-08-30. Applies to the six per-service v1 Connect-RPC specs
+  (chat, playbooks, agents, connectors, sandbox, api-access-key), which share info.title
+  "textql.rpc.platform" and carry no servers[], no securitySchemes and no deprecation marking.
+x-applies-to:
+- ../openapi/textql-chat-v1-openapi.yml
+- ../openapi/textql-playbooks-v1-openapi.yml
+- ../openapi/textql-agents-v1-openapi.yml
+- ../openapi/textql-connectors-v1-openapi.yml
+- ../openapi/textql-sandbox-v1-openapi.yml
+- ../openapi/textql-api-access-key-v1-openapi.yml
+actions:
+- target: $.info
+  update:
+    x-api-evangelist:
+      provider: TextQL
+      aid: textql
+      generation: v1
+      status: deprecated
+      superseded_by: https://docs.textql.com/api-reference/v2/introduction
+      evidence: >-
+        docs.textql.com/llms.txt labels the section "## v1 API (deprecated)" and the v1 introduction
+        page carries a note directing readers to v2. No operation in these specs carries the OpenAPI
+        `deprecated` keyword and no Sunset header is published, so the deprecation is invisible to a
+        machine reading the contract alone.
+      sunset_date: null
+- target: $.info
+  update:
+    x-protocol:
+      name: Connect-RPC
+      required_header: Connect-Protocol-Version
+      optional_header: Connect-Timeout-Ms
+      transport: HTTP POST only
+- target: $.servers
+  update:
+    x-missing: >-
+      These specs declare `servers: []`. The documented base URL is https://app.textql.com/v1
+      (https://docs.textql.com/api-reference/introduction). Recorded here rather than written into the
+      original, which is preserved verbatim.
+- target: $.info
+  update:
+    x-security:
+      note: >-
+        These specs declare no securitySchemes and `security: []`, but every operation requires
+        authentication. The documented scheme is Authorization: Bearer <api key>; the master RPC spec
+        declares an apiKey header named tql_api_key.
+      catalog: ../authentication/textql-authentication.yml

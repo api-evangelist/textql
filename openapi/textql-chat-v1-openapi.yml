@@ -1,0 +1,4153 @@
+openapi: 3.1.0
+info:
+  title: textql.rpc.platform
+  version: "1.0"
+paths:
+  /v1/chat/cancel:
+    post:
+      tags:
+        - textql.rpc.platform.ChatService
+      summary: CancelStream
+      operationId: textql.rpc.platform.ChatService.CancelStream
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.chat.CancelStreamRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.chat.CancelStreamResponse'
+  /v1/chat:
+    post:
+      tags:
+        - textql.rpc.platform.ChatService
+      summary: Chat
+      operationId: textql.rpc.platform.ChatService.Chat
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.platform.ChatRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.platform.ChatResponse'
+  /v1/chat/get:
+    post:
+      tags:
+        - textql.rpc.platform.ChatService
+      summary: GetChat
+      operationId: textql.rpc.platform.ChatService.GetChat
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.chat.GetChatRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.chat.GetChatResponse'
+  /v1/chat/stream: {}
+  /v1/chat/list:
+    post:
+      tags:
+        - textql.rpc.platform.ChatService
+      summary: ListChats
+      operationId: textql.rpc.platform.ChatService.ListChats
+      description: List chats with optional filtering and pagination. Uses Connect-RPC protocol.
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.chat.GetChatsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.chat.GetChatsResponse'
+components:
+  schemas:
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+        - 1
+      description: Define the version of the Connect protocol
+      const: 1
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+            - not_found
+          enum:
+            - canceled
+            - unknown
+            - invalid_argument
+            - deadline_exceeded
+            - not_found
+            - already_exists
+            - permission_denied
+            - resource_exhausted
+            - failed_precondition
+            - aborted
+            - out_of_range
+            - unimplemented
+            - internal
+            - unavailable
+            - data_loss
+            - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
+          type: string
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+            - type: object
+              title: Any
+              additionalProperties: true
+              description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
+    google.protobuf.ListValue:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/google.protobuf.Value'
+          title: values
+          description: Repeated field of dynamically typed values.
+      title: ListValue
+      additionalProperties: false
+      description: |-
+        `ListValue` is a wrapper around a repeated field of values.
+
+         The JSON representation for `ListValue` is JSON array.
+    google.protobuf.NullValue:
+      type: string
+      title: NullValue
+      enum:
+        - NULL_VALUE
+      description: |-
+        `NullValue` is a singleton enumeration to represent the null value for the
+         `Value` type union.
+
+         The JSON representation for `NullValue` is JSON `null`.
+    google.protobuf.Struct:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/google.protobuf.Value'
+      description: |-
+        `Struct` represents a structured data value, consisting of fields
+         which map to dynamically typed values. In some languages, `Struct`
+         might be supported by a native representation. For example, in
+         scripting languages like JS a struct is represented as an
+         object. The details of that representation are described together
+         with the proto support for the language.
+
+         The JSON representation for `Struct` is JSON object.
+    google.protobuf.Struct.FieldsEntry:
+      type: object
+      properties:
+        key:
+          type: string
+          title: key
+        value:
+          title: value
+          $ref: '#/components/schemas/google.protobuf.Value'
+      title: FieldsEntry
+      additionalProperties: false
+    google.protobuf.Timestamp:
+      type: string
+      examples:
+        - "2023-01-15T01:30:15.01Z"
+        - "2024-12-25T12:00:00Z"
+      format: date-time
+      description: |-
+        A Timestamp represents a point in time independent of any time zone or local
+         calendar, encoded as a count of seconds and fractions of seconds at
+         nanosecond resolution. The count is relative to an epoch at UTC midnight on
+         January 1, 1970, in the proleptic Gregorian calendar which extends the
+         Gregorian calendar backwards to year one.
+
+         All minutes are 60 seconds long. Leap seconds are "smeared" so that no leap
+         second table is needed for interpretation, using a [24-hour linear
+         smear](https://developers.google.com/time/smear).
+
+         The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By
+         restricting to that range, we ensure that we can convert to and from [RFC
+         3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.
+
+         # Examples
+
+         Example 1: Compute Timestamp from POSIX `time()`.
+
+             Timestamp timestamp;
+             timestamp.set_seconds(time(NULL));
+             timestamp.set_nanos(0);
+
+         Example 2: Compute Timestamp from POSIX `gettimeofday()`.
+
+             struct timeval tv;
+             gettimeofday(&tv, NULL);
+
+             Timestamp timestamp;
+             timestamp.set_seconds(tv.tv_sec);
+             timestamp.set_nanos(tv.tv_usec * 1000);
+
+         Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.
+
+             FILETIME ft;
+             GetSystemTimeAsFileTime(&ft);
+             UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;
+
+             // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z
+             // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.
+             Timestamp timestamp;
+             timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));
+             timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));
+
+         Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.
+
+             long millis = System.currentTimeMillis();
+
+             Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)
+                 .setNanos((int) ((millis % 1000) * 1000000)).build();
+
+         Example 5: Compute Timestamp from Java `Instant.now()`.
+
+             Instant now = Instant.now();
+
+             Timestamp timestamp =
+                 Timestamp.newBuilder().setSeconds(now.getEpochSecond())
+                     .setNanos(now.getNano()).build();
+
+         Example 6: Compute Timestamp from current time in Python.
+
+             timestamp = Timestamp()
+             timestamp.GetCurrentTime()
+
+         # JSON Mapping
+
+         In JSON format, the Timestamp type is encoded as a string in the
+         [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the
+         format is "{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z"
+         where {year} is always expressed using four digits while {month}, {day},
+         {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional
+         seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),
+         are optional. The "Z" suffix indicates the timezone ("UTC"); the timezone
+         is required. A proto3 JSON serializer should always use UTC (as indicated by
+         "Z") when printing the Timestamp type and a proto3 JSON parser should be
+         able to accept both UTC and other timezones (as indicated by an offset).
+
+         For example, "2017-01-15T01:30:15.01Z" encodes 15.01 seconds past
+         01:30 UTC on January 15, 2017.
+
+         In JavaScript, one can convert a Date object to this format using the
+         standard
+         [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)
+         method. In Python, a standard `datetime.datetime` object can be converted
+         to this format using
+         [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with
+         the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use
+         the Joda Time's [`ISODateTimeFormat.dateTime()`](
+         http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()
+         ) to obtain a formatter capable of generating timestamps in this format.
+    google.protobuf.Value:
+      oneOf:
+        - type: "null"
+        - type: number
+        - type: string
+        - type: boolean
+        - type: array
+        - type: object
+          additionalProperties: true
+      description: |-
+        `Value` represents a dynamically typed value which can be either
+         null, a number, a string, a boolean, a recursive struct value, or a
+         list of values. A producer of value is expected to set one of these
+         variants. Absence of any variant indicates an error.
+
+         The JSON representation for `Value` is JSON value.
+    textql.rpc.identity.MemberPreview:
+      type: object
+      properties:
+        memberId:
+          type: string
+          title: member_id
+        memberEmail:
+          type: string
+          title: member_email
+          description: |-
+            the fields are optionally populated, depending on the context
+             may require RPC fields such as `include_owner` to be set to true
+          nullable: true
+        memberName:
+          type: string
+          title: member_name
+          nullable: true
+        memberPictureUrl:
+          type: string
+          title: member_picture_url
+          nullable: true
+      title: MemberPreview
+      additionalProperties: false
+    textql.rpc.paradigm_params.ParadigmType:
+      type: string
+      title: ParadigmType
+      enum:
+        - TYPE_UNKNOWN
+        - TYPE_SQL
+        - TYPE_RESEARCH
+        - TYPE_ONTOLOGY
+        - TYPE_BASIC
+        - TYPE_TABLEAU
+        - TYPE_EXPERIMENTAL
+        - TYPE_UNIVERSAL
+        - TYPE_PUBLIC_DEMO
+    textql.rpc.platform.ChatRequest:
+      type: object
+      properties:
+        question:
+          type: string
+          title: question
+          minLength: 3
+        chatId:
+          type: string
+          title: chat_id
+          nullable: true
+        tools:
+          title: tools
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.platform.ChatTools'
+      title: ChatRequest
+      additionalProperties: false
+    textql.rpc.platform.ChatResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+          minLength: 1
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        error:
+          type: string
+          title: error
+          nullable: true
+        model:
+          type: string
+          title: model
+          minLength: 1
+        response:
+          type: string
+          title: response
+        chatId:
+          type: string
+          title: chat_id
+          minLength: 1
+        assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.cells.PreviewCell'
+          title: assets
+      title: ChatResponse
+      additionalProperties: false
+    textql.rpc.platform.ChatStatus:
+      type: string
+      title: ChatStatus
+      enum:
+        - QUERY_STATUS_UNKNOWN
+        - QUERY_STATUS_COMPLETED
+        - QUERY_STATUS_FAILED
+        - QUERY_STATUS_CANCELLED
+        - QUERY_STATUS_IN_PROGRESS
+    textql.rpc.platform.ChatTools:
+      type: object
+      properties:
+        connectorIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+          title: connector_ids
+        webSearchEnabled:
+          type: boolean
+          title: web_search_enabled
+        sqlEnabled:
+          type: boolean
+          title: sql_enabled
+        ontologyEnabled:
+          type: boolean
+          title: ontology_enabled
+        experimentalEnabled:
+          type: boolean
+          title: experimental_enabled
+        tableauEnabled:
+          type: boolean
+          title: tableau_enabled
+        autoApproveEnabled:
+          type: boolean
+          title: auto_approve_enabled
+        pythonEnabled:
+          type: boolean
+          title: python_enabled
+        googleDriveEnabled:
+          type: boolean
+          title: google_drive_enabled
+        powerbiEnabled:
+          type: boolean
+          title: powerbi_enabled
+      title: ChatTools
+      additionalProperties: false
+    textql.rpc.platform.ChatUsage:
+      type: object
+      properties:
+        inputTokens:
+          type:
+            - integer
+            - string
+          title: input_tokens
+          minimum: 0
+          format: int64
+        cacheCreationInputTokens:
+          type:
+            - integer
+            - string
+          title: cache_creation_input_tokens
+          minimum: 0
+          format: int64
+        cacheReadInputTokens:
+          type:
+            - integer
+            - string
+          title: cache_read_input_tokens
+          minimum: 0
+          format: int64
+        outputTokens:
+          type:
+            - integer
+            - string
+          title: output_tokens
+          minimum: 0
+          format: int64
+        reasoningTokens:
+          type:
+            - integer
+            - string
+          title: reasoning_tokens
+          minimum: 0
+          format: int64
+        totalTokens:
+          type:
+            - integer
+            - string
+          title: total_tokens
+          minimum: 0
+          format: int64
+        contextWindowUsed:
+          type: number
+          title: context_window_used
+          maximum: 1
+          minimum: 0
+          format: double
+      title: ChatUsage
+      additionalProperties: false
+    textql.rpc.platform.StopReason:
+      type: string
+      title: StopReason
+      enum:
+        - STOP_REASON_UNKNOWN
+        - STOP_REASON_END_TURN
+        - STOP_REASON_MAX_TOKENS
+        - STOP_REASON_TOOL_USE
+        - STOP_REASON_STOP_SEQUENCE
+        - STOP_REASON_REFUSAL
+    textql.rpc.platform.StreamChatMetadata:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+          minLength: 1
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        model:
+          type: string
+          title: model
+          minLength: 1
+        chatId:
+          type: string
+          title: chat_id
+          minLength: 1
+        metadata:
+          type: object
+          title: metadata
+          additionalProperties:
+            type: string
+            title: value
+        isContinuation:
+          type: boolean
+          title: is_continuation
+        usage:
+          title: usage
+          $ref: '#/components/schemas/textql.rpc.platform.ChatUsage'
+        status:
+          title: status
+          $ref: '#/components/schemas/textql.rpc.platform.ChatStatus'
+        error:
+          type: string
+          title: error
+          nullable: true
+      title: StreamChatMetadata
+      additionalProperties: false
+    textql.rpc.platform.StreamChatMetadata.MetadataEntry:
+      type: object
+      properties:
+        key:
+          type: string
+          title: key
+        value:
+          type: string
+          title: value
+      title: MetadataEntry
+      additionalProperties: false
+    textql.rpc.platform.StreamRequest:
+      type: object
+      properties:
+        question:
+          type: string
+          title: question
+          minLength: 3
+        chatId:
+          type: string
+          title: chat_id
+          minLength: 1
+          nullable: true
+        tools:
+          title: tools
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.platform.ChatTools'
+      title: StreamRequest
+      additionalProperties: false
+    textql.rpc.platform.StreamResponse:
+      type: object
+      oneOf:
+        - properties:
+            cell:
+              title: cell
+              $ref: '#/components/schemas/textql.rpc.public.chat.Cell'
+          title: cell
+          required:
+            - cell
+        - properties:
+            metadata:
+              title: metadata
+              $ref: '#/components/schemas/textql.rpc.platform.StreamChatMetadata'
+          title: metadata
+          required:
+            - metadata
+        - properties:
+            preview:
+              title: preview
+              $ref: '#/components/schemas/textql.rpc.public.cells.PreviewCell'
+          title: preview
+          required:
+            - preview
+        - properties:
+            text:
+              type: string
+              title: text
+          title: text
+          required:
+            - text
+      title: StreamResponse
+      additionalProperties: false
+    textql.rpc.public.cells.AnswerCell:
+      type: object
+      properties:
+        content:
+          type: string
+          title: content
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.cells.ImageReference'
+          title: images
+        sql:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.cells.SQLReference'
+          title: sql
+      title: AnswerCell
+      additionalProperties: false
+    textql.rpc.public.cells.BashCell:
+      type: object
+      properties:
+        script:
+          type: string
+          title: script
+        stdout:
+          type: string
+          title: stdout
+        stderr:
+          type: string
+          title: stderr
+        exitCode:
+          type: integer
+          title: exit_code
+          format: int32
+      title: BashCell
+      additionalProperties: false
+    textql.rpc.public.cells.ConnectorRef:
+      type: object
+      properties:
+        id:
+          type: integer
+          title: id
+          format: int32
+        name:
+          type: string
+          title: name
+        type:
+          type: string
+          title: type
+      title: ConnectorRef
+      additionalProperties: false
+      description: Reference types for context data
+    textql.rpc.public.cells.ContextPromptChangeStatus:
+      type: string
+      title: ContextPromptChangeStatus
+      enum:
+        - STATUS_UNKNOWN
+        - STATUS_DRAFT
+        - STATUS_PENDING
+        - STATUS_REJECTED
+        - STATUS_APPLIED
+    textql.rpc.public.cells.ContextPromptEditorAction:
+      type: string
+      title: ContextPromptEditorAction
+      enum:
+        - ACTION_UNKNOWN
+        - ACTION_GET
+        - ACTION_PROPOSE
+        - ACTION_CREATE
+    textql.rpc.public.cells.ContextPromptEditorCell:
+      type: object
+      properties:
+        action:
+          title: action
+          $ref: '#/components/schemas/textql.rpc.public.cells.ContextPromptEditorAction'
+        currentContext:
+          type: string
+          title: current_context
+          nullable: true
+        proposedContext:
+          type: string
+          title: proposed_context
+          nullable: true
+        diff:
+          type: string
+          title: diff
+          nullable: true
+        status:
+          title: status
+          $ref: '#/components/schemas/textql.rpc.public.cells.ContextPromptChangeStatus'
+        errorMessage:
+          type: string
+          title: error_message
+          nullable: true
+        contextId:
+          type: string
+          title: context_id
+          nullable: true
+      title: ContextPromptEditorCell
+      additionalProperties: false
+    textql.rpc.public.cells.DashboardAction:
+      type: string
+      title: DashboardAction
+      enum:
+        - DASHBOARD_ACTION_UNKNOWN
+        - DASHBOARD_ACTION_CREATE
+        - DASHBOARD_ACTION_UPDATE
+        - DASHBOARD_ACTION_PUBLISH
+    textql.rpc.public.cells.DashboardCell:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+        dashboardId:
+          type: string
+          title: dashboard_id
+        code:
+          type: string
+          title: code
+        dataSources:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dashboard.DataSource'
+          title: data_sources
+        errorMessage:
+          type: string
+          title: error_message
+          nullable: true
+        screenshotUrl:
+          type: string
+          title: screenshot_url
+          nullable: true
+        lastRunAt:
+          type: string
+          title: last_run_at
+          nullable: true
+        action:
+          title: action
+          $ref: '#/components/schemas/textql.rpc.public.cells.DashboardAction'
+        type:
+          type: string
+          title: type
+          description: 'Dashboard type: "streamlit" or "dash"'
+          nullable: true
+        updatedAt:
+          title: updated_at
+          description: Last update timestamp
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: DashboardCell
+      additionalProperties: false
+    textql.rpc.public.cells.DateRange:
+      type: string
+      title: DateRange
+      enum:
+        - RANGE_UNKNOWN
+        - RANGE_ALL
+        - RANGE_PAST_DAY
+        - RANGE_PAST_WEEK
+        - RANGE_PAST_MONTH
+        - RANGE_PAST_YEAR
+    textql.rpc.public.cells.DocumentCell:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+        url:
+          type: string
+          title: url
+        preview:
+          type: string
+          title: preview
+        datasetSourceId:
+          type: string
+          title: dataset_source_id
+        pageCount:
+          type: integer
+          title: page_count
+          format: int32
+      title: DocumentCell
+      additionalProperties: false
+    textql.rpc.public.cells.EditableForm:
+      type: object
+      properties:
+        formName:
+          type: string
+          title: form_name
+        fields:
+          title: fields
+          $ref: '#/components/schemas/google.protobuf.Struct'
+        status:
+          title: status
+          $ref: '#/components/schemas/textql.rpc.public.cells.EditableFormStatus'
+        id:
+          type: string
+          title: id
+        submitError:
+          type: string
+          title: submit_error
+          nullable: true
+        submitResult:
+          type: string
+          title: submit_result
+          nullable: true
+        validationError:
+          type: string
+          title: validation_error
+          nullable: true
+      title: EditableForm
+      additionalProperties: false
+    textql.rpc.public.cells.EditableFormStatus:
+      type: string
+      title: EditableFormStatus
+      enum:
+        - EDITABLE_FORM_STATUS_UNKNOWN
+        - EDITABLE_FORM_STATUS_DRAFT
+        - EDITABLE_FORM_STATUS_MODIFIED
+        - EDITABLE_FORM_STATUS_SUBMITTING
+        - EDITABLE_FORM_STATUS_SUBMITTED
+        - EDITABLE_FORM_STATUS_REJECTED
+    textql.rpc.public.cells.ExaSearchResult:
+      type: object
+      properties:
+        title:
+          type: string
+          title: title
+        url:
+          type: string
+          title: url
+        text:
+          type: string
+          title: text
+        author:
+          type: string
+          title: author
+        publishedDate:
+          type: string
+          title: published_date
+        favicon:
+          type: string
+          title: favicon
+        image:
+          type: string
+          title: image
+        score:
+          type: number
+          title: score
+          format: double
+        highlights:
+          type: array
+          items:
+            type: string
+          title: highlights
+        highlightScores:
+          type: array
+          items:
+            type: number
+            format: double
+          title: highlight_scores
+        summary:
+          type: string
+          title: summary
+      title: ExaSearchResult
+      additionalProperties: false
+    textql.rpc.public.cells.FeedCommentCell:
+      type: object
+      properties:
+        postId:
+          type: string
+          title: post_id
+        content:
+          type: string
+          title: content
+        commentId:
+          type: string
+          title: comment_id
+        commentUrl:
+          type: string
+          title: comment_url
+        timestamp:
+          type: string
+          title: timestamp
+        error:
+          type: string
+          title: error
+      title: FeedCommentCell
+      additionalProperties: false
+    textql.rpc.public.cells.FeedEngageCell:
+      type: object
+      properties:
+        thingId:
+          type: string
+          title: thing_id
+        voteType:
+          type: string
+          title: vote_type
+        upvoteCount:
+          type: integer
+          title: upvote_count
+          format: int32
+        downvoteCount:
+          type: integer
+          title: downvote_count
+          format: int32
+        timestamp:
+          type: string
+          title: timestamp
+        error:
+          type: string
+          title: error
+      title: FeedEngageCell
+      additionalProperties: false
+    textql.rpc.public.cells.FeedExplorerCell:
+      type: object
+      properties:
+        operation:
+          type: string
+          title: operation
+          description: '"get_feed", "get_post", "get_comments"'
+        postId:
+          type: string
+          title: post_id
+          nullable: true
+        filter:
+          type: string
+          title: filter
+          nullable: true
+        limit:
+          type: integer
+          title: limit
+          format: int32
+          nullable: true
+        result:
+          type: string
+          title: result
+          description: JSON-serialized result
+      title: FeedExplorerCell
+      additionalProperties: false
+    textql.rpc.public.cells.FeedPostCell:
+      type: object
+      properties:
+        title:
+          type: string
+          title: title
+        content:
+          type: string
+          title: content
+        imageUrls:
+          type: array
+          items:
+            type: string
+          title: image_urls
+        dashboardIds:
+          type: array
+          items:
+            type: string
+          title: dashboard_ids
+        reportIds:
+          type: array
+          items:
+            type: string
+          title: report_ids
+        chatIds:
+          type: array
+          items:
+            type: string
+          title: chat_ids
+        postId:
+          type: string
+          title: post_id
+        postUrl:
+          type: string
+          title: post_url
+        timestamp:
+          type: string
+          title: timestamp
+        error:
+          type: string
+          title: error
+      title: FeedPostCell
+      additionalProperties: false
+    textql.rpc.public.cells.FileReference:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+        url:
+          type: string
+          title: url
+        fileType:
+          type: string
+          title: file_type
+      title: FileReference
+      additionalProperties: false
+    textql.rpc.public.cells.FormEditorAction:
+      type: string
+      title: FormEditorAction
+      enum:
+        - FORM_EDITOR_ACTION_UNKNOWN
+        - FORM_EDITOR_ACTION_INFO
+        - FORM_EDITOR_ACTION_VIEW
+        - FORM_EDITOR_ACTION_CREATE
+        - FORM_EDITOR_ACTION_UPDATE
+    textql.rpc.public.cells.FormEditorCell:
+      type: object
+      properties:
+        action:
+          title: action
+          $ref: '#/components/schemas/textql.rpc.public.cells.FormEditorAction'
+        formSnapshot:
+          title: form_snapshot
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.cells.EditableForm'
+        form:
+          title: form
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.cells.EditableForm'
+        formId:
+          type: string
+          title: form_id
+          nullable: true
+      title: FormEditorCell
+      additionalProperties: false
+    textql.rpc.public.cells.GoogleDriveContentCell:
+      type: object
+      properties:
+        fileName:
+          type: string
+          title: file_name
+          nullable: true
+        contentType:
+          type: string
+          title: content_type
+          nullable: true
+        content:
+          type: string
+          title: content
+          nullable: true
+        fileId:
+          type: string
+          title: file_id
+          nullable: true
+        errorMessage:
+          type: string
+          title: error_message
+          nullable: true
+      title: GoogleDriveContentCell
+      additionalProperties: false
+    textql.rpc.public.cells.GoogleDriveFile:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        name:
+          type: string
+          title: name
+        mimeType:
+          type: string
+          title: mime_type
+        size:
+          type:
+            - integer
+            - string
+          title: size
+          format: int64
+          nullable: true
+        modifiedTime:
+          type: string
+          title: modified_time
+          nullable: true
+        webViewLink:
+          type: string
+          title: web_view_link
+          nullable: true
+      title: GoogleDriveFile
+      additionalProperties: false
+    textql.rpc.public.cells.GoogleDriveSearchCell:
+      type: object
+      properties:
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.cells.GoogleDriveFile'
+          title: files
+        dataframePreview:
+          type: string
+          title: dataframe_preview
+          nullable: true
+        errorMessage:
+          type: string
+          title: error_message
+          nullable: true
+        fileCount:
+          type: integer
+          title: file_count
+          format: int32
+      title: GoogleDriveSearchCell
+      additionalProperties: false
+    textql.rpc.public.cells.ImageCell:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+        url:
+          type: string
+          title: url
+        mimeType:
+          type: string
+          title: mime_type
+        width:
+          type: integer
+          title: width
+          format: int32
+        height:
+          type: integer
+          title: height
+          format: int32
+        sizeBytes:
+          type:
+            - integer
+            - string
+          title: size_bytes
+          format: int64
+        datasetSourceId:
+          type: string
+          title: dataset_source_id
+        altText:
+          type: string
+          title: alt_text
+        caption:
+          type: string
+          title: caption
+      title: ImageCell
+      additionalProperties: false
+    textql.rpc.public.cells.ImageReference:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+        url:
+          type: string
+          title: url
+      title: ImageReference
+      additionalProperties: false
+    textql.rpc.public.cells.JavaScriptCell:
+      type: object
+      properties:
+        code:
+          type: string
+          title: code
+        title:
+          type: string
+          title: title
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.cells.FileReference'
+          title: files
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.cells.ImageReference'
+          title: images
+        stdout:
+          type: string
+          title: stdout
+      title: JavaScriptCell
+      additionalProperties: false
+    textql.rpc.public.cells.MCPToolCell:
+      type: object
+      properties:
+        serverName:
+          type: string
+          title: server_name
+        toolName:
+          type: string
+          title: tool_name
+        argumentsJson:
+          type: string
+          title: arguments_json
+        contentJson:
+          type: string
+          title: content_json
+          nullable: true
+        isError:
+          type: boolean
+          title: is_error
+          nullable: true
+        errorMessage:
+          type: string
+          title: error_message
+          nullable: true
+        executionTimeMs:
+          type:
+            - integer
+            - string
+          title: execution_time_ms
+          format: int64
+          nullable: true
+      title: MCPToolCell
+      additionalProperties: false
+    textql.rpc.public.cells.MarkdownCell:
+      type: object
+      properties:
+        content:
+          type: string
+          title: content
+        renderedHtml:
+          type: string
+          title: rendered_html
+      title: MarkdownCell
+      additionalProperties: false
+    textql.rpc.public.cells.MetricsCell:
+      type: object
+      properties:
+        query:
+          type: string
+          title: query
+        dataset:
+          type: string
+          title: dataset
+        ontologyId:
+          type: integer
+          title: ontology_id
+          format: int32
+        dataframe:
+          title: dataframe
+          $ref: '#/components/schemas/textql.rpc.public.dataframe.DataFrameWithInfo'
+        dataframePreview:
+          type: string
+          title: dataframe_preview
+        generatedSql:
+          type: string
+          title: generated_sql
+        queryId:
+          type: string
+          title: query_id
+        errorMessage:
+          type: string
+          title: error_message
+      title: MetricsCell
+      additionalProperties: false
+    textql.rpc.public.cells.Microsoft365CalendarCell:
+      type: object
+      properties:
+        eventCount:
+          type: integer
+          title: event_count
+          format: int32
+        eventSummary:
+          type: string
+          title: event_summary
+          nullable: true
+        syntheticToolUseId:
+          type: string
+          title: synthetic_tool_use_id
+          nullable: true
+      title: Microsoft365CalendarCell
+      additionalProperties: false
+    textql.rpc.public.cells.Microsoft365EmailContentCell:
+      type: object
+      properties:
+        emailId:
+          type: string
+          title: email_id
+          nullable: true
+        subject:
+          type: string
+          title: subject
+          nullable: true
+        sender:
+          type: string
+          title: sender
+          nullable: true
+        syntheticToolUseId:
+          type: string
+          title: synthetic_tool_use_id
+          nullable: true
+      title: Microsoft365EmailContentCell
+      additionalProperties: false
+    textql.rpc.public.cells.Microsoft365EmailSearchCell:
+      type: object
+      properties:
+        emailCount:
+          type: integer
+          title: email_count
+          format: int32
+        emailSummary:
+          type: string
+          title: email_summary
+          nullable: true
+        syntheticToolUseId:
+          type: string
+          title: synthetic_tool_use_id
+          nullable: true
+      title: Microsoft365EmailSearchCell
+      additionalProperties: false
+    textql.rpc.public.cells.OntologyEditorAction:
+      type: string
+      title: OntologyEditorAction
+      enum:
+        - ONTOLOGY_ACTION_UNKNOWN
+        - ONTOLOGY_ACTION_LIST
+        - ONTOLOGY_ACTION_OBJECT
+        - ONTOLOGY_ACTION_LINK
+        - ONTOLOGY_ACTION_ATTRIBUTE
+        - ONTOLOGY_ACTION_METRIC
+    textql.rpc.public.cells.OntologyEditorCell:
+      type: object
+      properties:
+        action:
+          title: action
+          $ref: '#/components/schemas/textql.rpc.public.cells.OntologyEditorAction'
+        listType:
+          title: list_type
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.cells.OntologyEditorListType'
+        operation:
+          title: operation
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.cells.OntologyEditorOperation'
+        status:
+          title: status
+          $ref: '#/components/schemas/textql.rpc.public.cells.OntologyEditorStatus'
+        listFilter:
+          title: list_filter
+          description: For list operations
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.cells.OntologyEditorListFilter'
+        listCount:
+          type: integer
+          title: list_count
+          format: int32
+          description: Number of items returned by list operation
+          nullable: true
+        listObjects:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.ontology.OntologyObject'
+          title: list_objects
+        listAttributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.ontology.OntologyAttribute'
+          title: list_attributes
+        listRelations:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.ontology.OntologyRelation'
+          title: list_relations
+        listMetrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.ontology.OntologyMetric'
+          title: list_metrics
+        createdObject:
+          title: created_object
+          description: For object operations
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.ontology.OntologyObject'
+        createdAttributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.ontology.OntologyAttribute'
+          title: created_attributes
+        updatedObject:
+          title: updated_object
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.ontology.OntologyObject'
+        deletedObject:
+          title: deleted_object
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.ontology.OntologyObject'
+        createdAttribute:
+          title: created_attribute
+          description: For attribute operations
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.ontology.OntologyAttribute'
+        updatedAttribute:
+          title: updated_attribute
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.ontology.OntologyAttribute'
+        deletedAttribute:
+          title: deleted_attribute
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.ontology.OntologyAttribute'
+        createdLink:
+          title: created_link
+          description: For link operations
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.ontology.OntologyRelation'
+        updatedLink:
+          title: updated_link
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.ontology.OntologyRelation'
+        deletedLink:
+          title: deleted_link
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.ontology.OntologyRelation'
+        createdMetric:
+          title: created_metric
+          description: For metric operations
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.ontology.OntologyMetric'
+        updatedMetric:
+          title: updated_metric
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.ontology.OntologyMetric'
+        deletedMetric:
+          title: deleted_metric
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.ontology.OntologyMetric'
+      title: OntologyEditorCell
+      additionalProperties: false
+    textql.rpc.public.cells.OntologyEditorListFilter:
+      type: object
+      properties:
+        objectId:
+          type: string
+          title: object_id
+          nullable: true
+      title: OntologyEditorListFilter
+      additionalProperties: false
+    textql.rpc.public.cells.OntologyEditorListType:
+      type: string
+      title: OntologyEditorListType
+      enum:
+        - LIST_TYPE_UNKNOWN
+        - LIST_TYPE_OBJECTS
+        - LIST_TYPE_LINKS
+        - LIST_TYPE_ATTRIBUTES
+        - LIST_TYPE_METRICS
+    textql.rpc.public.cells.OntologyEditorOperation:
+      type: string
+      title: OntologyEditorOperation
+      enum:
+        - OPERATION_UNKNOWN
+        - OPERATION_CREATE
+        - OPERATION_UPDATE
+        - OPERATION_DELETE
+    textql.rpc.public.cells.OntologyEditorStatus:
+      type: string
+      title: OntologyEditorStatus
+      enum:
+        - ONTOLOGY_STATUS_UNKNOWN
+        - ONTOLOGY_STATUS_DRAFT
+        - ONTOLOGY_STATUS_APPLIED
+        - ONTOLOGY_STATUS_REJECTED
+        - ONTOLOGY_STATUS_ERROR
+    textql.rpc.public.cells.OrgMemberRef:
+      type: object
+      properties:
+        email:
+          type: string
+          title: email
+        name:
+          type: string
+          title: name
+      title: OrgMemberRef
+      additionalProperties: false
+    textql.rpc.public.cells.PlaybookEditorAction:
+      type: string
+      title: PlaybookEditorAction
+      enum:
+        - PLAYBOOK_ACTION_UNKNOWN
+        - PLAYBOOK_ACTION_LIST
+        - PLAYBOOK_ACTION_GET
+        - PLAYBOOK_ACTION_CREATE
+        - PLAYBOOK_ACTION_UPDATE
+        - PLAYBOOK_ACTION_RUN
+    textql.rpc.public.cells.PlaybookEditorCell:
+      type: object
+      properties:
+        action:
+          title: action
+          $ref: '#/components/schemas/textql.rpc.public.cells.PlaybookEditorAction'
+        playbooks:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.cells.PlaybookInfo'
+          title: playbooks
+          description: results
+        errorMessage:
+          type: string
+          title: error_message
+          nullable: true
+        totalCount:
+          type: integer
+          title: total_count
+          format: int32
+        slackChannels:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.cells.SlackChannelRef'
+          title: slack_channels
+        slackUsers:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.cells.SlackUserRef'
+          title: slack_users
+        connectors:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.cells.ConnectorRef'
+          title: connectors
+        orgMembers:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.cells.OrgMemberRef'
+          title: org_members
+        hasSlack:
+          type: boolean
+          title: has_slack
+        fieldChanges:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.cells.PlaybookFieldChange'
+          title: field_changes
+      title: PlaybookEditorCell
+      additionalProperties: false
+    textql.rpc.public.cells.PlaybookFieldChange:
+      type: object
+      properties:
+        fieldName:
+          type: string
+          title: field_name
+        oldValue:
+          type: string
+          title: old_value
+        newValue:
+          type: string
+          title: new_value
+      title: PlaybookFieldChange
+      additionalProperties: false
+      description: Represents a change to a playbook field during an update
+    textql.rpc.public.cells.PlaybookInfo:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        name:
+          type: string
+          title: name
+        prompt:
+          type: string
+          title: prompt
+        ownerId:
+          type: string
+          title: owner_id
+        ownerEmail:
+          type: string
+          title: owner_email
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        cronString:
+          type: string
+          title: cron_string
+        datasets:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dataset.Dataset'
+          title: datasets
+        emailAddresses:
+          type: array
+          items:
+            type: string
+          title: email_addresses
+        slackChannelId:
+          type: string
+          title: slack_channel_id
+          nullable: true
+        taggedSlackUserIds:
+          type: array
+          items:
+            type: string
+          title: tagged_slack_user_ids
+        status:
+          title: status
+          $ref: '#/components/schemas/textql.rpc.public.cells.PlaybookStatusLight'
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+          description: 'Deprecated: use connector_ids instead'
+          nullable: true
+          deprecated: true
+        paradigmType:
+          title: paradigm_type
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.paradigm_params.ParadigmType'
+        reportOutputStyle:
+          title: report_output_style
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.cells.PlaybookReportStyleLight'
+        isSubscribed:
+          type: boolean
+          title: is_subscribed
+        connectorIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+          title: connector_ids
+      title: PlaybookInfo
+      additionalProperties: false
+      description: Simplified playbook info for display in cells
+    textql.rpc.public.cells.PlaybookReportStyleLight:
+      type: string
+      title: PlaybookReportStyleLight
+      enum:
+        - REPORT_STYLE_LIGHT_UNKNOWN
+        - REPORT_STYLE_LIGHT_EXECUTIVE
+        - REPORT_STYLE_LIGHT_VERBOSE
+        - REPORT_STYLE_LIGHT_CONCISE
+      description: |-
+        Playbook report output style - matches parseReportStyle in playbook_helpers.go
+         REPORT_STYLE_EXECUTIVE = "Executive_Report" or "Executive"
+         REPORT_STYLE_VERBOSE = "Verbose" or "Thorough"
+         REPORT_STYLE_CONCISE = "Concise" or "Brief"
+    textql.rpc.public.cells.PlaybookStatusLight:
+      type: string
+      title: PlaybookStatusLight
+      enum:
+        - PLAYBOOK_STATUS_UNKNOWN
+        - PLAYBOOK_STATUS_ACTIVE
+        - PLAYBOOK_STATUS_INACTIVE
+      description: 'TODO(joseph): Clean up base enums // messages etc.'
+    textql.rpc.public.cells.PowerBICell:
+      type: object
+      properties:
+        datasetId:
+          type: string
+          title: dataset_id
+        reportIds:
+          type: array
+          items:
+            type: string
+          title: report_ids
+        powerbiDatasetIds:
+          type: array
+          items:
+            type: string
+          title: powerbi_dataset_ids
+        messageBlocks:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.cells.PowerBIMessageBlock'
+          title: message_blocks
+      title: PowerBICell
+      additionalProperties: false
+    textql.rpc.public.cells.PowerBIDAXCell:
+      type: object
+      properties:
+        datasetId:
+          type: string
+          title: dataset_id
+        daxQuery:
+          type: string
+          title: dax_query
+        dataframe:
+          title: dataframe
+          $ref: '#/components/schemas/textql.rpc.public.dataframe.DataFrameWithInfo'
+        dataframePreview:
+          type: string
+          title: dataframe_preview
+      title: PowerBIDAXCell
+      additionalProperties: false
+    textql.rpc.public.cells.PowerBIMessageBlock:
+      type: object
+      properties:
+        content:
+          type: string
+          title: content
+        imageBase64:
+          type: string
+          title: image_base64
+      title: PowerBIMessageBlock
+      additionalProperties: false
+    textql.rpc.public.cells.PreviewCell:
+      type: object
+      properties:
+        target:
+          type: string
+          title: target
+        previewType:
+          type: string
+          title: preview_type
+          description: '"image", "table", "pdf", "html", "dataframe", "download"'
+        name:
+          type: string
+          title: name
+        url:
+          type: string
+          title: url
+          nullable: true
+        content:
+          type: string
+          title: content
+          nullable: true
+        error:
+          type: string
+          title: error
+          nullable: true
+      title: PreviewCell
+      additionalProperties: false
+      description: primary interface for ana to render sandbox assets client side
+    textql.rpc.public.cells.PreviewCellRef:
+      type: object
+      properties:
+        target:
+          type: string
+          title: target
+        previewType:
+          type: string
+          title: preview_type
+        name:
+          type: string
+          title: name
+        url:
+          type: string
+          title: url
+          nullable: true
+      title: PreviewCellRef
+      additionalProperties: false
+      description: Preview cell reference for report history
+    textql.rpc.public.cells.PythonCell:
+      type: object
+      properties:
+        code:
+          type: string
+          title: code
+        output:
+          type: array
+          items:
+            type: string
+          title: output
+        dataframeInfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dataframe.DataFrameInfo'
+          title: dataframe_info
+        dataframePreview:
+          type: array
+          items:
+            type: string
+          title: dataframe_preview
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.cells.ImageReference'
+          title: images
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.cells.FileReference'
+          title: files
+        htmlScreenshots:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.cells.ImageReference'
+          title: html_screenshots
+        authRequired:
+          type: boolean
+          title: auth_required
+          description: Per-member API OAuth auth hold fields
+        authProvider:
+          type: string
+          title: auth_provider
+        authProviderName:
+          type: string
+          title: auth_provider_name
+        authCompleted:
+          type: boolean
+          title: auth_completed
+      title: PythonCell
+      additionalProperties: false
+    textql.rpc.public.cells.ReportCell:
+      type: object
+      properties:
+        subject:
+          type: string
+          title: subject
+        summary:
+          type: string
+          title: summary
+        blocks:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.reports.ReportBlock'
+          title: blocks
+        htmlPreview:
+          type: string
+          title: html_preview
+        chatId:
+          type: string
+          title: chat_id
+        reportId:
+          type: string
+          title: report_id
+      title: ReportCell
+      additionalProperties: false
+    textql.rpc.public.cells.ReportHistoryCell:
+      type: object
+      properties:
+        reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.cells.ReportHistoryInfo'
+          title: reports
+        totalCount:
+          type: integer
+          title: total_count
+          format: int32
+        errorMessage:
+          type: string
+          title: error_message
+          nullable: true
+      title: ReportHistoryCell
+      additionalProperties: false
+    textql.rpc.public.cells.ReportHistoryInfo:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        chatId:
+          type: string
+          title: chat_id
+        cellId:
+          type: string
+          title: cell_id
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        subject:
+          type: string
+          title: subject
+        summary:
+          type: string
+          title: summary
+        blocks:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.reports.ReportBlock'
+          title: blocks
+        readAt:
+          title: read_at
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        previewCells:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.cells.PreviewCellRef'
+          title: preview_cells
+        htmlPreview:
+          type: string
+          title: html_preview
+      title: ReportHistoryInfo
+      additionalProperties: false
+      description: Simplified report info for report history cell
+    textql.rpc.public.cells.SQLCell:
+      type: object
+      properties:
+        query:
+          type: string
+          title: query
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        dataframe:
+          title: dataframe
+          $ref: '#/components/schemas/textql.rpc.public.dataframe.DataFrameWithInfo'
+        dataframePreview:
+          type: string
+          title: dataframe_preview
+        authRequired:
+          type: boolean
+          title: auth_required
+          description: Per-member auth hold fields
+        authConnectorName:
+          type: string
+          title: auth_connector_name
+        authLocator:
+          type: string
+          title: auth_locator
+        authClientId:
+          type: string
+          title: auth_client_id
+        authRole:
+          type: string
+          title: auth_role
+        authCompleted:
+          type: boolean
+          title: auth_completed
+        authConnectorType:
+          title: auth_connector_type
+          $ref: '#/components/schemas/textql.rpc.public.connector.ConnectorType'
+        authWorkspaceUrl:
+          type: string
+          title: auth_workspace_url
+          description: Databricks workspace URL for OAuth
+          nullable: true
+      title: SQLCell
+      additionalProperties: false
+    textql.rpc.public.cells.SQLReference:
+      type: object
+      properties:
+        toolId:
+          type: string
+          title: tool_id
+      title: SQLReference
+      additionalProperties: false
+    textql.rpc.public.cells.SlackChannelRef:
+      type: object
+      properties:
+        channelId:
+          type: string
+          title: channel_id
+        name:
+          type: string
+          title: name
+      title: SlackChannelRef
+      additionalProperties: false
+    textql.rpc.public.cells.SlackUserRef:
+      type: object
+      properties:
+        userId:
+          type: string
+          title: user_id
+        name:
+          type: string
+          title: name
+      title: SlackUserRef
+      additionalProperties: false
+    textql.rpc.public.cells.StatusCell:
+      type: object
+      properties:
+        status:
+          type: string
+          title: status
+      title: StatusCell
+      additionalProperties: false
+    textql.rpc.public.cells.StreamlitCell:
+      type: object
+      properties:
+        code:
+          type: string
+          title: code
+        url:
+          type: string
+          title: url
+          nullable: true
+        errorMessage:
+          type: string
+          title: error_message
+          nullable: true
+        screenshotUrl:
+          type: string
+          title: screenshot_url
+          nullable: true
+      title: StreamlitCell
+      additionalProperties: false
+    textql.rpc.public.cells.SummaryCell:
+      type: object
+      properties:
+        summary:
+          type: string
+          title: summary
+      title: SummaryCell
+      additionalProperties: false
+    textql.rpc.public.cells.TableauCell:
+      type: object
+      properties:
+        datasetId:
+          type: string
+          title: dataset_id
+        messageBlocks:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.cells.TableauMessageBlock'
+          title: message_blocks
+      title: TableauCell
+      additionalProperties: false
+    textql.rpc.public.cells.TableauMessageBlock:
+      type: object
+      properties:
+        content:
+          type: string
+          title: content
+        imageBase64:
+          type: string
+          title: image_base64
+          description: optional, only present for blocks with images
+        pdfBase64:
+          type: string
+          title: pdf_base64
+          description: optional, only present for blocks with PDFs
+      title: TableauMessageBlock
+      additionalProperties: false
+    textql.rpc.public.cells.TableauSQLCell:
+      type: object
+      properties:
+        tableauDatasourceLuid:
+          type: string
+          title: tableau_datasource_luid
+        query:
+          type: string
+          title: query
+        dataframe:
+          title: dataframe
+          $ref: '#/components/schemas/textql.rpc.public.dataframe.DataFrameWithInfo'
+        dataframePreview:
+          type: string
+          title: dataframe_preview
+      title: TableauSQLCell
+      additionalProperties: false
+    textql.rpc.public.cells.TableauSearchFieldsCell:
+      type: object
+      properties:
+        searchTerm:
+          type: string
+          title: search_term
+        resultText:
+          type: string
+          title: result_text
+      title: TableauSearchFieldsCell
+      additionalProperties: false
+    textql.rpc.public.cells.TabularFileCell:
+      type: object
+      properties:
+        fileName:
+          type: string
+          title: file_name
+        category:
+          title: category
+          $ref: '#/components/schemas/textql.rpc.public.dataset.TabularFileCategory'
+        dataframes:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dataframe.DataFrameInfo'
+          title: dataframes
+        datasetSourceId:
+          type: string
+          title: dataset_source_id
+      title: TabularFileCell
+      additionalProperties: false
+    textql.rpc.public.cells.TextCell:
+      type: object
+      properties:
+        fileName:
+          type: string
+          title: file_name
+        content:
+          type: string
+          title: content
+        mimeType:
+          type: string
+          title: mime_type
+        sizeBytes:
+          type:
+            - integer
+            - string
+          title: size_bytes
+          format: int64
+        datasetSourceId:
+          type: string
+          title: dataset_source_id
+        lineCount:
+          type: integer
+          title: line_count
+          format: int32
+      title: TextCell
+      additionalProperties: false
+    textql.rpc.public.cells.WebSearchCell:
+      type: object
+      properties:
+        query:
+          type: string
+          title: query
+        searchType:
+          title: search_type
+          $ref: '#/components/schemas/textql.rpc.public.cells.WebSearchType'
+        dateRange:
+          title: date_range
+          $ref: '#/components/schemas/textql.rpc.public.cells.DateRange'
+        answer:
+          type: string
+          title: answer
+          nullable: true
+        exaResults:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.cells.ExaSearchResult'
+          title: exa_results
+        costDollars:
+          type: number
+          title: cost_dollars
+          format: double
+          nullable: true
+      title: WebSearchCell
+      additionalProperties: false
+    textql.rpc.public.cells.WebSearchType:
+      type: string
+      title: WebSearchType
+      enum:
+        - TYPE_UNKNOWN
+        - TYPE_RESEARCH
+        - TYPE_QUESTION
+        - TYPE_CONTENTS
+    textql.rpc.public.chat.CancelStreamRequest:
+      type: object
+      properties:
+        chatId:
+          type: string
+          title: chat_id
+      title: CancelStreamRequest
+      additionalProperties: false
+    textql.rpc.public.chat.CancelStreamResponse:
+      type: object
+      properties:
+        exists:
+          type: boolean
+          title: exists
+      title: CancelStreamResponse
+      additionalProperties: false
+    textql.rpc.public.chat.Cell:
+      type: object
+      allOf:
+        - properties:
+            id:
+              type: string
+              title: id
+              description: UUID
+            timestamp:
+              title: timestamp
+              $ref: '#/components/schemas/google.protobuf.Timestamp'
+            complete:
+              type: boolean
+              title: complete
+            generated:
+              type: boolean
+              title: generated
+              description: whether it was created by a human or robot
+            lifecycle:
+              title: lifecycle
+              $ref: '#/components/schemas/textql.rpc.public.chat.CellLifecycle'
+            toolCallId:
+              type: string
+              title: tool_call_id
+              nullable: true
+            execError:
+              type: string
+              title: exec_error
+              nullable: true
+            senderMemberId:
+              type: string
+              title: sender_member_id
+              nullable: true
+        - oneOf:
+            - properties:
+                ansCell:
+                  title: ans_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.AnswerCell'
+              title: ans_cell
+              required:
+                - ansCell
+            - properties:
+                bashCell:
+                  title: bash_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.BashCell'
+              title: bash_cell
+              required:
+                - bashCell
+            - properties:
+                contextPromptEditorCell:
+                  title: context_prompt_editor_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.ContextPromptEditorCell'
+              title: context_prompt_editor_cell
+              required:
+                - contextPromptEditorCell
+            - properties:
+                dashboardCell:
+                  title: dashboard_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.DashboardCell'
+              title: dashboard_cell
+              required:
+                - dashboardCell
+            - properties:
+                documentCell:
+                  title: document_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.DocumentCell'
+              title: document_cell
+              required:
+                - documentCell
+            - properties:
+                feedCommentCell:
+                  title: feed_comment_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.FeedCommentCell'
+              title: feed_comment_cell
+              required:
+                - feedCommentCell
+            - properties:
+                feedEngageCell:
+                  title: feed_engage_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.FeedEngageCell'
+              title: feed_engage_cell
+              required:
+                - feedEngageCell
+            - properties:
+                feedExplorerCell:
+                  title: feed_explorer_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.FeedExplorerCell'
+              title: feed_explorer_cell
+              required:
+                - feedExplorerCell
+            - properties:
+                feedPostCell:
+                  title: feed_post_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.FeedPostCell'
+              title: feed_post_cell
+              required:
+                - feedPostCell
+            - properties:
+                formEditorCell:
+                  title: form_editor_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.FormEditorCell'
+              title: form_editor_cell
+              required:
+                - formEditorCell
+            - properties:
+                googleDriveContentCell:
+                  title: google_drive_content_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.GoogleDriveContentCell'
+              title: google_drive_content_cell
+              required:
+                - googleDriveContentCell
+            - properties:
+                googleDriveSearchCell:
+                  title: google_drive_search_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.GoogleDriveSearchCell'
+              title: google_drive_search_cell
+              required:
+                - googleDriveSearchCell
+            - properties:
+                imageCell:
+                  title: image_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.ImageCell'
+              title: image_cell
+              required:
+                - imageCell
+            - properties:
+                javascriptCell:
+                  title: javascript_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.JavaScriptCell'
+              title: javascript_cell
+              required:
+                - javascriptCell
+            - properties:
+                mcpToolCell:
+                  title: mcp_tool_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.MCPToolCell'
+              title: mcp_tool_cell
+              required:
+                - mcpToolCell
+            - properties:
+                mdCell:
+                  title: md_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.MarkdownCell'
+              title: md_cell
+              required:
+                - mdCell
+            - properties:
+                metricsCell:
+                  title: metrics_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.MetricsCell'
+              title: metrics_cell
+              required:
+                - metricsCell
+            - properties:
+                microsoft365CalendarCell:
+                  title: microsoft365_calendar_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.Microsoft365CalendarCell'
+              title: microsoft365_calendar_cell
+              required:
+                - microsoft365CalendarCell
+            - properties:
+                microsoft365EmailContentCell:
+                  title: microsoft365_email_content_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.Microsoft365EmailContentCell'
+              title: microsoft365_email_content_cell
+              required:
+                - microsoft365EmailContentCell
+            - properties:
+                microsoft365EmailSearchCell:
+                  title: microsoft365_email_search_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.Microsoft365EmailSearchCell'
+              title: microsoft365_email_search_cell
+              required:
+                - microsoft365EmailSearchCell
+            - properties:
+                ontologyEditorCell:
+                  title: ontology_editor_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.OntologyEditorCell'
+              title: ontology_editor_cell
+              required:
+                - ontologyEditorCell
+            - properties:
+                playbookEditorCell:
+                  title: playbook_editor_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.PlaybookEditorCell'
+              title: playbook_editor_cell
+              required:
+                - playbookEditorCell
+            - properties:
+                powerbiCell:
+                  title: powerbi_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.PowerBICell'
+              title: powerbi_cell
+              required:
+                - powerbiCell
+            - properties:
+                powerbiDaxCell:
+                  title: powerbi_dax_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.PowerBIDAXCell'
+              title: powerbi_dax_cell
+              required:
+                - powerbiDaxCell
+            - properties:
+                previewCell:
+                  title: preview_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.PreviewCell'
+              title: preview_cell
+              required:
+                - previewCell
+            - properties:
+                pyCell:
+                  title: py_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.PythonCell'
+              title: py_cell
+              required:
+                - pyCell
+            - properties:
+                reportCell:
+                  title: report_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.ReportCell'
+              title: report_cell
+              required:
+                - reportCell
+            - properties:
+                reportHistoryCell:
+                  title: report_history_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.ReportHistoryCell'
+              title: report_history_cell
+              required:
+                - reportHistoryCell
+            - properties:
+                sqlCell:
+                  title: sql_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.SQLCell'
+              title: sql_cell
+              required:
+                - sqlCell
+            - properties:
+                statusCell:
+                  title: status_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.StatusCell'
+              title: status_cell
+              required:
+                - statusCell
+            - properties:
+                streamlitCell:
+                  title: streamlit_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.StreamlitCell'
+              title: streamlit_cell
+              required:
+                - streamlitCell
+            - properties:
+                summaryCell:
+                  title: summary_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.SummaryCell'
+              title: summary_cell
+              required:
+                - summaryCell
+            - properties:
+                tableauCell:
+                  title: tableau_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.TableauCell'
+              title: tableau_cell
+              required:
+                - tableauCell
+            - properties:
+                tableauSearchFieldsCell:
+                  title: tableau_search_fields_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.TableauSearchFieldsCell'
+              title: tableau_search_fields_cell
+              required:
+                - tableauSearchFieldsCell
+            - properties:
+                tableauSqlCell:
+                  title: tableau_sql_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.TableauSQLCell'
+              title: tableau_sql_cell
+              required:
+                - tableauSqlCell
+            - properties:
+                tabularFileCell:
+                  title: tabular_file_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.TabularFileCell'
+              title: tabular_file_cell
+              required:
+                - tabularFileCell
+            - properties:
+                textCell:
+                  title: text_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.TextCell'
+              title: text_cell
+              required:
+                - textCell
+            - properties:
+                wsCell:
+                  title: ws_cell
+                  $ref: '#/components/schemas/textql.rpc.public.cells.WebSearchCell'
+              title: ws_cell
+              required:
+                - wsCell
+      title: Cell
+      additionalProperties: false
+    textql.rpc.public.chat.CellLifecycle:
+      type: string
+      title: CellLifecycle
+      enum:
+        - LIFECYCLE_UNKNOWN
+        - LIFECYCLE_CREATING
+        - LIFECYCLE_CREATED
+        - LIFECYCLE_EXECUTING
+        - LIFECYCLE_EXECUTED
+        - LIFECYCLE_HALTED
+    textql.rpc.public.chat.Chat:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+          description: UUID
+        paradigm:
+          title: paradigm
+          $ref: '#/components/schemas/textql.rpc.public.paradigm.Paradigm'
+        model:
+          title: model
+          $ref: '#/components/schemas/textql.rpc.public.chat.LlmModel'
+        timestamp:
+          title: timestamp
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        orgId:
+          type: string
+          title: org_id
+        memberId:
+          type: string
+          title: member_id
+        summary:
+          type: string
+          title: summary
+          nullable: true
+        playbookId:
+          type: string
+          title: playbook_id
+          nullable: true
+        research:
+          type: boolean
+          title: research
+          description: whether this chat was created with report mode enabled
+          nullable: true
+        creatorEmail:
+          type: string
+          title: creator_email
+          nullable: true
+        apiKeyClientId:
+          type: string
+          title: api_key_client_id
+          nullable: true
+        updatedAt:
+          title: updated_at
+          description: when chat was last updated
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        isBookmarked:
+          type: boolean
+          title: is_bookmarked
+          description: whether this chat is bookmarked by the user
+          nullable: true
+        preferredProvider:
+          type: string
+          title: preferred_provider
+          nullable: true
+        templateDataId:
+          type: string
+          title: template_data_id
+          description: UUID reference to playbook_template_data
+          nullable: true
+        batchRunId:
+          type: string
+          title: batch_run_id
+          description: UUID reference to playbook_batch_run
+          nullable: true
+        preview:
+          type: string
+          title: preview
+          description: preview/snippet of first message content
+          nullable: true
+        dashboardMode:
+          type: boolean
+          title: dashboard_mode
+          description: whether this chat was created with dashboard mode enabled
+          nullable: true
+        source:
+          title: source
+          description: source of the chat
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.chat.ChatSource'
+        methodology:
+          title: methodology
+          description: chat-level methodology preference
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.chat.Methodology'
+      title: Chat
+      additionalProperties: false
+    textql.rpc.public.chat.ChatMessage:
+      type: object
+      properties:
+        role:
+          type: string
+          title: role
+          description: '"user" or "assistant"'
+        content:
+          type: string
+          title: content
+        createdAt:
+          title: created_at
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: ChatMessage
+      additionalProperties: false
+    textql.rpc.public.chat.ChatSource:
+      type: string
+      title: ChatSource
+      enum:
+        - CHAT_SOURCE_UNKNOWN
+        - CHAT_SOURCE_THREAD
+        - CHAT_SOURCE_PLAYBOOK
+        - CHAT_SOURCE_TEMPLATE
+        - CHAT_SOURCE_SLACK
+        - CHAT_SOURCE_AGENT
+        - CHAT_SOURCE_FEED
+    textql.rpc.public.chat.GetChatsRequest:
+      type: object
+      properties:
+        memberOnly:
+          type: boolean
+          title: member_only
+          default: false
+          description: Whether to return only the user's chats (true) or all org chats (false)
+        searchTerm:
+          type: string
+          title: search_term
+          description: Filter chats by summary or first message content
+        limit:
+          type: integer
+          format: int32
+          title: limit
+          description: Maximum number of chats to return
+          minimum: 0
+        offset:
+          type: integer
+          format: int32
+          title: offset
+          description: Number of chats to skip
+          minimum: 0
+        sortBy:
+          type: integer
+          title: sort_by
+          description: "Sort field (0: unknown, 1: name, 2: created_at, 3: updated_at)"
+          enum: [0, 1, 2, 3]
+        sortDirection:
+          type: integer
+          title: sort_direction
+          description: "Sort direction (0: unknown, 1: asc, 2: desc)"
+          enum: [0, 1, 2]
+      title: GetChatsRequest
+      additionalProperties: false
+    textql.rpc.public.chat.GetChatsResponse:
+      type: object
+      properties:
+        chats:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.chat.Chat'
+          title: chats
+        totalCount:
+          type: integer
+          format: int32
+          title: total_count
+      title: GetChatsResponse
+      additionalProperties: false
+    textql.rpc.public.chat.GetChatRequest:
+      type: object
+      properties:
+        chatId:
+          type: string
+          title: chat_id
+      title: GetChatRequest
+      additionalProperties: false
+    textql.rpc.public.chat.GetChatResponse:
+      type: object
+      properties:
+        chat:
+          title: chat
+          $ref: '#/components/schemas/textql.rpc.public.chat.Chat'
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.chat.ChatMessage'
+          title: messages
+        assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.cells.PreviewCell'
+          title: assets
+      title: GetChatResponse
+      additionalProperties: false
+    textql.rpc.public.chat.LlmModel:
+      type: string
+      title: LlmModel
+      enum:
+        - MODEL_UNKNOWN
+        - MODEL_DEFAULT_SMALL
+        - MODEL_DEFAULT
+        - MODEL_DEFAULT_LARGE
+        - MODEL_DEFAULT_REASONING
+        - MODEL_HAIKU_3
+        - MODEL_HAIKU_3_5
+        - MODEL_SONNET_3_5
+        - MODEL_SONNET_3_6
+        - MODEL_SONNET_3_7
+        - MODEL_SONNET_4
+        - MODEL_OPUS_4
+        - MODEL_SONNET_4_5
+        - MODEL_HAIKU_4_5
+        - MODEL_OPUS_4_5
+        - MODEL_OPUS_4_6
+        - MODEL_SONNET_4_6
+        - MODEL_GPT_4
+        - MODEL_GPT_4_TURBO
+        - MODEL_GPT_4O
+        - MODEL_GPT_4_1
+        - MODEL_GPT_4_1_MINI
+        - MODEL_GPT_4_1_NANO
+        - MODEL_O_1
+        - MODEL_O_1_MINI
+        - MODEL_O_3
+        - MODEL_O_3_MINI
+        - MODEL_O_4_MINI
+        - MODEL_GPT_5
+        - MODEL_GPT_5_MINI
+        - MODEL_GPT_5_NANO
+        - MODEL_GPT_5_2
+        - MODEL_GPT_5_2_PRO
+        - MODEL_GPT_5_4
+        - MODEL_GPT_5_4_MINI
+        - MODEL_GPT_5_5
+        - MODEL_GPT_5_6_SOL
+        - MODEL_GPT_5_6_TERRA
+        - MODEL_GPT_5_6_LUNA
+        - MODEL_GEMINI_3_FLASH
+        - MODEL_GEMINI_3_PRO
+        - MODEL_GEMINI_3_1_PRO
+        - MODEL_GEMINI_3_5_FLASH
+        - MODEL_KIMI_K2_INSTRUCT
+        - MODEL_QWEN3_CODER
+        - MODEL_QWEN3_CODER_SMALL
+        - MODEL_GPT_OSS
+        - MODEL_GPT_OSS_SMALL
+        - MODEL_GLM_4_5
+        - MODEL_GLM_4_6
+        - MODEL_KIMI_K2_THINKING
+        - MODEL_KIMI_K2_5
+        - MODEL_DEEPSEEK_3_2
+        - MODEL_GLM_5
+        - MODEL_KIMI_K2_6
+        - MODEL_GLM_5_2
+        - MODEL_KIMI_K2_7_CODE
+        - MODEL_KIMI_K3
+        - MODEL_QWEN3_7_PLUS
+        - MODEL_MUSE_SPARK_1_1
+        - MODEL_MUSE_SPARK_1_2
+    textql.rpc.public.chat.Methodology:
+      type: string
+      title: Methodology
+      enum:
+        - METHODOLOGY_UNKNOWN
+        - METHODOLOGY_ADAPTIVE
+        - METHODOLOGY_PRESCRIPTIVE
+        - METHODOLOGY_THOROUGH
+        - METHODOLOGY_CAREFUL
+    textql.rpc.public.connector.ConnectorType:
+      type: string
+      title: ConnectorType
+      enum:
+        - CONNECTOR_TYPE_UNSPECIFIED
+        - REDSHIFT
+        - SNOWFLAKE
+        - BIGQUERY
+        - AZURE_SYNAPSE
+        - AURORA
+        - TABLEAU
+        - DATABRICKS
+        - SUPABASE
+        - POSTGRES
+        - MOTHERDUCK
+        - CLICKHOUSE
+        - MYSQL
+        - ATHENA
+        - GOOGLE_DRIVE
+        - POWERBI
+        - SQL_SERVER
+        - MICROSOFT_365
+        - SAP_HANA
+        - ORACLE
+    textql.rpc.public.dashboard.DataSource:
+      type: object
+      allOf:
+        - properties:
+            type:
+              type: string
+              title: type
+              description: '"sql_query", "file", "python_code", or "ontology_sql"'
+            name:
+              type: string
+              title: name
+        - oneOf:
+            - properties:
+                file:
+                  title: file
+                  $ref: '#/components/schemas/textql.rpc.public.dashboard.FileSource'
+              title: file
+              required:
+                - file
+            - properties:
+                ontologySql:
+                  title: ontology_sql
+                  $ref: '#/components/schemas/textql.rpc.public.dashboard.OntologySqlSource'
+              title: ontology_sql
+              required:
+                - ontologySql
+            - properties:
+                pythonCode:
+                  title: python_code
+                  $ref: '#/components/schemas/textql.rpc.public.dashboard.PythonCodeSource'
+              title: python_code
+              required:
+                - pythonCode
+            - properties:
+                sqlQuery:
+                  title: sql_query
+                  $ref: '#/components/schemas/textql.rpc.public.dashboard.SqlQuerySource'
+              title: sql_query
+              required:
+                - sqlQuery
+      title: DataSource
+      additionalProperties: false
+      description: Unified data source for dashboards
+    textql.rpc.public.dashboard.FileSource:
+      type: object
+      properties:
+        datasetId:
+          type: string
+          title: dataset_id
+        fileName:
+          type: string
+          title: file_name
+          description: Original filename for display
+      title: FileSource
+      additionalProperties: false
+    textql.rpc.public.dashboard.OntologySqlSource:
+      type: object
+      properties:
+        query:
+          type: string
+          title: query
+        dataset:
+          type: string
+          title: dataset
+        ontologyId:
+          type: integer
+          title: ontology_id
+          format: int32
+      title: OntologySqlSource
+      additionalProperties: false
+    textql.rpc.public.dashboard.PythonCodeSource:
+      type: object
+      properties:
+        code:
+          type: string
+          title: code
+      title: PythonCodeSource
+      additionalProperties: false
+    textql.rpc.public.dashboard.SqlQuerySource:
+      type: object
+      properties:
+        query:
+          type: string
+          title: query
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+      title: SqlQuerySource
+      additionalProperties: false
+    textql.rpc.public.dataframe.BoolValues:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            type: boolean
+          title: values
+      title: BoolValues
+      additionalProperties: false
+    textql.rpc.public.dataframe.ByteValues:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            type: string
+            format: byte
+          title: values
+      title: ByteValues
+      additionalProperties: false
+    textql.rpc.public.dataframe.DataFrame:
+      type: object
+      properties:
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dataframe.DataFrameField'
+          title: schema
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dataframe.DataFrameRecord'
+          title: records
+      title: DataFrame
+      additionalProperties: false
+    textql.rpc.public.dataframe.DataFrameColumn:
+      type: object
+      allOf:
+        - properties:
+            columnIndex:
+              type: integer
+              title: column_index
+              format: int32
+        - oneOf:
+            - properties:
+                bools:
+                  title: bools
+                  $ref: '#/components/schemas/textql.rpc.public.dataframe.BoolValues'
+              title: bools
+              required:
+                - bools
+            - properties:
+                bytes:
+                  title: bytes
+                  $ref: '#/components/schemas/textql.rpc.public.dataframe.ByteValues'
+              title: bytes
+              required:
+                - bytes
+            - properties:
+                doubles:
+                  title: doubles
+                  $ref: '#/components/schemas/textql.rpc.public.dataframe.DoubleValues'
+              title: doubles
+              required:
+                - doubles
+            - properties:
+                floats:
+                  title: floats
+                  $ref: '#/components/schemas/textql.rpc.public.dataframe.FloatValues'
+              title: floats
+              required:
+                - floats
+            - properties:
+                int32:
+                  title: int32
+                  $ref: '#/components/schemas/textql.rpc.public.dataframe.Int32Values'
+              title: int32
+              required:
+                - int32
+            - properties:
+                int64:
+                  title: int64
+                  $ref: '#/components/schemas/textql.rpc.public.dataframe.Int64Values'
+              title: int64
+              required:
+                - int64
+            - properties:
+                strings:
+                  title: strings
+                  $ref: '#/components/schemas/textql.rpc.public.dataframe.StringValues'
+              title: strings
+              required:
+                - strings
+            - properties:
+                timestamps:
+                  title: timestamps
+                  $ref: '#/components/schemas/textql.rpc.public.dataframe.TimestampValues'
+              title: timestamps
+              required:
+                - timestamps
+            - properties:
+                uint32:
+                  title: uint32
+                  $ref: '#/components/schemas/textql.rpc.public.dataframe.Uint32Values'
+              title: uint32
+              required:
+                - uint32
+            - properties:
+                uint64:
+                  title: uint64
+                  $ref: '#/components/schemas/textql.rpc.public.dataframe.Uint64Values'
+              title: uint64
+              required:
+                - uint64
+      title: DataFrameColumn
+      additionalProperties: false
+    textql.rpc.public.dataframe.DataFrameField:
+      type: object
+      properties:
+        columnName:
+          type: string
+          title: column_name
+        columnType:
+          type: string
+          title: column_type
+        columnIndex:
+          type: integer
+          title: column_index
+          format: int32
+      title: DataFrameField
+      additionalProperties: false
+    textql.rpc.public.dataframe.DataFrameInfo:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+        external:
+          type: boolean
+          title: external
+        numRows:
+          type:
+            - integer
+            - string
+          title: num_rows
+          format: int64
+        numCols:
+          type:
+            - integer
+            - string
+          title: num_cols
+          format: int64
+        memoryUsage:
+          type:
+            - integer
+            - string
+          title: memory_usage
+          format: int64
+          description: in bytes
+      title: DataFrameInfo
+      additionalProperties: false
+    textql.rpc.public.dataframe.DataFrameRecord:
+      type: object
+      properties:
+        columns:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dataframe.DataFrameColumn'
+          title: columns
+      title: DataFrameRecord
+      additionalProperties: false
+    textql.rpc.public.dataframe.DataFrameWithInfo:
+      type: object
+      properties:
+        df:
+          title: df
+          $ref: '#/components/schemas/textql.rpc.public.dataframe.DataFrame'
+        info:
+          title: info
+          $ref: '#/components/schemas/textql.rpc.public.dataframe.DataFrameInfo'
+        preview:
+          type: boolean
+          title: preview
+          description: whether df is merely a preview
+      title: DataFrameWithInfo
+      additionalProperties: false
+    textql.rpc.public.dataframe.DoubleValues:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            type: number
+            format: double
+          title: values
+      title: DoubleValues
+      additionalProperties: false
+    textql.rpc.public.dataframe.FloatValues:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            type: number
+            format: float
+          title: values
+      title: FloatValues
+      additionalProperties: false
+    textql.rpc.public.dataframe.Int32Values:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            type: integer
+            format: int32
+          title: values
+      title: Int32Values
+      additionalProperties: false
+    textql.rpc.public.dataframe.Int64Values:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            type:
+              - integer
+              - string
+            format: int64
+          title: values
+      title: Int64Values
+      additionalProperties: false
+    textql.rpc.public.dataframe.StringValues:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            type: string
+          title: values
+      title: StringValues
+      additionalProperties: false
+    textql.rpc.public.dataframe.TimestampValues:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/google.protobuf.Timestamp'
+          title: values
+      title: TimestampValues
+      additionalProperties: false
+    textql.rpc.public.dataframe.Uint32Values:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            type: integer
+          title: values
+      title: Uint32Values
+      additionalProperties: false
+    textql.rpc.public.dataframe.Uint64Values:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            type:
+              - integer
+              - string
+            format: int64
+          title: values
+      title: Uint64Values
+      additionalProperties: false
+    textql.rpc.public.dataset.Dataset:
+      type: object
+      allOf:
+        - properties:
+            id:
+              type: string
+              title: id
+            type:
+              title: type
+              $ref: '#/components/schemas/textql.rpc.public.dataset.DatasetType'
+            name:
+              type: string
+              title: name
+            version:
+              type: integer
+              title: version
+              format: int32
+            path:
+              type: string
+              title: path
+              description: folder structure to reach this file
+            owner:
+              title: owner
+              $ref: '#/components/schemas/textql.rpc.identity.MemberPreview'
+            userPermissions:
+              title: user_permissions
+              description: for logged in user
+              $ref: '#/components/schemas/textql.rpc.public.dataset.DatasetPermission'
+            createdAt:
+              title: created_at
+              $ref: '#/components/schemas/google.protobuf.Timestamp'
+            updatedAt:
+              title: updated_at
+              $ref: '#/components/schemas/google.protobuf.Timestamp'
+            expiresAt:
+              title: expires_at
+              nullable: true
+              $ref: '#/components/schemas/google.protobuf.Timestamp'
+            ephemeral:
+              type: boolean
+              title: ephemeral
+        - oneOf:
+            - properties:
+                dataframe:
+                  title: dataframe
+                  $ref: '#/components/schemas/textql.rpc.public.dataset.SandboxDataFrame'
+              title: dataframe
+              required:
+                - dataframe
+            - properties:
+                document:
+                  title: document
+                  $ref: '#/components/schemas/textql.rpc.public.dataset.Document'
+              title: document
+              required:
+                - document
+            - properties:
+                powerbiData:
+                  title: powerbi_data
+                  $ref: '#/components/schemas/textql.rpc.public.dataset.PowerBIData'
+              title: powerbi_data
+              required:
+                - powerbiData
+            - properties:
+                tableauData:
+                  title: tableau_data
+                  $ref: '#/components/schemas/textql.rpc.public.dataset.TableauData'
+              title: tableau_data
+              required:
+                - tableauData
+            - properties:
+                tabularFile:
+                  title: tabular_file
+                  $ref: '#/components/schemas/textql.rpc.public.dataset.TabularFile'
+              title: tabular_file
+              required:
+                - tabularFile
+      title: Dataset
+      additionalProperties: false
+    textql.rpc.public.dataset.DatasetPermission:
+      type: string
+      title: DatasetPermission
+      enum:
+        - PERMISSION_UNKNOWN
+        - PERMISSION_READ
+        - PERMISSION_EDIT
+        - PERMISSION_ADMIN
+    textql.rpc.public.dataset.DatasetType:
+      type: string
+      title: DatasetType
+      enum:
+        - TYPE_UNKNOWN
+        - TYPE_TABULAR
+        - TYPE_DATAFRAME
+        - TYPE_DOCUMENT
+        - TYPE_TABLEAU
+        - TYPE_IMAGE
+        - TYPE_TEXT
+        - TYPE_POWERBI
+      description: never change the names or numbers of existing dataset types!
+    textql.rpc.public.dataset.Document:
+      type: object
+      properties:
+        previewUrl:
+          type: string
+          title: preview_url
+        pageCount:
+          type: integer
+          title: page_count
+          format: int32
+      title: Document
+      additionalProperties: false
+    textql.rpc.public.dataset.PowerBIData:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        reportIds:
+          type: array
+          items:
+            type: string
+          title: report_ids
+        datasetIds:
+          type: array
+          items:
+            type: string
+          title: dataset_ids
+      title: PowerBIData
+      additionalProperties: false
+    textql.rpc.public.dataset.SandboxDataFrame:
+      type: object
+      properties:
+        info:
+          title: info
+          $ref: '#/components/schemas/textql.rpc.public.dataframe.DataFrameInfo'
+      title: SandboxDataFrame
+      additionalProperties: false
+    textql.rpc.public.dataset.TableauData:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        projectId:
+          type: string
+          title: project_id
+        projectName:
+          type: string
+          title: project_name
+        views:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.tableau.TableauView'
+          title: views
+        datasources:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.tableau.TableauDatasource'
+          title: datasources
+      title: TableauData
+      additionalProperties: false
+    textql.rpc.public.dataset.TabularFile:
+      type: object
+      properties:
+        category:
+          title: category
+          $ref: '#/components/schemas/textql.rpc.public.dataset.TabularFileCategory'
+        rowCount:
+          type:
+            - integer
+            - string
+          title: row_count
+          format: int64
+        columnCount:
+          type:
+            - integer
+            - string
+          title: column_count
+          format: int64
+        sheetCount:
+          type: integer
+          title: sheet_count
+          format: int32
+      title: TabularFile
+      additionalProperties: false
+    textql.rpc.public.dataset.TabularFileCategory:
+      type: string
+      title: TabularFileCategory
+      enum:
+        - CATEGORY_UNKNOWN
+        - CATEGORY_CSV
+        - CATEGORY_TSV
+        - CATEGORY_XLSX
+        - CATEGORY_XLS
+        - CATEGORY_PARQUET
+        - CATEGORY_ODS
+      description: never change the names or numbers of existing tabular file categories!
+    textql.rpc.public.ontology.AttributeData:
+      type: object
+      oneOf:
+        - properties:
+            linked:
+              title: linked
+              $ref: '#/components/schemas/textql.rpc.public.ontology.LinkedAttributeData'
+          title: linked
+          required:
+            - linked
+        - properties:
+            unlinked:
+              title: unlinked
+              $ref: '#/components/schemas/textql.rpc.public.ontology.UnlinkedAttributeData'
+          title: unlinked
+          required:
+            - unlinked
+      title: AttributeData
+      additionalProperties: false
+    textql.rpc.public.ontology.AttributeRef:
+      type: object
+      properties:
+        attributeRef:
+          type: string
+          title: attribute_ref
+      title: AttributeRef
+      additionalProperties: false
+    textql.rpc.public.ontology.GraphPosition:
+      type: object
+      properties:
+        x:
+          type: number
+          title: x
+          format: double
+        y:
+          type: number
+          title: y
+          format: double
+      title: GraphPosition
+      additionalProperties: false
+    textql.rpc.public.ontology.GraphProperties:
+      type: object
+      properties:
+        position:
+          title: position
+          $ref: '#/components/schemas/textql.rpc.public.ontology.GraphPosition'
+        icon:
+          type: string
+          title: icon
+        color:
+          type: string
+          title: color
+      title: GraphProperties
+      additionalProperties: false
+    textql.rpc.public.ontology.IntermediateJoin:
+      type: object
+      properties:
+        tableName:
+          type: string
+          title: table_name
+        leftColumn:
+          type: string
+          title: left_column
+        rightColumn:
+          type: string
+          title: right_column
+      title: IntermediateJoin
+      additionalProperties: false
+    textql.rpc.public.ontology.LinkedAttributeData:
+      type: object
+      properties:
+        relationId:
+          type: string
+          title: relation_id
+        targetAttributeId:
+          type: string
+          title: target_attribute_id
+      title: LinkedAttributeData
+      additionalProperties: false
+    textql.rpc.public.ontology.MetricAggregation:
+      type: string
+      title: MetricAggregation
+      enum:
+        - METRIC_AGGREGATION_SUM
+        - METRIC_AGGREGATION_COUNT
+        - METRIC_AGGREGATION_AVG
+        - METRIC_AGGREGATION_MIN
+        - METRIC_AGGREGATION_MAX
+        - METRIC_AGGREGATION_COUNT_DISTINCT
+        - METRIC_AGGREGATION_MEDIAN
+        - METRIC_AGGREGATION_ARRAY_AGG
+    textql.rpc.public.ontology.ObjectRef:
+      type: object
+      properties:
+        objectRef:
+          type: string
+          title: object_ref
+      title: ObjectRef
+      additionalProperties: false
+    textql.rpc.public.ontology.OntologyAttribute:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        objectId:
+          type: string
+          title: object_id
+        name:
+          type: string
+          title: name
+        description:
+          type: string
+          title: description
+        type:
+          title: type
+          $ref: '#/components/schemas/textql.rpc.public.ontology.OntologyAttributeType'
+        isInherent:
+          type: boolean
+          title: is_inherent
+        isMeasure:
+          type: boolean
+          title: is_measure
+        isDimension:
+          type: boolean
+          title: is_dimension
+        data:
+          title: data
+          $ref: '#/components/schemas/textql.rpc.public.ontology.AttributeData'
+        accessTime:
+          title: access_time
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: OntologyAttribute
+      additionalProperties: false
+    textql.rpc.public.ontology.OntologyAttributeType:
+      type: string
+      title: OntologyAttributeType
+      enum:
+        - ONTOLOGY_ATTRIBUTE_TYPE_UNSPECIFIED
+        - ONTOLOGY_ATTRIBUTE_TYPE_STRING
+        - ONTOLOGY_ATTRIBUTE_TYPE_NUMBER
+        - ONTOLOGY_ATTRIBUTE_TYPE_INT
+        - ONTOLOGY_ATTRIBUTE_TYPE_BOOLEAN
+        - ONTOLOGY_ATTRIBUTE_TYPE_DATE
+        - ONTOLOGY_ATTRIBUTE_TYPE_DATE_TIME
+        - ONTOLOGY_ATTRIBUTE_TYPE_TIMESTAMP
+        - ONTOLOGY_ATTRIBUTE_TYPE_ENUM
+        - ONTOLOGY_ATTRIBUTE_TYPE_JSON
+        - ONTOLOGY_ATTRIBUTE_TYPE_JSONB
+        - ONTOLOGY_ATTRIBUTE_TYPE_UUID
+    textql.rpc.public.ontology.OntologyMetric:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        name:
+          type: string
+          title: name
+        description:
+          type: string
+          title: description
+        objectId:
+          type: string
+          title: object_id
+        attribute:
+          title: attribute
+          $ref: '#/components/schemas/textql.rpc.public.ontology.AttributeRef'
+        formula:
+          type: string
+          title: formula
+        timeDimension:
+          title: time_dimension
+          $ref: '#/components/schemas/textql.rpc.public.ontology.AttributeRef'
+        breakdowns:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.ontology.AttributeRef'
+          title: breakdowns
+        aggregation:
+          title: aggregation
+          $ref: '#/components/schemas/textql.rpc.public.ontology.MetricAggregation'
+        lod:
+          type: array
+          items:
+            type: string
+          title: lod
+        accessTime:
+          title: access_time
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: OntologyMetric
+      additionalProperties: false
+    textql.rpc.public.ontology.OntologyObject:
+      type: object
+      allOf:
+        - properties:
+            id:
+              type: string
+              title: id
+            name:
+              type: string
+              title: name
+            description:
+              type: string
+              title: description
+            primaryKeyAttribute:
+              title: primary_key_attribute
+              $ref: '#/components/schemas/textql.rpc.public.ontology.AttributeRef'
+            titleAttribute:
+              title: title_attribute
+              $ref: '#/components/schemas/textql.rpc.public.ontology.AttributeRef'
+            interestingAttributes:
+              type: array
+              items:
+                $ref: '#/components/schemas/textql.rpc.public.ontology.AttributeRef'
+              title: interesting_attributes
+            graphProperties:
+              title: graph_properties
+              $ref: '#/components/schemas/textql.rpc.public.ontology.GraphProperties'
+            accessTime:
+              title: access_time
+              $ref: '#/components/schemas/google.protobuf.Timestamp'
+        - oneOf:
+            - properties:
+                backingQuery:
+                  type: string
+                  title: backing_query
+              title: backing_query
+              required:
+                - backingQuery
+            - properties:
+                backingTable:
+                  title: backing_table
+                  $ref: '#/components/schemas/textql.rpc.public.ontology.TableName'
+              title: backing_table
+              required:
+                - backingTable
+      title: OntologyObject
+      additionalProperties: false
+      description: Ontology entities
+    textql.rpc.public.ontology.OntologyRelation:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        name:
+          type: string
+          title: name
+        description:
+          type: string
+          title: description
+        type:
+          title: type
+          $ref: '#/components/schemas/textql.rpc.public.ontology.RelationType'
+        objectA:
+          title: object_a
+          $ref: '#/components/schemas/textql.rpc.public.ontology.ObjectRef'
+        objectB:
+          title: object_b
+          $ref: '#/components/schemas/textql.rpc.public.ontology.ObjectRef'
+        joinKeyA:
+          title: join_key_a
+          $ref: '#/components/schemas/textql.rpc.public.ontology.AttributeRef'
+        joinKeyB:
+          title: join_key_b
+          $ref: '#/components/schemas/textql.rpc.public.ontology.AttributeRef'
+        intermediateJoin:
+          title: intermediate_join
+          $ref: '#/components/schemas/textql.rpc.public.ontology.IntermediateJoin'
+        joinFormula:
+          type: string
+          title: join_formula
+      title: OntologyRelation
+      additionalProperties: false
+    textql.rpc.public.ontology.RelationType:
+      type: string
+      title: RelationType
+      enum:
+        - RELATION_TYPE_UNSPECIFIED
+        - RELATION_TYPE_ONE_TO_MANY
+        - RELATION_TYPE_MANY_TO_ONE
+        - RELATION_TYPE_ONE_TO_ONE
+        - RELATION_TYPE_MANY_TO_MANY
+    textql.rpc.public.ontology.TableName:
+      type: object
+      properties:
+        schema:
+          type: string
+          title: schema
+        table:
+          type: string
+          title: table
+        database:
+          type: string
+          title: database
+      title: TableName
+      additionalProperties: false
+      description: Core data types
+    textql.rpc.public.ontology.UnlinkedAttributeData:
+      type: object
+      properties:
+        columnName:
+          type: string
+          title: column_name
+      title: UnlinkedAttributeData
+      additionalProperties: false
+    textql.rpc.public.paradigm.BasicOptions:
+      type: object
+      title: BasicOptions
+      additionalProperties: false
+      description: |-
+        This is a placeholder for future basic options.
+         Currently, it does not contain any fields.
+    textql.rpc.public.paradigm.ExperimentalOptions:
+      type: object
+      properties:
+        connectorIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+          title: connector_ids
+        autoApproveEnabled:
+          type: boolean
+          title: auto_approve_enabled
+      title: ExperimentalOptions
+      additionalProperties: false
+    textql.rpc.public.paradigm.OntologyOptions:
+      type: object
+      properties:
+        connectorIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+          title: connector_ids
+        ontologyIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+          title: ontology_ids
+      title: OntologyOptions
+      additionalProperties: false
+    textql.rpc.public.paradigm.Paradigm:
+      type: object
+      properties:
+        type:
+          title: type
+          $ref: '#/components/schemas/textql.rpc.paradigm_params.ParadigmType'
+        version:
+          type: integer
+          title: version
+          format: int32
+        options:
+          title: options
+          $ref: '#/components/schemas/textql.rpc.public.paradigm.ParadigmOptions'
+      title: Paradigm
+      additionalProperties: false
+      description: ChatParadigm includes paradigm options
+    textql.rpc.public.paradigm.ParadigmOptions:
+      type: object
+      oneOf:
+        - properties:
+            basic:
+              title: basic
+              $ref: '#/components/schemas/textql.rpc.public.paradigm.BasicOptions'
+          title: basic
+          required:
+            - basic
+        - properties:
+            experimental:
+              title: experimental
+              $ref: '#/components/schemas/textql.rpc.public.paradigm.ExperimentalOptions'
+          title: experimental
+          required:
+            - experimental
+        - properties:
+            ontology:
+              title: ontology
+              $ref: '#/components/schemas/textql.rpc.public.paradigm.OntologyOptions'
+          title: ontology
+          required:
+            - ontology
+        - properties:
+            publicDemo:
+              title: public_demo
+              $ref: '#/components/schemas/textql.rpc.public.paradigm.PublicDemoOptions'
+          title: public_demo
+          required:
+            - publicDemo
+        - properties:
+            research:
+              title: research
+              $ref: '#/components/schemas/textql.rpc.public.paradigm.ResearchOptions'
+          title: research
+          required:
+            - research
+        - properties:
+            sql:
+              title: sql
+              $ref: '#/components/schemas/textql.rpc.public.paradigm.SqlOptions'
+          title: sql
+          required:
+            - sql
+        - properties:
+            tableau:
+              title: tableau
+              $ref: '#/components/schemas/textql.rpc.public.paradigm.TableauOptions'
+          title: tableau
+          required:
+            - tableau
+        - properties:
+            universal:
+              title: universal
+              $ref: '#/components/schemas/textql.rpc.public.paradigm.UniversalOptions'
+          title: universal
+          required:
+            - universal
+      title: ParadigmOptions
+      additionalProperties: false
+    textql.rpc.public.paradigm.PublicDemoOptions:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+      title: PublicDemoOptions
+      additionalProperties: false
+    textql.rpc.public.paradigm.ResearchOptions:
+      type: object
+      properties:
+        connectorIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+          title: connector_ids
+        backgroundColor:
+          type: string
+          title: background_color
+          nullable: true
+        logo:
+          type: string
+          title: logo
+          nullable: true
+      title: ResearchOptions
+      additionalProperties: false
+    textql.rpc.public.paradigm.SqlOptions:
+      type: object
+      properties:
+        connectorIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+          title: connector_ids
+      title: SqlOptions
+      additionalProperties: false
+    textql.rpc.public.paradigm.TableauOptions:
+      type: object
+      properties:
+        datasetId:
+          type: string
+          title: dataset_id
+          description: id of dataset_version_tableau.dataset_id to use
+      title: TableauOptions
+      additionalProperties: false
+    textql.rpc.public.paradigm.UniversalOptions:
+      type: object
+      properties:
+        connectorIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+          title: connector_ids
+        datasetId:
+          type: string
+          title: dataset_id
+          nullable: true
+        webSearchEnabled:
+          type: boolean
+          title: web_search_enabled
+        sqlEnabled:
+          type: boolean
+          title: sql_enabled
+        ontologyEnabled:
+          type: boolean
+          title: ontology_enabled
+        ontologyEditingEnabled:
+          type: boolean
+          title: ontology_editing_enabled
+        pythonEnabled:
+          type: boolean
+          title: python_enabled
+        autoApproveEnabled:
+          type: boolean
+          title: auto_approve_enabled
+        googleDriveEnabled:
+          type: boolean
+          title: google_drive_enabled
+        powerbiEnabled:
+          type: boolean
+          title: powerbi_enabled
+        contextEditingEnabled:
+          type: boolean
+          title: context_editing_enabled
+        formEditorEnabled:
+          type: boolean
+          title: form_editor_enabled
+        playbookToolsEnabled:
+          type: boolean
+          title: playbook_tools_enabled
+        microsoft365Enabled:
+          type: boolean
+          title: microsoft365_enabled
+        feedExplorerEnabled:
+          type: boolean
+          title: feed_explorer_enabled
+        bashEnabled:
+          type: boolean
+          title: bash_enabled
+        javascriptEnabled:
+          type: boolean
+          title: javascript_enabled
+        feedPostEnabled:
+          type: boolean
+          title: feed_post_enabled
+        feedCommentEnabled:
+          type: boolean
+          title: feed_comment_enabled
+        feedEngageEnabled:
+          type: boolean
+          title: feed_engage_enabled
+      title: UniversalOptions
+      additionalProperties: false
+    textql.rpc.public.reports.CardBlock:
+      type: object
+      properties:
+        blocks:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.reports.ReportBlock'
+          title: blocks
+      title: CardBlock
+      additionalProperties: false
+    textql.rpc.public.reports.DividerBlock:
+      type: object
+      title: DividerBlock
+      additionalProperties: false
+    textql.rpc.public.reports.HeroBlock:
+      type: object
+      properties:
+        imageUrl:
+          type: string
+          title: image_url
+        imageAlt:
+          type: string
+          title: image_alt
+          nullable: true
+      title: HeroBlock
+      additionalProperties: false
+    textql.rpc.public.reports.ImageBlock:
+      type: object
+      properties:
+        imageUrl:
+          type: string
+          title: image_url
+        imageAlt:
+          type: string
+          title: image_alt
+          nullable: true
+        variant:
+          title: variant
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.reports.ImageVariant'
+      title: ImageBlock
+      additionalProperties: false
+    textql.rpc.public.reports.ImageTextBlock:
+      type: object
+      properties:
+        imageUrl:
+          type: string
+          title: image_url
+        imageAlt:
+          type: string
+          title: image_alt
+          nullable: true
+        variant:
+          title: variant
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.reports.ImageVariant'
+        heading:
+          type: string
+          title: heading
+          nullable: true
+        content:
+          type: string
+          title: content
+          nullable: true
+      title: ImageTextBlock
+      additionalProperties: false
+    textql.rpc.public.reports.ImageVariant:
+      type: string
+      title: ImageVariant
+      enum:
+        - IMAGE_VARIANT_CIRCULAR
+        - IMAGE_VARIANT_ROUNDED
+        - IMAGE_VARIANT_PILL
+        - IMAGE_VARIANT_NONE
+    textql.rpc.public.reports.ListBlock:
+      type: object
+      properties:
+        heading:
+          type: string
+          title: heading
+          nullable: true
+        items:
+          type: array
+          items:
+            type: string
+          title: items
+      title: ListBlock
+      additionalProperties: false
+    textql.rpc.public.reports.ReportBlock:
+      type: object
+      oneOf:
+        - properties:
+            card:
+              title: card
+              $ref: '#/components/schemas/textql.rpc.public.reports.CardBlock'
+          title: card
+          required:
+            - card
+        - properties:
+            divider:
+              title: divider
+              $ref: '#/components/schemas/textql.rpc.public.reports.DividerBlock'
+          title: divider
+          required:
+            - divider
+        - properties:
+            hero:
+              title: hero
+              $ref: '#/components/schemas/textql.rpc.public.reports.HeroBlock'
+          title: hero
+          required:
+            - hero
+        - properties:
+            image:
+              title: image
+              $ref: '#/components/schemas/textql.rpc.public.reports.ImageBlock'
+          title: image
+          required:
+            - image
+        - properties:
+            imageText:
+              title: image_text
+              $ref: '#/components/schemas/textql.rpc.public.reports.ImageTextBlock'
+          title: image_text
+          required:
+            - imageText
+        - properties:
+            list:
+              title: list
+              $ref: '#/components/schemas/textql.rpc.public.reports.ListBlock'
+          title: list
+          required:
+            - list
+        - properties:
+            spacer:
+              title: spacer
+              $ref: '#/components/schemas/textql.rpc.public.reports.SpacerBlock'
+          title: spacer
+          required:
+            - spacer
+        - properties:
+            text:
+              title: text
+              $ref: '#/components/schemas/textql.rpc.public.reports.TextBlock'
+          title: text
+          required:
+            - text
+      title: ReportBlock
+      additionalProperties: false
+    textql.rpc.public.reports.SpacerBlock:
+      type: object
+      properties:
+        height:
+          type: integer
+          title: height
+          format: int32
+          nullable: true
+      title: SpacerBlock
+      additionalProperties: false
+    textql.rpc.public.reports.TextBlock:
+      type: object
+      properties:
+        heading:
+          type: string
+          title: heading
+          nullable: true
+        content:
+          type: string
+          title: content
+          nullable: true
+      title: TextBlock
+      additionalProperties: false
+    textql.rpc.public.tableau.TableauDatasource:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        name:
+          type: string
+          title: name
+        type:
+          type: string
+          title: type
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        isPublished:
+          type: boolean
+          title: is_published
+        projectId:
+          type: string
+          title: project_id
+        projectName:
+          type: string
+          title: project_name
+      title: TableauDatasource
+      additionalProperties: false
+      description: 'TODO: Add datasources support'
+    textql.rpc.public.tableau.TableauView:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        name:
+          type: string
+          title: name
+        contentUrl:
+          type: string
+          title: content_url
+        workbookId:
+          type: string
+          title: workbook_id
+        workbookName:
+          type: string
+          title: workbook_name
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        embedUrl:
+          type: string
+          title: embed_url
+      title: TableauView
+      additionalProperties: false
+security: []
+tags:
+  - name: textql.rpc.platform.ChatService
+    description: Platform Chat Service - External API for chat management

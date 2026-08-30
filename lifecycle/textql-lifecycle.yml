@@ -1,0 +1,89 @@
+generated: '2026-08-30'
+method: searched
+source: >-
+  https://docs.textql.com/api-reference/introduction,
+  https://docs.textql.com/api-reference/v2/introduction,
+  https://docs.textql.com/llms.txt,
+  https://docs.textql.com/product/changelog,
+  https://docs.textql.com/helm-charts/changelog,
+  https://status.textql.com/
+versioning:
+  scheme: url-path-major
+  pattern: https://app.textql.com/v{major}
+  current: v2
+  generations:
+  - version: v1
+    status: deprecated
+    protocol: Connect-RPC over HTTP POST
+    base: https://app.textql.com/v1
+    docs: https://docs.textql.com/api-reference/introduction
+    evidence: >-
+      docs.textql.com/llms.txt labels the whole section "## v1 API (deprecated)", and the v1
+      introduction page carries a note reading "v2 API is now available. The v2 API uses standard REST
+      conventions (proper HTTP methods, path parameters, plain JSON) instead of Connect-RPC."
+    still_served: true
+  - version: v2
+    status: current
+    protocol: REST over HTTP, SSE streaming
+    base: https://app.textql.com/v2
+    docs: https://docs.textql.com/api-reference/v2/introduction
+  - version: v3
+    status: sdk-only
+    docs: https://docs.textql.com/_llms/v3-api-sdk.md
+    evidence: >-
+      llms.txt lists a 418-page "v3 API (SDK)" index, and PyPI carries textql-sdk 1.1.10 from the
+      TextQLLabs/textql-python-v3 repo. A v3 REST surface is not documented in the api-reference
+      section and no v3 OpenAPI is published alongside the v1/v2 specs.
+  - version: rpc/public
+    status: current
+    protocol: Connect-RPC, generated from protobuf
+    base: https://app.textql.com/rpc/public
+    note: >-
+      The full 407-operation public RPC surface. info.description states it is generated from protobuf
+      service definitions with internal endpoints excluded via google.api.visibility.
+deprecation:
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  note: >-
+    TextQL DEPRECATES in the documentation — v1 is explicitly labelled deprecated and points at its
+    replacement — but publishes no deprecation POLICY: no sunset date for v1, no stated support
+    window, and no RFC 8594 Sunset or Deprecation response headers in any published spec. No
+    operation in any spec carries `deprecated: true`; the deprecation is stated at the API-generation
+    level in prose only. A client cannot learn from a v1 response that it is calling a deprecated API.
+  deprecated_operations: []
+  deprecated_operations_note: >-
+    Grepped all eight published specs — zero operations flagged with the OpenAPI `deprecated` keyword,
+    including every operation in the six v1 specs that the docs describe as deprecated.
+status_page:
+  url: https://status.textql.com/
+  probed: '2026-08-30'
+  http_status: 200
+  provider_hosted: true
+  components:
+  - name: console.textql.com
+    state: Operational
+    uptime: 99.984%
+  sections: [Status, Maintenance, Previous incidents]
+  history: per-day operational/degraded/downtime timeline with incident notes
+  machine_readable: false
+  machine_readable_note: >-
+    A human status page with incident history. No status.json/api endpoint or RSS/Atom feed was found
+    on the host, so an agent cannot poll it programmatically.
+sla:
+  published: false
+  note: >-
+    An uptime SLA is sold, not published — textql.com/pricing lists "Priority support (1-hour
+    response) & uptime SLA" as an Enterprise-tier entitlement, with no numeric target, credit schedule
+    or SLA document available publicly. Analyst and Team tiers get documentation/community and email
+    support respectively, with no SLA.
+  enterprise_only: true
+changelog:
+  product: https://docs.textql.com/product/changelog
+  self_hosted: https://docs.textql.com/helm-charts/changelog
+  cadence: weekly, dated by week range
+  artifact: changelog/textql-changelog.yml
+support:
+  email: support@textql.com
+  docs: https://docs.textql.com/

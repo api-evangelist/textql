@@ -1,0 +1,76 @@
+generated: '2026-08-30'
+method: searched
+source: >-
+  https://docs.textql.com/api-reference/agents/webhooks/trigger-agent-webhook,
+  openapi/textql-agents-v1-openapi.yml
+asyncapi_published: false
+asyncapi_note: >-
+  No AsyncAPI document is published, and none is fabricated here. TextQL has no outbound event
+  catalog: there is no subscription endpoint, no event-type registry, no signing-secret documentation
+  and no delivery/retry semantics anywhere in the docs or in any of the eight published specs. The
+  provider does not push events to customer endpoints.
+direction: inbound-only
+direction_note: >-
+  TextQL's only webhook surface is INBOUND — an endpoint external systems call to START work inside
+  TextQL, not one TextQL calls to notify a customer. This is the opposite of the usual webhook
+  catalog and is recorded as such rather than being presented as an event surface.
+webhooks:
+- name: Trigger Agent Webhook
+  direction: inbound
+  operationId: textql.rpc.platform.AgentService.TriggerAgentWebhook
+  method: POST
+  path: /v1/agents/webhook/trigger
+  base: https://app.textql.com
+  spec: openapi/textql-agents-v1-openapi.yml
+  description: >-
+    Start an agent run from an external system. The JSON webhook payload is added as context for the
+    agent run.
+  request:
+    trigger_id:
+      field: triggerId
+      format: uuid
+      provisioning: >-
+        Found on the agent edit page in the TextQL UI. Not mintable through the API — an operator
+        creates the agent, then copies its trigger ID into the calling system.
+    payload:
+      field: payload
+      type: arbitrary JSON object
+      max_size: 16
+      max_size_unit: KB
+      max_size_note: >-
+        Measured after JSON serialization. Requests with larger payloads are rejected before the agent
+        run is queued.
+  headers_required:
+  - name: Connect-Protocol-Version
+    required: true
+    note: Connect-RPC protocol header; the endpoint is on the v1 Connect-RPC surface.
+  - name: Connect-Timeout-Ms
+    required: false
+  authentication: bearer / tql_api_key, as with the rest of the platform API
+  responses:
+    '200': TriggerAgentWebhookResponse
+  api_generation: v1
+  api_generation_note: >-
+    This endpoint lives only on the v1 Connect-RPC surface that the docs label deprecated. It has no
+    v2 REST equivalent — there is no agent webhook operation in the 55-operation v2 spec — so an
+    integrator wanting to trigger an agent from an external system must call the deprecated
+    generation. Worth flagging: the deprecation notice and the only inbound integration point are on
+    the same surface.
+outbound_delivery:
+  supported: false
+  note: >-
+    Ana delivers results by pushing into Slack, email and the in-product feed on a schedule
+    (Playbooks) or on a condition (Agents). Those are product integrations with fixed destinations,
+    not customer-registered HTTP webhooks — a developer cannot register a URL to receive a signed
+    event.
+  consequence: >-
+    An integrator cannot be notified when a playbook run completes, when an agent finds something, or
+    when an Ontology change is approved. The only programmatic way to learn an outcome is to poll —
+    v2.getChat, v2.getChatCells, v2.listChanges — which is the gap an AsyncAPI-described event
+    surface would close.
+streaming_alternative:
+  operation: v2.streamChat
+  transport: Server-Sent Events (text/event-stream)
+  note: >-
+    Real-time progress IS available, but only inside a request the caller opened. SSE covers the
+    duration of one analysis; it is not an event bus.

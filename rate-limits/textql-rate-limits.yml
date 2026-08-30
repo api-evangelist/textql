@@ -1,0 +1,91 @@
+generated: '2026-08-30'
+method: searched
+source: >-
+  https://docs.textql.com/core/admin/limits,
+  https://docs.textql.com/api-reference/v2/introduction,
+  https://docs.textql.com/api-reference/agents/webhooks/trigger-agent-webhook,
+  derived from openapi/textql-v2-openapi.yml
+limit_count: 0
+limit_count_note: >-
+  TextQL publishes NO request-rate limit — no requests-per-second, per-minute or per-day figure for
+  any key, account or endpoint appears anywhere in the docs or in any of the eight published specs.
+  The 429 contract is fully specified (see exhaustion below) but the threshold that triggers it is
+  not. What TextQL does publish is a set of RESOURCE and TIMEOUT limits, recorded under
+  organization_limits below — those are real, dated, provider-published numbers, but they cap the size
+  and duration of a single operation, not the rate at which operations may be issued.
+rate_limits: []
+exhaustion:
+  status_code: 429
+  error_code: rate_limit_exceeded
+  envelope: '{"error": {"code": "rate_limit_exceeded", "message": "Rate limit exceeded"}}'
+  declared_on: all 55 v2 operations
+  evidence: >-
+    openapi/textql-v2-openapi.yml declares #/components/responses/RateLimited on every v2 operation,
+    and the v2 introduction's error table lists 429 rate_limit_exceeded.
+response_headers:
+  published: false
+  ratelimit_standard: absent
+  x_ratelimit: absent
+  retry_after: absent
+  evidence: >-
+    Grepped every published spec for RateLimit, X-RateLimit and Retry-After. The RateLimited response
+    declares a JSON body only and no headers; components/headers is empty in the v2 spec. No
+    rate-limit header is documented anywhere in the docs.
+  agent_consequence: >-
+    An agent gets a 429 with no machine-readable signal of how long to wait or how much budget
+    remains. It must apply its own backoff schedule blind, and it cannot pace itself ahead of the
+    limit. Publishing RateLimit-Limit/Remaining/Reset (RFC 9239-style) or a Retry-After on the 429 is
+    the single cheapest runtime improvement available on this API.
+organization_limits:
+  docs: https://docs.textql.com/core/admin/limits
+  scope: per-organization defaults, viewable under Org → Usage & Billing → Limits
+  adjustable: true
+  adjustment_process: contact support@textql.com
+  data_size:
+  - name: Max SQL Row Limit
+    value: 2000000
+    unit: rows
+  - name: Max CSV Row Limit
+    value: 1000000
+    unit: rows
+  - name: Max CSV Columns Limit
+    value: 100
+    unit: columns
+  - name: Max Tableau Row Limit
+    value: 10000
+    unit: rows
+  time:
+  - name: Max Cell Run Time
+    value: 360000
+    unit: milliseconds
+  - name: Max Entry Load Time
+    value: 180000
+    unit: milliseconds
+  - name: Stream Timeout
+    value: 200000
+    unit: milliseconds
+  - name: Max Run SQL Time
+    value: 180000
+    unit: milliseconds
+  preview:
+  - name: Max CSV Preview
+    value: 1000
+    unit: rows
+  - name: Max SQL Preview
+    value: 1000
+    unit: rows
+payload_limits:
+- surface: Agent webhook trigger
+  operation: textql.rpc.platform.AgentService.TriggerAgentWebhook
+  limit: 16
+  unit: KB
+  applies_to: JSON-serialized webhook payload
+  behaviour: Requests with larger payloads are rejected before the agent run is queued.
+  docs: https://docs.textql.com/api-reference/agents/webhooks/trigger-agent-webhook
+quota_model:
+  metered: true
+  unit: ACU
+  note: >-
+    Consumption, not request rate, is the real throttle on this product. Usage is metered in ACUs and
+    billed as overage past the tier's included credits — see plans/textql-plans-pricing.yml. The
+    usage:read OAuth scope exposes consumption programmatically.

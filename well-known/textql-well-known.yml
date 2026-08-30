@@ -1,0 +1,75 @@
+generated: '2026-08-30'
+method: probed
+source: live GET probes of /.well-known/* on every TextQL host named in apis.yml and in the OpenAPI servers[]
+note: >-
+  app.textql.com serves four real, parsing JSON documents: an OAuth 2.1 authorization-server metadata
+  document (RFC 8414), two protected-resource metadata documents (RFC 9728 — one for the resource root
+  and one specifically for the /mcp endpoint), and an OpenID Connect discovery document with a live
+  JWKS. The MCP endpoint's 401 carries a WWW-Authenticate header pointing at its own protected-resource
+  document, which is the RFC 9728 discovery flow working end to end. docs.textql.com serves an A2A agent
+  card (recorded in a2a/). No security.txt, api-catalog or ai-plugin.json is served on any host; the
+  404s on textql.com and app.textql.com return the SPA HTML shell, which is a miss, not a document.
+hosts:
+- host: app.textql.com
+  documents:
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: textql-oauth-authorization-server.json
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    file: textql-oauth-protected-resource.json
+  - path: /.well-known/oauth-protected-resource/mcp
+    status: 200
+    file: textql-oauth-protected-resource-mcp.json
+  - path: /.well-known/openid-configuration
+    status: 200
+    file: textql-openid-configuration.json
+  - path: /.well-known/jwks.json
+    status: 200
+    file: textql-jwks.json
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+- host: docs.textql.com
+  documents:
+  - path: /.well-known/agent-card.json
+    status: 200
+    file: ../a2a/textql-agent-card.json
+  - path: /.well-known/agent-skills/textql/skill.md
+    status: 200
+    file: ../skills/textql-textql-skill.md
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+- host: textql.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404

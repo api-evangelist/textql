@@ -1,0 +1,110 @@
+generated: '2026-08-30'
+method: searched
+source: https://docs.textql.com/product/changelog
+secondary_source: https://docs.textql.com/helm-charts/changelog
+scheme: dated-weekly
+scheme_note: >-
+  The product changelog is published as dated week ranges rather than version numbers — there is no
+  product version string. The self-hosted Helm chart is separately versioned with semver and carries
+  its own changelog.
+cadence: weekly
+current_entry: 'August 24-30, 2026'
+entries_published: 18
+window_covered: 'April 20, 2026 through August 30, 2026 (as fetched)'
+machine_readable: false
+machine_readable_note: >-
+  Rendered as MDX <Update> blocks on the docs site and available as markdown at
+  /product/changelog.md. No JSON/Atom/RSS feed, so an agent must parse the page.
+entries:
+- label: 'August 24-30, 2026'
+  date: '2026-08-30'
+  breaking: false
+  highlights:
+  - title: Design systems for data apps
+    status: beta
+    detail: A design system defines a data app's fonts, colors and card styling; Ana can create one on request, and a published app is served in the design system it uses.
+  - title: Organization-wide notification overrides
+    detail: Org admins set notification behavior for the whole organization one rule at a time; members see overridden rows as read-only, and removing an override hands control back without having modified member preferences.
+  - title: Subagents
+    status: beta
+    detail: Ana can hand a focused sub-task to a subagent with its own thread, context window and sandbox, returning only its conclusion. Off by default, enabled per organization under Settings → Capabilities.
+  api_changes:
+  - title: Typed model fields in the public API
+    breaking: true
+    detail: >-
+      Model settings in the public API now use named model values instead of numeric identifiers. An
+      organization's default model, its enabled and restricted model lists, and a role's allowed
+      models all accept and return the names shown in the model picker, and a request naming a model
+      that does not exist is rejected instead of being stored. A new endpoint updates an
+      organization's model settings directly, lists can be cleared through the API rather than only
+      from Settings, and a change leaving the organization with no usable model is refused.
+    note: >-
+      The only entry in the recent window that changes an existing API contract's accepted values.
+      Flagged breaking here on the substitution of names for numeric identifiers; TextQL does not
+      label it as such, and publishes no breaking-change policy — see lifecycle/textql-lifecycle.yml.
+    docs: https://docs.textql.com/core/admin/models
+  - title: Automatic deletion of inactive data apps
+    detail: Retention-window deletion for inactive data apps.
+- label: 'August 17-23, 2026'
+  date: '2026-08-23'
+  breaking: false
+  highlights:
+  - title: Usage and billing as a connector
+    detail: An organization's own usage and billing data is queryable through Ana as a connector.
+  - title: Share data app and dashboard folders
+  - title: Connector credentials from AWS Secrets Manager
+    detail: Connector credentials can be sourced from AWS Secrets Manager rather than stored in TextQL.
+- label: 'August 10-16, 2026'
+  date: '2026-08-16'
+  breaking: false
+  highlights:
+  - title: Embed dashboards in other applications
+    detail: Publish a dashboard into another application with a revocable embed link, from the dashboard's share menu or through the public API.
+    docs: https://docs.textql.com/core/guides/embedding-dashboards
+  - title: Run analyses from the command line
+    detail: >-
+      Launch of the `ana` CLI — loads a connector query into a remote Python session and runs Python
+      or shell against it. Sign-in is a browser approval rather than a copied API key, and `ana init`
+      writes usage instructions into a repository so coding tools can drive it. The same operations
+      are open to any API client through the Sandbox Exec Service.
+    docs: https://docs.textql.com/core/admin/cli
+    artifact: cli/textql-cli.yml
+  - title: Automatic deletion of inactive threads
+    detail: Admins set a retention window after which inactive threads are deleted. Off by default; the window is validated to stay within the sandbox retention period.
+  - title: Per-member OAuth for BigQuery
+    detail: BigQuery connectors can sign each member in with their own OAuth identity, so queries run under the individual's Google credentials rather than a shared one.
+  - title: Member-level Ontology permissions
+recent_labels:
+- 'August 24-30, 2026'
+- 'August 17-23, 2026'
+- 'August 10-16, 2026'
+- 'August 3-9, 2026'
+- 'Jul 27 - Aug 2, 2026'
+- 'July 20-26, 2026'
+- 'July 13-19, 2026'
+- 'July 6-12, 2026'
+- 'Jun 29 - Jul 5, 2026'
+- 'June 22-28, 2026'
+- 'June 15-21, 2026'
+- 'June 8-14, 2026'
+- 'June 1-7, 2026'
+- 'May 25-31, 2026'
+- 'May 11-17, 2026'
+- 'May 4-10, 2026'
+- 'Apr 27 - May 3, 2026'
+- 'April 20-26, 2026'
+self_hosted_changelog:
+  url: https://docs.textql.com/helm-charts/changelog
+  scheme: semver
+  current_version: 1.3.15
+  recent_versions: ['1.3.15', '1.3.14', '1.3.13', '1.3.12', '1.3.11', '1.3.10', '1.3.9', '1.3.8']
+  install_docs: https://docs.textql.com/helm-charts/installation
+observations:
+- >-
+  Weekly cadence held unbroken across the fetched window except for the week of May 18-24, 2026,
+  which has no entry.
+- >-
+  API-affecting changes are folded into a "More improvements" list inside the weekly product entry
+  rather than published as a separate API changelog. There is no per-version API change log, no
+  breaking-change label, and no migration guide surface — a consumer of the v2 API has to read the
+  product changelog to find out that a field's accepted values changed.

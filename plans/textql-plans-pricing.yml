@@ -1,0 +1,95 @@
+generated: '2026-08-30'
+method: searched
+source: https://textql.com/pricing
+probed: '2026-08-30'
+http_status: 200
+plan_count: 3
+currency: USD
+billing_period: month
+model: seat-and-consumption
+model_note: >-
+  A base subscription plus metered compute. Usage is denominated in ACUs (Analyst Compute Units); each
+  tier includes a credit allowance and bills overage per 1,000 ACUs beyond it. Every tier's price is
+  quoted as "+ compute", so the base price is a floor, not the bill.
+plans:
+- name: Analyst
+  positioning: For prototyping — analysts and ICs connecting databases and exploring ad hoc analysis
+  price: 0
+  price_display: $0 + compute / month
+  currency: USD
+  period: month
+  included_credits_usd: 100
+  included_quota: 50000
+  included_quota_unit: ACU
+  overage: 2.00
+  overage_unit: per 1,000 ACU
+  seats: 3
+  compute: Shared compute
+  deployment: Multi-tenant SaaS
+  identity: Not included
+  compliance: SOC 2 Type II
+  support: Documentation & community
+  features:
+  - $100/month in free credits
+  - Unlimited connectors
+  - All integrations (Slack, dbt, Tableau, Teams, etc.)
+  - Unlimited semantic layer queries
+  - Ontology builder
+  - Conversation memory
+  - Secrets manager
+- name: Team
+  positioning: Most popular — companies with large-scale data initiatives and team collaboration needs
+  price: 250
+  price_display: $250 + compute / month
+  currency: USD
+  period: month
+  included_credits_usd: 250
+  included_quota: 83333
+  included_quota_unit: ACU
+  included_rate: $0.003/ACU
+  overage: 3.00
+  overage_unit: per 1,000 ACU
+  seats: unlimited
+  compute: Shared compute
+  deployment: Multi-tenant SaaS
+  identity: Not included
+  compliance: SOC 2 Type II
+  support: Email support
+  features:
+  - Everything in Analyst
+  - Team collaboration
+- name: Enterprise
+  positioning: Organizations with compliance requirements and mission-critical workloads
+  price: null
+  price_display: Custom + compute / month
+  currency: USD
+  period: month
+  included_quota: custom
+  overage: custom
+  seats: unlimited
+  compute: Dedicated instances
+  deployment: Single-tenant, VPC & BYOC, on-premises, private link, embed & white-label
+  identity: Single sign-on (SAML / OIDC), SCIM provisioning & directory sync
+  compliance: SOC 2 Type II plus HIPAA with signed BAA, SOX, audit & policy support
+  support: Priority support (1-hour response) with uptime SLA, dedicated account manager, migration assistance
+  contact_sales: true
+  features:
+  - Everything in Team
+  - Dedicated & single-tenant infrastructure
+  - VPC, on-prem & BYOC deployments
+  - Private link
+  - Domain-specific ontology modules for finance, healthcare revenue cycle and insurance
+  - Custom model fine-tuning
+observations:
+- >-
+  The developer-relevant capabilities are tier-gated at the top: SSO, SCIM 2.0 provisioning, private
+  link, embed and white-label, and the uptime SLA are Enterprise-only. The API itself is not gated —
+  the free Analyst tier can mint API keys and call the platform, paying only for the compute it uses.
+- >-
+  Overage gets MORE expensive on the paid tier ($3.00 per 1,000 ACU on Team vs $2.00 on Analyst)
+  while the included rate is cheaper ($0.003/ACU). The Team tier buys committed volume, not a cheaper
+  marginal rate.
+- >-
+  Pricing is published as HTML only. There is no machine-readable pricing or product-catalog
+  endpoint, so plan and rate data cannot be read programmatically.
+machine_readable_pricing: false

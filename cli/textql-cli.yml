@@ -1,0 +1,133 @@
+generated: '2026-08-30'
+method: searched
+source: >-
+  https://docs.textql.com/core/admin/cli,
+  https://docs.textql.com/product/changelog (entry "Run analyses from the command line", week of
+  August 10-16, 2026)
+name: ana
+description: >-
+  TextQL's first-party command-line tool. Queries a connector into a remote Python session and runs
+  Python or shell in that session, so an analysis can be driven from a terminal — or by a coding agent
+  — instead of the browser. Shipped August 2026.
+official: true
+agent_native: true
+agent_native_note: >-
+  This CLI is designed to be driven by a coding agent, not just a human. The docs carry an explicit
+  "Instructions for coding agents" section written in the second person for the agent to follow;
+  `ana init` writes an Agent Skill into a repository and points AGENTS.md/CLAUDE.md at it, so a
+  teammate cloning the repo inherits an agent that can install and drive the tool; `ana init --global`
+  does the same per machine and the installer runs it automatically. Every command prints one JSON
+  document on stdout, and the docs tell agents to branch on its fields rather than on exit codes.
+install:
+- name: TextQL cloud
+  method: install script
+  command: curl -fsSL https://cli.textql.com/cli/install.sh | sh
+  host: cli.textql.com
+  note: >-
+    Static host carrying only the builds TextQL's cloud runs. The installer detects platform, verifies
+    the download against a checksum, installs to /usr/local/bin falling back to ~/.local/bin,
+    installs a man page, and runs `ana init --global`. TEXTQL_INSTALL_DIR overrides the location.
+- name: Self-hosted / VPC / on-prem / staging
+  method: authenticated download from the app
+  location: Settings → Desktop & CLI (named Settings → CLI on white-labeled deployments)
+  note: >-
+    Download routes require authentication — a browser session or bearer token — on EVERY deployment
+    including TextQL's cloud, so a piped `curl | sh` against a customer deployment returns 401 by
+    design and cannot be switched off. Downloads are rate limited per client address and support
+    resumable range requests.
+platforms:
+- macOS (Apple Silicon)
+- macOS (Intel)
+- Linux (x86_64)
+- Linux (arm64)
+platforms_missing: [Windows]
+authentication:
+  style: OAuth browser approval
+  command: ana auth login
+  api_key_required: false
+  device_flow: >-
+    Prints a verification URL and a user code on stderr for approval in a browser, so it works over
+    SSH where no browser can be opened.
+  default_scopes: [api:read, api:write, mcp:tools]
+  scope_narrowing: --scopes "<scope> ..."
+  scope_widening: ana auth upgrade
+  raw_sql_exception: >-
+    connector:raw_sql is deliberately excluded from every default grant and must be named explicitly,
+    e.g. ana auth upgrade --scopes "connector:write connector:raw_sql".
+  cross_reference: scopes/textql-scopes.yml
+commands:
+- group: auth
+  commands:
+  - name: ana auth login
+    description: Open the browser approval page and obtain an OAuth grant. --url <deployment url> off cloud.
+  - name: ana auth status
+    description: Show who you are signed in as and what the grant allows.
+  - name: ana auth upgrade
+    description: Widen an older or narrowed grant. Requests the standard scope set by default.
+- group: info
+  commands:
+  - name: ana info
+    description: >-
+      One call reporting identity, permissions, which execution tools the organization has enabled,
+      and which sandboxes are running.
+  - name: ana doctor
+    description: >-
+      Diffs the OAuth grant's scopes against the caller's role permissions and prints a
+      copy-pasteable request for an org admin describing exactly what to grant.
+  - name: ana update --check
+    description: Check whether ana is installed and current. The documented probe for "is it already there".
+- group: connector
+  commands:
+  - name: ana connector db list
+    description: List database connectors available to the caller.
+  - name: ana connector db query <id> --sql '<sql>' --as <name>
+    description: Run a query against a connector and land the result as a named dataframe in a remote Python session.
+- group: exec
+  commands:
+  - name: ana exec python '<code>'
+    description: Execute Python in the remote session against the loaded dataframes.
+  - name: ana exec
+    description: Run shell commands in the session (the docs describe Python or shell).
+- group: init
+  commands:
+  - name: ana init
+    description: >-
+      Write the agent skill into the repository and point AGENTS.md (and CLAUDE.md, when it does not
+      already defer to AGENTS.md) at it. Idempotent — reports what changed, never duplicates its
+      stanzas, and refuses to overwrite a hand-edited skill file without --force.
+  - name: ana init --global
+    description: >-
+      Write the skill to ~/.claude/skills/ana/SKILL.md and the pointer stanza to ~/.claude/CLAUDE.md,
+      so every session on the machine knows ana in any directory.
+key_flows:
+- name: First analysis
+  steps:
+  - ana connector db list
+  - ana connector db query 7 --sql 'select * from orders limit 1000' --as orders
+  - ana exec python 'print(orders.describe())'
+output:
+  format: json
+  note: Every command prints one JSON document on stdout. The docs instruct agents to branch on its fields, not on exit codes alone.
+exit_codes:
+- code: 3
+  meaning: >-
+    Two distinct denials share this code, told apart by the message — `insufficient_scope` (the OAuth
+    grant lacks a scope; self-service via ana auth upgrade) or `insufficient permissions: your role
+    lacks <permission>` (the org ROLE lacks it; only an admin can grant it, and ana auth upgrade will
+    not fix it). The sandbox permission is the common case and only the admin role holds it by default.
+- code: 4
+  meaning: The organization has that execution tool disabled. Run ana info to see which are available.
+api_equivalent:
+  note: >-
+    "The same operations are open to any API client through the Sandbox Exec Service, gated on the
+    sandbox read and write permissions." The CLI is a client of the published platform API, not a
+    private surface.
+  operations: [v2.startSandbox, v2.loadConnectorData, v2.executeCode, v2.exec, v2.getSandboxStatus, v2.stopSandbox]
+  scopes: [sandbox:read, sandbox:write]
+binary_distribution:
+  registry: none
+  note: >-
+    The binary is not published to npm, Homebrew, PyPI or any package registry — it is served from
+    cli.textql.com for cloud and from the authenticated deployment otherwise, so there is no registry
+    version or release date to read. Recorded in packages/ as absent rather than as an unversioned
+    entry.

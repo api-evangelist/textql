@@ -1,0 +1,195 @@
+generated: '2026-08-30'
+method: probed
+source: >-
+  Live probes of https://app.textql.com/.well-known/* and https://app.textql.com/mcp, plus
+  https://textql.com/security, https://textql.com/pricing and the published OpenAPIs in openapi/
+note: >-
+  Every `conforms: true` below is backed by either a document this run fetched or a location in a
+  published spec. Standards with no evidence are recorded conforms: false rather than omitted, so the
+  absence is countable.
+standards:
+- id: oauth2
+  name: OAuth 2.1 authorization code with PKCE
+  conforms: true
+  evidence:
+    url: https://app.textql.com/.well-known/oauth-authorization-server
+    http_status: 200
+    detail: >-
+      RFC 8414 authorization-server metadata served and parsing. Declares authorization_endpoint,
+      token_endpoint, revocation_endpoint, registration_endpoint, response_types_supported [code],
+      grant_types_supported [authorization_code, refresh_token], code_challenge_methods_supported
+      [S256] and 34 scopes. Authorization-code-with-PKCE only — no implicit or password grant.
+- id: rfc8414
+  name: OAuth 2.0 Authorization Server Metadata
+  conforms: true
+  evidence:
+    url: https://app.textql.com/.well-known/oauth-authorization-server
+    http_status: 200
+- id: rfc9728
+  name: OAuth 2.0 Protected Resource Metadata
+  conforms: true
+  evidence:
+    url: https://app.textql.com/.well-known/oauth-protected-resource/mcp
+    http_status: 200
+    detail: >-
+      Served for both the resource root and the /mcp resource specifically, and correctly ADVERTISED:
+      an unauthenticated POST to https://app.textql.com/mcp returns 401 with
+      WWW-Authenticate: Bearer resource_metadata="https://app.textql.com/.well-known/oauth-protected-resource/mcp".
+      The full discovery loop works end to end without credentials, which is what the RFC is for and
+      what most MCP servers in the catalog do not do.
+- id: rfc7591
+  name: OAuth 2.0 Dynamic Client Registration
+  conforms: true
+  evidence:
+    url: https://app.textql.com/.well-known/oauth-authorization-server
+    http_status: 200
+    detail: registration_endpoint https://app.textql.com/oauth/register is advertised.
+- id: oidc
+  name: OpenID Connect Discovery 1.0
+  conforms: true
+  evidence:
+    url: https://app.textql.com/.well-known/openid-configuration
+    http_status: 200
+    detail: >-
+      Full discovery document with issuer, jwks_uri (https://app.textql.com/.well-known/jwks.json,
+      probed 200), id_token_signing_alg_values_supported [EdDSA], and 13 claims_supported. TextQL is
+      both an OIDC provider here and an OIDC/SAML relying party for customer SSO.
+- id: mcp
+  name: Model Context Protocol
+  conforms: true
+  evidence:
+    url: https://app.textql.com/mcp
+    http_status: 401
+    detail: >-
+      Hosted remote MCP server over Streamable HTTP with OAuth. Live tools/list is auth-gated; the
+      published tool groups (analysis, catalog, sandcastle, ontology), the ?toolsets= scoping
+      parameter, the X-MCP-Toolsets header and dynamic mode with tool-list updates are documented at
+      https://docs.textql.com/core/how-it-works/mcp/tool-groups. See mcp/textql-mcp.yml.
+- id: a2a
+  name: Agent2Agent (A2A) Agent Card
+  conforms: true
+  evidence:
+    url: https://docs.textql.com/.well-known/agent-card.json
+    http_status: 200
+    detail: >-
+      Conformant against A2A 1.0.0 hard checks (capabilities object, protocolVersion present, skills
+      array), though it declares protocolVersion 0.3 and scopes itself to the documentation site
+      rather than the platform. See a2a/textql-a2a.yml.
+- id: scim
+  name: SCIM 2.0 provisioning
+  conforms: partial
+  evidence:
+    url: https://textql.com/pricing
+    http_status: 200
+    detail: >-
+      SCIM 2.0 is a shipped, Enterprise-tier product capability — textql.com/security states "SCIM 2.0
+      for lifecycle" alongside SAML 2.0 and OIDC with JIT provisioning and domain claim enforcement,
+      and the pricing comparison lists "SCIM provisioning & directory sync" as an Enterprise
+      entitlement. The PUBLIC contract carries the credential-management half of it: openapi/
+      textql-platform-api-openapi.yml declares a ScimService with six operations at
+      /textql.rpc.public.scim.ScimService/{CreateScimToken, CreateScimOAuthClient, ListScimTokens,
+      ListScimOAuthClients, RevokeScimToken, RevokeScimOAuthClient}.
+  gap: >-
+    Marked partial deliberately. The SCIM 2.0 RESOURCE surface is not in any published contract — no
+    /Users or /Groups endpoints, no /ServiceProviderConfig, and no urn:ietf:params:scim:schemas:*
+    URN appears anywhere in the 1.6MB master spec (grepped, zero hits). What is published provisions
+    the tokens and OAuth clients an IdP would authenticate with; the endpoints that IdP then calls are
+    not documented publicly. An integrator can see that SCIM exists but cannot read its contract.
+- id: rfc9457
+  name: 'RFC 9457 Problem Details for HTTP APIs'
+  conforms: false
+  evidence:
+    detail: >-
+      No application/problem+json response in any of the eight published specs. TextQL uses a bespoke
+      {"error": {"code", "message"}} envelope with a closed 11-value code enum — well-specified and
+      machine-branchable, but not the standard. See errors/textql-problem-types.yml.
+- id: rfc8594
+  name: 'RFC 8594 Sunset / Deprecation headers'
+  conforms: false
+  evidence:
+    detail: >-
+      v1 is documented as deprecated but no Sunset or Deprecation response header is declared, no
+      operation carries OpenAPI `deprecated: true`, and no sunset date is published. See
+      lifecycle/textql-lifecycle.yml.
+- id: idempotency
+  name: Idempotency keys
+  conforms: false
+  evidence:
+    detail: >-
+      No Idempotency-Key header or equivalent anywhere in the specs or docs. See
+      conventions/textql-conventions.yml.
+- id: pagination
+  name: Consistent pagination
+  conforms: partial
+  evidence:
+    detail: >-
+      Three idioms coexist — cursor/limit on newer v2 collections, limit/offset on older ones, and
+      page_size/page_token on the Connect-RPC surface. Each is individually well-formed; they are not
+      consistent with one another.
+- id: openapi
+  name: OpenAPI 3.1.0
+  conforms: true
+  evidence:
+    url: https://docs.textql.com/llms.txt
+    http_status: 200
+    detail: >-
+      Eight OpenAPI 3.1.0 documents published and indexed under an "OpenAPI Specs" heading in
+      llms.txt, all fetched 200 and parsing: a 407-operation master with code samples, a 55-operation
+      v2 spec, and six per-service v1 specs.
+- id: sse
+  name: Server-Sent Events streaming
+  conforms: true
+  evidence:
+    detail: >-
+      v2.streamChat serves text/event-stream; documented at
+      https://docs.textql.com/api-reference/v2/introduction.
+- id: connect-rpc
+  name: Connect-RPC
+  conforms: true
+  evidence:
+    detail: >-
+      The v1 and rpc/public surfaces are Connect-RPC generated from protobuf, requiring a
+      Connect-Protocol-Version header and supporting Connect-Timeout-Ms. Declared in the six v1 specs.
+- id: llmstxt
+  name: llms.txt
+  conforms: true
+  evidence:
+    url: https://docs.textql.com/llms.txt
+    http_status: 200
+    detail: >-
+      Served as text/plain, 28KB, indexing 148 documentation pages plus a 418-page v3 SDK index, every
+      API-reference operation as an individual .md URL, and an explicit "OpenAPI Specs" section
+      linking all eight machine-readable contracts. This is the file that made contract discovery
+      work on this provider.
+- id: saml2
+  name: SAML 2.0 single sign-on
+  conforms: true
+  evidence:
+    url: https://textql.com/security
+    http_status: 200
+    detail: >-
+      "SAML 2.0 and OIDC against any compliant provider, IdP-initiated and SP-initiated. JIT
+      provisioning on first login." Enterprise tier.
+domain_standards:
+  market: enterprise analytics / business intelligence
+  note: >-
+    Enterprise BI and analytics has no single machine-readable interchange standard of the kind SCIM,
+    FHIR, OpenRTB or ISO 20022 provide in their markets, so there is no domain contract for TextQL to
+    declare and none is invented here. The nearest thing to a domain signature on this platform is
+    SCIM 2.0 for workforce identity, recorded above — and the standards TextQL consumes on the
+    connector side (Snowflake row access policies, Unity Catalog column masks, BigQuery policy tags)
+    are the warehouse vendors' interfaces, not a published standard TextQL conforms to. Reward-only
+    dimension: recorded as not applicable rather than failed.
+  declared: null
+compliance_programs:
+  source: https://textql.com/security
+  probed: '2026-08-30'
+  http_status: 200
+  certifications:
+  - name: SOC 2 Type II
+    status: audited annually, report on request
+  - name: HIPAA
+    status: BAAs signed; PHI never leaves the customer's cloud
+  - name: GDPR
+    status: DPA available, EU data residency
+  cross_reference: security/textql-trust-center.yml

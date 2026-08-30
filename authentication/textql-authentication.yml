@@ -1,0 +1,125 @@
+generated: '2026-08-30'
+method: searched
+source: >-
+  openapi/textql-platform-api-openapi.yml, openapi/textql-v2-openapi.yml (derived baseline), upgraded
+  from https://docs.textql.com/core/admin/api-keys, https://docs.textql.com/core/guides/embedding-ana,
+  https://docs.textql.com/core/admin/cli and https://app.textql.com/.well-known/oauth-authorization-server
+docs: https://docs.textql.com/core/admin/api-keys
+note: >-
+  The spec-derived baseline found two schemes. It missed the third and most capable one entirely:
+  TextQL runs a full OAuth 2.1 authorization server, probed live at the discovery endpoint, which no
+  published OpenAPI declares. Three different authentication styles are in production across four
+  surfaces, and a client has to know which surface it is calling to pick one.
+summary:
+  types: [apiKey, http, oauth2, openIdConnect]
+  api_key_in: [header, query]
+  surfaces: 4
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  header: 'Authorization: Bearer <key>'
+  accepts: [platform API key, JWT]
+  surface: TextQL v2 API
+  base: https://app.textql.com/v2
+  sources: [openapi/textql-v2-openapi.yml]
+  method: derived
+- name: apiKey
+  type: apiKey
+  in: header
+  parameter: tql_api_key
+  surface: TextQL Public RPC API
+  base: https://app.textql.com/rpc/public
+  sources: [openapi/textql-platform-api-openapi.yml]
+  method: derived
+- name: authKey
+  type: apiKey
+  in: query
+  parameter: authKey
+  surface: Embedded Ana iframe
+  url_pattern: https://app.textql.com/embed?authKey=<API_KEY>
+  sources: [https://docs.textql.com/core/guides/embedding-ana]
+  method: searched
+  warning: >-
+    A credential in a URL query string. TextQL's own docs say "never expose a long-lived API key in
+    frontend code" and direct production integrations to mint a short-lived, role-scoped service
+    account key server-side per session.
+- name: oauth2
+  type: oauth2
+  flow: authorization_code
+  pkce: S256
+  surface: MCP server and the ana CLI
+  authorization_server: https://app.textql.com
+  metadata: https://app.textql.com/.well-known/oauth-authorization-server
+  sources: [https://app.textql.com/.well-known/oauth-authorization-server]
+  method: probed
+  declared_in_openapi: false
+  declared_in_openapi_note: >-
+    Not declared as a securityScheme in ANY published spec, despite governing the MCP endpoint and the
+    CLI. A client reading only the OpenAPI would not know OAuth exists on this platform.
+- name: openIdConnect
+  type: openIdConnect
+  discovery: https://app.textql.com/.well-known/openid-configuration
+  jwks: https://app.textql.com/.well-known/jwks.json
+  id_token_alg: EdDSA
+  method: probed
+oauth:
+  authorization_endpoint: https://app.textql.com/oauth/authorize
+  token_endpoint: https://app.textql.com/oauth/token
+  revocation_endpoint: https://app.textql.com/oauth/revoke
+  registration_endpoint: https://app.textql.com/oauth/register
+  grant_types: [authorization_code, refresh_token]
+  response_types: [code]
+  code_challenge_methods: [S256]
+  token_endpoint_auth_methods: [client_secret_post]
+  dynamic_client_registration: true
+  scope_count: 34
+  scopes: scopes/textql-scopes.yml
+  implicit_grant: false
+  password_grant: false
+  posture_note: >-
+    Authorization-code-with-PKCE only, plus dynamic client registration and a revocation endpoint.
+    No implicit or resource-owner-password grant is offered. This is a current, correct OAuth 2.1
+    posture rather than a legacy OAuth 2.0 one.
+api_keys:
+  issuance_ui: Settings → Developers → API Keys
+  issuance_api: v2.createApiKey (POST /v2/api-keys)
+  admin_required_for_ui_creation: true
+  shown_once: true
+  types:
+  - name: Personal
+    acts_as: the creating member
+    permission_required: none
+  - name: Service Account
+    acts_as: a dedicated non-human member
+    permission_required: 'organization:write'
+    recommended_for: production embeds and automations
+  expiry: supported (e.g. 3600 seconds)
+  rotation: v2.rotateApiKey — revoke and mint a replacement with the same scope in one call
+  revocation: v2.revokeApiKey
+  metadata: clientId, read per request by TQL row-level security for multi-tenant embedding
+  authorization_model:
+    owner_vs_roles: >-
+      Every key has an OWNER (the member it authenticates as, deciding personal shares, connector
+      grants, creator bypass and audit attribution) and ASSUMED ROLES (deciding permissions). Roles
+      cannot substitute for ownership — a key with the admin role but the wrong owner is still denied
+      a Data App shared with a specific colleague.
+    role_snapshot: >-
+      Assumed roles are a snapshot taken at key creation and NEVER update. The snapshot is intersected
+      with the owner's live roles on every request, so a key can lose access when a role is removed
+      but never gain access when one is added. Legacy keys showing "All roles" predate snapshots and
+      do track role changes.
+    resolution: per request, not at login
+customer_sso:
+  note: TextQL is also a relying party for customer identity, sold at the Enterprise tier.
+  protocols: [SAML 2.0, OIDC]
+  initiation: [IdP-initiated, SP-initiated]
+  provisioning: JIT on first login, SCIM 2.0 for lifecycle, directory sync
+  controls: [domain claim enforcement, MFA enforced at the customer IdP]
+  source: https://textql.com/security
+cross_references:
+  scopes: scopes/textql-scopes.yml
+  conventions: conventions/textql-conventions.yml
+  cli: cli/textql-cli.yml
+  mcp: mcp/textql-mcp.yml
+  well_known: well-known/textql-well-known.yml

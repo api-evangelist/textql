@@ -1,0 +1,245 @@
+generated: '2026-08-30'
+method: derived
+source: >-
+  openapi/textql-v2-openapi.yml — components/schemas $ref links and id-reference fields (63 schemas,
+  55 operations); entity descriptions enriched from https://docs.textql.com/core/how-it-works and
+  the provider-published Agent Skill at skills/textql-textql-skill.md
+api: TextQL v2 API
+schema_count: 63
+note: >-
+  Relationships below are read from declared id-reference fields and $ref links in the published
+  spec. Where a relationship is stated in the docs but not expressed in the schema it is marked
+  source: docs so the two are not confused. TextQL publishes no id-prefix scheme — identifiers are
+  plain integers or UUIDs with no type prefix, so an id is not self-describing.
+id_conventions:
+  prefixed: false
+  note: >-
+    No Stripe-style typed prefixes. Connector ids are integers (the docs' own example is
+    connector_ids: [1] and `ana connector db query 7`); chats, changes and sandcastles use opaque
+    string ids. An agent holding a bare id cannot tell what kind of object it points at.
+entities:
+- name: Chat
+  aka: [Thread]
+  schemas: [ChatSummary, ChatResponse, ChatRequest, GetChatCellsResponse]
+  description: >-
+    A conversational session with Ana. The unit of work for every analysis — asking a question,
+    building a dashboard and running a playbook all produce or attach to a chat.
+  key: id
+  relationships:
+  - type: has_many
+    target: ChatCell
+    via: chat_id
+    note: Per-step execution detail — the generated SQL and Python, outputs and assets for each step.
+  - type: has_many
+    target: ChatMessage
+    via: cell_id
+  - type: has_many
+    target: Asset
+    via: cell_id / message_cell_id
+  - type: references
+    target: Connector
+    via: connector_ids
+    note: A chat is scoped to one or more connectors at creation.
+  operations: [v2.listChats, v2.createChat, v2.streamChat, v2.getChat, v2.cancelStream]
+- name: ChatCell
+  description: One step of an analysis inside a chat — a SQL query, a Python execution, a tool call — with its output.
+  key: id
+  relationships:
+  - type: belongs_to
+    target: Chat
+    via: chat_id
+  - type: references
+    target: Connector
+    via: connector_id
+  operations: [v2.getChatCells, v2.getChatCell]
+- name: Asset
+  description: A chart, report, CSV, PDF or file produced by a step. What MCP clients receive as resource links.
+  relationships:
+  - type: belongs_to
+    target: ChatCell
+    via: cell_id
+  - type: belongs_to
+    target: ChatMessage
+    via: message_cell_id
+- name: Connector
+  description: >-
+    A live connection to a data source — warehouse, database, BI tool or SaaS API. The docs list 50+
+    source types across warehouses (Snowflake, BigQuery, Redshift, Databricks), BI (Tableau, Power BI)
+    and API connectors (Salesforce, HubSpot, Jira, Linear, Notion, Ramp, AWS, and more).
+  key: id
+  key_type: integer
+  relationships:
+  - type: has_one
+    target: ConnectorAccessGrant
+    via: connector access endpoints
+  - type: has_many
+    target: Playbook
+    via: connector_ids
+    inverse: true
+  operations: [v2.listConnectors, v2.createConnector, v2.listConnectorTypes, v2.testConnector, v2.updateConnector, v2.deleteConnector, v2.getConnectorAccess, v2.updateConnectorAccess]
+- name: ConnectorAccessGrant
+  description: A connector's visibility and access grants, resolved per request.
+  relationships:
+  - type: belongs_to
+    target: Connector
+  - type: references
+    target: Member
+    via: member_id
+  - type: references
+    target: Role
+    via: role_id
+  - type: references
+    target: Group
+    via: group_id
+    note: group_id is declared on the grant but no Group entity or group operation appears in the v2 spec.
+- name: Playbook
+  description: A saved analysis instruction that runs on a schedule and delivers to email, Slack or the feed.
+  key: id
+  relationships:
+  - type: references
+    target: Connector
+    via: connector_ids
+  - type: references
+    target: Dataset
+    via: dataset_ids
+  - type: has_many
+    target: Report
+    via: playbook run
+  - type: produces
+    target: Chat
+    via: chat_id
+    note: RunPlaybookResponse returns a chat_id — a playbook run materializes as a chat.
+  delivery_fields: [slack_channel_id, tagged_slack_user_ids]
+  operations: [v2.listPlaybooks, v2.createPlaybook, v2.getPlaybook, v2.updatePlaybook, v2.runPlaybook, v2.deployPlaybook, v2.deletePlaybook]
+- name: Report
+  description: The output of a playbook run.
+  key: id
+  relationships:
+  - type: belongs_to
+    target: Chat
+    via: chat_id
+  - type: belongs_to
+    target: Playbook
+- name: Sandcastle
+  aka: [Sandbox]
+  schemas: [SandboxSummary, SandboxExecution]
+  description: >-
+    A managed, gVisor-isolated Python session. Holds dataframes loaded from connectors, runs Python
+    and shell, mounts the Ontology, and is destroyed when the session ends.
+  key: sandbox_id
+  relationships:
+  - type: belongs_to
+    target: Member
+    via: member_id
+  - type: references
+    target: Chat
+    via: chat_id
+  - type: has_many
+    target: SandboxExecution
+    via: sandbox executions endpoint
+    note: Recorded executions of Python, bash, SQL and TQL.
+  - type: has_many
+    target: File
+    via: sandcastle files endpoints
+  operations: [v2.listSandboxes, v2.startSandbox, v2.getSandboxStatus, v2.stopSandbox, v2.executeCode, v2.exec, v2.loadConnectorData, v2.uploadFile, v2.listFiles, v2.downloadFile, v2.deleteFile, v2.listSandboxExecutions]
+- name: Change
+  description: >-
+    A proposed Ontology change — the reviewable patch produced when a sandcastle writes back to the
+    org's Ontology. States: open, denied, merged.
+  key: id
+  relationships:
+  - type: belongs_to
+    target: Member
+    via: author_id
+  - type: references
+    target: Chat
+    via: chat_id
+  - type: derived_from
+    target: Sandcastle
+    via: v2.createOntologyChange
+  state_machine:
+    states: [open, denied, merged]
+    transitions:
+    - from: sandcastle edits
+      to: open
+      operation: v2.createOntologyChange
+    - from: open
+      to: merged
+      operation: v2.approveChange
+      condition: once the folder's approval rule is satisfied
+    - from: open
+      to: denied
+      operation: v2.denyChange
+    - from: denied
+      to: open
+      operation: v2.restoreChange
+  concurrency: ExpectedGitRefBody on approve/deny/restore — optimistic concurrency against the Ontology's git ref
+  operations: [v2.listChanges, v2.getChange, v2.approveChange, v2.denyChange, v2.restoreChange, v2.createOntologyChange, v2.ontologyDiff]
+- name: Ontology
+  description: >-
+    The governed semantic layer — metrics, entities, business logic and lineage, stored as plain files
+    (.md, .tql, .csv, .py) and versioned. Not exposed as a v2 REST entity; reached through the
+    sandcastle mount and the Change review flow, and managed directly by
+    OntologyManagementService on the Connect-RPC surface.
+  source: docs
+  key: null
+- name: Member
+  description: A person or service account in the organization.
+  key: id
+  relationships:
+  - type: has_many
+    target: Role
+    via: member roles endpoints
+  - type: has_many
+    target: PlatformApiKey
+    via: member_id
+  soft_delete: true
+  soft_delete_note: DELETE soft-deletes by default; hard_delete=true permanently deletes.
+  operations: [v2.listMembers, v2.inviteMember, v2.deleteMember, v2.getMemberRoles, v2.assignMemberRole, v2.removeMemberRole]
+- name: Role
+  description: An RBAC role. Roles compose from named grants and resolve per request rather than at login.
+  key: id
+  relationships:
+  - type: references
+    target: Model
+    via: default_model_id, allowed_model_ids
+  operations: [v2.listRoles, v2.createRole, v2.updateRole]
+- name: PlatformApiKey
+  description: A role-scoped platform API key, optionally carrying clientId metadata that TQL row-level security reads per request.
+  key: id
+  relationships:
+  - type: belongs_to
+    target: Member
+    via: member_id
+  - type: references
+    target: Role
+    via: assumed roles snapshot
+  fields: [client_id, targetMemberId]
+  rotation: v2.rotateApiKey returns revoked_api_key_id — the rotation links old key to new
+  operations: [v2.createApiKey, v2.listApiKeys, v2.rotateApiKey, v2.revokeApiKey]
+- name: Model
+  description: An LLM available to the organization. Named values, not numeric identifiers, as of the 2026-08-30 API change.
+  key: id
+  relationships:
+  - type: referenced_by
+    target: Role
+    via: default_model_id, allowed_model_ids
+  operations: [v2.listModels]
+relationship_summary:
+  core_spine: Connector -> Chat -> ChatCell -> Asset
+  automation_spine: Playbook -> Chat -> Report
+  governance_spine: Sandcastle -> Change -> Ontology
+  identity_spine: Member -> Role -> PlatformApiKey
+observations:
+- >-
+  Chat is the hub. Dashboards, playbook runs and Ana's MCP answers all materialize as a chat, which is
+  why the v2 spec declares no separate dashboard operations — the docs' Dashboards pages are aliases
+  over the chat operations.
+- >-
+  Ontology writeback is the only surface with a real review state machine and optimistic concurrency.
+  Everything else writes directly.
+- >-
+  ConnectorAccessGrant declares a group_id with no Group entity or group operation anywhere in the v2
+  spec — a dangling reference an integrator cannot resolve through the published contract.
+render: null
+render_note: No subway/ diagram exists in this repo yet.

@@ -1,0 +1,1 @@
+{"authorization_servers":["https://app.textql.com"],"bearer_methods_supported":["header"],"resource":"https://app.textql.com/mcp","resource_name":"TextQL","scopes_supported":["mcp:tools"]}

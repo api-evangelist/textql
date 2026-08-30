@@ -1,0 +1,60 @@
+generated: '2026-08-30'
+method: searched
+source: >-
+  Provider-published skill fetched verbatim from
+  https://docs.textql.com/.well-known/agent-skills/textql/skill.md (HTTP 200); the remaining skills
+  generated in this pass from openapi/textql-v2-openapi.yml with operationIds verified against the
+  spec.
+provider_publishes_skills: true
+provider_skill_discovery:
+  path: /.well-known/agent-skills/textql/skill.md
+  host: docs.textql.com
+  http_status: 200
+  referenced_by: https://docs.textql.com/.well-known/agent-card.json (skills[0].url)
+  note: >-
+    TextQL is in the minority of providers that publish an Agent Skill from their own host and
+    reference it from an A2A agent card. The `ana` CLI also WRITES agent skills into a consumer's
+    repository (`ana init` → AGENTS.md/CLAUDE.md) and onto a machine (`ana init --global` →
+    ~/.claude/skills/ana/SKILL.md), which is a second, distribution-side skill surface — see
+    cli/textql-cli.yml.
+skills:
+- name: textql
+  file: textql-textql-skill.md
+  method: searched
+  official: true
+  verbatim: true
+  source: https://docs.textql.com/.well-known/agent-skills/textql/skill.md
+  description: >-
+    TextQL's own skill. Covers when to reach for TextQL, and the platform's concepts — Threads,
+    Connectors, Ontology, Playbooks, Agents, Feed, Dashboards/Data Apps.
+  note: Saved verbatim, unmodified. Carries Mintlify frontmatter metadata (mintlify-proj textql, version 1.0).
+- name: textql-run-an-analysis
+  file: textql-run-an-analysis.md
+  method: generated
+  api: TextQL v2 API
+  operations: [v2.listConnectors, v2.createChat, v2.streamChat, v2.getChat, v2.getChatCells, v2.cancelStream]
+  description: Ask Ana a question and retrieve the answer plus the generated SQL/Python audit trail.
+- name: textql-schedule-a-playbook
+  file: textql-schedule-a-playbook.md
+  method: generated
+  api: TextQL v2 API
+  operations: [v2.listConnectors, v2.createPlaybook, v2.updatePlaybook, v2.runPlaybook, v2.deployPlaybook, v2.getPlaybook, v2.listPlaybooks, v2.deletePlaybook]
+  description: Create, test, deploy and retire a scheduled recurring analysis.
+- name: textql-govern-an-ontology-change
+  file: textql-govern-an-ontology-change.md
+  method: generated
+  api: TextQL v2 API
+  operations: [v2.startSandbox, v2.ontologyDiff, v2.createOntologyChange, v2.listChanges, v2.getChange, v2.approveChange, v2.denyChange, v2.restoreChange, v2.stopSandbox]
+  description: Propose, review, approve, deny and restore an Ontology change through the review workflow.
+grounding:
+  operationids_verified: true
+  operationids_verified_note: >-
+    Every operationId referenced in the generated skills was grepped against
+    openapi/textql-v2-openapi.yml (55 operations) before being written. No operation name is invented.
+related_repositories:
+- url: https://github.com/TextQLLabs/skills
+  description: 'Official skills for Ana by TextQL — the repository contains a README and an ontology/ directory.'
+  last_push: '2026-06-11'
+- url: https://github.com/TextQLLabs/ana-claude-plugin
+  description: Ana plugin for Claude Code
+  last_push: '2026-06-05'

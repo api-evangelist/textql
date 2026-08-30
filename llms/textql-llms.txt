@@ -1,0 +1,256 @@
+# TextQL Docs
+
+- [Documentation (148 pages)](https://docs.textql.com/_llms/documentation.md): Documentation for Documentation.
+
+## Workshops
+
+### Workshops
+
+- [Workshops](https://docs.textql.com/workshops/index.md): Hands-on, self-paced workshops for learning the TextQL platform — run them yourself, or have Ana run them with you on your own data.
+
+#### Self-Service Analytics
+
+- [Self-Service Analytics](https://docs.textql.com/workshops/self-service-analytics/overview.md): A hands-on workshop that teaches business users — no SQL, no data engineering background — how to answer their own questions, build their own charts and dashboards, and automate…
+- [Meet Ana](https://docs.textql.com/workshops/self-service-analytics/meet-ana.md): Think of Ana as a skilled analyst who sits next to you, has already studied your company’s data, and is available 24/7. The core idea of self-service analytics: you bring the bu…
+- [Module 0 · Setup & Orientation](https://docs.textql.com/workshops/self-service-analytics/module-0.md): Confirm these five things now, so you don’t stall at minute ten: (1) your login works; (2) you can see New Thread; (3) at least one connector appears under the "+" menu; (4) a t… (~10 min)
+- [Module 1 · Your First Question](https://docs.textql.com/workshops/self-service-analytics/module-1.md): Start with something you’d normally ask an analyst. (~15 min)
+- [Module 2 · Trusting the Answer](https://docs.textql.com/workshops/self-service-analytics/module-2.md): This is the question every business user should ask — and the reason TextQL is built the way it is. Every answer is auditable. (How your data team proves accuracy org-wide — gol… (~15 min)
+- [Module 3 · Visualize & Go Deeper](https://docs.textql.com/workshops/self-service-analytics/module-3.md): Charts, reports, and live dashboards as real products — publishing, filters, refresh, maintenance — get a full workshop: Dashboards & Reporting. (~30 min)
+- [Module 4 · From Answers to Assets](https://docs.textql.com/workshops/self-service-analytics/module-4.md): Every thread has a shareable link — your analysis, charts, and the audit trail, in one place. Open a Module 3 thread, use the share option, and send it to a teammate. (~30 min)
+- [Module 5 · Automate It](https://docs.textql.com/workshops/self-service-analytics/module-5.md): A playbook is a saved analysis instruction that runs on a schedule and delivers to email or Slack — a weekly report that writes itself. (~20 min)
+- [Module 6 · Make It Smarter](https://docs.textql.com/workshops/self-service-analytics/module-6.md): Remember the metric mismatch from Module 2? Make the right definition permanent. (~15 min)
+- [Prompt Cookbook](https://docs.textql.com/workshops/self-service-analytics/prompt-cookbook.md)
+- [FAQ](https://docs.textql.com/workshops/self-service-analytics/faq.md): Just answer it in plain English. This is Ana being careful instead of guessing — pick the meaning you intended ("invoiced revenue") and she’ll continue.
+- [Wrap-Up & Capstone](https://docs.textql.com/workshops/self-service-analytics/wrap-up.md): You can now: ask and refine questions, audit any answer, segment and root-cause, build charts, reports and dashboards, automate recurring analysis, and improve the platform as y…
+
+#### TextQL for Executives
+
+- [TextQL for Executives](https://docs.textql.com/workshops/executives/overview.md): A 45-minute taster for C-suite and VPs: ask your data the questions you’d ask your team, see exactly how every answer was computed, and leave with a morning briefing that arrive…
+- [Module 0 · Orientation](https://docs.textql.com/workshops/executives/module-0.md): Goal: know what Ana is and discover what you can ask. (~2 minutes)
+- [Module 1 · Ask Your Team’s Questions](https://docs.textql.com/workshops/executives/module-1.md): Goal: three asks — a number, a why, and decision support — the way you’d ask a (very fast) team. (~10 minutes)
+- [Module 2 · Trust in Five Minutes](https://docs.textql.com/workshops/executives/module-2.md): Goal: verify the math, confirm it’s the official number, and understand why yours and your CFO’s numbers match. (~10 minutes)
+- [Module 3 · Your Morning Briefing](https://docs.textql.com/workshops/executives/module-3.md): Goal: a daily digest that arrives before you ask, and a watcher that only speaks when something matters. (~10 minutes)
+- [Module 4 · The Board View](https://docs.textql.com/workshops/executives/module-4.md): Goal: a paste-ready board view in one prompt — and the one thing this platform needs from you. (~5 minutes)
+
+#### Build Your Ontology, End to End
+
+- [Build Your Ontology, End to End](https://docs.textql.com/workshops/build-your-ontology/overview.md): A hands-on workshop on turning the context your organization already has — databases, documents, spreadsheets, diagrams, transcripts — into a governed, queryable ontology with A…
+- [Module 0 · Concepts & The Method](https://docs.textql.com/workshops/build-your-ontology/module-0.md): An ontology is the mapping between your technical assets (tables, catalogs, documents) and your business (metrics, workflows, terminology). In TextQL it’s just files — Markdown … (~15 min)
+- [Module 1 · The Before/After Baseline](https://docs.textql.com/workshops/build-your-ontology/module-1.md): Before you build anything, ask Ana a hard question with no ontology attached — just a raw connection. Note the answer, how long it took, and which definition it assumed. (~10 min)
+- [Module 2 · Track A: Discover & Draft](https://docs.textql.com/workshops/build-your-ontology/module-2.md): You don’t need a glossary to start — Ana drafts one. (~25 min)
+- [Module 3 · Track A: First Governed Metric](https://docs.textql.com/workshops/build-your-ontology/module-3.md): The rule of thumb: if two users could ask the same business question with different filters, groupings, time windows, or output columns, the surface should expose those choices … (~25 min)
+- [Module 4 · Track A: Explore & Reconcile](https://docs.textql.com/workshops/build-your-ontology/module-4.md): Do: open the ontology graph and browse the file tree and a notes/*.md. Walk entities → metrics → lineage. This is your living model — readable files plus a graph, versioned and … (~25 min)
+- [Module 5 · Track A: Update Without Rebuilding](https://docs.textql.com/workshops/build-your-ontology/module-5.md): Now re-ask your Module 1 baseline question in a fresh session with the ontology attached. Compare: governed definition, consistent answer, exact audited SQL. (~15 min)
+- [Module 6 · Track B: Build from Documents](https://docs.textql.com/workshops/build-your-ontology/module-6.md): This is how most organizations actually start: not from a clean database, but from a stack of mixed documents — SOPs, a metrics document, data dictionaries, process-flow diagram… (~30 min)
+- [Module 7 · Track B: Validate & Govern](https://docs.textql.com/workshops/build-your-ontology/module-7.md): (~20 min)
+- [Module 8 · Track B: The N+1 Document](https://docs.textql.com/workshops/build-your-ontology/module-8.md): Then close the loop: re-ask your Module 1 baseline with the ontology attached. (~15 min)
+- [Module 9 · Role-Based Access](https://docs.textql.com/workshops/build-your-ontology/module-9.md): This module is the taster — the full deep-dive (personal vs. role vs. org context, persona authoring, provisioning via SSO/SCIM, a six-persona template library) is the Context S… (~20 min)
+- [Datasets & Document Sources](https://docs.textql.com/workshops/build-your-ontology/reference.md): Numbers and dates are illustrative. For your own build, connect your data sources and run the same steps. Set connectors at the start of a session; credentials are managed in co…
+- [Wrap-Up & Next Steps](https://docs.textql.com/workshops/build-your-ontology/wrap-up.md): You built a governed ontology — from a database, from documents, or both — and proved the loop:
+
+#### The Context Stack
+
+- [The Context Stack](https://docs.textql.com/workshops/context-stack/overview.md): A workshop of short, hands-on modules for platform owners, workspace admins, and enablement champions who configure how Ana behaves for different people. Three layers of context…
+- [Module 0 · The Context Stack](https://docs.textql.com/workshops/context-stack/module-0.md): Goal: understand the three context layers, how Ana composes them at question time, and the governance distinction that everything else in this workshop rests on. (~10 minutes)
+- [Module 1 · Prepare the Environment](https://docs.textql.com/workshops/context-stack/module-1.md): Goal: stand up the routing setup the rest of the stack depends on — a root routing file (the ANA.md convention) plus the folder layout — and verify Ana actually loads it. This i… (~10 minutes)
+- [Module 2 · Personal Context](https://docs.textql.com/workshops/context-stack/module-2.md): Goal: build your own personal context — preferences, vocabulary, a saved workflow — verify it persists across threads, and learn what must never go in it. (~20 minutes)
+- [Module 3 · Org Context](https://docs.textql.com/workshops/context-stack/module-3.md): Goal: the shared dictionary — propose a definition, a glossary entry, and a context-library document through the review loop, and see why org context is how two people asking th… (~15 minutes)
+- [Module 4 · Author Role Profiles](https://docs.textql.com/workshops/context-stack/module-4.md): Goal: the heart of the workshop — author two complete persona files live, and internalize the four-section anatomy that makes every future persona a fill-in exercise. (~25 minutes)
+- [Module 5 · The Same-Question Test](https://docs.textql.com/workshops/context-stack/module-5.md): Goal: the proof moments — the same broad question under two personas, the off-scope decline traced to a readable file, and a behavior change made through governance. (~20 minutes)
+- [Module 6 · Provisioning & Identity](https://docs.textql.com/workshops/context-stack/module-6.md): Goal: how personas reach people — admin-assigned, identity-mapped, fail-closed — and where behavioral context sits in the larger access-control picture. (~15 minutes)
+- [Module 7 · Operate the Stack](https://docs.textql.com/workshops/context-stack/module-7.md): Goal: the operating habits — versioning and review of persona files, when to add vs extend a persona, audit, the quarterly review, and the failure modes to watch for. (~15 minutes)
+- [Persona Library](https://docs.textql.com/workshops/context-stack/reference.md): Six starter persona files. Each is a complete, standalone org_context.md following the four-section anatomy (allowed surfaces · clarification · style · hard limits) — copy into …
+
+#### The Healthcare Starter Pack
+
+- [The Healthcare Starter Pack](https://docs.textql.com/workshops/healthcare-starter/overview.md): A hands-on workshop that takes you from "I have this ontology repo and nothing else" to "I’m asking Ana governed questions about my own claims and clinical data — and the model …
+- [Start with Your North Star](https://docs.textql.com/workshops/healthcare-starter/north-star.md): The single biggest mistake with a starter pack is to skip this step — to point it at your warehouse, decide it’s "close enough," and ship. That bakes in decisions before you kno… (~15 min)
+- [Module 0 · The Six Layers](https://docs.textql.com/workshops/healthcare-starter/module-0.md): Why a healthcare starter exists at all: raw codes are unusable. There are ~70,000 ICD-10 codes — "how many members have diabetes?" isn’t one code, it’s a whole branch. The start… (~15 min)
+- [Module 1 · Define Your North Star](https://docs.textql.com/workshops/healthcare-starter/module-1.md): The intro is the why. This is the doing: rather than fill out a form, you let Ana look at your actual data, ask the right scoping questions, and write the North Star down. That … (~15 min)
+- [Module 2 · Connect Three Things](https://docs.textql.com/workshops/healthcare-starter/module-2.md): This is the key step. In TextQL, add a Git connector and point it at your fork of the starter repo (TextQLLabs/ontology-starter-kits/tree/main/healthcare — no fork yet? Ask your… (~20 min)
+- [Module 3 · Validate Against Your Schema](https://docs.textql.com/workshops/healthcare-starter/module-3.md): The dry run is discovery; validation/validate_tql.py is the mechanical gate. It verifies every governed surface against your warehouse: each logical name resolves, each referenc… (~25 min)
+- [Module 4 · The Terminology Layer](https://docs.textql.com/workshops/healthcare-starter/module-4.md): The terminology crosswalks (ICD-10 → diabetes / heart-failure / risk-category mappings) are already committed in the repo — nothing to load into your warehouse. Ana joins them i… (~20 min)
+- [Module 5 · Ask Governed Questions](https://docs.textql.com/workshops/healthcare-starter/module-5.md): In every question below, name the entity and the source-of-truth tables. A plausible answer from the wrong (summary) table is worse than no answer — if two sources could answer,… (~20 min)
+- [Module 6 · Governance & PHI Defaults](https://docs.textql.com/workshops/healthcare-starter/module-6.md): Layer 4 makes compliance the default, not an add-on: HIPAA minimum-necessary framing, the CMS small-cell (<11) suppression rule, and sensitive-diagnosis gating (42 CFR Part 2). … (~15 min)
+- [Module 7 · Validate Numbers & Make It Yours](https://docs.textql.com/workshops/healthcare-starter/module-7.md): The starter ships a measured proof: validation/ab-test-vanilla-vs-ontology.md — seven questions asked in two threads against the same connector, one with the ontology repo conne… (~20 min)
+- [Wrap-Up & Next Steps](https://docs.textql.com/workshops/healthcare-starter/wrap-up.md): You went from an empty environment to governed healthcare analytics — and, more importantly, to a model that grows itself:
+
+## v1 API (deprecated)
+
+### Getting Started
+
+- [Introduction](https://docs.textql.com/api-reference/introduction.md): Welcome to the TextQL Platform API
+
+### Chat
+
+- [List Chats](https://docs.textql.com/api-reference/chat/chat/list-chats.md): List chats with optional filtering and pagination
+- [Create Chat](https://docs.textql.com/api-reference/chat/chat/create.md): Create a new chat
+- [Stream Chat](https://docs.textql.com/api-reference/chat/chat/stream.md): Stream chat responses in real-time using Connect-RPC
+- [Get Chat](https://docs.textql.com/api-reference/chat/chat/get-chat-details.md): Retrieve details of a specific chat by ID
+- [Cancel Chat](https://docs.textql.com/api-reference/chat/chat/cancel-a-running-chat.md): Cancel a running chat query
+
+### Playbooks
+
+- [List Playbooks](https://docs.textql.com/api-reference/playbooks/playbooks/list-playbooks.md): Get all playbooks
+- [Create Playbook](https://docs.textql.com/api-reference/playbooks/playbooks/create-a-new-playbook.md): Create a new playbook
+- [Get Playbook](https://docs.textql.com/api-reference/playbooks/playbooks/get-a-playbook-by-id.md): Get a playbook by playbookId
+- [Update Playbook](https://docs.textql.com/api-reference/playbooks/playbooks/update-a-playbook.md): Update a playbook
+- [Run Playbook](https://docs.textql.com/api-reference/playbooks/playbooks/run-a-playbook.md): Execute a playbook and return the generated report
+- [Deploy Playbook](https://docs.textql.com/api-reference/playbooks/playbooks/deploy-a-playbook.md): Deploy a playbook by playbookId
+- [Delete Playbook](https://docs.textql.com/api-reference/playbooks/playbooks/delete-a-playbook.md): Delete a playbook by playbookId
+
+### Agents
+
+- [Trigger Agent Webhook](https://docs.textql.com/api-reference/agents/webhooks/trigger-agent-webhook.md): Trigger an agent run with a JSON webhook payload
+
+### Connectors
+
+- [List Connectors](https://docs.textql.com/api-reference/connectors/connectors/list-all-connectors.md): Retrieve all connectors for your organization
+
+### Sandbox
+
+- [Start Sandbox](https://docs.textql.com/api-reference/platform/sandbox/start.md): Start a new Python sandbox environment
+- [Execute Code](https://docs.textql.com/api-reference/platform/sandbox/execute.md): Execute Python code in a running sandbox
+- [Get Sandbox Status](https://docs.textql.com/api-reference/platform/sandbox/status.md): Get the current status of a sandbox, including loaded dataframes and memory usage
+- [Stop Sandbox](https://docs.textql.com/api-reference/platform/sandbox/stop.md): Stop and destroy a running sandbox
+- [Load Connector Data](https://docs.textql.com/api-reference/platform/sandbox/load-connector-data.md): Execute a SQL query against a connector and load the results into the sandbox as a pandas DataFrame
+- [Upload File](https://docs.textql.com/api-reference/platform/sandbox/upload.md): Upload a file into the sandbox filesystem
+
+### API Keys
+
+- [List API Access Keys](https://docs.textql.com/api-reference/api-keys/api-keys/list-api-access-keys.md): List all API access keys for your organization
+- [Create API Access Key](https://docs.textql.com/api-reference/api-keys/api-keys/create-api-access-key.md): Create a new API access key for an external API provider
+- [Update API Access Key](https://docs.textql.com/api-reference/api-keys/api-keys/update-api-access-key.md): Update an existing API access key
+- [Delete API Access Key](https://docs.textql.com/api-reference/api-keys/api-keys/delete-api-access-key.md): Delete an API access key by ID
+- [List API Providers](https://docs.textql.com/api-reference/api-keys/api-keys/list-api-providers.md): List all supported API providers and their configuration templates
+
+## v2 API
+
+### Getting Started
+
+- [v2 API Introduction](https://docs.textql.com/api-reference/v2/introduction.md): Getting started with the TextQL v2 REST API
+
+### API Keys
+
+- [Create API Key](https://docs.textql.com/api-reference/v2/api-keys/create-api-key.md): Mint a role-scoped platform API key, optionally carrying client metadata for row-level security
+- [List API Keys](https://docs.textql.com/api-reference/v2/api-keys/list-api-keys.md): List platform API keys visible to the caller
+- [Rotate API Key](https://docs.textql.com/api-reference/v2/api-keys/rotate-api-key.md): Revoke a key and mint a replacement with the same scope
+- [Revoke API Key](https://docs.textql.com/api-reference/v2/api-keys/revoke-api-key.md): Revoke a platform API key by id
+
+### Members
+
+- [List Members](https://docs.textql.com/api-reference/v2/members/list-members.md): List the members of your organization with their assigned roles
+- [Invite Member](https://docs.textql.com/api-reference/v2/members/invite-member.md): Invite a new member to your organization by email
+- [Remove Member](https://docs.textql.com/api-reference/v2/members/delete-member.md): Remove a member from your organization
+- [Get Member Roles](https://docs.textql.com/api-reference/v2/members/get-member-roles.md): List the RBAC roles assigned to a member
+- [Assign Role to Member](https://docs.textql.com/api-reference/v2/members/assign-member-role.md): Assign an RBAC role to a member
+- [Remove Role from Member](https://docs.textql.com/api-reference/v2/members/remove-member-role.md): Remove an RBAC role from a member
+
+### Roles
+
+- [List Roles](https://docs.textql.com/api-reference/v2/roles/list-roles.md): List the RBAC roles defined in your organization
+- [Create Role](https://docs.textql.com/api-reference/v2/roles/create-role.md): Create a custom RBAC role in your organization
+- [Update Role](https://docs.textql.com/api-reference/v2/roles/update-role.md): Update a role's name, description, or model configuration
+
+### Chat
+
+- [List Chats](https://docs.textql.com/api-reference/v2/chat/list-chats.md): List chats with optional search and pagination
+- [Create Chat](https://docs.textql.com/api-reference/v2/chat/create-chat.md): Send a question and receive a synchronous response
+- [Stream Chat](https://docs.textql.com/api-reference/v2/chat/stream-chat.md): Send a question and receive a streaming SSE response
+- [Get Chat](https://docs.textql.com/api-reference/v2/chat/get-chat.md): Retrieve a chat by ID with messages and assets
+- [Get Chat Cells](https://docs.textql.com/api-reference/v2/chat/get-chat-cells.md): Retrieve a chat's per-step execution detail: messages, generated SQL and Python, outputs, and assets
+- [Get Chat Cell](https://docs.textql.com/api-reference/v2/chat/get-chat-cell.md): Retrieve a single cell from a chat by ID
+- [Cancel Stream](https://docs.textql.com/api-reference/v2/chat/cancel-stream.md): Cancel a running chat stream
+
+### Connectors
+
+- [List Connectors](https://docs.textql.com/api-reference/v2/connectors/list-connectors.md): List all available data connectors
+- [List Connector Types](https://docs.textql.com/api-reference/v2/connectors/list-connector-types.md): Discover supported connector types and the fields each requires
+- [Create Connector](https://docs.textql.com/api-reference/v2/connectors/create-connector.md): Create a new data connector
+- [Test Connector](https://docs.textql.com/api-reference/v2/connectors/test-connector.md): Test a connector configuration without saving it
+- [Update Connector](https://docs.textql.com/api-reference/v2/connectors/update-connector.md): Update an existing data connector
+- [Delete Connector](https://docs.textql.com/api-reference/v2/connectors/delete-connector.md): Delete a connector by id
+- [Get Connector Access](https://docs.textql.com/api-reference/v2/connectors/get-connector-access.md): Get a connector's visibility and access grants
+- [Update Connector Access](https://docs.textql.com/api-reference/v2/connectors/update-connector-access.md): Replace a connector's visibility and access grants
+
+### Playbooks
+
+- [List Playbooks](https://docs.textql.com/api-reference/v2/playbooks/list-playbooks.md): List playbooks with optional filtering and pagination
+- [Create Playbook](https://docs.textql.com/api-reference/v2/playbooks/create-playbook.md): Create a new empty playbook
+- [Get Playbook](https://docs.textql.com/api-reference/v2/playbooks/get-playbook.md): Retrieve a playbook by ID with its reports
+- [Update Playbook](https://docs.textql.com/api-reference/v2/playbooks/update-playbook.md): Update a playbook's configuration
+- [Run Playbook](https://docs.textql.com/api-reference/v2/playbooks/run-playbook.md): Execute a playbook and return the generated report
+- [Deploy Playbook](https://docs.textql.com/api-reference/v2/playbooks/deploy-playbook.md): Deploy a playbook to make it active
+- [Delete Playbook](https://docs.textql.com/api-reference/v2/playbooks/delete-playbook.md): Delete a playbook by ID
+
+### Dashboards
+
+- [Create Dashboard](https://docs.textql.com/api-reference/v2/dashboards/create-dashboard.md): Ask Ana to build a dashboard in a chat session
+- [List Chats with Dashboards](https://docs.textql.com/api-reference/v2/dashboards/list-dashboards.md): List chats with optional search and pagination
+- [Get Dashboard](https://docs.textql.com/api-reference/v2/dashboards/get-dashboard.md): Retrieve a chat by ID with messages and assets, including any dashboard output
+- [Stream Dashboard](https://docs.textql.com/api-reference/v2/dashboards/stream-dashboard.md): Ask Ana to build a dashboard and receive a streaming SSE response as it's created
+- [Cancel Dashboard Stream](https://docs.textql.com/api-reference/v2/dashboards/cancel-dashboard.md): Cancel a running dashboard creation stream
+
+### Sandcastles
+
+- [List Sandcastles](https://docs.textql.com/api-reference/v2/sandbox/list-sandboxes.md): List sandboxes with status filtering and cursor-based pagination
+- [Start Sandcastle](https://docs.textql.com/api-reference/v2/sandbox/start-sandbox.md): Start a new Python sandcastle, or restart a specific one
+- [Get Sandcastle Status](https://docs.textql.com/api-reference/v2/sandbox/get-sandbox-status.md): Get the current status of a sandbox
+- [List Executions](https://docs.textql.com/api-reference/v2/sandbox/list-executions.md): List a sandbox's recorded executions (Python, bash, SQL, TQL) with cursor-based pagination
+- [Stop Sandcastle](https://docs.textql.com/api-reference/v2/sandbox/stop-sandbox.md): Stop and destroy a running sandbox
+- [Execute Code](https://docs.textql.com/api-reference/v2/sandbox/execute-code.md): Execute Python code in a sandbox
+- [Load Connector Data](https://docs.textql.com/api-reference/v2/sandbox/load-connector-data.md): Load data from a connector into a sandbox dataframe
+- [Upload File](https://docs.textql.com/api-reference/v2/sandbox/upload-file.md): Upload a file to a sandbox environment
+- [Diff Ontology (Dry Run)](https://docs.textql.com/api-reference/v2/sandbox/diff-ontology.md): Report pending changes in the sandcastle's Ontology mount without authoring a change.
+- [Create Ontology Change (Writeback)](https://docs.textql.com/api-reference/v2/sandbox/create-ontology-change.md): Persist a sandcastle's edits to /sandbox/files/library back to the org's Ontology as a reviewable change.
+
+### Changes
+
+- [List Changes](https://docs.textql.com/api-reference/v2/changes/list-changes.md): List the organization's Ontology changes, scoped to your OWNERS read access.
+- [Get Change](https://docs.textql.com/api-reference/v2/changes/get-change.md): Fetch a single Ontology change with its diffs and your capabilities.
+- [Approve Change](https://docs.textql.com/api-reference/v2/changes/approve-change.md): Record your approval and merge the change once the folder's approval rule is satisfied.
+- [Deny Change](https://docs.textql.com/api-reference/v2/changes/deny-change.md): Mark an Ontology change denied. The author can deny their own change.
+- [Restore Change](https://docs.textql.com/api-reference/v2/changes/restore-change.md): Reopen a denied Ontology change back to open for review.
+
+- [v3 API (SDK) (418 pages)](https://docs.textql.com/_llms/v3-api-sdk.md): Documentation for v3 API (SDK).
+
+## MCP Reference
+
+### Ana as an MCP Server
+
+- [Ana as an MCP Server](https://docs.textql.com/core/how-it-works/mcp/ana-as-mcp-server.md): Connect Ana to Cursor, Claude, ChatGPT, Copilot, and any MCP-compatible client. Ask data questions directly from your AI assistant — no context switching required.
+- [Connecting a Client](https://docs.textql.com/core/how-it-works/mcp/client-setup.md): Add Ana as an MCP server in Claude, Cursor, Windsurf, ChatGPT, Copilot, or Claude Code, and authorize once over OAuth.
+- [Tool Groups & Modes](https://docs.textql.com/core/how-it-works/mcp/tool-groups.md): Scope which of Ana's tools a connection exposes, and let your assistant load tools on demand.
+- [Managing Access](https://docs.textql.com/core/how-it-works/mcp/managing-access.md): Review and revoke authorized MCP clients as a user or an organization admin.
+
+## Helm Charts
+
+### Helm Charts
+
+- [Installation](https://docs.textql.com/helm-charts/installation.md): Install the TextQL Helm chart
+
+## Changelog
+
+### Changelog
+
+- [Product updates](https://docs.textql.com/product/changelog.md): New features and improvements across TextQL
+- [Self-hosting releases](https://docs.textql.com/helm-charts/changelog.md): Release history for the TextQL Helm chart
+
+## OpenAPI Specs
+
+- [textql-api-with-code-samples](/api-reference/speakeasy/textql-api-with-code-samples.yaml)
+- [openapi](/api-reference/openapi.json)
+- [agents.openapi](/api-reference/platform/agents.openapi.yaml)
+- [api_access_key.openapi](/api-reference/platform/api_access_key.openapi.yaml)
+- [chat.openapi](/api-reference/platform/chat.openapi.yaml)
+- [connectors.openapi](/api-reference/platform/connectors.openapi.yaml)
+- [playbooks.openapi](/api-reference/platform/playbooks.openapi.yaml)
+- [sandbox.openapi](/api-reference/platform/sandbox.openapi.yaml)
+- [v2.openapi](/api-reference/platform/v2.openapi.yaml)
+
+> The links below point to documentation indexes. Follow each `/_llms/` index recursively until you reach documentation pages.
+
+## Indexes
+
+- [Documentation (148 pages)](https://docs.textql.com/_llms/documentation.md): Documentation for Documentation.
+- [v3 API (SDK) (418 pages)](https://docs.textql.com/_llms/v3-api-sdk.md): Documentation for v3 API (SDK).

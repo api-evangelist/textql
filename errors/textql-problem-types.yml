@@ -1,0 +1,121 @@
+generated: '2026-08-30'
+method: derived
+source: >-
+  openapi/textql-v2-openapi.yml (components/schemas/ErrorResponse enum + 4xx/5xx responses) enriched
+  from https://docs.textql.com/api-reference/v2/introduction (published error table)
+format: custom-json-envelope
+rfc9457: false
+rfc9457_note: >-
+  TextQL does NOT use RFC 9457 problem+json. No response in any published spec declares
+  application/problem+json. The v2 API uses a bespoke envelope — {"error": {"code": "...", "message":
+  "..."}} — with a closed enum of machine-readable codes. That enum is the useful part: an agent can
+  branch on error.code without string-matching a message.
+envelope:
+  content_type: application/json
+  shape: '{"error": {"code": "<machine-readable code>", "message": "<human-readable message>"}}'
+  code_field: error.code
+  message_field: error.message
+  enumerated: true
+  schema: '#/components/schemas/ErrorResponse'
+response_code_coverage:
+  '400': 36
+  '401': 55
+  '403': 55
+  '404': 34
+  '409': 5
+  '429': 55
+  '500': 55
+  '504': 1
+  note: >-
+    Counts are v2 operations declaring each status. All 55 v2 operations declare 401, 403, 429 and
+    500 — a uniformly applied error contract rather than a per-operation afterthought.
+problem_types:
+- code: invalid_request
+  status: 400
+  title: Invalid request
+  detail: Malformed request or missing required fields.
+  remediation: Validate the request body and required fields against the operation's schema before retrying. Not retryable unchanged.
+  retryable: false
+- code: unauthenticated
+  status: 401
+  title: Unauthenticated
+  detail: Missing or invalid Bearer token.
+  remediation: >-
+    Send Authorization: Bearer <key>. For MCP, the 401 carries a WWW-Authenticate header naming the
+    RFC 9728 protected-resource metadata document to start the OAuth flow from.
+  retryable: false
+- code: permission_denied
+  status: 403
+  title: Permission denied
+  detail: Insufficient permissions for the requested resource.
+  remediation: >-
+    Check the key's assumed roles and its owner. Assumed roles are a snapshot taken at key creation
+    and never widen; a role granted to the owner later does not extend an existing key — mint a new
+    one. Access keyed to a member ID (direct shares, connector grants, creator bypass) follows the
+    key's OWNER, not its role.
+  retryable: false
+- code: not_found
+  status: 404
+  title: Not found
+  detail: Resource does not exist.
+  remediation: Confirm the path ID. May also mean the caller cannot see the resource under its current roles.
+  retryable: false
+- code: conflict
+  status: 409
+  title: Conflict
+  detail: >-
+    The request conflicts with current state. On Ontology change operations this is the optimistic
+    concurrency failure — the request carries an ExpectedGitRefBody and the underlying ref moved.
+  remediation: Re-read the resource, take its current revision/git ref, and reissue.
+  retryable: true
+- code: rate_limit_exceeded
+  status: 429
+  title: Rate limit exceeded
+  detail: Too many requests.
+  remediation: >-
+    Back off and retry. No Retry-After or RateLimit-* header is declared in the spec or documented,
+    so a client must use its own backoff schedule — see rate-limits/textql-rate-limits.yml.
+  retryable: true
+- code: internal
+  status: 500
+  title: Internal error
+  detail: Unexpected server error.
+  remediation: Retry with backoff; escalate to support@textql.com if persistent.
+  retryable: true
+- code: timeout
+  status: 504
+  title: Timeout
+  detail: >-
+    The operation exceeded its time budget. Most likely on synchronous analysis — the ana/createChat
+    path is documented as taking up to a minute.
+  remediation: >-
+    Use the streaming surface (POST /v2/chats/stream, or ana_ask/ana_poll over MCP) instead of the
+    synchronous call for long analyses.
+  retryable: true
+- code: cancelled
+  status: null
+  title: Cancelled
+  detail: The run was cancelled, normally by an explicit cancel call.
+  remediation: Expected after v2.cancelStream. Not an error condition to retry.
+  retryable: false
+  note: Declared in the ErrorResponse code enum; no HTTP status is bound to it in the spec.
+- code: execution_failed
+  status: null
+  title: Execution failed
+  detail: >-
+    Code or query execution inside a sandcastle failed. Distinct from `internal` — the platform
+    worked, the user's Python/SQL did not.
+  remediation: Read the execution output; fix the code or query and re-execute.
+  retryable: false
+  note: Declared in the ErrorResponse code enum; no HTTP status is bound to it in the spec.
+- code: no_report
+  status: null
+  title: No report produced
+  detail: A playbook run completed without generating a report.
+  remediation: Check the playbook's instruction and that its connectors returned rows.
+  retryable: false
+  note: Declared in the ErrorResponse code enum; no HTTP status is bound to it in the spec.
+v1_errors:
+  note: >-
+    The v1 Connect-RPC surface uses Connect's own error model (connect.error schema in the per-service
+    specs), not this envelope. It is superseded — see lifecycle/textql-lifecycle.yml.

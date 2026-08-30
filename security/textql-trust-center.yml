@@ -1,0 +1,60 @@
+generated: '2026-08-30'
+method: searched
+source: https://textql.com/security
+url: https://trust.textql.com/
+trust_center:
+  url: https://trust.textql.com/
+  platform: Drata
+  redirects_to: https://app.drata.com/trust/36f9232d-d1fa-4cc8-ac65-746a94a71cc3
+  probed: '2026-08-30'
+  http_status: 403
+  readable: false
+  note: >-
+    The trust center is linked from textql.com/security as "Visit Trust Center" and resolves to a
+    Drata-hosted portal, but returned 403 to both a browser-User-Agent curl and a WebFetch. Its
+    contents could not be read this run. The certifications below are therefore taken from TextQL's
+    OWN security page, which was fetched successfully, rather than from the portal.
+certifications:
+- name: SOC 2 Type II
+  source: https://textql.com/security
+  detail: Audited annually, report on request.
+- name: HIPAA
+  source: https://textql.com/security
+  detail: BAAs signed; PHI never leaves the customer's cloud. Enterprise tier.
+- name: GDPR
+  source: https://textql.com/security
+  detail: DPA available, EU data residency.
+- name: SOX
+  source: https://textql.com/pricing
+  detail: >-
+    Listed in the Enterprise tier's compliance column as "SOX, audit & policy support" — a support
+    posture for the customer's own SOX programme, not a certification TextQL holds.
+  qualifier: support-posture-not-certification
+corrections:
+  - >-
+    An earlier automated pass recorded ISO 27001 from a keyword match on the Drata portal URL. That
+    claim is REMOVED — the portal returned 403 and was never read, and ISO 27001 appears nowhere on
+    TextQL's own security or pricing pages. Only SOC 2 Type II, HIPAA and GDPR are provider-stated.
+security_posture:
+  source: https://textql.com/security
+  probed: '2026-08-30'
+  http_status: 200
+  model: >-
+    "TextQL treats its own agent as an untrusted principal. Every query clears four gates — identity,
+    entitlement, execution, audit — before a byte of your data moves."
+  isolation: gVisor sandbox per session, destroyed when the session ends; no sharing between customers or between two users of the same customer
+  encryption: TLS 1.2+ in transit, AES-256 at rest, customer-managed keys via customer KMS on VPC and on-prem installs
+  deployment_options: [multi-tenant SaaS, single-tenant, customer VPC, BYOC, on-premises, air-gapped, private link]
+  model_training: >-
+    "Never trained on your data — not our models, not a provider's, with no contractual carve-out."
+    Customers may bring their own Bedrock, Vertex or Azure OpenAI deployment so inference never leaves
+    their account.
+  identity: SAML 2.0 and OIDC (IdP- and SP-initiated), JIT provisioning, SCIM 2.0 lifecycle, domain claim enforcement, MFA enforced at the customer IdP
+  authorization: >-
+    Roles compose from named grants and resolve per request rather than at login. Row filters and
+    column masks are evaluated by the customer's warehouse — Snowflake row access policies, Unity
+    Catalog column masks, BigQuery policy tags — so revoking a grant upstream takes effect on the next
+    query.
+  network: gVisor-isolated sandbox per run, outbound domain allowlist, credential-injecting egress proxy, PrivateLink/VPC peering/static egress IPs on enterprise
+  secrets: Credentials live in a vault the agent process cannot read.
+  audit: Audit Log (AuditLogService in the Public RPC API) covers security and administrative activity

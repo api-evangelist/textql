@@ -1,0 +1,201 @@
+generated: '2026-08-30'
+method: searched
+source: >-
+  https://docs.textql.com/api-reference/v2/introduction,
+  https://docs.textql.com/core/admin/api-keys,
+  https://docs.textql.com/core/guides/embedding-ana,
+  https://app.textql.com/.well-known/oauth-authorization-server,
+  derived from openapi/textql-v2-openapi.yml
+api: TextQL v2 API
+base_url: https://app.textql.com/v2
+authentication:
+  style: bearer
+  header: 'Authorization: Bearer <key>'
+  scheme_name: bearerAuth
+  accepts: [platform API key, JWT]
+  alternatives:
+  - surface: Public RPC API
+    style: apiKey header
+    header: tql_api_key
+  - surface: MCP endpoint
+    style: OAuth 2.1 authorization code + PKCE (S256), dynamic client registration
+  key_types:
+  - name: Personal API Key
+    acts_as: the creating member
+    roles: the owner's roles, which can change over time
+    best_for: development, testing, scripts
+  - name: Service Account Key
+    acts_as: a dedicated non-human member
+    roles: fixed at creation, immutable
+    requires: 'organization:write'
+    best_for: production embeds and automations; survives employee turnover
+  role_snapshot_rule: >-
+    Assumed roles are a snapshot taken when the key is created and never widen. The snapshot is
+    intersected with the owner's live roles on every request, so a key can LOSE access when a role is
+    removed but never GAIN access when one is added. Granting the owner a new role does not extend an
+    existing key — mint a new key.
+  programmatic_minting:
+    operation: v2.createApiKey
+    features: [role scoping, expiry, clientId metadata for TQL row-level security]
+    docs: https://docs.textql.com/api-reference/v2/api-keys/create-api-key
+  cross_reference: authentication/textql-authentication.yml
+idempotency:
+  supported: false
+  status: absent
+  evidence: >-
+    No Idempotency-Key header, no idempotency parameter and no idempotency documentation exists in any
+    of the eight published specs or anywhere in the docs. Grepped all specs for /idempoten/i — zero
+    hits. Every POST on the v2 API (createChat, createConnector, createPlaybook, runPlaybook,
+    createApiKey, startSandbox, executeCode) is therefore unsafe to retry blind.
+  consequence: >-
+    An agent that retries a timed-out POST /v2/chats or POST /v2/playbooks/{id}/run can start a second
+    billable analysis run. This is the sharpest gap in an otherwise strong API surface, and it lands
+    on a metered product where a duplicate run costs ACUs.
+pagination:
+  styles:
+  - name: cursor
+    params: [cursor, limit]
+    used_by: [v2.listSandboxes, v2.listSandboxExecutions, v2.listChanges]
+  - name: offset-limit
+    params: [limit, offset]
+    used_by: [v2.listChats, v2.listPlaybooks]
+  - name: page-token
+    params: [page_size, page_token]
+    used_by: Connect-RPC surfaces in openapi/textql-platform-api-openapi.yml
+  consistency: mixed
+  consistency_note: >-
+    Three pagination idioms coexist across the platform. Within the v2 API, newer collections
+    (sandcastles, executions, Ontology changes) use cursor pagination while older ones (chats,
+    playbooks) use limit/offset. A client cannot assume one idiom across v2.
+  filtering_params: [search_term, status, status_filter, scope, sort_by, sort_direction, include_revoked, include_auto_approved]
+field_expansion:
+  supported: false
+  note: >-
+    No expand/fields/include sparse-fieldset parameter. Detail is fetched with dedicated
+    sub-resource operations instead — v2.getChatCells and v2.getChatCell return per-step execution
+    detail (messages, generated SQL and Python, outputs, assets) as separate calls.
+metadata:
+  supported: partial
+  note: >-
+    API keys accept a clientId metadata value that TQL row-level security reads per request — the
+    documented pattern for multi-tenant embedding. There is no general-purpose metadata bag on
+    platform resources.
+request_id_tracing:
+  supported: false
+  note: >-
+    No request-id or trace header is documented or declared in any spec response. Attribution is
+    instead available after the fact through the Audit Log (AuditLogService in the RPC API), and every
+    chat carries a thread link back into the UI showing the exact SQL executed.
+versioning:
+  style: url-path-major
+  current: v2
+  cross_reference: lifecycle/textql-lifecycle.yml
+error_envelope:
+  shape: '{"error": {"code": "...", "message": "..."}}'
+  rfc9457: false
+  enumerated_codes: true
+  cross_reference: errors/textql-problem-types.yml
+rate_limit_signaling:
+  status_code: 429
+  error_code: rate_limit_exceeded
+  headers_published: false
+  note: >-
+    429 is declared on all 55 v2 operations, but no RateLimit-*, X-RateLimit-* or Retry-After response
+    header is declared in the spec or documented. Cross-reference rate-limits/textql-rate-limits.yml.
+streaming:
+  style: server-sent-events
+  content_type: text/event-stream
+  operations: [v2.streamChat]
+  v1_equivalent: Connect-RPC server streaming
+  agent_note: >-
+    The synchronous createChat path is documented as taking up to a minute. For MCP clients the same
+    split is exposed as ana_ask/ana_poll. Prefer the streaming surface for anything long-running.
+dry_run_mode:
+  supported: partial
+  operations:
+  - operationId: v2.ontologyDiff
+    path: GET /v2/sandcastles/{id}/ontology/diff
+    description: >-
+      "Report pending changes in the sandcastle's Ontology mount without authoring a change." A true
+      dry run — see the diff before v2.createOntologyChange writes it.
+  - operationId: v2.testConnector
+    path: POST /v2/connectors/test
+    description: Test a connector configuration without saving it.
+  note: >-
+    Dry-run exists on the two surfaces where it matters most (Ontology writeback and connector
+    credentials) but not on chat, playbook or sandcastle execution.
+reversibility:
+  applicable: true
+  grade: documented
+  grade_basis: >-
+    Reversal paths are real, named operations with an explicit state machine, and the Ontology change
+    flow even documents WHO may reverse. But no operation states a WINDOW — there is no published
+    retention period for a soft-deleted member, no time bound on restoring a denied change, and no
+    stated grace period on a revoked key. Under the 0.12.0 rule that is `documented` (reversal path
+    present) rather than `verified` (path plus stated window). No window is asserted here because
+    TextQL's docs state none.
+  window_published: false
+  surfaces:
+  - write_operation: v2.denyChange
+    reversal: v2.restoreChange
+    path: POST /v2/changes/{id}/restore
+    description: Reopen a DENIED Ontology change back to OPEN for review.
+    authority: >-
+      The change author, or a caller with OWNERS write authority on every changed path — the same
+      authority deny requires.
+    constraint: Only a change in the `denied` state can be restored.
+    window: null
+    window_note: No time limit on restoring a denied change is stated in the docs.
+    docs: https://docs.textql.com/api-reference/v2/changes/restore-change
+  - write_operation: v2.createOntologyChange
+    reversal: v2.denyChange
+    path: POST /v2/changes/{id}/deny
+    description: >-
+      Ontology writeback is a reviewable change, not a direct write — it is proposed, then approved or
+      denied, and approval merges it only once the folder's approval rule is satisfied. The whole
+      surface is reversible by construction.
+    window: null
+    docs: https://docs.textql.com/api-reference/v2/changes/deny-change
+  - write_operation: v2.deleteMember
+    reversal: soft-delete default
+    description: >-
+      DELETE /v2/members/{id} soft-deletes by default; the `hard_delete` query parameter must be set
+      to true to "permanently delete instead of soft delete". The soft state is therefore recoverable,
+      but no restore-member operation is published and no retention period is stated.
+    window: null
+    window_note: >-
+      The docs do not state how long a soft-deleted member is recoverable, nor which operation
+      restores one. Recorded as an observed default, not a guaranteed window.
+    evidence: openapi/textql-v2-openapi.yml, parameter hard_delete on v2.deleteMember
+  - write_operation: v2.createChat / v2.streamChat
+    reversal: v2.cancelStream
+    path: POST /v2/chats/{id}/cancel
+    description: Cancel a running chat stream mid-flight.
+    window: while the run is in flight
+    window_note: >-
+      Bounded by the run's own lifetime rather than by a published duration. Cancel stops further
+      work; it does not undo work already done or ACUs already consumed.
+  - write_operation: v2.createApiKey
+    reversal: v2.revokeApiKey / v2.rotateApiKey
+    description: >-
+      Revoke a key by id, or rotate — revoke and mint a replacement with the same scope in one call.
+      Rotation is the reversible form of a leaked credential.
+    window: null
+    reversible: false
+    note: Revocation is itself irreversible; a revoked key cannot be un-revoked.
+  irreversible:
+  - v2.deleteConnector
+  - v2.deletePlaybook
+  - v2.deleteFile
+  - v2.stopSandbox
+  - v2.deleteMember (with hard_delete=true)
+  irreversible_note: >-
+    No undo, restore or trash operation is published for connectors, playbooks, sandcastle files or
+    stopped sandcastles. An agent should treat these as terminal. Stopping a sandcastle destroys the
+    gVisor session and everything in it by design.
+cross_references:
+  errors: errors/textql-problem-types.yml
+  lifecycle: lifecycle/textql-lifecycle.yml
+  authentication: authentication/textql-authentication.yml
+  scopes: scopes/textql-scopes.yml
+  rate_limits: rate-limits/textql-rate-limits.yml

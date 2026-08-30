@@ -1,0 +1,153 @@
+openapi: 3.1.0
+info:
+  title: textql.rpc.platform
+  version: "1.0"
+paths:
+  /v1/agents/webhook/trigger:
+    post:
+      tags:
+        - textql.rpc.platform.AgentService
+      summary: TriggerAgentWebhook
+      description: Trigger an agent run with a JSON webhook payload
+      operationId: textql.rpc.platform.AgentService.TriggerAgentWebhook
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.platform.TriggerAgentWebhookRequest'
+            examples:
+              example:
+                value:
+                  triggerId: "00000000-0000-0000-0000-000000000000"
+                  payload:
+                    event: "example.event"
+                    source: "manual-test"
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.platform.TriggerAgentWebhookResponse'
+components:
+  schemas:
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+        - 1
+      description: Define the version of the Connect protocol
+      const: 1
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+            - invalid_argument
+          enum:
+            - canceled
+            - unknown
+            - invalid_argument
+            - deadline_exceeded
+            - not_found
+            - already_exists
+            - permission_denied
+            - resource_exhausted
+            - failed_precondition
+            - aborted
+            - out_of_range
+            - unimplemented
+            - internal
+            - unavailable
+            - data_loss
+            - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details.
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: A URL that acts as a globally unique identifier for the type of the serialized message.
+        value:
+          type: string
+          contentEncoding: base64
+          contentMediaType: application/octet-stream
+          description: The Protobuf message, serialized as bytes and base64-encoded.
+        debug:
+          oneOf:
+            - type: object
+              additionalProperties: true
+            - type: array
+              items: {}
+            - type: string
+            - type: number
+            - type: boolean
+            - type: "null"
+          description: Deserialized error detail value when available.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a URL that describes the type of the serialized message.
+    textql.rpc.platform.TriggerAgentWebhookRequest:
+      type: object
+      properties:
+        triggerId:
+          type: string
+          title: trigger_id
+          format: uuid
+          description: The webhook trigger ID for the agent.
+        payload:
+          type: object
+          title: payload
+          description: JSON payload to pass to the agent as run context. Limited to 16KB after JSON serialization.
+          additionalProperties: true
+      title: TriggerAgentWebhookRequest
+      additionalProperties: false
+      required:
+        - triggerId
+    textql.rpc.platform.TriggerAgentWebhookResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          title: status
+          description: Queue status for the agent run.
+          examples:
+            - queued
+      title: TriggerAgentWebhookResponse
+      additionalProperties: false
+security: []
+tags:
+  - name: textql.rpc.platform.AgentService
+    description: Platform Agent Service - External API for triggering agent webhooks

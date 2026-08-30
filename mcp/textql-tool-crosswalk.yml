@@ -1,0 +1,122 @@
+generated: '2026-08-30'
+method: derived
+source: >-
+  MCP tool names from https://docs.textql.com/core/how-it-works/mcp/tool-groups (live tools/list is
+  OAuth-gated, HTTP 401); REST operationIds grepped from openapi/textql-v2-openapi.yml and
+  openapi/textql-platform-api-openapi.yml
+note: >-
+  Bindings are mapped by name and documented semantics, not from a live tool schema. The MCP endpoint
+  returned 401 to an anonymous tools/list, so no tool inputSchema was observed. Confidence is set
+  accordingly and no operation was invented to fill a row.
+surfaces:
+  openapi:
+  - path: openapi/textql-v2-openapi.yml
+    base: https://app.textql.com/v2
+    gated: false
+    note: Published spec, 55 operations. Calling it requires a Bearer key.
+  - path: openapi/textql-platform-api-openapi.yml
+    base: https://app.textql.com/rpc/public
+    gated: false
+    note: Published spec, 407 Connect-RPC operations.
+  graphql: null
+  mcp:
+    url: https://app.textql.com/mcp
+    gated: true
+    gate: OAuth 2.1 bearer; anonymous tools/list returns 401 with RFC 9728 WWW-Authenticate
+crosswalk:
+- tool: ana
+  category: analysis
+  rest: [v2.createChat]
+  binding: synchronous question-and-answer
+  confidence: high
+  note: >-
+    POST /v2/chats takes {question, connector_ids} and returns a synchronous response — the same
+    contract the ana tool describes (ask, wait, get the answer plus a thread link).
+- tool: ana_ask
+  category: analysis
+  rest: [v2.streamChat]
+  binding: start a streaming run
+  confidence: medium
+  note: >-
+    POST /v2/chats/stream is the SSE surface. ana_ask/ana_poll split that single SSE stream into a
+    start call and a poll call for MCP clients that cannot hold a long connection, so the mapping is
+    one REST operation to two tools rather than one-to-one.
+- tool: ana_poll
+  category: analysis
+  rest: [v2.streamChat, v2.getChat, v2.getChatCells]
+  binding: read streamed progress and final assets
+  confidence: medium
+  note: >-
+    Polls the run started by ana_ask. GET /v2/chats/{id} and /v2/chats/{id}/cells are the REST
+    equivalents for the answer, per-step SQL/Python detail and generated assets.
+- tool: list_connectors
+  category: catalog
+  rest: [v2.listConnectors]
+  binding: direct
+  confidence: high
+  note: One-to-one with GET /v2/connectors; the v1 Connect-RPC ConnectorService exposes the same list.
+- tool: execute_python
+  category: sandcastle
+  rest: [v2.executeCode]
+  binding: direct
+  confidence: high
+  note: POST /v2/sandcastles/{id}/execute runs Python in a sandcastle kernel.
+- tool: run_query
+  category: sandcastle
+  rest: [v2.loadConnectorData]
+  binding: direct
+  confidence: medium
+  note: >-
+    POST /v2/sandcastles/{id}/load runs a query against a connector and loads the result as a
+    dataframe. The docs describe run_query as loading connector data or a saved .tql query, which is
+    the same operation plus an Ontology-query path that has no separate REST operation.
+mcp_only:
+- tool: list_available_toolsets
+  reason: Dynamic-mode meta-tool. Session-scoped MCP protocol affordance with no REST equivalent.
+- tool: get_toolset_tools
+  reason: Dynamic-mode meta-tool.
+- tool: enable_toolset
+  reason: Dynamic-mode meta-tool; mutates the MCP session's tool list, not platform state.
+- tool: disable_toolset
+  reason: Dynamic-mode meta-tool.
+unnamed_mcp_tools:
+  note: >-
+    The sandcastle and ontology groups are described in prose but only partly enumerated by name in
+    the docs. Named-in-prose-only capabilities with an obvious REST counterpart, left out of
+    crosswalk[] because the tool NAME is not published — create/inspect/stop sandcastle
+    (v2.startSandbox, v2.getSandboxStatus, v2.stopSandbox), read/upload files (v2.uploadFile),
+    propose an Ontology change (v2.createOntologyChange), and the ontology group's list/read/approve/
+    deny/restore (v2.listChanges, v2.getChange, v2.approveChange, v2.denyChange, v2.restoreChange).
+rest_only:
+- category: Playbooks
+  operations: [v2.listPlaybooks, v2.createPlaybook, v2.getPlaybook, v2.updatePlaybook, v2.runPlaybook, v2.deployPlaybook, v2.deletePlaybook]
+  reason: Scheduled-report lifecycle is not exposed as MCP tools in any published tool group.
+- category: Dashboards
+  operations: [DashboardService_CreateDashboard, DashboardService_DeleteDashboard, DashboardService_CheckDashboardHealth, DashboardService_DiscardDashboardChanges]
+  reason: >-
+    Dashboard authoring has no MCP tool; charts and dashboards come back to MCP clients as resource
+    links only. Note the v2 docs' "Dashboards" pages are aliases over the chat operations
+    (v2.createChat / v2.listChats / v2.getChat / v2.streamChat / v2.cancelStream) — the v2 spec
+    declares no distinct dashboard operationId. The dedicated dashboard operations live on the
+    Connect-RPC DashboardService in openapi/textql-platform-api-openapi.yml.
+- category: API Keys
+  operations: [v2.createApiKey, v2.listApiKeys, v2.rotateApiKey, v2.revokeApiKey]
+  reason: Credential management is deliberately out of the agent tool surface.
+- category: Members and RBAC
+  operations: [v2.listMembers, v2.inviteMember, v2.deleteMember, v2.getMemberRoles, v2.assignMemberRole, v2.removeMemberRole, v2.listRoles, v2.createRole, v2.updateRole]
+  reason: Administrative surface, no MCP tool.
+- category: Connector write operations
+  operations: [v2.createConnector, v2.testConnector, v2.updateConnector, v2.deleteConnector, v2.getConnectorAccess, v2.updateConnectorAccess]
+  reason: The catalog tool group is read-only; only listing is exposed to agents.
+coverage:
+  mcp_tools_documented: 10
+  mcp_tools_crosswalked: 6
+  mcp_tools_meta_only: 4
+  rest_operations_v2: 55
+  rest_operations_rpc: 407
+  rest_operations_bound_to_a_tool: 7
+  note: >-
+    Six of the ten named MCP tools bind to a v2 REST operation; the other four are dynamic-mode
+    protocol meta-tools. The agent surface is deliberately narrow — analysis and catalog by default,
+    code execution and Ontology governance opt-in — against a 55-operation v2 REST API and a
+    407-operation RPC API.

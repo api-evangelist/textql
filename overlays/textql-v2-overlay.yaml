@@ -1,0 +1,98 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enrichment overlay for the TextQL v2 API
+  version: 1.0.0
+extends: ../openapi/textql-v2-openapi.yml
+x-generated: '2026-08-30'
+x-method: generated
+x-source: >-
+  API Evangelist enrichment pass 2026-08-30. Captures findings from
+  https://docs.textql.com/api-reference/v2/introduction, https://docs.textql.com/core/admin/limits and
+  https://app.textql.com/.well-known/* that the published spec does not carry. The original spec is
+  never mutated.
+actions:
+- target: $.info
+  update:
+    contact:
+      name: TextQL Support
+      email: support@textql.com
+      url: https://docs.textql.com/
+    x-api-evangelist:
+      provider: TextQL
+      aid: textql
+      generation: v2
+      supersedes: v1 Connect-RPC surface at https://app.textql.com/v1
+      documentation: https://docs.textql.com/api-reference/v2/introduction
+- target: $.info
+  update:
+    x-error-envelope:
+      shape: '{"error": {"code": "...", "message": "..."}}'
+      rfc9457: false
+      codes: [invalid_request, unauthenticated, permission_denied, not_found, conflict, rate_limit_exceeded, internal, timeout, cancelled, execution_failed, no_report]
+      catalog: ../errors/textql-problem-types.yml
+    x-rate-limits:
+      published_request_rate: null
+      note: >-
+        429 rate_limit_exceeded is declared on all 55 operations but no threshold, RateLimit-* header
+        or Retry-After is published. Organization resource and timeout limits ARE published at
+        https://docs.textql.com/core/admin/limits.
+      catalog: ../rate-limits/textql-rate-limits.yml
+    x-idempotency:
+      supported: false
+      note: No Idempotency-Key header on any POST. Retrying a timed-out create or run can duplicate a billable analysis.
+    x-pagination:
+      styles: [cursor+limit, limit+offset]
+      note: Mixed within v2 — newer collections use cursor, older ones use offset.
+    x-reversibility:
+      grade: documented
+      catalog: ../conventions/textql-conventions.yml
+- target: $.components.securitySchemes.bearerAuth
+  update:
+    x-oauth:
+      authorization_server: https://app.textql.com
+      metadata: https://app.textql.com/.well-known/oauth-authorization-server
+      scopes_published: 34
+      catalog: ../scopes/textql-scopes.yml
+      note: >-
+        The spec declares only "API key or JWT token". TextQL additionally runs a full OAuth 2.1 +
+        OIDC authorization server whose scopes govern these same operations; the CLI and the MCP
+        server authenticate that way.
+- target: $.paths['/v2/chats'].post
+  update:
+    x-agent-guidance:
+      synchronous: true
+      max_duration: up to a minute
+      prefer: POST /v2/chats/stream for long analyses
+      billable: true
+      note: Not idempotent. A retry starts a second billable analysis run.
+- target: $.paths['/v2/chats/stream'].post
+  update:
+    x-agent-guidance:
+      transport: server-sent-events
+      content_type: text/event-stream
+      mcp_equivalent: [ana_ask, ana_poll]
+- target: $.paths['/v2/changes/{id}/restore'].post
+  update:
+    x-reversibility:
+      reverses: v2.denyChange
+      precondition: change must be in the denied state
+      window: null
+      window_note: No time limit on restoring a denied change is published.
+- target: $.paths['/v2/members/{id}'].delete
+  update:
+    x-reversibility:
+      soft_delete_default: true
+      hard_delete_param: hard_delete
+      restore_operation: null
+      window: null
+      window_note: >-
+        Soft delete is the default but no restore operation is published and no retention period is
+        stated.
+- target: $.paths['/v2/sandcastles/{id}/ontology/diff'].get
+  update:
+    x-dry-run: true
+    x-agent-guidance:
+      note: Call this before v2.createOntologyChange to see pending Ontology changes without authoring one.
+- target: $.paths['/v2/connectors/test'].post
+  update:
+    x-dry-run: true

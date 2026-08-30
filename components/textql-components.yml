@@ -1,0 +1,76 @@
+generated: '2026-08-30'
+method: searched
+source: >-
+  https://docs.textql.com/core/guides/embedding-ana,
+  https://docs.textql.com/core/guides/embedding-dashboards,
+  https://docs.textql.com/core/guides/embedding-data-apps,
+  https://docs.textql.com/product/changelog
+note: >-
+  TextQL's client-side surface is iframe-based hosted embeds, not a JavaScript component library.
+  There is no loader script, web-component package or element library to install — the integration is
+  a URL in an iframe plus a key, with access control resolved server-side. Distinct from the SDKs in
+  packages/, which are server-side API clients.
+loader_libraries: []
+distribution: hosted-iframe
+families:
+- name: Embedded Ana
+  description: >-
+    Ana's full conversational analyst surface embedded inside a host application, under the host's
+    branding and access control.
+  docs: https://docs.textql.com/core/guides/embedding-ana
+  components:
+  - name: Ana embed
+    type: iframe
+    url_pattern: https://app.textql.com/embed?authKey=<API_KEY>
+    example: |
+      <iframe
+        src="https://app.textql.com/embed?authKey=YOUR_API_KEY"
+        width="100%"
+        height="600px"
+        frameBorder="0"
+        allow="clipboard-write"
+      ></iframe>
+    auth: platform API key in the authKey query parameter
+    security_note: >-
+      TextQL's own docs warn against this pattern in production — "never expose a long-lived API key
+      in frontend code". The documented production architecture is a service-account key held
+      server-side, minted per session with role scoping and an expiry, carrying clientId metadata that
+      TQL row-level security reads per request.
+    recommended_key_type: Service Account Key
+    programmatic_minting: v2.createApiKey
+- name: Embedded dashboards
+  description: Publish a single dashboard into another application with a revocable embed link.
+  docs: https://docs.textql.com/core/guides/embedding-dashboards
+  shipped: '2026-08-16'
+  components:
+  - name: Dashboard embed
+    type: iframe
+    revocable: true
+    provisioning: from the dashboard's share menu, or through the public API
+- name: Embedded data apps
+  description: Embed a Data App in a host product with per-user row-level security.
+  docs: https://docs.textql.com/core/guides/embedding-data-apps
+  components:
+  - name: Data App embed
+    type: iframe
+    rls: per-user row-level security, driven by the clientId metadata on the embedding key
+- name: Data app design systems
+  description: >-
+    A design system defines a data app's fonts, colors and card styling so an embedded app carries the
+    host's visual identity rather than the stock TextQL look. Ana can author one on request.
+  docs: https://docs.textql.com/core/how-it-works/data-apps
+  status: beta
+  shipped: '2026-08-30'
+white_labeling:
+  supported: true
+  tier: Enterprise
+  evidence: >-
+    textql.com/pricing lists "embed & white-label" under the Enterprise deployment column, and the
+    CLI docs reference white-labeled deployments renaming Settings → Desktop & CLI to Settings → CLI.
+desktop_app:
+  present: true
+  docs: https://docs.textql.com/core/admin/desktop-app
+  note: >-
+    A distributable desktop application pointed at the customer's own server, with admin control over
+    who can download it. Not an embeddable component, recorded here for completeness of the
+    client-side surface.

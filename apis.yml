@@ -1,18 +1,162 @@
 aid: textql
 name: TextQL
-description: 'TextQL is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  TextQL is an enterprise AI data platform built around Ana, an AI data scientist that connects to a
+  company's warehouses, databases, BI tools and SaaS APIs and answers questions in plain language.
+  Ana writes SQL, runs Python in a managed gVisor sandbox, searches the web, and produces charts,
+  dashboards, scheduled reports (Playbooks) and long-running monitors (Agents) on top of a governed
+  Ontology semantic layer. TextQL ships a public REST platform API in two generations — a v1
+  Connect-RPC surface and a REST-native v2 — plus an OAuth-authorized remote MCP server that exposes
+  Ana to Claude, Cursor, ChatGPT, Copilot and any MCP-compatible client. First-party TypeScript and
+  Python SDKs, embeddable iframe surfaces for Ana, dashboards and data apps, SAML/OIDC single sign-on
+  with SCIM 2.0 provisioning, and self-hosted Helm deployment into a customer VPC round out the
+  developer surface.
+image: https://raw.githubusercontent.com/api-evangelist/textql/main/images/textql-og-card.png
 url: https://raw.githubusercontent.com/api-evangelist/textql/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-08-30'
 modified: '2026-08-30'
 tags:
 - Company
-apis: []
+- Artificial Intelligence
+- Analytics
+- Business Intelligence
+- Data
+- Agents
+- Model Context Protocol
+- Semantic Layer
+- Text To SQL
+- Data Warehouse
+- Enterprise
+apis:
+- aid: textql-v2-api
+  name: TextQL v2 API
+  description: >-
+    The REST-native second generation of the TextQL Platform API. Standard HTTP methods, resource IDs
+    in the path, query-parameter filtering and cursor pagination, a plain JSON error envelope, and SSE
+    streaming over text/event-stream. Covers chats with Ana, connectors, playbooks, dashboards,
+    sandcastles (managed Python sandboxes), Ontology changes, members, RBAC roles and platform API keys.
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - Chat
+  - Connectors
+  - Playbooks
+  - Dashboards
+  - Sandcastles
+  - Ontology
+  - RBAC
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-v2-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: Overlay
+    url: overlays/textql-v2-overlay.yaml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+- aid: textql-platform-api-v1
+  name: TextQL Platform API (v1)
+  description: >-
+    The first-generation TextQL Platform API, exposed as Connect-RPC over HTTP POST. Documented as
+    deprecated in favour of the v2 REST API but still published and served. Covers chat execution and
+    streaming, playbook lifecycle, agent webhooks, connector listing, the Python sandbox, and outbound
+    API access keys for external providers.
+  humanURL: https://docs.textql.com/api-reference/introduction
+  baseURL: https://app.textql.com/v1
+  tags:
+  - Chat
+  - Playbooks
+  - Agents
+  - Connectors
+  - Sandbox
+  - API Keys
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-chat-v1-openapi.yml
+  - type: OpenAPI
+    url: openapi/textql-playbooks-v1-openapi.yml
+  - type: OpenAPI
+    url: openapi/textql-agents-v1-openapi.yml
+  - type: OpenAPI
+    url: openapi/textql-connectors-v1-openapi.yml
+  - type: OpenAPI
+    url: openapi/textql-sandbox-v1-openapi.yml
+  - type: OpenAPI
+    url: openapi/textql-api-access-key-v1-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Overlay
+    url: overlays/textql-v1-overlay.yaml
+- aid: textql-public-rpc-api
+  name: TextQL Public RPC API
+  description: >-
+    The full public Connect-RPC surface of the TextQL platform, generated from the protobuf service
+    definitions and published with code samples. 407 operations across twenty services — dashboards,
+    connectors, Tableau and Power BI integration, datasets, Ontology management, chat, agents, audit
+    logs, MCP server registration, metrics export, observability, playbooks, RBAC, the sandbox
+    services, and SCIM credential management.
+  humanURL: https://docs.textql.com/api-reference/introduction
+  baseURL: https://app.textql.com/rpc/public
+  tags:
+  - RPC
+  - Ontology
+  - Dashboards
+  - Audit
+  - RBAC
+  - SCIM
+  - Observability
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-platform-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+  - type: Overlay
+    url: overlays/textql-platform-api-overlay.yaml
+- aid: textql-ana-mcp-server
+  name: Ana MCP Server
+  description: >-
+    TextQL's hosted, remote Model Context Protocol server. Any MCP-compatible client — Claude, Claude
+    Code, Cursor, Windsurf, ChatGPT, Microsoft Copilot — points at the endpoint, authorizes once over
+    OAuth 2.1 with PKCE and dynamic client registration, then calls Ana headlessly against the
+    caller's own connectors and Ontology. Tools are organized into scopeable groups (analysis,
+    catalog, sandcastle, ontology) selectable per connection, with a dynamic mode that lets the
+    assistant load tool groups on demand.
+  humanURL: https://docs.textql.com/core/how-it-works/mcp/ana-as-mcp-server
+  baseURL: https://app.textql.com/mcp
+  tags:
+  - Model Context Protocol
+  - Agents
+  - OAuth
+  properties:
+  - type: MCPServer
+    url: mcp/textql-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/textql-tool-crosswalk.yml
+  - type: Documentation
+    url: https://docs.textql.com/core/how-it-works/mcp/ana-as-mcp-server
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -20,4 +164,83 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
-  url: https://forgeglobal.com/textql_stock/
+  url: https://textql.com/
+- type: DeveloperPortal
+  url: https://docs.textql.com/
+- type: Documentation
+  url: https://docs.textql.com/
+- type: APIReference
+  url: https://docs.textql.com/api-reference/v2/introduction
+- type: GettingStarted
+  url: https://docs.textql.com/core/get-started/quickstart
+- type: Blog
+  url: https://textql.com/blog
+- type: GitHubOrganization
+  url: https://github.com/TextQLLabs
+- type: Pricing
+  url: https://textql.com/pricing
+- type: SignUp
+  url: https://app.textql.com/
+- type: Login
+  url: https://app.textql.com/
+- type: StatusPage
+  url: https://status.textql.com/
+- type: TrustCenter
+  url: https://trust.textql.com/
+- type: Compliance
+  url: security/textql-trust-center.yml
+- type: ChangeLog
+  url: https://docs.textql.com/product/changelog
+- type: AgentCard
+  url: a2a/textql-a2a.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: LLMsTxt
+  url: llms/textql-llms.txt
+- type: WellKnown
+  url: well-known/textql-well-known.yml
+- type: OpenIDConnectDiscovery
+  url: well-known/textql-openid-configuration.json
+- type: Packages
+  url: packages/textql-packages.yml
+- type: SDKs
+  url: packages/textql-packages.yml
+- type: Lifecycle
+  url: lifecycle/textql-lifecycle.yml
+- type: Deprecation
+  url: lifecycle/textql-lifecycle.yml
+- type: DomainSecurity
+  url: security/textql-domain-security.yml
+- type: Plans
+  url: plans/textql-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/textql-rate-limits.yml
+- type: Conformance
+  url: conformance/textql-conformance.yml
+- type: ChangeLog
+  url: changelog/textql-changelog.yml
+- type: Components
+  url: components/textql-components.yml
+- type: CLI
+  url: cli/textql-cli.yml
+- type: Conventions
+  url: conventions/textql-conventions.yml
+- type: DataModel
+  url: data-model/textql-data-model.yml
+- type: Authentication
+  url: authentication/textql-authentication.yml
+- type: OAuthScopes
+  url: scopes/textql-scopes.yml
+- type: ErrorCatalog
+  url: errors/textql-problem-types.yml
+- type: MCPServer
+  url: mcp/textql-mcp.yml
+- type: ToolCrosswalk
+  url: mcp/textql-tool-crosswalk.yml
+- type: Webhooks
+  url: asyncapi/textql-webhooks.yml
+x-enrichment:
+  date: '2026-08-30'
+  status: enriched
+  artifacts_added: 43
+  pass: local-v1

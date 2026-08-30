@@ -1,0 +1,60 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enrichment overlay for the TextQL Public RPC API
+  version: 1.0.0
+extends: ../openapi/textql-platform-api-openapi.yml
+x-generated: '2026-08-30'
+x-method: generated
+x-source: >-
+  API Evangelist enrichment pass 2026-08-30 over the Speakeasy-generated master spec published at
+  https://docs.textql.com/api-reference/speakeasy/textql-api-with-code-samples.yaml (407 operations,
+  20 services).
+actions:
+- target: $.info
+  update:
+    contact:
+      name: TextQL Support
+      email: support@textql.com
+      url: https://docs.textql.com/
+    x-api-evangelist:
+      provider: TextQL
+      aid: textql
+      surface: public Connect-RPC
+      base: https://app.textql.com/rpc/public
+      operations: 407
+      services: 20
+      generator: Speakeasy
+      note: >-
+        info.description states the spec is generated from protobuf service definitions with internal
+        endpoints excluded via google.api.visibility / file_visibility. The .proto sources themselves
+        are not published — no repository in github.com/TextQLLabs and no buf.build module was found,
+        so the generated OpenAPI is the only machine-readable form of this contract available.
+- target: $.info
+  update:
+    x-services:
+      identity_and_access: [RBACService, ScimService, AuditLogService]
+      analysis: [ChatService, SandboxAdminService, SandboxQueryService, SandboxCapabilityService, SandboxExecService]
+      content: [DashboardService, DatasetService, PlaybookService, OntologyManagementService]
+      integrations: [ConnectorService, PowerBIService, TableauService, MCPService]
+      platform: [AppService, MetricsExportService, ObservabilityService, AgentService]
+    x-scim:
+      surface: credential-management-only
+      operations: [ScimService_CreateScimToken, ScimService_CreateScimOAuthClient, ScimService_ListScimTokens, ScimService_ListScimOAuthClients, ScimService_RevokeScimToken, ScimService_RevokeScimOAuthClient]
+      note: >-
+        Mints and revokes the tokens and OAuth clients an IdP authenticates with. The SCIM 2.0
+        resource endpoints those credentials are then used against (/Users, /Groups,
+        /ServiceProviderConfig) are NOT in this or any published contract, and no
+        urn:ietf:params:scim:schemas:* URN appears in the document.
+      catalog: ../conformance/textql-conformance.yml
+    x-mcp:
+      direction: outbound
+      note: >-
+        MCPService registers EXTERNAL MCP servers into Ana's context (TextQL as MCP client). TextQL's
+        own inbound MCP server is a separate surface at https://app.textql.com/mcp.
+      catalog: ../mcp/textql-mcp.yml
+- target: $.components.securitySchemes.apiKey
+  update:
+    x-note: >-
+      Header-based apiKey named tql_api_key. Distinct from the v2 API's Authorization: Bearer scheme —
+      the two generations authenticate differently.
+    x-catalog: ../authentication/textql-authentication.yml

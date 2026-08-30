@@ -1,0 +1,131 @@
+generated: '2026-08-30'
+method: searched
+source: >-
+  https://docs.textql.com/core/how-it-works/mcp/ana-as-mcp-server,
+  https://docs.textql.com/core/how-it-works/mcp/client-setup,
+  https://docs.textql.com/core/how-it-works/mcp/tool-groups
+name: Ana MCP Server
+status: published
+deployment:
+  mode: remote
+  endpoint: https://app.textql.com/mcp
+  auth: oauth
+  verified: probed
+x-evidence:
+  fetched: '2026-08-30'
+  url: https://app.textql.com/mcp
+  method: POST
+  body: '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+  http_status: 401
+  response_body: 'no bearer token'
+  www_authenticate: >-
+    Bearer resource_metadata="https://app.textql.com/.well-known/oauth-protected-resource/mcp"
+  note: >-
+    The live tool schemas are auth-gated. The 401 is RFC 9728-correct: it names the protected-resource
+    metadata document for this exact resource, which resolves (200) and declares the authorization
+    server and the mcp:tools scope. Tool names, descriptions and grouping below are taken verbatim
+    from TextQL's published MCP documentation; their inputSchemas require an authenticated
+    tools/list call and are NOT recorded here rather than being guessed.
+transport: Streamable HTTP
+oauth:
+  authorization_server: https://app.textql.com
+  protected_resource_metadata: https://app.textql.com/.well-known/oauth-protected-resource/mcp
+  resource: https://app.textql.com/mcp
+  scopes_supported:
+  - mcp:tools
+  grant_types: [authorization_code, refresh_token]
+  pkce: S256
+  dynamic_client_registration: https://app.textql.com/oauth/register
+  spec: RFC 9728 protected-resource metadata + RFC 8414 authorization-server metadata
+clients_documented:
+- Claude (web)
+- Claude Code
+- Cursor
+- Windsurf
+- ChatGPT
+- Microsoft Copilot
+- MCP Inspector
+configuration:
+  toolset_scoping:
+    query_param: toolsets
+    header: X-MCP-Toolsets
+    keywords: [all, default]
+    example: https://app.textql.com/mcp?toolsets=analysis,catalog,sandcastle
+  dynamic_mode:
+    query_param: dynamic
+    example: https://app.textql.com/mcp?dynamic=1
+    meta_tools: [list_available_toolsets, get_toolset_tools, enable_toolset, disable_toolset]
+    note: >-
+      In dynamic mode the server tracks the session's active sandcastle, so sandcastle tools may be
+      called without passing a sandbox_id. Requires a client that supports MCP tool-list updates.
+tool_groups:
+- name: analysis
+  default: true
+  description: Ask the data analyst agent questions, synchronous and streaming.
+  tools: [ana, ana_ask, ana_poll]
+- name: catalog
+  default: true
+  description: Discover the connectors you can query.
+  tools: [list_connectors]
+- name: sandcastle
+  default: false
+  description: >-
+    Run code and queries in a managed Python sandcastle — create, inspect and stop sandcastles; run
+    Python in a persistent kernel; load connector data or saved .tql queries from the Ontology into
+    dataframes; run shell commands; read and upload files; and propose Ontology changes as a
+    reviewable patch.
+  tools: [execute_python, run_query]
+  tools_note: >-
+    Only execute_python and run_query are named explicitly in the published docs; the rest of this
+    group is described in prose and its exact tool names are not published.
+- name: ontology
+  default: false
+  description: >-
+    Review and govern proposed Ontology changes — list pending patches, read one, and approve, deny
+    or restore.
+tools:
+- name: ana
+  group: analysis
+  description: >-
+    Ask any natural-language question. Ana connects to the warehouse through the caller's configured
+    connectors and Ontology, runs the analysis, and returns the answer plus a link to the full chat
+    thread in TextQL. Synchronous; can take up to a minute.
+- name: ana_ask
+  group: analysis
+  description: >-
+    Streaming variant for clients with short request timeouts. Starts the analysis and returns
+    immediately.
+- name: ana_poll
+  group: analysis
+  description: >-
+    Streams progress, answer text, charts and report links until the run started by ana_ask completes.
+- name: list_connectors
+  group: catalog
+  description: List the data connectors the caller can target, so a question can be scoped to a source.
+- name: execute_python
+  group: sandcastle
+  description: Execute Python in a persistent kernel inside a managed sandcastle.
+- name: run_query
+  group: sandcastle
+  description: Run a query in the sandcastle, loading results as a dataframe.
+returns:
+  - The answer, grounded in the caller's warehouse data
+  - A thread link back into the TextQL UI for the full chat, SQL and audit trail
+  - Resource links for charts, dashboards and reports
+access_management:
+  docs: https://docs.textql.com/core/how-it-works/mcp/managing-access
+  note: Users and organization admins can review and revoke authorized MCP clients.
+outbound_mcp:
+  note: >-
+    TextQL is also an MCP CLIENT — the Public RPC API's MCPService lets an organization register
+    external MCP servers (Notion, GitHub, internal APIs) into Ana's context, with an OAuth flow per
+    server. See openapi/textql-platform-api-openapi.yml, paths under
+    /textql.rpc.public.mcp.MCPService/.
+  operations:
+  - MCPService_GetMCPServers
+  - MCPService_UpsertMCPServers
+  - MCPService_ToggleMCPServer
+  - MCPService_DeleteMCPServer
+  - MCPService_InitiateOAuthFlow
+  - MCPService_HandleOAuthCallback
+  - MCPService_ClearOAuthToken
