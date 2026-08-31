@@ -25,6 +25,18 @@ tags:
 - Business Intelligence
 - Data
 - Agents
+- MCP
+- Semantic Layer
+- Text-to-SQL
+- Data Warehouse
+- Enterprise
+tags_raw:
+- Company
+- Artificial Intelligence
+- Analytics
+- Business Intelligence
+- Data
+- Agents
 - Model Context Protocol
 - Semantic Layer
 - Text To SQL
@@ -79,6 +91,13 @@ apis:
   humanURL: https://docs.textql.com/api-reference/introduction
   baseURL: https://app.textql.com/v1
   tags:
+  - Chat
+  - Playbooks
+  - Agents
+  - Connectors
+  - Sandbox
+  - APIKeys
+  tags_raw:
   - Chat
   - Playbooks
   - Agents
@@ -147,6 +166,10 @@ apis:
   humanURL: https://docs.textql.com/core/how-it-works/mcp/ana-as-mcp-server
   baseURL: https://app.textql.com/mcp
   tags:
+  - MCP
+  - Agents
+  - Authentication
+  tags_raw:
   - Model Context Protocol
   - Agents
   - OAuth
