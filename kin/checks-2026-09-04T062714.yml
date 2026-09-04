@@ -1,17 +1,17 @@
 ---
 kin_checks:
   slug: textql
-  schema_version: 0.17.2
-  scored_at: '2026-09-01'
-  run_ts: 2026-09-01T063623
+  schema_version: 0.18.2
+  scored_at: '2026-09-04'
+  run_ts: 2026-09-04T062714
   note: Actionable checks only (missed + partial). earned/na are every other check
-    in rubric/scoring-0.17.2.yml; counts below let you verify that.
+    in rubric/scoring-0.18.2.yml; counts below let you verify that.
   counts:
-    total: 130
+    total: 132
     earned: 53
-    partial: 11
-    missed: 42
-    na: 24
+    partial: 14
+    missed: 40
+    na: 25
   checks:
   - id: well_known_published
     status: missed
@@ -26,11 +26,11 @@ kin_checks:
   - id: info_complete
     status: missed
     detail: 0 of 3 openapi documents pass
-  - id: servers_resolvable
-    status: missed
   - id: webhooks_or_callbacks
     status: missed
     detail: 0 of 3 openapi documents pass
+  - id: inbound_contract_published
+    status: missed
   - id: json_schema_present
     status: missed
   - id: json_schema_per_resource
@@ -40,8 +40,6 @@ kin_checks:
   - id: json_ld_class_depth
     status: missed
   - id: json_ld_property_depth
-    status: missed
-  - id: lifecycle_documented
     status: missed
   - id: domain_standard_conformance
     status: missed
@@ -90,8 +88,6 @@ kin_checks:
     status: missed
   - id: agentic_access
     status: missed
-  - id: reversibility_documented
-    status: missed
   - id: idempotency
     status: missed
   - id: well_known_catalog
@@ -106,6 +102,9 @@ kin_checks:
     status: partial
     earned: 2.0
     detail: 2 of 3 openapi documents pass
+  - id: servers_resolvable
+    status: partial
+    earned: 1.25
   - id: operations_description_coverage
     status: partial
     earned: 2.0
@@ -125,10 +124,17 @@ kin_checks:
     status: partial
     earned: 2.0
     detail: 2 of 3 openapi documents pass
+  - id: lifecycle_documented
+    status: partial
+    earned: 0.07
   - id: github_org_present
     status: partial
     earned: 1.0
     detail: pointer liveness 0.5
+  - id: reversibility_documented
+    status: partial
+    earned: 2.4
+    detail: 'grade: documented'
   - id: mcp_server
     status: partial
     earned: 4.8

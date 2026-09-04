@@ -11,6 +11,22 @@ description: >-
   Python SDKs, embeddable iframe surfaces for Ana, dashboards and data apps, SAML/OIDC single sign-on
   with SCIM 2.0 provisioning, and self-hosted Helm deployment into a customer VPC round out the
   developer surface.
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  - scopes
+  - rate-limits
+  - security
+  generated: '2026-09-02'
+  method: derived
 image: https://raw.githubusercontent.com/api-evangelist/textql/main/images/textql-og-card.png
 url: https://raw.githubusercontent.com/api-evangelist/textql/refs/heads/main/apis.yml
 x-type: company
