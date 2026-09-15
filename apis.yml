@@ -272,6 +272,8 @@ common:
   url: mcp/textql-tool-crosswalk.yml
 - type: Webhooks
   url: asyncapi/textql-webhooks.yml
+- type: Support
+  url: mailto:support@textql.com
 x-enrichment:
   date: '2026-08-30'
   status: enriched
