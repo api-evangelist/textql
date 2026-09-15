@@ -1,16 +1,14 @@
 aid: textql
 name: TextQL
-description: >-
-  TextQL is an enterprise AI data platform built around Ana, an AI data scientist that connects to a
-  company's warehouses, databases, BI tools and SaaS APIs and answers questions in plain language.
-  Ana writes SQL, runs Python in a managed gVisor sandbox, searches the web, and produces charts,
-  dashboards, scheduled reports (Playbooks) and long-running monitors (Agents) on top of a governed
-  Ontology semantic layer. TextQL ships a public REST platform API in two generations — a v1
-  Connect-RPC surface and a REST-native v2 — plus an OAuth-authorized remote MCP server that exposes
-  Ana to Claude, Cursor, ChatGPT, Copilot and any MCP-compatible client. First-party TypeScript and
-  Python SDKs, embeddable iframe surfaces for Ana, dashboards and data apps, SAML/OIDC single sign-on
-  with SCIM 2.0 provisioning, and self-hosted Helm deployment into a customer VPC round out the
-  developer surface.
+description: TextQL is an enterprise AI data platform built around Ana, an AI data scientist that connects
+  to a company's warehouses, databases, BI tools and SaaS APIs and answers questions in plain language.
+  Ana writes SQL, runs Python in a managed gVisor sandbox, searches the web, and produces charts, dashboards,
+  scheduled reports (Playbooks) and long-running monitors (Agents) on top of a governed Ontology semantic
+  layer. TextQL ships a public REST platform API in two generations — a v1 Connect-RPC surface and a REST-native
+  v2 — plus an OAuth-authorized remote MCP server that exposes Ana to Claude, Cursor, ChatGPT, Copilot
+  and any MCP-compatible client. First-party TypeScript and Python SDKs, embeddable iframe surfaces for
+  Ana, dashboards and data apps, SAML/OIDC single sign-on with SCIM 2.0 provisioning, and self-hosted
+  Helm deployment into a customer VPC round out the developer surface.
 accessModel:
   pricing: freemium
   onboarding: self-serve
@@ -59,13 +57,12 @@ tags_raw:
 - Data Warehouse
 - Enterprise
 apis:
-- aid: textql-v2-api
+- aid: textql:textql-v2-api
   name: TextQL v2 API
-  description: >-
-    The REST-native second generation of the TextQL Platform API. Standard HTTP methods, resource IDs
-    in the path, query-parameter filtering and cursor pagination, a plain JSON error envelope, and SSE
-    streaming over text/event-stream. Covers chats with Ana, connectors, playbooks, dashboards,
-    sandcastles (managed Python sandboxes), Ontology changes, members, RBAC roles and platform API keys.
+  description: The REST-native second generation of the TextQL Platform API. Standard HTTP methods, resource
+    IDs in the path, query-parameter filtering and cursor pagination, a plain JSON error envelope, and
+    SSE streaming over text/event-stream. Covers chats with Ana, connectors, playbooks, dashboards, sandcastles
+    (managed Python sandboxes), Ontology changes, members, RBAC roles and platform API keys.
   humanURL: https://docs.textql.com/api-reference/v2/introduction
   baseURL: https://app.textql.com/v2
   tags:
@@ -97,11 +94,10 @@ apis:
     url: overlays/textql-v2-overlay.yaml
   - type: RateLimits
     url: rate-limits/textql-rate-limits.yml
-- aid: textql-platform-api-v1
+- aid: textql:textql-platform-api-v1
   name: TextQL Platform API (v1)
-  description: >-
-    The first-generation TextQL Platform API, exposed as Connect-RPC over HTTP POST. Documented as
-    deprecated in favour of the v2 REST API but still published and served. Covers chat execution and
+  description: The first-generation TextQL Platform API, exposed as Connect-RPC over HTTP POST. Documented
+    as deprecated in favour of the v2 REST API but still published and served. Covers chat execution and
     streaming, playbook lifecycle, agent webhooks, connector listing, the Python sandbox, and outbound
     API access keys for external providers.
   humanURL: https://docs.textql.com/api-reference/introduction
@@ -143,14 +139,13 @@ apis:
     url: lifecycle/textql-lifecycle.yml
   - type: Overlay
     url: overlays/textql-v1-overlay.yaml
-- aid: textql-public-rpc-api
+- aid: textql:textql-public-rpc-api
   name: TextQL Public RPC API
-  description: >-
-    The full public Connect-RPC surface of the TextQL platform, generated from the protobuf service
-    definitions and published with code samples. 407 operations across twenty services — dashboards,
-    connectors, Tableau and Power BI integration, datasets, Ontology management, chat, agents, audit
-    logs, MCP server registration, metrics export, observability, playbooks, RBAC, the sandbox
-    services, and SCIM credential management.
+  description: The full public Connect-RPC surface of the TextQL platform, generated from the protobuf
+    service definitions and published with code samples. 407 operations across twenty services — dashboards,
+    connectors, Tableau and Power BI integration, datasets, Ontology management, chat, agents, audit logs,
+    MCP server registration, metrics export, observability, playbooks, RBAC, the sandbox services, and
+    SCIM credential management.
   humanURL: https://docs.textql.com/api-reference/introduction
   baseURL: https://app.textql.com/rpc/public
   tags:
@@ -170,15 +165,14 @@ apis:
     url: conformance/textql-conformance.yml
   - type: Overlay
     url: overlays/textql-platform-api-overlay.yaml
-- aid: textql-ana-mcp-server
+- aid: textql:textql-ana-mcp-server
   name: Ana MCP Server
-  description: >-
-    TextQL's hosted, remote Model Context Protocol server. Any MCP-compatible client — Claude, Claude
-    Code, Cursor, Windsurf, ChatGPT, Microsoft Copilot — points at the endpoint, authorizes once over
-    OAuth 2.1 with PKCE and dynamic client registration, then calls Ana headlessly against the
-    caller's own connectors and Ontology. Tools are organized into scopeable groups (analysis,
-    catalog, sandcastle, ontology) selectable per connection, with a dynamic mode that lets the
-    assistant load tool groups on demand.
+  description: TextQL's hosted, remote Model Context Protocol server. Any MCP-compatible client — Claude,
+    Claude Code, Cursor, Windsurf, ChatGPT, Microsoft Copilot — points at the endpoint, authorizes once
+    over OAuth 2.1 with PKCE and dynamic client registration, then calls Ana headlessly against the caller's
+    own connectors and Ontology. Tools are organized into scopeable groups (analysis, catalog, sandcastle,
+    ontology) selectable per connection, with a dynamic mode that lets the assistant load tool groups
+    on demand.
   humanURL: https://docs.textql.com/core/how-it-works/mcp/ana-as-mcp-server
   baseURL: https://app.textql.com/mcp
   tags:
