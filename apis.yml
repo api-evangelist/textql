@@ -57,119 +57,12 @@ tags_raw:
 - Data Warehouse
 - Enterprise
 apis:
-- aid: textql:textql-v2-api
-  name: TextQL v2 API
-  description: The REST-native second generation of the TextQL Platform API. Standard HTTP methods, resource
-    IDs in the path, query-parameter filtering and cursor pagination, a plain JSON error envelope, and
-    SSE streaming over text/event-stream. Covers chats with Ana, connectors, playbooks, dashboards, sandcastles
-    (managed Python sandboxes), Ontology changes, members, RBAC roles and platform API keys.
-  humanURL: https://docs.textql.com/api-reference/v2/introduction
-  baseURL: https://app.textql.com/v2
-  tags:
-  - Chat
-  - Connectors
-  - Playbooks
-  - Dashboards
-  - Sandcastles
-  - Ontology
-  - RBAC
-  properties:
-  - type: OpenAPI
-    url: openapi/textql-v2-openapi.yml
-  - type: Documentation
-    url: https://docs.textql.com/api-reference/v2/introduction
-  - type: APIReference
-    url: https://docs.textql.com/api-reference/v2/introduction
-  - type: Authentication
-    url: authentication/textql-authentication.yml
-  - type: OAuthScopes
-    url: scopes/textql-scopes.yml
-  - type: ErrorCatalog
-    url: errors/textql-problem-types.yml
-  - type: Conventions
-    url: conventions/textql-conventions.yml
-  - type: DataModel
-    url: data-model/textql-data-model.yml
-  - type: Overlay
-    url: overlays/textql-v2-overlay.yaml
-  - type: RateLimits
-    url: rate-limits/textql-rate-limits.yml
-- aid: textql:textql-platform-api-v1
-  name: TextQL Platform API (v1)
-  description: The first-generation TextQL Platform API, exposed as Connect-RPC over HTTP POST. Documented
-    as deprecated in favour of the v2 REST API but still published and served. Covers chat execution and
-    streaming, playbook lifecycle, agent webhooks, connector listing, the Python sandbox, and outbound
-    API access keys for external providers.
-  humanURL: https://docs.textql.com/api-reference/introduction
-  baseURL: https://app.textql.com/v1
-  tags:
-  - Chat
-  - Playbooks
-  - Agents
-  - Connectors
-  - Sandbox
-  - APIKeys
-  tags_raw:
-  - Chat
-  - Playbooks
-  - Agents
-  - Connectors
-  - Sandbox
-  - API Keys
-  properties:
-  - type: OpenAPI
-    url: openapi/textql-chat-v1-openapi.yml
-  - type: OpenAPI
-    url: openapi/textql-playbooks-v1-openapi.yml
-  - type: OpenAPI
-    url: openapi/textql-agents-v1-openapi.yml
-  - type: OpenAPI
-    url: openapi/textql-connectors-v1-openapi.yml
-  - type: OpenAPI
-    url: openapi/textql-sandbox-v1-openapi.yml
-  - type: OpenAPI
-    url: openapi/textql-api-access-key-v1-openapi.yml
-  - type: Documentation
-    url: https://docs.textql.com/api-reference/introduction
-  - type: APIReference
-    url: https://docs.textql.com/api-reference/introduction
-  - type: Webhooks
-    url: asyncapi/textql-webhooks.yml
-  - type: Deprecation
-    url: lifecycle/textql-lifecycle.yml
-  - type: Overlay
-    url: overlays/textql-v1-overlay.yaml
-- aid: textql:textql-public-rpc-api
-  name: TextQL Public RPC API
-  description: The full public Connect-RPC surface of the TextQL platform, generated from the protobuf
-    service definitions and published with code samples. 407 operations across twenty services — dashboards,
-    connectors, Tableau and Power BI integration, datasets, Ontology management, chat, agents, audit logs,
-    MCP server registration, metrics export, observability, playbooks, RBAC, the sandbox services, and
-    SCIM credential management.
-  humanURL: https://docs.textql.com/api-reference/introduction
-  baseURL: https://app.textql.com/rpc/public
-  tags:
-  - RPC
-  - Ontology
-  - Dashboards
-  - Audit
-  - RBAC
-  - SCIM
-  - Observability
-  properties:
-  - type: OpenAPI
-    url: openapi/textql-platform-api-openapi.yml
-  - type: Documentation
-    url: https://docs.textql.com/api-reference/introduction
-  - type: Conformance
-    url: conformance/textql-conformance.yml
-  - type: Overlay
-    url: overlays/textql-platform-api-overlay.yaml
 - aid: textql:textql-ana-mcp-server
   name: Ana MCP Server
-  description: TextQL's hosted, remote Model Context Protocol server. Any MCP-compatible client — Claude,
-    Claude Code, Cursor, Windsurf, ChatGPT, Microsoft Copilot — points at the endpoint, authorizes once
-    over OAuth 2.1 with PKCE and dynamic client registration, then calls Ana headlessly against the caller's
+  description: >-
+    TextQL's hosted, remote Model Context Protocol server. Any MCP-compatible client — Claude, Claude
+    Code, Cursor, Windsurf, ChatGPT, Microsoft Copilot — points at the endpoint, authorizes once over
+    OAuth 2.1 with PKCE and dynamic client registration, then calls Ana headlessly against the caller's
     own connectors and Ontology. Tools are organized into scopeable groups (analysis, catalog, sandcastle,
     ontology) selectable per connection, with a dynamic mode that lets the assistant load tool groups
     on demand.
@@ -190,12 +83,1392 @@ apis:
     url: mcp/textql-tool-crosswalk.yml
   - type: Documentation
     url: https://docs.textql.com/core/how-it-works/mcp/ana-as-mcp-server
+- aid: textql:textql-agentservice-api
+  name: TextQL Agent Service API
+  description: The AgentService API from TextQL — 13 operation(s) for agentservice.
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - AgentService
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-agentservice-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-api-keys-api
+  name: TextQL API Keys API
+  description: Mint and revoke scoped platform API keys
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - API Keys
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-api-keys-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-appservice-api
+  name: TextQL App Service API
+  description: >-
+    AppService manages data apps: the generative app execution primitive.
+     An app is agent-authored single-file HTML/JS/CSS executing in a CSP sandbox,
+     fed a snapshot of its declared data sources. First-class resource, not a dashboard.
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - AppService
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-appservice-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-auditlogservice-api
+  name: TextQL Audit Log Service API
+  description: The AuditLogService API from TextQL — 11 operation(s) for auditlogservice.
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - AuditLogService
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-auditlogservice-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-changes-api
+  name: TextQL Changes API
+  description: Review, approve, and deny Ontology changes
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - Changes
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-changes-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-chat-api
+  name: TextQL Chat API
+  description: Create and manage AI chat sessions
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - Chat
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-chat-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-chatservice-api
+  name: TextQL Chat Service API
+  description: The ChatService API from TextQL — 38 operation(s) for chatservice.
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - ChatService
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-chatservice-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-connectors-api
+  name: TextQL Connectors API
+  description: List available data connectors
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - Connectors
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-connectors-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-connectorservice-api
+  name: TextQL Connector Service API
+  description: The ConnectorService API from TextQL — 17 operation(s) for connectorservice.
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - ConnectorService
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-connectorservice-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-dashboardservice-api
+  name: TextQL Dashboard Service API
+  description: The DashboardService API from TextQL — 24 operation(s) for dashboardservice.
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - DashboardService
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-dashboardservice-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-datasetservice-api
+  name: TextQL Dataset Service API
+  description: The DatasetService API from TextQL — 14 operation(s) for datasetservice.
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - DatasetService
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-datasetservice-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-mcpservice-api
+  name: TextQL MCP Service API
+  description: The MCPService API from TextQL — 7 operation(s) for mcpservice.
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - MCPService
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-mcpservice-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-members-api
+  name: TextQL Members API
+  description: The Members API from TextQL — 5 operation(s) for members.
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - Members
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-members-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-metricsexportservice-api
+  name: TextQL Metrics Export Service API
+  description: The MetricsExportService API from TextQL — 5 operation(s) for metricsexportservice.
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - MetricsExportService
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-metricsexportservice-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-observabilityservice-api
+  name: TextQL Observability Service API
+  description: The ObservabilityService API from TextQL — 30 operation(s) for observabilityservice.
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - ObservabilityService
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-observabilityservice-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-ontologymanagementservice-api
+  name: TextQL Ontology Management Service API
+  description: >-
+    The OntologyManagementService API from TextQL — 69 operation(s) for ontologymanagementservice.
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - OntologyManagementService
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-ontologymanagementservice-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-playbooks-api
+  name: TextQL Playbooks API
+  description: Create, configure, and run automated playbooks
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - Playbooks
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-playbooks-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-playbookservice-api
+  name: TextQL Playbook Service API
+  description: The PlaybookService API from TextQL — 39 operation(s) for playbookservice.
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - PlaybookService
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-playbookservice-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-powerbiservice-api
+  name: TextQL Power BI Service API
+  description: The PowerBIService API from TextQL — 10 operation(s) for powerbiservice.
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - PowerBIService
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-powerbiservice-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-roles-api
+  name: TextQL Roles API
+  description: The Roles API from TextQL — 2 operation(s) for roles.
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - Roles
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-roles-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-sandboxadminservice-api
+  name: TextQL Sandbox Admin Service API
+  description: The SandboxAdminService API from TextQL — 9 operation(s) for sandboxadminservice.
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - SandboxAdminService
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-sandboxadminservice-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-sandboxcapabilityservice-api
+  name: TextQL Sandbox Capability Service API
+  description: >-
+    The SandboxCapabilityService API from TextQL — 6 operation(s) for sandboxcapabilityservice.
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - SandboxCapabilityService
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-sandboxcapabilityservice-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-sandboxexecservice-api
+  name: TextQL Sandbox Exec Service API
+  description: The SandboxExecService API from TextQL — 5 operation(s) for sandboxexecservice.
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - SandboxExecService
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-sandboxexecservice-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-sandboxqueryservice-api
+  name: TextQL Sandbox Query Service API
+  description: The SandboxQueryService API from TextQL — 2 operation(s) for sandboxqueryservice.
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - SandboxQueryService
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-sandboxqueryservice-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-sandcastles-api
+  name: TextQL Sandcastles API
+  description: Manage Python sandbox environments for code execution
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - Sandcastles
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-sandcastles-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-scimservice-api
+  name: TextQL SCIM Service API
+  description: The ScimService API from TextQL — 6 operation(s) for scimservice.
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - ScimService
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-scimservice-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-secretservice-api
+  name: TextQL Secret Service API
+  description: The SecretService API from TextQL — 5 operation(s) for secretservice.
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - SecretService
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-secretservice-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-settingsservice-api
+  name: TextQL Settings Service API
+  description: The SettingsService API from TextQL — 7 operation(s) for settingsservice.
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - SettingsService
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-settingsservice-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-slackservice-api
+  name: TextQL Slack Service API
+  description: The SlackService API from TextQL — 8 operation(s) for slackservice.
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - SlackService
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-slackservice-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-tableauservice-api
+  name: TextQL Tableau Service API
+  description: The TableauService API from TextQL — 13 operation(s) for tableauservice.
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - TableauService
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-tableauservice-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-teamsservice-api
+  name: TextQL Teams Service API
+  description: The TeamsService API from TextQL — 8 operation(s) for teamsservice.
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - TeamsService
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-teamsservice-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-textql-rpc-platform-agentservice-api
+  name: TextQL Textql.rpc.platform.Agent Service API
+  description: Platform Agent Service - External API for triggering agent webhooks
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - textql.rpc.platform.AgentService
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-textql-rpc-platform-agentservice-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-textql-rpc-platform-apiaccesskeyservice-api
+  name: TextQL Textql.rpc.platform.Api Access Key Service API
+  description: Platform API Access Key Service - External API for managing API access keys
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - textql.rpc.platform.ApiAccessKeyService
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-textql-rpc-platform-apiaccesskeyservice-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-textql-rpc-platform-chatservice-api
+  name: TextQL Textql.rpc.platform.Chat Service API
+  description: Platform Chat Service - External API for chat management
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - textql.rpc.platform.ChatService
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-textql-rpc-platform-chatservice-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-textql-rpc-platform-connectorservice-api
+  name: TextQL Textql.rpc.platform.Connector Service API
+  description: Platform Connector Service - External API for connector management
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - textql.rpc.platform.ConnectorService
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-textql-rpc-platform-connectorservice-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-textql-rpc-platform-playbookservice-api
+  name: TextQL Textql.rpc.platform.Playbook Service API
+  description: Platform Playbook Service - External API for playbook management
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - textql.rpc.platform.PlaybookService
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-textql-rpc-platform-playbookservice-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-textql-rpc-platform-sandboxservice-api
+  name: TextQL Textql.rpc.platform.Sandbox Service API
+  description: >-
+    Platform Sandbox Service - External API for creating and managing Python sandbox environments
+  humanURL: https://docs.textql.com/api-reference/v2/introduction
+  baseURL: https://app.textql.com/v2
+  tags:
+  - textql.rpc.platform.SandboxService
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-textql-rpc-platform-sandboxservice-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
+- aid: textql:textql-rbac-service-api
+  name: TextQL RBAC Service API
+  description: RBAC service for managing roles, permissions, and access control
+  humanURL: https://docs.textql.com/core/how-it-works/mcp/ana-as-mcp-server
+  baseURL: https://app.textql.com/mcp
+  tags:
+  - RBAC Service
+  properties:
+  - type: OpenAPI
+    url: openapi/textql-rbac-service-api-openapi.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/v2/introduction
+  - type: Authentication
+    url: authentication/textql-authentication.yml
+  - type: OAuthScopes
+    url: scopes/textql-scopes.yml
+  - type: ErrorCatalog
+    url: errors/textql-problem-types.yml
+  - type: Conventions
+    url: conventions/textql-conventions.yml
+  - type: DataModel
+    url: data-model/textql-data-model.yml
+  - type: RateLimits
+    url: rate-limits/textql-rate-limits.yml
+  - type: Documentation
+    url: https://docs.textql.com/api-reference/introduction
+  - type: APIReference
+    url: https://docs.textql.com/api-reference/introduction
+  - type: Webhooks
+    url: asyncapi/textql-webhooks.yml
+  - type: Deprecation
+    url: lifecycle/textql-lifecycle.yml
+  - type: Conformance
+    url: conformance/textql-conformance.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Overlay
+  url: overlays/textql-v2-overlay.yaml
+- type: Overlay
+  url: overlays/textql-v1-overlay.yaml
+- type: Overlay
+  url: overlays/textql-platform-api-overlay.yaml
 - type: Website
   url: https://textql.com/
 - type: DeveloperPortal
