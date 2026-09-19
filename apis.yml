@@ -125,6 +125,8 @@ apis:
   humanURL: https://docs.textql.com/api-reference/v2/introduction
   baseURL: https://app.textql.com/v2
   tags:
+  - APIKeys
+  tags_raw:
   - API Keys
   properties:
   - type: OpenAPI
@@ -164,6 +166,8 @@ apis:
   humanURL: https://docs.textql.com/api-reference/v2/introduction
   baseURL: https://app.textql.com/v2
   tags:
+  - App Service
+  tags_raw:
   - AppService
   properties:
   - type: OpenAPI
@@ -1209,7 +1213,8 @@ apis:
   description: Platform Agent Service - External API for triggering agent webhooks
   humanURL: https://docs.textql.com/api-reference/v2/introduction
   baseURL: https://app.textql.com/v2
-  tags:
+  tags: []
+  tags_raw:
   - textql.rpc.platform.AgentService
   properties:
   - type: OpenAPI
@@ -1245,7 +1250,8 @@ apis:
   description: Platform API Access Key Service - External API for managing API access keys
   humanURL: https://docs.textql.com/api-reference/v2/introduction
   baseURL: https://app.textql.com/v2
-  tags:
+  tags: []
+  tags_raw:
   - textql.rpc.platform.ApiAccessKeyService
   properties:
   - type: OpenAPI
@@ -1281,7 +1287,8 @@ apis:
   description: Platform Chat Service - External API for chat management
   humanURL: https://docs.textql.com/api-reference/v2/introduction
   baseURL: https://app.textql.com/v2
-  tags:
+  tags: []
+  tags_raw:
   - textql.rpc.platform.ChatService
   properties:
   - type: OpenAPI
@@ -1317,7 +1324,8 @@ apis:
   description: Platform Connector Service - External API for connector management
   humanURL: https://docs.textql.com/api-reference/v2/introduction
   baseURL: https://app.textql.com/v2
-  tags:
+  tags: []
+  tags_raw:
   - textql.rpc.platform.ConnectorService
   properties:
   - type: OpenAPI
@@ -1353,7 +1361,8 @@ apis:
   description: Platform Playbook Service - External API for playbook management
   humanURL: https://docs.textql.com/api-reference/v2/introduction
   baseURL: https://app.textql.com/v2
-  tags:
+  tags: []
+  tags_raw:
   - textql.rpc.platform.PlaybookService
   properties:
   - type: OpenAPI
@@ -1390,7 +1399,8 @@ apis:
     Platform Sandbox Service - External API for creating and managing Python sandbox environments
   humanURL: https://docs.textql.com/api-reference/v2/introduction
   baseURL: https://app.textql.com/v2
-  tags:
+  tags: []
+  tags_raw:
   - textql.rpc.platform.SandboxService
   properties:
   - type: OpenAPI
