@@ -1,0 +1,3075 @@
+openapi: 3.2.0
+info:
+  title: TextQL RBAC Service API
+  version: 1.0.0
+  description: 'TextQL public API. Generated from protobuf service definitions; internal
+
+    endpoints are excluded via google.api.visibility / file_visibility.'
+servers:
+- url: https://app.textql.com/rpc/public
+security:
+- apiKey: []
+tags:
+- name: RBAC Service
+  description: RBAC service for managing roles, permissions, and access control
+paths:
+  /textql.rpc.public.rbac.RBACService/ApproveAccessRequest:
+    post:
+      tags:
+      - RBAC Service
+      summary: ApproveAccessRequest
+      operationId: RBACService_ApproveAccessRequest
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: approveAccessRequest
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.ApproveAccessRequestRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.ApproveAccessRequestResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.approveAccessRequest({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.approve_access_request()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/AssignPermissionToRole:
+    post:
+      tags:
+      - RBAC Service
+      summary: AssignPermissionToRole
+      operationId: RBACService_AssignPermissionToRole
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: assignPermissionToRole
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.AssignPermissionToRoleRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.AssignPermissionToRoleResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.assignPermissionToRole({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.assign_permission_to_role()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/AssignRoleToMember:
+    post:
+      tags:
+      - RBAC Service
+      summary: AssignRoleToMember
+      operationId: RBACService_AssignRoleToMember
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: assignRoleToMember
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.AssignRoleToMemberRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.AssignRoleToMemberResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.assignRoleToMember({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.assign_role_to_member()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/CreateApiKey:
+    post:
+      tags:
+      - RBAC Service
+      summary: CreateApiKey
+      operationId: RBACService_CreateApiKey
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: createApiKey
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.CreateApiKeyRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.CreateApiKeyResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.createApiKey({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.create_api_key()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/CreatePersonalApiKey:
+    post:
+      tags:
+      - RBAC Service
+      summary: CreatePersonalApiKey
+      operationId: RBACService_CreatePersonalApiKey
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: createPersonalApiKey
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.CreatePersonalApiKeyRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.CreateApiKeyResult'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.createPersonalApiKey({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.create_personal_api_key()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/CreateRole:
+    post:
+      tags:
+      - RBAC Service
+      summary: Role management
+      operationId: RBACService_CreateRole
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: createRole
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.CreateRoleRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.CreateRoleResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.createRole({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.create_role()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/CreateServiceAccount:
+    post:
+      tags:
+      - RBAC Service
+      summary: CreateServiceAccount
+      operationId: RBACService_CreateServiceAccount
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: createServiceAccount
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.CreateServiceAccountRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.CreateServiceAccountResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.createServiceAccount({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.create_service_account()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/CreateServiceAccountApiKey:
+    post:
+      tags:
+      - RBAC Service
+      summary: CreateServiceAccountApiKey
+      operationId: RBACService_CreateServiceAccountApiKey
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: createServiceAccountApiKey
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.CreateServiceAccountApiKeyRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.CreateApiKeyResult'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.createServiceAccountApiKey({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.create_service_account_api_key()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/DeleteRole:
+    post:
+      tags:
+      - RBAC Service
+      summary: DeleteRole
+      operationId: RBACService_DeleteRole
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: deleteRole
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.DeleteRoleRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.DeleteRoleResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.deleteRole({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.delete_role()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/DeleteServiceAccount:
+    post:
+      tags:
+      - RBAC Service
+      summary: DeleteServiceAccount
+      operationId: RBACService_DeleteServiceAccount
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: deleteServiceAccount
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.DeleteServiceAccountRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.DeleteServiceAccountResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.deleteServiceAccount({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.delete_service_account()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/GenerateShareLink:
+    post:
+      tags:
+      - RBAC Service
+      summary: GenerateShareLink
+      operationId: RBACService_GenerateShareLink
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: generateShareLink
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.GenerateShareLinkRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.GenerateShareLinkResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.generateShareLink({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.generate_share_link()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/GetCurrentMemberRolesAndPermissions:
+    post:
+      tags:
+      - RBAC Service
+      summary: GetCurrentMemberRolesAndPermissions
+      operationId: RBACService_GetCurrentMemberRolesAndPermissions
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: getCurrentMemberRolesAndPermissions
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.GetCurrentMemberRolesAndPermissionsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.GetCurrentMemberRolesAndPermissionsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.getCurrentMemberRolesAndPermissions({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.get_current_member_roles_and_permissions(body={})\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/GetEmbedUserApiKey:
+    post:
+      tags:
+      - RBAC Service
+      summary: GetEmbedUserApiKey
+      operationId: RBACService_GetEmbedUserApiKey
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: getEmbedUserApiKey
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.GetEmbedUserApiKeyRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.GetEmbedUserApiKeyResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.getEmbedUserApiKey({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.get_embed_user_api_key()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/GetMemberRoles:
+    post:
+      tags:
+      - RBAC Service
+      summary: GetMemberRoles
+      operationId: RBACService_GetMemberRoles
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: getMemberRoles
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.GetMemberRolesRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.GetMemberRolesResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.getMemberRoles({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.get_member_roles()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/GetObjectAccess:
+    post:
+      tags:
+      - RBAC Service
+      summary: GetObjectAccess
+      operationId: RBACService_GetObjectAccess
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: getObjectAccess
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.GetObjectAccessRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.GetObjectAccessResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.getObjectAccess({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.get_object_access()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/GetRole:
+    post:
+      tags:
+      - RBAC Service
+      summary: GetRole
+      operationId: RBACService_GetRole
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: getRole
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.GetRoleRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.GetRoleResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.getRole({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.get_role()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/GetRolePermissions:
+    post:
+      tags:
+      - RBAC Service
+      summary: GetRolePermissions
+      operationId: RBACService_GetRolePermissions
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: getRolePermissions
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.GetRolePermissionsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.GetRolePermissionsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.getRolePermissions({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.get_role_permissions()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/HasObjectAccess:
+    post:
+      tags:
+      - RBAC Service
+      summary: HasObjectAccess
+      operationId: RBACService_HasObjectAccess
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: hasObjectAccess
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.HasObjectAccessRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.HasObjectAccessResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.hasObjectAccess({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.has_object_access()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/ListAccessRequests:
+    post:
+      tags:
+      - RBAC Service
+      summary: ListAccessRequests
+      operationId: RBACService_ListAccessRequests
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: listAccessRequests
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.ListAccessRequestsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.ListAccessRequestsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.listAccessRequests({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.list_access_requests()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/ListApiKeys:
+    post:
+      tags:
+      - RBAC Service
+      summary: ListApiKeys
+      operationId: RBACService_ListApiKeys
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: listApiKeys
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.ListApiKeysRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.ListApiKeysResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.listApiKeys({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.list_api_keys()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/ListPermissions:
+    post:
+      tags:
+      - RBAC Service
+      summary: Permission management
+      operationId: RBACService_ListPermissions
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: listPermissions
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.ListPermissionsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.ListPermissionsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.listPermissions({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.list_permissions(body={})\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/ListRoles:
+    post:
+      tags:
+      - RBAC Service
+      summary: ListRoles
+      operationId: RBACService_ListRoles
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: listRoles
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.ListRolesRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.ListRolesResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.listRoles({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.list_roles(body={})\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/ListServiceAccounts:
+    post:
+      tags:
+      - RBAC Service
+      summary: ListServiceAccounts
+      operationId: RBACService_ListServiceAccounts
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: listServiceAccounts
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.ListServiceAccountsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.ListServiceAccountsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.listServiceAccounts({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.list_service_accounts()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/RejectAccessRequest:
+    post:
+      tags:
+      - RBAC Service
+      summary: 'SCIM group-mapping migration tooling: one-time rolegroup conversion, internal…'
+      description: 'SCIM group-mapping migration tooling: one-time rolegroup conversion,
+
+        internal only.'
+      operationId: RBACService_RejectAccessRequest
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: rejectAccessRequest
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.RejectAccessRequestRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.RejectAccessRequestResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.rejectAccessRequest({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.reject_access_request()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/RemovePermissionFromRole:
+    post:
+      tags:
+      - RBAC Service
+      summary: RemovePermissionFromRole
+      operationId: RBACService_RemovePermissionFromRole
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: removePermissionFromRole
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.RemovePermissionFromRoleRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.RemovePermissionFromRoleResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.removePermissionFromRole({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.remove_permission_from_role()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/RemoveRoleFromMember:
+    post:
+      tags:
+      - RBAC Service
+      summary: Member role assignment
+      operationId: RBACService_RemoveRoleFromMember
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: removeRoleFromMember
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.RemoveRoleFromMemberRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.RemoveRoleFromMemberResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.removeRoleFromMember({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.remove_role_from_member()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/RequestAccess:
+    post:
+      tags:
+      - RBAC Service
+      summary: RequestAccess
+      operationId: RBACService_RequestAccess
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: requestAccess
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.RequestAccessRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.RequestAccessResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.requestAccess({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.request_access()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/RevokeApiKey:
+    post:
+      tags:
+      - RBAC Service
+      summary: Object sharing and access control
+      operationId: RBACService_RevokeApiKey
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: revokeApiKey
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.RevokeApiKeyRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.RevokeApiKeyResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.revokeApiKey({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.revoke_api_key()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/RevokeObjectAccess:
+    post:
+      tags:
+      - RBAC Service
+      summary: RevokeObjectAccess
+      operationId: RBACService_RevokeObjectAccess
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: revokeObjectAccess
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.RevokeObjectAccessRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.RevokeObjectAccessResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.revokeObjectAccess({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.revoke_object_access()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/RotateApiKey:
+    post:
+      tags:
+      - RBAC Service
+      summary: RotateApiKey
+      operationId: RBACService_RotateApiKey
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: rotateApiKey
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.RotateApiKeyRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.RotateApiKeyResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.rotateApiKey({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.rotate_api_key()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/SetRolePermissions:
+    post:
+      tags:
+      - RBAC Service
+      summary: Bulk add/remove permissions on a role in one call, producing a single audit…
+      description: Bulk add/remove permissions on a role in one call, producing a single audit entry for the whole edit.
+      operationId: RBACService_SetRolePermissions
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: setRolePermissions
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.SetRolePermissionsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.SetRolePermissionsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.setRolePermissions({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.set_role_permissions()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/ShareObject:
+    post:
+      tags:
+      - RBAC Service
+      summary: Describe what a key is allowed to do
+      description: Describe what a key is allowed to do.
+      operationId: RBACService_ShareObject
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: shareObject
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.ShareObjectRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.ShareObjectResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.shareObject({\n    body: {\n      expiresAt: new Date(\"2023-01-15T01:30:15.01Z\"),\n    },\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\nfrom textql_sdk.utils import parse_datetime\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.share_object(expires_at=parse_datetime(\"2023-01-15T01:30:15.01Z\"))\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/ShareObjectWithRole:
+    post:
+      tags:
+      - RBAC Service
+      summary: Group management. Internal only
+      description: Group management. Internal only.
+      operationId: RBACService_ShareObjectWithRole
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: shareObjectWithRole
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.ShareObjectWithRoleRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.ShareObjectWithRoleResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.shareObjectWithRole({\n    body: {\n      expiresAt: new Date(\"2023-01-15T01:30:15.01Z\"),\n    },\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\nfrom textql_sdk.utils import parse_datetime\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.share_object_with_role(expires_at=parse_datetime(\"2023-01-15T01:30:15.01Z\"))\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/UpdateObjectAccess:
+    post:
+      tags:
+      - RBAC Service
+      summary: UpdateObjectAccess
+      operationId: RBACService_UpdateObjectAccess
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: updateObjectAccess
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.UpdateObjectAccessRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.UpdateObjectAccessResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.updateObjectAccess({\n    body: {\n      expiresAt: new Date(\"2023-01-15T01:30:15.01Z\"),\n    },\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\nfrom textql_sdk.utils import parse_datetime\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.update_object_access(expires_at=parse_datetime(\"2023-01-15T01:30:15.01Z\"))\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/UpdateObjectVisibility:
+    post:
+      tags:
+      - RBAC Service
+      summary: UpdateObjectVisibility
+      operationId: RBACService_UpdateObjectVisibility
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: updateObjectVisibility
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.UpdateObjectVisibilityRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.UpdateObjectVisibilityResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.updateObjectVisibility({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.update_object_visibility()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/UpdateRole:
+    post:
+      tags:
+      - RBAC Service
+      summary: UpdateRole
+      operationId: RBACService_UpdateRole
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: updateRole
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.UpdateRoleRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.UpdateRoleResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.updateRole({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.update_role()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.rbac.RBACService/WhoAmI:
+    post:
+      tags:
+      - RBAC Service
+      summary: Get current member roles and permissions
+      operationId: RBACService_WhoAmI
+      x-speakeasy-group: rbac
+      x-speakeasy-name-override: whoAmI
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.rbac.WhoAmIRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.rbac.WhoAmIResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.rbac.whoAmI({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.rbac.who_am_i(body={})\n\n    # Handle response\n    print(res)"
+components:
+  schemas:
+    textql.rpc.public.common.SortDirection:
+      type: string
+      title: SortDirection
+      enum:
+      - SORT_DIRECTION_UNKNOWN
+      - SORT_DIRECTION_ASC
+      - SORT_DIRECTION_DESC
+      description: Common enum for sort direction used across multiple services
+    textql.rpc.public.rbac.DeleteServiceAccountRequest:
+      type: object
+      properties:
+        memberId:
+          type: string
+          title: member_id
+      title: DeleteServiceAccountRequest
+      additionalProperties: false
+    textql.rpc.public.rbac.RevokeObjectAccessRequest:
+      type: object
+      properties:
+        objectType:
+          type: string
+          title: object_type
+        objectId:
+          type: string
+          title: object_id
+        memberId:
+          type: string
+          title: member_id
+          nullable: true
+        roleId:
+          type: string
+          title: role_id
+          nullable: true
+      title: RevokeObjectAccessRequest
+      additionalProperties: false
+    textql.rpc.public.rbac.RemovePermissionFromRoleResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: RemovePermissionFromRoleResponse
+      additionalProperties: false
+    textql.rpc.public.rbac.AccessRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        orgId:
+          type: string
+          title: org_id
+        objectType:
+          type: string
+          title: object_type
+        objectId:
+          type: string
+          title: object_id
+        memberId:
+          type: string
+          title: member_id
+        requestedAccessType:
+          type: string
+          title: requested_access_type
+        justification:
+          type: string
+          title: justification
+        requestMessage:
+          type: string
+          title: request_message
+          nullable: true
+        status:
+          type: string
+          title: status
+        reviewedBy:
+          type: string
+          title: reviewed_by
+          nullable: true
+        rejectionReason:
+          type: string
+          title: rejection_reason
+          nullable: true
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: AccessRequest
+      additionalProperties: false
+    textql.rpc.public.rbac.CallerCredential:
+      type: object
+      properties:
+        authMethod:
+          type: string
+          title: auth_method
+        apiKeyId:
+          type: string
+          title: api_key_id
+          nullable: true
+        apiKeyName:
+          type: string
+          title: api_key_name
+          nullable: true
+        apiKeyShort:
+          type: string
+          title: api_key_short
+          nullable: true
+        expiresAt:
+          title: expires_at
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        status:
+          title: status
+          $ref: '#/components/schemas/textql.rpc.public.rbac.ApiKeyStatus'
+        assumedRoleIds:
+          type: array
+          items:
+            type: string
+          title: assumed_role_ids
+        clientId:
+          type: string
+          title: client_id
+          nullable: true
+        scopes:
+          type: array
+          items:
+            type: string
+          title: scopes
+      title: CallerCredential
+      additionalProperties: false
+      description: Get current member roles and permissions messages
+    textql.rpc.public.rbac.ListApiKeysRequest:
+      type: object
+      properties:
+        scope:
+          title: scope
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.rbac.ApiKeyScope'
+        serviceAccountMemberId:
+          type: string
+          title: service_account_member_id
+          nullable: true
+        includeRevoked:
+          type: boolean
+          title: include_revoked
+          nullable: true
+        searchTerm:
+          type: string
+          title: search_term
+          nullable: true
+        sortBy:
+          title: sort_by
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.rbac.ApiKeySortField'
+        sortDirection:
+          title: sort_direction
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.common.SortDirection'
+        pageSize:
+          type: integer
+          title: page_size
+          nullable: true
+        pageToken:
+          type: string
+          title: page_token
+          nullable: true
+      title: ListApiKeysRequest
+      additionalProperties: false
+    textql.rpc.public.rbac.DeleteServiceAccountResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: DeleteServiceAccountResponse
+      additionalProperties: false
+    textql.rpc.public.rbac.UpdateObjectAccessRequest:
+      type: object
+      properties:
+        accessId:
+          type: string
+          title: access_id
+        accessType:
+          type: string
+          title: access_type
+        expiresAt:
+          title: expires_at
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: UpdateObjectAccessRequest
+      additionalProperties: false
+    textql.rpc.public.rbac.CreateRoleRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+        description:
+          type: string
+          title: description
+      title: CreateRoleRequest
+      additionalProperties: false
+    textql.rpc.public.rbac.RotateApiKeyResponse:
+      type: object
+      properties:
+        apiKey:
+          title: api_key
+          $ref: '#/components/schemas/textql.rpc.public.rbac.ApiKey'
+        apiKeySecret:
+          type: string
+          title: api_key_secret
+        revokedApiKeyId:
+          type: string
+          title: revoked_api_key_id
+      title: RotateApiKeyResponse
+      additionalProperties: false
+    textql.rpc.public.rbac.ListRolesResponse:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.rbac.Role'
+          title: roles
+      title: ListRolesResponse
+      additionalProperties: false
+    textql.rpc.public.rbac.RejectAccessRequestResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: RejectAccessRequestResponse
+      additionalProperties: false
+    textql.rpc.public.rbac.AssignRoleToMemberRequest:
+      type: object
+      properties:
+        memberId:
+          type: string
+          title: member_id
+        roleId:
+          type: string
+          title: role_id
+      title: AssignRoleToMemberRequest
+      additionalProperties: false
+    textql.rpc.public.rbac.CreateServiceAccountResponse:
+      type: object
+      properties:
+        memberId:
+          type: string
+          title: member_id
+        email:
+          type: string
+          title: email
+      title: CreateServiceAccountResponse
+      additionalProperties: false
+    textql.rpc.public.rbac.GetMemberRolesResponse:
+      type: object
+      properties:
+        memberRoles:
+          type: object
+          title: member_roles
+          additionalProperties:
+            title: value
+            $ref: '#/components/schemas/textql.rpc.public.rbac.MemberRoles'
+      title: GetMemberRolesResponse
+      additionalProperties: false
+    textql.rpc.public.rbac.RotateApiKeyRequest:
+      type: object
+      properties:
+        apiKeyId:
+          type: string
+          title: api_key_id
+      title: RotateApiKeyRequest
+      additionalProperties: false
+    textql.rpc.public.rbac.ApiKeyScope:
+      type: string
+      title: ApiKeyScope
+      enum:
+      - API_KEY_SCOPE_UNSPECIFIED
+      - API_KEY_SCOPE_ALL
+      - API_KEY_SCOPE_PERSONAL
+      - API_KEY_SCOPE_SERVICE_ACCOUNTS
+    textql.rpc.public.rbac.GetObjectAccessRequest:
+      type: object
+      properties:
+        objectType:
+          type: string
+          title: object_type
+        objectId:
+          type: string
+          title: object_id
+      title: GetObjectAccessRequest
+      additionalProperties: false
+    textql.rpc.public.rbac.ServiceAccount:
+      type: object
+      properties:
+        memberId:
+          type: string
+          title: member_id
+        email:
+          type: string
+          title: email
+        displayName:
+          type: string
+          title: display_name
+        description:
+          type: string
+          title: description
+          nullable: true
+        ownerMemberId:
+          type: string
+          title: owner_member_id
+          nullable: true
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        agentId:
+          type: string
+          title: agent_id
+          nullable: true
+      title: ServiceAccount
+      additionalProperties: false
+    textql.rpc.public.rbac.RequestAccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+        requestId:
+          type: string
+          title: request_id
+      title: RequestAccessResponse
+      additionalProperties: false
+    textql.rpc.public.rbac.AssignPermissionToRoleResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: AssignPermissionToRoleResponse
+      additionalProperties: false
+    textql.rpc.public.rbac.ListPermissionsResponse:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.rbac.Permission'
+          title: permissions
+      title: ListPermissionsResponse
+      additionalProperties: false
+      description: Permission management requests/responses
+    textql.rpc.public.rbac.UpdateObjectVisibilityRequest:
+      type: object
+      properties:
+        objectType:
+          type: string
+          title: object_type
+        objectId:
+          type: string
+          title: object_id
+        isPublic:
+          type: boolean
+          title: is_public
+      title: UpdateObjectVisibilityRequest
+      additionalProperties: false
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+      - 1
+      description: Define the version of the Connect protocol
+      const: 1
+      default: 1
+    textql.rpc.public.rbac.ShareObjectWithRoleRequest:
+      type: object
+      properties:
+        objectType:
+          type: string
+          title: object_type
+        objectId:
+          type: string
+          title: object_id
+        roleId:
+          type: string
+          title: role_id
+        accessType:
+          type: string
+          title: access_type
+        expiresAt:
+          title: expires_at
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        isPublic:
+          type: boolean
+          title: is_public
+      title: ShareObjectWithRoleRequest
+      additionalProperties: false
+    textql.rpc.public.rbac.SetRolePermissionsRequest:
+      type: object
+      properties:
+        roleId:
+          type: string
+          title: role_id
+        addPermissionIds:
+          type: array
+          items:
+            type: string
+          title: add_permission_ids
+        removePermissionIds:
+          type: array
+          items:
+            type: string
+          title: remove_permission_ids
+      title: SetRolePermissionsRequest
+      additionalProperties: false
+    textql.rpc.public.rbac.DeleteRoleResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: DeleteRoleResponse
+      additionalProperties: false
+    textql.rpc.public.rbac.ApproveAccessRequestRequest:
+      type: object
+      properties:
+        requestId:
+          type: string
+          title: request_id
+      title: ApproveAccessRequestRequest
+      additionalProperties: false
+    textql.rpc.public.rbac.GetCurrentMemberRolesAndPermissionsResponse:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.rbac.Role'
+          title: roles
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.rbac.Permission'
+          title: permissions
+      title: GetCurrentMemberRolesAndPermissionsResponse
+      additionalProperties: false
+    textql.rpc.public.rbac.GenerateShareLinkResponse:
+      type: object
+      properties:
+        shareLink:
+          type: string
+          title: share_link
+      title: GenerateShareLinkResponse
+      additionalProperties: false
+    textql.rpc.public.rbac.CreateApiKeyRequest:
+      type: object
+      properties:
+        expirySeconds:
+          type: integer
+          title: expiry_seconds
+          nullable: true
+        assumedRoles:
+          type: array
+          items:
+            type: string
+          title: assumed_roles
+        inheritAllRoles:
+          type: boolean
+          title: inherit_all_roles
+          nullable: true
+        name:
+          type: string
+          title: name
+          nullable: true
+        targetMemberId:
+          type: string
+          title: target_member_id
+          nullable: true
+        clientId:
+          type: string
+          title: client_id
+          nullable: true
+        suppressSuperadmin:
+          type: boolean
+          title: suppress_superadmin
+        fullMemberAccess:
+          type: boolean
+          title: full_member_access
+      title: CreateApiKeyRequest
+      additionalProperties: false
+    textql.rpc.public.rbac.GetRoleRequest:
+      type: object
+      properties:
+        roleId:
+          type: string
+          title: role_id
+      title: GetRoleRequest
+      additionalProperties: false
+    textql.rpc.public.rbac.CreateRoleResponse:
+      type: object
+      properties:
+        role:
+          title: role
+          $ref: '#/components/schemas/textql.rpc.public.rbac.Role'
+      title: CreateRoleResponse
+      additionalProperties: false
+      description: Role management requests/responses
+    textql.rpc.public.rbac.ShareObjectWithRoleResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: ShareObjectWithRoleResponse
+      additionalProperties: false
+      description: Object access management messages
+    textql.rpc.public.rbac.ListRolesRequest:
+      type: object
+      title: ListRolesRequest
+      additionalProperties: false
+    textql.rpc.public.rbac.AssignPermissionToRoleRequest:
+      type: object
+      properties:
+        roleId:
+          type: string
+          title: role_id
+        permissionId:
+          type: string
+          title: permission_id
+      title: AssignPermissionToRoleRequest
+      additionalProperties: false
+    textql.rpc.public.rbac.AssignRoleToMemberResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: AssignRoleToMemberResponse
+      additionalProperties: false
+    textql.rpc.public.rbac.ListAccessRequestsResponse:
+      type: object
+      properties:
+        requests:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.rbac.AccessRequest'
+          title: requests
+      title: ListAccessRequestsResponse
+      additionalProperties: false
+      description: Access request management messages
+    textql.rpc.public.rbac.ShareObjectRequest:
+      type: object
+      properties:
+        objectType:
+          type: string
+          title: object_type
+        objectId:
+          type: string
+          title: object_id
+        memberId:
+          type: string
+          title: member_id
+        accessType:
+          type: string
+          title: access_type
+        expiresAt:
+          title: expires_at
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        isPublic:
+          type: boolean
+          title: is_public
+      title: ShareObjectRequest
+      additionalProperties: false
+      description: Which LLM models the caller may run.
+    textql.rpc.public.rbac.GetRolePermissionsRequest:
+      type: object
+      properties:
+        roleId:
+          type: string
+          title: role_id
+      title: GetRolePermissionsRequest
+      additionalProperties: false
+    textql.rpc.public.rbac.ShareObjectResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: ShareObjectResponse
+      additionalProperties: false
+    textql.rpc.public.rbac.RemoveRoleFromMemberRequest:
+      type: object
+      properties:
+        memberId:
+          type: string
+          title: member_id
+        roleId:
+          type: string
+          title: role_id
+      title: RemoveRoleFromMemberRequest
+      additionalProperties: false
+    textql.rpc.public.rbac.ApiKeySortField:
+      type: string
+      title: ApiKeySortField
+      enum:
+      - API_KEY_SORT_FIELD_UNSPECIFIED
+      - API_KEY_SORT_FIELD_CREATED_AT
+      - API_KEY_SORT_FIELD_EXPIRES_AT
+      - API_KEY_SORT_FIELD_NAME
+    textql.rpc.public.rbac.RevokeApiKeyResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: RevokeApiKeyResponse
+      additionalProperties: false
+    textql.rpc.public.rbac.CreateApiKeyResult:
+      type: object
+      properties:
+        apiKey:
+          title: api_key
+          $ref: '#/components/schemas/textql.rpc.public.rbac.ApiKey'
+        apiKeySecret:
+          type: string
+          title: api_key_secret
+      title: CreateApiKeyResult
+      additionalProperties: false
+    textql.rpc.public.rbac.CallerModelAccess:
+      type: object
+      properties:
+        allowedModels:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.chat.LlmModel'
+          title: allowed_models
+        defaultModel:
+          title: default_model
+          $ref: '#/components/schemas/textql.rpc.public.chat.LlmModel'
+        restricted:
+          type: boolean
+          title: restricted
+      title: CallerModelAccess
+      additionalProperties: false
+    textql.rpc.public.rbac.ListPermissionsRequest:
+      type: object
+      title: ListPermissionsRequest
+      additionalProperties: false
+    textql.rpc.public.rbac.UpdateRoleResponse:
+      type: object
+      properties:
+        role:
+          title: role
+          $ref: '#/components/schemas/textql.rpc.public.rbac.Role'
+      title: UpdateRoleResponse
+      additionalProperties: false
+    textql.rpc.public.rbac.ListApiKeysResponse:
+      type: object
+      properties:
+        apiKeys:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.rbac.ApiKey'
+          title: api_keys
+        nextPageToken:
+          type: string
+          title: next_page_token
+          nullable: true
+      title: ListApiKeysResponse
+      additionalProperties: false
+    textql.rpc.public.rbac.Role:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        orgId:
+          type: string
+          title: org_id
+        name:
+          type: string
+          title: name
+        description:
+          type: string
+          title: description
+        isSystem:
+          type: boolean
+          title: is_system
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        allowedModels:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.chat.LlmModel'
+          title: allowed_models
+        defaultModel:
+          title: default_model
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.chat.LlmModel'
+        allowModelChoice:
+          type: boolean
+          title: allow_model_choice
+          nullable: true
+        isScimManaged:
+          type: boolean
+          title: is_scim_managed
+      title: Role
+      additionalProperties: false
+    textql.rpc.public.rbac.GetRolePermissionsResponse:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.rbac.Permission'
+          title: permissions
+      title: GetRolePermissionsResponse
+      additionalProperties: false
+    textql.rpc.public.rbac.CreatePersonalApiKeyRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+          nullable: true
+        expirySeconds:
+          type: integer
+          title: expiry_seconds
+          nullable: true
+        assumedRoles:
+          type: array
+          items:
+            type: string
+          title: assumed_roles
+        inheritAllRoles:
+          type: boolean
+          title: inherit_all_roles
+          nullable: true
+        clientId:
+          type: string
+          title: client_id
+          nullable: true
+        fullMemberAccess:
+          type: boolean
+          title: full_member_access
+        suppressSuperadmin:
+          type: boolean
+          title: suppress_superadmin
+      title: CreatePersonalApiKeyRequest
+      additionalProperties: false
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
+          type: string
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+          - type: object
+            title: Any
+            additionalProperties: true
+            description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
+    textql.rpc.public.rbac.ListServiceAccountsRequest:
+      type: object
+      properties:
+        searchTerm:
+          type: string
+          title: search_term
+          nullable: true
+        pageSize:
+          type: integer
+          title: page_size
+          nullable: true
+        pageToken:
+          type: string
+          title: page_token
+          nullable: true
+      title: ListServiceAccountsRequest
+      additionalProperties: false
+    textql.rpc.public.rbac.GetRoleResponse:
+      type: object
+      properties:
+        role:
+          title: role
+          $ref: '#/components/schemas/textql.rpc.public.rbac.Role'
+      title: GetRoleResponse
+      additionalProperties: false
+    textql.rpc.public.rbac.CreateApiKeyResponse:
+      type: object
+      properties:
+        apiKey:
+          title: api_key
+          $ref: '#/components/schemas/textql.rpc.public.rbac.ApiKey'
+        apiKeySecret:
+          type: string
+          title: api_key_secret
+        apiKeyHash:
+          type: string
+          title: api_key_hash
+          deprecated: true
+      title: CreateApiKeyResponse
+      additionalProperties: false
+    textql.rpc.public.rbac.RejectAccessRequestRequest:
+      type: object
+      properties:
+        requestId:
+          type: string
+          title: request_id
+        rejectionReason:
+          type: string
+          title: rejection_reason
+          nullable: true
+      title: RejectAccessRequestRequest
+      additionalProperties: false
+    textql.rpc.public.rbac.DeleteRoleRequest:
+      type: object
+      properties:
+        roleId:
+          type: string
+          title: role_id
+      title: DeleteRoleRequest
+      additionalProperties: false
+    textql.rpc.public.rbac.SharedObject:
+      type: object
+      properties:
+        objectType:
+          type: string
+          title: object_type
+        objectId:
+          type: string
+          title: object_id
+        accessType:
+          type: string
+          title: access_type
+        grantedVia:
+          type: string
+          title: granted_via
+        roleId:
+          type: string
+          title: role_id
+          nullable: true
+        expiresAt:
+          title: expires_at
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        groupId:
+          type: string
+          title: group_id
+          nullable: true
+      title: SharedObject
+      additionalProperties: false
+      description: WhoAmI messages
+    textql.rpc.public.rbac.RevokeApiKeyRequest:
+      type: object
+      properties:
+        apiKeyId:
+          type: string
+          title: api_key_id
+      title: RevokeApiKeyRequest
+      additionalProperties: false
+    textql.rpc.public.rbac.GetEmbedUserApiKeyResponse:
+      type: object
+      properties:
+        apiKeyBase64:
+          type: string
+          title: api_key_base64
+        apiKeyShort:
+          type: string
+          title: api_key_short
+        serviceAccountEmail:
+          type: string
+          title: service_account_email
+      title: GetEmbedUserApiKeyResponse
+      additionalProperties: false
+    textql.rpc.public.rbac.ListServiceAccountsResponse:
+      type: object
+      properties:
+        serviceAccounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.rbac.ServiceAccount'
+          title: service_accounts
+        nextPageToken:
+          type: string
+          title: next_page_token
+          nullable: true
+      title: ListServiceAccountsResponse
+      additionalProperties: false
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+          - not_found
+          enum:
+          - canceled
+          - unknown
+          - invalid_argument
+          - deadline_exceeded
+          - not_found
+          - already_exists
+          - permission_denied
+          - resource_exhausted
+          - failed_precondition
+          - aborted
+          - out_of_range
+          - unimplemented
+          - internal
+          - unavailable
+          - data_loss
+          - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    textql.rpc.public.rbac.ObjectAccess:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        orgId:
+          type: string
+          title: org_id
+        objectType:
+          type: string
+          title: object_type
+        objectId:
+          type: string
+          title: object_id
+        createdBy:
+          type: string
+          title: created_by
+          nullable: true
+        isPublic:
+          type: boolean
+          title: is_public
+        memberId:
+          type: string
+          title: member_id
+          nullable: true
+        roleId:
+          type: string
+          title: role_id
+          nullable: true
+        accessType:
+          type: string
+          title: access_type
+        grantedBy:
+          type: string
+          title: granted_by
+          nullable: true
+        expiresAt:
+          title: expires_at
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: ObjectAccess
+      additionalProperties: false
+    textql.rpc.public.rbac.RevokeObjectAccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: RevokeObjectAccessResponse
+      additionalProperties: false
+    textql.rpc.public.rbac.MemberRoles:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.rbac.Role'
+          title: roles
+      title: MemberRoles
+      additionalProperties: false
+    textql.rpc.public.rbac.UpdateObjectVisibilityResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: UpdateObjectVisibilityResponse
+      additionalProperties: false
+    textql.rpc.public.rbac.UpdateObjectAccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: UpdateObjectAccessResponse
+      additionalProperties: false
+    textql.rpc.public.rbac.SetRolePermissionsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: SetRolePermissionsResponse
+      additionalProperties: false
+    textql.rpc.public.rbac.UpdateRoleRequest:
+      type: object
+      properties:
+        roleId:
+          type: string
+          title: role_id
+        name:
+          type: string
+          title: name
+        description:
+          type: string
+          title: description
+        allowModelChoice:
+          title: allow_model_choice
+          $ref: '#/components/schemas/google.protobuf.BoolValue'
+        clearAllowedModelIds:
+          type: boolean
+          title: clear_allowed_model_ids
+        allowedModels:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.chat.LlmModel'
+          title: allowed_models
+        defaultModel:
+          title: default_model
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.chat.LlmModel'
+      title: UpdateRoleRequest
+      additionalProperties: false
+    textql.rpc.public.rbac.GetObjectAccessResponse:
+      type: object
+      properties:
+        accessEntries:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.rbac.ObjectAccess'
+          title: access_entries
+      title: GetObjectAccessResponse
+      additionalProperties: false
+    textql.rpc.public.rbac.WhoAmIResponse:
+      type: object
+      properties:
+        memberId:
+          type: string
+          title: member_id
+        orgId:
+          type: string
+          title: org_id
+        email:
+          type: string
+          title: email
+          nullable: true
+        credential:
+          title: credential
+          $ref: '#/components/schemas/textql.rpc.public.rbac.CallerCredential'
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.rbac.Role'
+          title: roles
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.rbac.Permission'
+          title: permissions
+        modelAccess:
+          title: model_access
+          $ref: '#/components/schemas/textql.rpc.public.rbac.CallerModelAccess'
+        sharedAccess:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.rbac.SharedObject'
+          title: shared_access
+        sharedAccessTruncated:
+          type: boolean
+          title: shared_access_truncated
+      title: WhoAmIResponse
+      additionalProperties: false
+      description: The credential that authenticated the request.
+    textql.rpc.public.rbac.ListAccessRequestsRequest:
+      type: object
+      properties:
+        objectType:
+          type: string
+          title: object_type
+          nullable: true
+        objectId:
+          type: string
+          title: object_id
+          nullable: true
+        status:
+          type: string
+          title: status
+          nullable: true
+      title: ListAccessRequestsRequest
+      additionalProperties: false
+    google.protobuf.BoolValue:
+      type: boolean
+      description: "Wrapper message for `bool`.\n\n The JSON representation for `BoolValue` is JSON `true` and `false`.\n\n Not recommended for use in new APIs, but still useful for legacy APIs and\n has no plan to be removed."
+    textql.rpc.public.rbac.GetCurrentMemberRolesAndPermissionsRequest:
+      type: object
+      title: GetCurrentMemberRolesAndPermissionsRequest
+      additionalProperties: false
+    textql.rpc.public.rbac.WhoAmIRequest:
+      type: object
+      title: WhoAmIRequest
+      additionalProperties: false
+    textql.rpc.public.rbac.ApiKeyStatus:
+      type: string
+      title: ApiKeyStatus
+      enum:
+      - API_KEY_STATUS_UNSPECIFIED
+      - API_KEY_STATUS_ACTIVE
+      - API_KEY_STATUS_EXPIRED
+      - API_KEY_STATUS_REVOKED
+    textql.rpc.public.rbac.RequestAccessRequest:
+      type: object
+      properties:
+        objectType:
+          type: string
+          title: object_type
+        objectId:
+          type: string
+          title: object_id
+        requestedAccessType:
+          type: string
+          title: requested_access_type
+        justification:
+          type: string
+          title: justification
+        requestMessage:
+          type: string
+          title: request_message
+          nullable: true
+      title: RequestAccessRequest
+      additionalProperties: false
+    textql.rpc.public.rbac.CreateServiceAccountApiKeyRequest:
+      type: object
+      properties:
+        serviceAccountMemberId:
+          type: string
+          title: service_account_member_id
+        name:
+          type: string
+          title: name
+          nullable: true
+        expirySeconds:
+          type: integer
+          title: expiry_seconds
+          nullable: true
+        assumedRoles:
+          type: array
+          items:
+            type: string
+          title: assumed_roles
+        inheritAllRoles:
+          type: boolean
+          title: inherit_all_roles
+          nullable: true
+        clientId:
+          type: string
+          title: client_id
+          nullable: true
+        fullMemberAccess:
+          type: boolean
+          title: full_member_access
+      title: CreateServiceAccountApiKeyRequest
+      additionalProperties: false
+    textql.rpc.public.rbac.HasObjectAccessRequest:
+      type: object
+      properties:
+        objectType:
+          type: string
+          title: object_type
+        objectId:
+          type: string
+          title: object_id
+        memberId:
+          type: string
+          title: member_id
+          nullable: true
+        roleId:
+          type: string
+          title: role_id
+          nullable: true
+      title: HasObjectAccessRequest
+      additionalProperties: false
+    textql.rpc.public.rbac.GetEmbedUserApiKeyRequest:
+      type: object
+      properties:
+        memberId:
+          type: string
+          title: member_id
+      title: GetEmbedUserApiKeyRequest
+      additionalProperties: false
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    textql.rpc.public.rbac.Permission:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        resource:
+          type: string
+          title: resource
+        action:
+          type: string
+          title: action
+        description:
+          type: string
+          title: description
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: Permission
+      additionalProperties: false
+    textql.rpc.public.rbac.ApproveAccessRequestResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: ApproveAccessRequestResponse
+      additionalProperties: false
+    textql.rpc.public.rbac.GetMemberRolesRequest:
+      type: object
+      properties:
+        memberIds:
+          type: array
+          items:
+            type: string
+          title: member_ids
+      title: GetMemberRolesRequest
+      additionalProperties: false
+    textql.rpc.public.rbac.HasObjectAccessResponse:
+      type: object
+      properties:
+        hasAccess:
+          type: boolean
+          title: has_access
+      title: HasObjectAccessResponse
+      additionalProperties: false
+    textql.rpc.public.rbac.RemovePermissionFromRoleRequest:
+      type: object
+      properties:
+        roleId:
+          type: string
+          title: role_id
+        permissionId:
+          type: string
+          title: permission_id
+      title: RemovePermissionFromRoleRequest
+      additionalProperties: false
+    textql.rpc.public.rbac.CreateServiceAccountRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+        description:
+          type: string
+          title: description
+          nullable: true
+        ownerMemberId:
+          type: string
+          title: owner_member_id
+          nullable: true
+        roleIds:
+          type: array
+          items:
+            type: string
+          title: role_ids
+      title: CreateServiceAccountRequest
+      additionalProperties: false
+    google.protobuf.Timestamp:
+      type: string
+      examples:
+      - '2023-01-15T01:30:15.01Z'
+      - '2024-12-25T12:00:00Z'
+      format: date-time
+      description: "A Timestamp represents a point in time independent of any time zone or local\n calendar, encoded as a count of seconds and fractions of seconds at\n nanosecond resolution. The count is relative to an epoch at UTC midnight on\n January 1, 1970, in the proleptic Gregorian calendar which extends the\n Gregorian calendar backwards to year one.\n\n All minutes are 60 seconds long. Leap seconds are \"smeared\" so that no leap\n second table is needed for interpretation, using a [24-hour linear\n smear](https://developers.google.com/time/smear).\n\n The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By\n restricting to that range, we ensure that we can convert to and from [RFC\n 3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.\n\n # Examples\n\n Example 1: Compute Timestamp from POSIX `time()`.\n\n     Timestamp timestamp;\n     timestamp.set_seconds(time(NULL));\n     timestamp.set_nanos(0);\n\n Example 2: Compute Timestamp from POSIX `gettimeofday()`.\n\n     struct timeval tv;\n     gettimeofday(&tv, NULL);\n\n     Timestamp timestamp;\n     timestamp.set_seconds(tv.tv_sec);\n     timestamp.set_nanos(tv.tv_usec * 1000);\n\n Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.\n\n     FILETIME ft;\n     GetSystemTimeAsFileTime(&ft);\n     UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;\n\n     // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z\n     // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.\n     Timestamp timestamp;\n     timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));\n     timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));\n\n Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.\n\n     long millis = System.currentTimeMillis();\n\n     Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)\n         .setNanos((int) ((millis % 1000) * 1000000)).build();\n\n Example 5: Compute Timestamp from Java `Instant.now()`.\n\n     Instant now = Instant.now();\n\n     Timestamp timestamp =\n         Timestamp.newBuilder().setSeconds(now.getEpochSecond())\n             .setNanos(now.getNano()).build();\n\n Example 6: Compute Timestamp from current time in Python.\n\n     timestamp = Timestamp()\n     timestamp.GetCurrentTime()\n\n # JSON Mapping\n\n In JSON format, the Timestamp type is encoded as a string in the\n [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the\n format is \"{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z\"\n where {year} is always expressed using four digits while {month}, {day},\n {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional\n seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),\n are optional. The \"Z\" suffix indicates the timezone (\"UTC\"); the timezone\n is required. A proto3 JSON serializer should always use UTC (as indicated by\n \"Z\") when printing the Timestamp type and a proto3 JSON parser should be\n able to accept both UTC and other timezones (as indicated by an offset).\n\n For example, \"2017-01-15T01:30:15.01Z\" encodes 15.01 seconds past\n 01:30 UTC on January 15, 2017.\n\n In JavaScript, one can convert a Date object to this format using the\n standard\n [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)\n method. In Python, a standard `datetime.datetime` object can be converted\n to this format using\n [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with\n the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use\n the Joda Time's [`ISODateTimeFormat.dateTime()`](\n http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()\n ) to obtain a formatter capable of generating timestamps in this format."
+    textql.rpc.public.rbac.RemoveRoleFromMemberResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: RemoveRoleFromMemberResponse
+      additionalProperties: false
+      description: Member role management messages
+    textql.rpc.public.rbac.ApiKey:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        memberId:
+          type: string
+          title: member_id
+        clientId:
+          type: string
+          title: client_id
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        apiKeyShort:
+          type: string
+          title: api_key_short
+          nullable: true
+        assumedRoles:
+          type: array
+          items:
+            type: string
+          title: assumed_roles
+        name:
+          type: string
+          title: name
+          nullable: true
+        expiresAt:
+          title: expires_at
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        revokedAt:
+          title: revoked_at
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        status:
+          title: status
+          $ref: '#/components/schemas/textql.rpc.public.rbac.ApiKeyStatus'
+        ownerDisplayName:
+          type: string
+          title: owner_display_name
+          nullable: true
+        ownerEmail:
+          type: string
+          title: owner_email
+          nullable: true
+        suppressSuperadmin:
+          type: boolean
+          title: suppress_superadmin
+      title: ApiKey
+      additionalProperties: false
+    textql.rpc.public.rbac.GenerateShareLinkRequest:
+      type: object
+      properties:
+        objectType:
+          type: string
+          title: object_type
+        objectId:
+          type: string
+          title: object_id
+      title: GenerateShareLinkRequest
+      additionalProperties: false
+    textql.rpc.public.chat.LlmModel:
+      type: string
+      title: LlmModel
+      enum:
+      - MODEL_UNKNOWN
+      - MODEL_DEFAULT
+      - MODEL_DEFAULT_SYSTEM
+      - MODEL_HAIKU_4_5
+      - MODEL_OPUS_4_8
+      - MODEL_FABLE_5
+      - MODEL_SONNET_5
+      - MODEL_OPUS_5
+      - MODEL_GPT_5_6_SOL
+      - MODEL_GEMINI_3_FLASH
+      - MODEL_GEMINI_3_PRO
+      - MODEL_GEMINI_3_1_PRO
+      - MODEL_GEMINI_3_5_FLASH
+      - MODEL_GPT_5_6_TERRA
+      - MODEL_GPT_5_6_LUNA
+      - MODEL_DEEPSEEK_3_2
+      - MODEL_GLM_5
+      - MODEL_VLLM
+      - MODEL_KIMI_K2_6
+      - MODEL_GLM_5_2
+      - MODEL_KIMI_K2_7_CODE
+      - MODEL_QWEN3_7_PLUS
+      - MODEL_KIMI_K3
+      - MODEL_DEEPSEEK_V4_FLASH_0731
+      - MODEL_MUSE_SPARK_1_1
+      - MODEL_MUSE_SPARK_1_2
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: tql_api_key

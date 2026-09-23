@@ -1,0 +1,1436 @@
+openapi: 3.2.0
+info:
+  title: TextQL Settings Service API
+  version: 1.0.0
+  description: 'TextQL public API. Generated from protobuf service definitions; internal
+
+    endpoints are excluded via google.api.visibility / file_visibility.'
+servers:
+- url: https://app.textql.com/rpc/public
+security:
+- apiKey: []
+tags:
+- name: SettingsService
+paths:
+  /textql.rpc.public.settings.SettingsService/CheckMemberStatus:
+    post:
+      tags:
+      - SettingsService
+      summary: CheckMemberStatus
+      operationId: SettingsService_CheckMemberStatus
+      x-speakeasy-group: settings
+      x-speakeasy-name-override: checkMemberStatus
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.settings.CheckMemberStatusRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.settings.CheckMemberStatusResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.settings.checkMemberStatus({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.settings.check_member_status()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.settings.SettingsService/DeleteOrganizationMember:
+    post:
+      tags:
+      - SettingsService
+      summary: DeleteOrganizationMember
+      operationId: SettingsService_DeleteOrganizationMember
+      x-speakeasy-group: settings
+      x-speakeasy-name-override: deleteMember
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.settings.DeleteOrganizationMemberRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.settings.DeleteOrganizationMemberResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.settings.deleteMember({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.settings.delete_member()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.settings.SettingsService/GetOrganizationSettings:
+    post:
+      tags:
+      - SettingsService
+      summary: GetOrganizationSettings
+      operationId: SettingsService_GetOrganizationSettings
+      x-speakeasy-group: settings
+      x-speakeasy-name-override: get
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.settings.GetOrganizationSettingsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.settings.GetOrganizationSettingsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.settings.get({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.settings.get(body={})\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.settings.SettingsService/InviteOrganizationMember:
+    post:
+      tags:
+      - SettingsService
+      summary: InviteOrganizationMember
+      operationId: SettingsService_InviteOrganizationMember
+      x-speakeasy-group: settings
+      x-speakeasy-name-override: inviteMember
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.settings.InviteOrganizationMemberRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.settings.InviteOrganizationMemberResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.settings.inviteMember({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.settings.invite_member()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.settings.SettingsService/ListOrganizationMembers:
+    post:
+      tags:
+      - SettingsService
+      summary: ListOrganizationMembers
+      operationId: SettingsService_ListOrganizationMembers
+      x-speakeasy-group: settings
+      x-speakeasy-name-override: listMembers
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.settings.ListOrganizationMembersRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.settings.ListOrganizationMembersResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.settings.listMembers({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.settings.list_members()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.settings.SettingsService/UpdateOrganizationModelSettings:
+    post:
+      tags:
+      - SettingsService
+      summary: UpdateOrganizationModelSettings
+      operationId: SettingsService_UpdateOrganizationModelSettings
+      x-speakeasy-group: settings
+      x-speakeasy-name-override: updateModels
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.settings.UpdateOrganizationModelSettingsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.settings.UpdateOrganizationModelSettingsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.settings.updateModels({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.settings.update_models()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.settings.SettingsService/UpdateOrganizationSettings:
+    post:
+      tags:
+      - SettingsService
+      summary: UpdateOrganizationSettings
+      operationId: SettingsService_UpdateOrganizationSettings
+      x-speakeasy-group: settings
+      x-speakeasy-name-override: update
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.settings.UpdateOrganizationSettingsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.settings.UpdateOrganizationSettingsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.settings.update({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.settings.update()\n\n    # Handle response\n    print(res)"
+components:
+  schemas:
+    textql.rpc.auth.Organization:
+      type: object
+      properties:
+        orgId:
+          type: string
+          title: org_id
+        slackTeamId:
+          type: string
+          title: slack_team_id
+          nullable: true
+        slackKey:
+          type: string
+          title: slack_key
+          nullable: true
+        defaultConnectorId:
+          type: integer
+          title: default_connector_id
+          format: int32
+          description: 'Deprecated: use default_connector_ids instead'
+          nullable: true
+          deprecated: true
+        limitDataVisibility:
+          type: boolean
+          title: limit_data_visibility
+        requireAttached:
+          type: boolean
+          title: require_attached
+          nullable: true
+        organizationName:
+          type: string
+          title: organization_name
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        organizationLogoUrl:
+          type: string
+          title: organization_logo_url
+          nullable: true
+        emailAllowedDomains:
+          type: array
+          items:
+            type: string
+          title: email_allowed_domains
+        allowedAuthMethods:
+          type: array
+          items:
+            type: string
+          title: allowed_auth_methods
+        theme:
+          title: theme
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.auth.Theme'
+        orgMeta:
+          type: string
+          title: org_meta
+          nullable: true
+        injectWholeOntologyDisableSearch:
+          type: boolean
+          title: inject_whole_ontology_disable_search
+          nullable: true
+        warning:
+          type: string
+          title: warning
+          nullable: true
+        publicPreview:
+          type: boolean
+          title: public_preview
+        chatV5Cutover:
+          type: boolean
+          title: chat_v5_cutover
+        defaultParadigmMode:
+          title: default_paradigm_mode
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.paradigm_params.ParadigmType'
+        secretsEnabled:
+          type: boolean
+          title: secrets_enabled
+        emailPollingEnabled:
+          type: boolean
+          title: email_polling_enabled
+          nullable: true
+        logoUrl:
+          type: string
+          title: logo_url
+          nullable: true
+        brandName:
+          type: string
+          title: brand_name
+          nullable: true
+        paradigmParams:
+          title: paradigm_params
+          $ref: '#/components/schemas/textql.rpc.paradigm_params.ParadigmParams'
+        defaultLlmModel:
+          type: integer
+          title: default_llm_model
+          format: int32
+          nullable: true
+        preferredProvider:
+          type: string
+          title: preferred_provider
+          nullable: true
+        systemDefaultModel:
+          type: integer
+          title: system_default_model
+          format: int32
+          description: Model MODEL_DEFAULT resolves to for this org; SYSTEM_DEFAULT_MODEL env var can override it.
+          nullable: true
+        toolRestrictions:
+          title: tool_restrictions
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.paradigm_params.ParadigmParams'
+        consoleAccess:
+          type: boolean
+          title: console_access
+          nullable: true
+        defaultConnectorIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+          title: default_connector_ids
+        hideToolCells:
+          type: boolean
+          title: hide_tool_cells
+          nullable: true
+        disableEmojis:
+          type: boolean
+          title: disable_emojis
+          nullable: true
+        hideExampleConnectors:
+          type: boolean
+          title: hide_example_connectors
+          nullable: true
+        trainingMode:
+          type: boolean
+          title: training_mode
+          nullable: true
+        dashboardsEnabled:
+          type: boolean
+          title: dashboards_enabled
+          nullable: true
+        billingAdminId:
+          type: string
+          title: billing_admin_id
+          nullable: true
+        methodologyEnabled:
+          type: boolean
+          title: methodology_enabled
+          nullable: true
+        allowAllApiAccess:
+          type: boolean
+          title: allow_all_api_access
+          nullable: true
+        feedEnabled:
+          type: boolean
+          title: feed_enabled
+          nullable: true
+        contextV3Enabled:
+          type: boolean
+          title: context_v3_enabled
+          nullable: true
+        bashEnabled:
+          type: boolean
+          title: bash_enabled
+          nullable: true
+        defaultRoutingEnabled:
+          type: boolean
+          title: default_routing_enabled
+          nullable: true
+        enabledModelIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+          title: enabled_model_ids
+        restrictedModelIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+          title: restricted_model_ids
+        restrictedFamilies:
+          type: array
+          items:
+            type: string
+          title: restricted_families
+        discoverable:
+          type: boolean
+          title: discoverable
+          nullable: true
+        observabilityEnabled:
+          type: boolean
+          title: observability_enabled
+          nullable: true
+        notificationsEnabled:
+          type: boolean
+          title: notifications_enabled
+          nullable: true
+        clientDbOverrideEnabled:
+          type: boolean
+          title: client_db_override_enabled
+          nullable: true
+        contextReviewRequired:
+          type: boolean
+          title: context_review_required
+          nullable: true
+        googleConnectorEnabled:
+          type: boolean
+          title: google_connector_enabled
+          nullable: true
+        hideApiConnectors:
+          type: boolean
+          title: hide_api_connectors
+          nullable: true
+        fastModeEnabled:
+          type: boolean
+          title: fast_mode_enabled
+          nullable: true
+        maxThinkingEnabled:
+          type: boolean
+          title: max_thinking_enabled
+          nullable: true
+        sandboxStateRetentionDays:
+          type: integer
+          title: sandbox_state_retention_days
+          format: int32
+          nullable: true
+        sandboxLeaseConfigEnabled:
+          type: boolean
+          title: sandbox_lease_config_enabled
+          nullable: true
+        deleteInactiveThreadsEnabled:
+          type: boolean
+          title: delete_inactive_threads_enabled
+          nullable: true
+        threadRetentionDays:
+          type: integer
+          title: thread_retention_days
+          format: int32
+          nullable: true
+        threadHardDeleteGraceDays:
+          type: integer
+          title: thread_hard_delete_grace_days
+          format: int32
+          nullable: true
+        deleteInactiveAppsEnabled:
+          type: boolean
+          title: delete_inactive_apps_enabled
+          nullable: true
+        appRetentionDays:
+          type: integer
+          title: app_retention_days
+          format: int32
+          nullable: true
+        appHardDeleteGraceDays:
+          type: integer
+          title: app_hard_delete_grace_days
+          format: int32
+          nullable: true
+        assetUrlExpiry:
+          title: asset_url_expiry
+          $ref: '#/components/schemas/textql.rpc.auth.AssetUrlExpiry'
+        emailOutputEnabled:
+          type: boolean
+          title: email_output_enabled
+          nullable: true
+        defaultPlaybookPrivate:
+          type: boolean
+          title: default_playbook_private
+          description: "Mirror of the email_output_enabled feature flag (in feature_flags table,\n not on the organization row). Surfaces in settings UIs alongside the\n org-row toggles."
+          nullable: true
+        defaultDashboardOutput:
+          type: boolean
+          title: default_dashboard_output
+          nullable: true
+        defaultMethodology:
+          type: integer
+          title: default_methodology
+          format: int32
+          nullable: true
+        scimNewGroupDefaultRoleType:
+          type: string
+          title: scim_new_group_default_role_type
+          description: "Org-wide default response methodology for new chats, as a\n textql.rpc.public.chat.Methodology enum value (int to avoid an import cycle\n with the public package). 0 = UNKNOWN/unset -> ADAPTIVE. Overridable\n per-member (Member.default_methodology) and per-chat."
+          nullable: true
+        groupsFeatureEnabled:
+          type: boolean
+          title: groups_feature_enabled
+          nullable: true
+        availableProviders:
+          type: array
+          items:
+            type: string
+          title: available_providers
+        showTextqlUsage:
+          type: boolean
+          title: show_textql_usage
+          nullable: true
+        tracesEnabled:
+          type: boolean
+          title: traces_enabled
+          description: "When true, the ANA_INTERNAL (\"TextQL Usage\") connector includes @textql.com\n staff activity in its usage views; when false (default) they are filtered out."
+          nullable: true
+        allowLlmDataRetention:
+          type: boolean
+          title: allow_llm_data_retention
+          nullable: true
+        soxDbSessionMetadataEnabled:
+          type: boolean
+          title: sox_db_session_metadata_enabled
+          nullable: true
+        smsEnabled:
+          type: boolean
+          title: sms_enabled
+          nullable: true
+        scimAssignDefaultRole:
+          type: boolean
+          title: scim_assign_default_role
+          nullable: true
+        migrationBannerDismissed:
+          type: boolean
+          title: migration_banner_dismissed
+          nullable: true
+        configMigrationsEnabled:
+          type: boolean
+          title: config_migrations_enabled
+          description: dismiss legacy-context migration banner org-wide
+          nullable: true
+          deprecated: true
+        sandboxObservabilityEnabled:
+          type: boolean
+          title: sandbox_observability_enabled
+          description: 'Deprecated: superseded by config_objects_enabled (field 80); no longer populated.'
+          nullable: true
+        dataAppsEnabled:
+          type: boolean
+          title: data_apps_enabled
+          nullable: true
+        issuesEnabled:
+          type: boolean
+          title: issues_enabled
+          description: Internal gate for the data apps feature (apps resource + html generative dashboards).
+          nullable: true
+        configObjectsEnabled:
+          type: boolean
+          title: config_objects_enabled
+          nullable: true
+        configObjectsPlaybooksEnabled:
+          type: boolean
+          title: config_objects_playbooks_enabled
+          description: "config_objects feature_flags row: the umbrella half of the config-management predicate\n (library.ConfigManagedOrg = this flag AND the org already having a Library — the flag\n alone does not make an org config-managed). One switch for every object type and every\n config-managed-object behavior — Ana's authoring tools, the export RPC + capabilities,\n reconcile takeover, the lazy row-to-config migration. Supersedes\n config_migrations_enabled (field 74)."
+          nullable: true
+          deprecated: true
+        configObjectsDashboardsEnabled:
+          type: boolean
+          title: config_objects_dashboards_enabled
+          description: "Deprecated: never populated. config_objects_enabled (field 80) is the umbrella for every\n object type — config management is one-way, so a per-type switch that cannot\n un-migrate an object is either inert or actively harmful (ADR-0040). Retained only\n because proto/api is additive-only."
+          nullable: true
+          deprecated: true
+        configAutofixEnabled:
+          type: boolean
+          title: config_autofix_enabled
+          nullable: true
+          deprecated: true
+        helmChartVersion:
+          type: string
+          title: helm_chart_version
+          description: "Deprecated: never populated. The autofix sweep no longer has a per-org opt-in — it runs for\n every org with the config-object checks surface on. Retained only because proto/api is additive-only."
+          nullable: true
+        spendTransparencyEnabled:
+          type: boolean
+          title: spend_transparency_enabled
+          description: "Org-level opt-in: show dollar costs alongside ACU figures across the product.\n Which figures a given viewer sees is enforced separately, per-RPC."
+          nullable: true
+        sharingDisabled:
+          type: boolean
+          title: sharing_disabled
+          nullable: true
+        appWritebackAutoApproveEnabled:
+          type: boolean
+          title: app_writeback_auto_approve_enabled
+          nullable: true
+        subagentsEnabled:
+          type: boolean
+          title: subagents_enabled
+          description: Auto-merge Data App editor writeback config patches (recommended on); when off the writeback opens a reviewable patch instead.
+          nullable: true
+      title: Organization
+      additionalProperties: false
+    textql.rpc.public.settings.DeleteOrganizationMemberRequest:
+      type: object
+      properties:
+        orgId:
+          type: string
+          title: org_id
+        memberId:
+          type: string
+          title: member_id
+        hardDelete:
+          type: boolean
+          title: hard_delete
+      title: DeleteOrganizationMemberRequest
+      additionalProperties: false
+    textql.rpc.auth.AssetUrlExpiry:
+      type: string
+      title: AssetUrlExpiry
+      enum:
+      - EXPIRY_NONE
+      - EXPIRY_ONE_DAY
+      - EXPIRY_SEVEN_DAYS
+      - EXPIRY_THIRTY_DAYS
+      - EXPIRY_ONE_YEAR
+      - EXPIRY_FIFTEEN_MINUTES
+      - EXPIRY_ONE_HOUR
+      - EXPIRY_SIX_HOURS
+      - EXPIRY_TWELVE_HOURS
+      description: Values are the organization.asset_url_expiry column values — do not renumber.
+    textql.rpc.public.settings.GetOrganizationSettingsResponse:
+      type: object
+      properties:
+        organization:
+          title: organization
+          $ref: '#/components/schemas/textql.rpc.auth.Organization'
+      title: GetOrganizationSettingsResponse
+      additionalProperties: false
+    textql.rpc.public.settings.InviteOrganizationMemberRequest:
+      type: object
+      properties:
+        orgId:
+          type: string
+          title: org_id
+        email:
+          type: string
+          title: email
+        role:
+          type: string
+          title: role
+          nullable: true
+      title: InviteOrganizationMemberRequest
+      additionalProperties: false
+    textql.rpc.public.settings.ListOrganizationMembersRequest:
+      type: object
+      properties:
+        orgId:
+          type: string
+          title: org_id
+      title: ListOrganizationMembersRequest
+      additionalProperties: false
+    google.protobuf.BoolValue:
+      type: boolean
+      description: "Wrapper message for `bool`.\n\n The JSON representation for `BoolValue` is JSON `true` and `false`.\n\n Not recommended for use in new APIs, but still useful for legacy APIs and\n has no plan to be removed."
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
+          type: string
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+          - type: object
+            title: Any
+            additionalProperties: true
+            description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
+    textql.rpc.public.settings.CheckMemberStatusRequest:
+      type: object
+      properties:
+        forceRefresh:
+          type: boolean
+          title: force_refresh
+      title: CheckMemberStatusRequest
+      additionalProperties: false
+    textql.rpc.public.settings.UpdateOrganizationModelSettingsResponse:
+      type: object
+      properties:
+        organization:
+          title: organization
+          $ref: '#/components/schemas/textql.rpc.auth.Organization'
+      title: UpdateOrganizationModelSettingsResponse
+      additionalProperties: false
+    textql.rpc.public.settings.ListOrganizationMembersResponse:
+      type: object
+      properties:
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.auth.Member'
+          title: members
+      title: ListOrganizationMembersResponse
+      additionalProperties: false
+    textql.rpc.public.settings.DeleteOrganizationMemberResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: DeleteOrganizationMemberResponse
+      additionalProperties: false
+    textql.rpc.paradigm_params.ParadigmParams:
+      type: object
+      properties:
+        webSearchEnabled:
+          type: boolean
+          title: web_search_enabled
+        sqlEnabled:
+          type: boolean
+          title: sql_enabled
+        ontologyEnabled:
+          type: boolean
+          title: ontology_enabled
+        pythonEnabled:
+          type: boolean
+          title: python_enabled
+        powerbiEnabled:
+          type: boolean
+          title: powerbi_enabled
+        googleDriveEnabled:
+          type: boolean
+          title: google_drive_enabled
+        formEditorEnabled:
+          type: boolean
+          title: form_editor_enabled
+        tableauEnabled:
+          type: boolean
+          title: tableau_enabled
+        fileUploadEnabled:
+          type: boolean
+          title: file_upload_enabled
+        multipleConnectorMode:
+          type: boolean
+          title: multiple_connector_mode
+          deprecated: true
+        playbookToolsEnabled:
+          type: boolean
+          title: playbook_tools_enabled
+        microsoft365Enabled:
+          type: boolean
+          title: microsoft_365_enabled
+        bashEnabled:
+          type: boolean
+          title: bash_enabled
+        javascriptEnabled:
+          type: boolean
+          title: javascript_enabled
+        modelSwitchingEnabled:
+          type: boolean
+          title: model_switching_enabled
+        feedExplorerEnabled:
+          type: boolean
+          title: feed_explorer_enabled
+        feedPostEnabled:
+          type: boolean
+          title: feed_post_enabled
+        feedCommentEnabled:
+          type: boolean
+          title: feed_comment_enabled
+        feedEngageEnabled:
+          type: boolean
+          title: feed_engage_enabled
+        compactionDisabled:
+          type: boolean
+          title: compaction_disabled
+        gmailEnabled:
+          type: boolean
+          title: gmail_enabled
+        chatHistorySearchEnabled:
+          type: boolean
+          title: chat_history_search_enabled
+        googleCalendarEnabled:
+          type: boolean
+          title: google_calendar_enabled
+        parallelToolsEnabled:
+          type: boolean
+          title: parallel_tools_enabled
+        emailOutputEnabled:
+          type: boolean
+          title: email_output_enabled
+        questionsToolEnabled:
+          type: boolean
+          title: questions_tool_enabled
+        powerbiSelections:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.powerbi_selection.PowerBISelection'
+          title: powerbi_selections
+        datasetId:
+          type: string
+          title: dataset_id
+          description: "Per-chat/agent options: registers the EmailCell tool (default off, opt-in).\n Org tool_restrictions: allows the Email tool org-wide (default on)."
+          nullable: true
+      title: ParadigmParams
+      additionalProperties: false
+    textql.rpc.public.chat.Methodology:
+      type: string
+      title: Methodology
+      enum:
+      - METHODOLOGY_UNKNOWN
+      - METHODOLOGY_ADAPTIVE
+      - METHODOLOGY_PRESCRIPTIVE
+      - METHODOLOGY_THOROUGH
+      - METHODOLOGY_CAREFUL
+      - METHODOLOGY_ONTOLOGY_BUILDING
+    textql.rpc.auth.Theme:
+      type: object
+      properties:
+        bg:
+          type: string
+          title: bg
+        headerBg:
+          type: string
+          title: header_bg
+        cardBg:
+          type: string
+          title: card_bg
+        primaryAccent:
+          type: string
+          title: primary_accent
+        cardAccent:
+          type: string
+          title: card_accent
+        heading:
+          type: string
+          title: heading
+        text:
+          type: string
+          title: text
+        cardHeading:
+          type: string
+          title: card_heading
+        cardText:
+          type: string
+          title: card_text
+        logoUrl:
+          type: string
+          title: logo_url
+          nullable: true
+        docsUrl:
+          type: string
+          title: docs_url
+          nullable: true
+      title: Theme
+      additionalProperties: false
+    textql.rpc.public.settings.UpdateOrganizationModelSettingsRequest:
+      type: object
+      properties:
+        defaultModel:
+          title: default_model
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.chat.LlmModel'
+        enabledModels:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.chat.LlmModel'
+          title: enabled_models
+        clearEnabledModels:
+          type: boolean
+          title: clear_enabled_models
+        restrictedModels:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.chat.LlmModel'
+          title: restricted_models
+        clearRestrictedModels:
+          type: boolean
+          title: clear_restricted_models
+        restrictedFamilies:
+          type: array
+          items:
+            type: string
+          title: restricted_families
+        clearRestrictedFamilies:
+          type: boolean
+          title: clear_restricted_families
+      title: UpdateOrganizationModelSettingsRequest
+      additionalProperties: false
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+          - not_found
+          enum:
+          - canceled
+          - unknown
+          - invalid_argument
+          - deadline_exceeded
+          - not_found
+          - already_exists
+          - permission_denied
+          - resource_exhausted
+          - failed_precondition
+          - aborted
+          - out_of_range
+          - unimplemented
+          - internal
+          - unavailable
+          - data_loss
+          - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    textql.rpc.auth.Member:
+      type: object
+      properties:
+        id:
+          type: integer
+          title: id
+          format: int32
+        orgId:
+          type: string
+          title: org_id
+        memberId:
+          type: string
+          title: member_id
+        role:
+          type: string
+          title: role
+          nullable: true
+        preferredFirstName:
+          type: string
+          title: preferred_first_name
+          nullable: true
+        preferredLastName:
+          type: string
+          title: preferred_last_name
+          nullable: true
+        showCode:
+          type: boolean
+          title: show_code
+          nullable: true
+        profileImageUrl:
+          type: string
+          title: profile_image_url
+          nullable: true
+        emailAddress:
+          type: string
+          title: email_address
+        name:
+          type: string
+          title: name
+          nullable: true
+        isAdmin:
+          type: boolean
+          title: is_admin
+        selectedConnectorId:
+          type: integer
+          title: selected_connector_id
+          format: int32
+          nullable: true
+        roles:
+          type: array
+          items:
+            type: string
+          title: roles
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        paradigmParams:
+          title: paradigm_params
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.paradigm_params.ParadigmParams'
+        emailVerified:
+          type: boolean
+          title: email_verified
+        selectedConnectorIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+          title: selected_connector_ids
+        isServiceAccount:
+          type: boolean
+          title: is_service_account
+        isScimManaged:
+          type: boolean
+          title: is_scim_managed
+        steering:
+          type: boolean
+          title: steering
+          nullable: true
+        phoneNumber:
+          type: string
+          title: phone_number
+          nullable: true
+        phoneVerified:
+          type: boolean
+          title: phone_verified
+          nullable: true
+        personalAgentId:
+          type: string
+          title: personal_agent_id
+          nullable: true
+        agentNumber:
+          type: string
+          title: agent_number
+          nullable: true
+        defaultMethodology:
+          type: integer
+          title: default_methodology
+          format: int32
+          description: "Per-member default response methodology for new chats, as a\n textql.rpc.public.chat.Methodology enum value (int to avoid an import\n cycle). 0 = UNKNOWN/unset -> fall back to the org default. Overrides the\n org default when set."
+          nullable: true
+        defaultLlmModel:
+          type: integer
+          title: default_llm_model
+          format: int32
+          description: "Per-member default LLM model for new chats, as a\n textql.rpc.public.chat.LlmModel enum value (int, matching the org-level\n default_llm_model). 0/MODEL_DEFAULT = unset -> role/org/system resolution."
+          nullable: true
+        defaultFastMode:
+          type: boolean
+          title: default_fast_mode
+          description: "Per-member default fast-mode preference for new chats. Unset -> off. Only\n applies when the org enables fast mode and the resolved model supports it."
+          nullable: true
+        firstName:
+          type: string
+          title: first_name
+          description: Identity (auth-provider) names, distinct from the user-set preferred names.
+          nullable: true
+        lastName:
+          type: string
+          title: last_name
+          nullable: true
+        themeMode:
+          type: string
+          title: theme_mode
+          description: "Per-member UI theme preference: \"light\" | \"dark\" | \"system\".\n Unset -> the client falls back to its own default. Scoped to the\n membership, so a user in multiple orgs sets this per org."
+          nullable: true
+        shareAppBuilderChat:
+          type: boolean
+          title: share_app_builder_chat
+          description: "When this member creates a data app from a chat, share that builder chat\n (read-only) with everyone who can view the app. Unset -> off (opt-in).\n Snapshotted onto the app at creation time; later toggles only affect future apps."
+          nullable: true
+      title: Member
+      additionalProperties: false
+    textql.rpc.public.settings.GetOrganizationSettingsRequest:
+      type: object
+      title: GetOrganizationSettingsRequest
+      additionalProperties: false
+    textql.rpc.public.settings.UpdateOrganizationSettingsRequest:
+      type: object
+      properties:
+        orgId:
+          type: string
+          title: org_id
+        secretsEnabled:
+          title: secrets_enabled
+          $ref: '#/components/schemas/google.protobuf.BoolValue'
+        hideExampleConnectors:
+          title: hide_example_connectors
+          $ref: '#/components/schemas/google.protobuf.BoolValue'
+        paradigmParams:
+          title: paradigm_params
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.paradigm_params.ParadigmParams'
+        defaultParadigmMode:
+          title: default_paradigm_mode
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.paradigm_params.ParadigmType'
+        defaultConnectorIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+          title: default_connector_ids
+        trainingMode:
+          title: training_mode
+          $ref: '#/components/schemas/google.protobuf.BoolValue'
+        dashboardsEnabled:
+          title: dashboards_enabled
+          $ref: '#/components/schemas/google.protobuf.BoolValue'
+        methodologyEnabled:
+          title: methodology_enabled
+          $ref: '#/components/schemas/google.protobuf.BoolValue'
+        feedEnabled:
+          title: feed_enabled
+          $ref: '#/components/schemas/google.protobuf.BoolValue'
+        contextV3Enabled:
+          title: context_v3_enabled
+          $ref: '#/components/schemas/google.protobuf.BoolValue'
+        clearEnabledModelIds:
+          type: boolean
+          title: clear_enabled_model_ids
+        clearRestrictedModelIds:
+          type: boolean
+          title: clear_restricted_model_ids
+        enabledModels:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.chat.LlmModel'
+          title: enabled_models
+        restrictedModels:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.chat.LlmModel'
+          title: restricted_models
+        defaultModel:
+          title: default_model
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.chat.LlmModel'
+        observabilityEnabled:
+          title: observability_enabled
+          $ref: '#/components/schemas/google.protobuf.BoolValue'
+        notificationsEnabled:
+          title: notifications_enabled
+          $ref: '#/components/schemas/google.protobuf.BoolValue'
+        hideApiConnectors:
+          title: hide_api_connectors
+          $ref: '#/components/schemas/google.protobuf.BoolValue'
+        fastModeEnabled:
+          title: fast_mode_enabled
+          $ref: '#/components/schemas/google.protobuf.BoolValue'
+        maxThinkingEnabled:
+          title: max_thinking_enabled
+          $ref: '#/components/schemas/google.protobuf.BoolValue'
+        clearDefaultConnectorIds:
+          type: boolean
+          title: clear_default_connector_ids
+        defaultDashboardOutput:
+          title: default_dashboard_output
+          $ref: '#/components/schemas/google.protobuf.BoolValue'
+        defaultMethodology:
+          title: default_methodology
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.chat.Methodology'
+        tracesEnabled:
+          title: traces_enabled
+          $ref: '#/components/schemas/google.protobuf.BoolValue'
+        sandboxObservabilityEnabled:
+          title: sandbox_observability_enabled
+          $ref: '#/components/schemas/google.protobuf.BoolValue'
+        dataAppsEnabled:
+          title: data_apps_enabled
+          $ref: '#/components/schemas/google.protobuf.BoolValue'
+        issuesEnabled:
+          title: issues_enabled
+          $ref: '#/components/schemas/google.protobuf.BoolValue'
+        spendTransparencyEnabled:
+          title: spend_transparency_enabled
+          $ref: '#/components/schemas/google.protobuf.BoolValue'
+        sharingDisabled:
+          title: sharing_disabled
+          $ref: '#/components/schemas/google.protobuf.BoolValue'
+        toolRestrictions:
+          title: tool_restrictions
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.paradigm_params.ParadigmParams'
+        subagentsEnabled:
+          title: subagents_enabled
+          $ref: '#/components/schemas/google.protobuf.BoolValue'
+      title: UpdateOrganizationSettingsRequest
+      additionalProperties: false
+    textql.rpc.public.settings.CheckMemberStatusResponse:
+      type: object
+      properties:
+        isSuspended:
+          type: boolean
+          title: is_suspended
+        consoleAccess:
+          type: boolean
+          title: console_access
+        isSuspendedManual:
+          type: boolean
+          title: is_suspended_manual
+        isSuspendedOverage:
+          type: boolean
+          title: is_suspended_overage
+        isSuspendedUsage:
+          type: boolean
+          title: is_suspended_usage
+        isSuspendedMemberUsage:
+          type: boolean
+          title: is_suspended_member_usage
+        suspensionMessage:
+          type: string
+          title: suspension_message
+        suspendedCostCenters:
+          type: array
+          items:
+            type: string
+          title: suspended_cost_centers
+        isSuspendedOrgLimit:
+          type: boolean
+          title: is_suspended_org_limit
+      title: CheckMemberStatusResponse
+      additionalProperties: false
+    google.protobuf.Timestamp:
+      type: string
+      examples:
+      - '2023-01-15T01:30:15.01Z'
+      - '2024-12-25T12:00:00Z'
+      format: date-time
+      description: "A Timestamp represents a point in time independent of any time zone or local\n calendar, encoded as a count of seconds and fractions of seconds at\n nanosecond resolution. The count is relative to an epoch at UTC midnight on\n January 1, 1970, in the proleptic Gregorian calendar which extends the\n Gregorian calendar backwards to year one.\n\n All minutes are 60 seconds long. Leap seconds are \"smeared\" so that no leap\n second table is needed for interpretation, using a [24-hour linear\n smear](https://developers.google.com/time/smear).\n\n The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By\n restricting to that range, we ensure that we can convert to and from [RFC\n 3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.\n\n # Examples\n\n Example 1: Compute Timestamp from POSIX `time()`.\n\n     Timestamp timestamp;\n     timestamp.set_seconds(time(NULL));\n     timestamp.set_nanos(0);\n\n Example 2: Compute Timestamp from POSIX `gettimeofday()`.\n\n     struct timeval tv;\n     gettimeofday(&tv, NULL);\n\n     Timestamp timestamp;\n     timestamp.set_seconds(tv.tv_sec);\n     timestamp.set_nanos(tv.tv_usec * 1000);\n\n Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.\n\n     FILETIME ft;\n     GetSystemTimeAsFileTime(&ft);\n     UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;\n\n     // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z\n     // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.\n     Timestamp timestamp;\n     timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));\n     timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));\n\n Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.\n\n     long millis = System.currentTimeMillis();\n\n     Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)\n         .setNanos((int) ((millis % 1000) * 1000000)).build();\n\n Example 5: Compute Timestamp from Java `Instant.now()`.\n\n     Instant now = Instant.now();\n\n     Timestamp timestamp =\n         Timestamp.newBuilder().setSeconds(now.getEpochSecond())\n             .setNanos(now.getNano()).build();\n\n Example 6: Compute Timestamp from current time in Python.\n\n     timestamp = Timestamp()\n     timestamp.GetCurrentTime()\n\n # JSON Mapping\n\n In JSON format, the Timestamp type is encoded as a string in the\n [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the\n format is \"{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z\"\n where {year} is always expressed using four digits while {month}, {day},\n {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional\n seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),\n are optional. The \"Z\" suffix indicates the timezone (\"UTC\"); the timezone\n is required. A proto3 JSON serializer should always use UTC (as indicated by\n \"Z\") when printing the Timestamp type and a proto3 JSON parser should be\n able to accept both UTC and other timezones (as indicated by an offset).\n\n For example, \"2017-01-15T01:30:15.01Z\" encodes 15.01 seconds past\n 01:30 UTC on January 15, 2017.\n\n In JavaScript, one can convert a Date object to this format using the\n standard\n [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)\n method. In Python, a standard `datetime.datetime` object can be converted\n to this format using\n [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with\n the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use\n the Joda Time's [`ISODateTimeFormat.dateTime()`](\n http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()\n ) to obtain a formatter capable of generating timestamps in this format."
+    textql.rpc.paradigm_params.ParadigmType:
+      type: string
+      title: ParadigmType
+      enum:
+      - TYPE_UNKNOWN
+      - TYPE_UNIVERSAL
+    textql.rpc.public.settings.InviteOrganizationMemberResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: InviteOrganizationMemberResponse
+      additionalProperties: false
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+      - 1
+      description: Define the version of the Connect protocol
+      const: 1
+      default: 1
+    textql.rpc.public.settings.UpdateOrganizationSettingsResponse:
+      type: object
+      properties:
+        organization:
+          title: organization
+          $ref: '#/components/schemas/textql.rpc.auth.Organization'
+      title: UpdateOrganizationSettingsResponse
+      additionalProperties: false
+    textql.rpc.powerbi_selection.PowerBISelection:
+      type: object
+      properties:
+        workspaceId:
+          type: string
+          title: workspace_id
+        reportIds:
+          type: array
+          items:
+            type: string
+          title: report_ids
+        datasetIds:
+          type: array
+          items:
+            type: string
+          title: dataset_ids
+        workspaceName:
+          type: string
+          title: workspace_name
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+      title: PowerBISelection
+      additionalProperties: false
+      description: "PowerBISelection captures a chosen PowerBI workspace (and optionally the\n specific reports/datasets within it) for attaching to a chat. Field shape\n mirrors textql.rpc.public.paradigm.PowerBISelection; kept in a standalone\n package so it can be shared by paradigm_params without an import cycle\n (public/paradigm.proto already imports paradigm_params.proto)."
+    textql.rpc.public.chat.LlmModel:
+      type: string
+      title: LlmModel
+      enum:
+      - MODEL_UNKNOWN
+      - MODEL_DEFAULT
+      - MODEL_DEFAULT_SYSTEM
+      - MODEL_HAIKU_4_5
+      - MODEL_OPUS_4_8
+      - MODEL_FABLE_5
+      - MODEL_SONNET_5
+      - MODEL_OPUS_5
+      - MODEL_GPT_5_6_SOL
+      - MODEL_GEMINI_3_FLASH
+      - MODEL_GEMINI_3_PRO
+      - MODEL_GEMINI_3_1_PRO
+      - MODEL_GEMINI_3_5_FLASH
+      - MODEL_GPT_5_6_TERRA
+      - MODEL_GPT_5_6_LUNA
+      - MODEL_DEEPSEEK_3_2
+      - MODEL_GLM_5
+      - MODEL_VLLM
+      - MODEL_KIMI_K2_6
+      - MODEL_GLM_5_2
+      - MODEL_KIMI_K2_7_CODE
+      - MODEL_QWEN3_7_PLUS
+      - MODEL_KIMI_K3
+      - MODEL_DEEPSEEK_V4_FLASH_0731
+      - MODEL_MUSE_SPARK_1_1
+      - MODEL_MUSE_SPARK_1_2
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: tql_api_key

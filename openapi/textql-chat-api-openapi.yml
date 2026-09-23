@@ -1,0 +1,772 @@
+openapi: 3.2.0
+info:
+  title: TextQL v2 Chat API
+  version: '2.0'
+  description: REST API for TextQL platform operations. All endpoints require Bearer token authentication.
+servers:
+- url: https://app.textql.com
+security:
+- bearerAuth: []
+tags:
+- name: Chat
+  description: Create and manage AI chat sessions
+paths:
+  /v2/chats:
+    get:
+      tags:
+      - Chat
+      summary: List Chats
+      description: List chats with optional search and pagination. Returns chats owned by the authenticated API key.
+      operationId: v2.listChats
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+          minimum: 1
+          maximum: 100
+        description: Maximum number of chats to return (default 20, max 100)
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          format: int32
+          minimum: 0
+        description: Number of chats to skip
+      - name: search_term
+        in: query
+        schema:
+          type: string
+        description: Filter chats by summary or first message content
+      - name: sort_by
+        in: query
+        schema:
+          type: string
+          enum:
+          - name
+          - created_at
+          - updated_at
+          default: updated_at
+        description: Field to sort by
+      - name: sort_direction
+        in: query
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: desc
+        description: Sort direction
+      responses:
+        '200':
+          description: Paginated list of chats
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListChatsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    post:
+      tags:
+      - Chat
+      summary: Create Chat
+      description: 'Send a question and receive a synchronous response. Supports JSON or multipart
+
+        form-data (for file uploads). The response includes the model''s answer and any
+
+        generated assets.'
+      operationId: v2.createChat
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatRequest'
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - question
+              properties:
+                question:
+                  type: string
+                  description: The question to ask
+                chat_id:
+                  type: string
+                  format: uuid
+                  description: Existing chat ID to continue a conversation
+                model:
+                  type: string
+                  description: Optional model `id` from `GET /v2/models` (e.g. `gemini_3_5_flash`). Omit for the org default. New chats only.
+                  example: gemini_3_5_flash
+                connector_ids:
+                  type: array
+                  items:
+                    type: integer
+                    format: int32
+                  description: Connector IDs to query
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  maxItems: 10
+                  description: One or more files to upload with the question
+      responses:
+        '200':
+          description: Chat response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /v2/chats/stream:
+    post:
+      tags:
+      - Chat
+      summary: Stream Chat
+      description: 'Send a question and receive a streaming response via Server-Sent Events.
+
+        Supports the same request format as Create Chat. The stream emits metadata,
+
+        text deltas, execution cells, assets, and a final done event.'
+      operationId: v2.streamChat
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatRequest'
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - question
+              properties:
+                question:
+                  type: string
+                chat_id:
+                  type: string
+                  format: uuid
+                model:
+                  type: string
+                  description: Optional model `id` from `GET /v2/models` (e.g. `gemini_3_5_flash`). Omit for the org default. New chats only.
+                  example: gemini_3_5_flash
+                connector_ids:
+                  type: array
+                  items:
+                    type: integer
+                    format: int32
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  maxItems: 10
+      responses:
+        '200':
+          description: Server-Sent Events stream
+          content:
+            text/event-stream:
+              schema:
+                type: string
+                description: 'SSE stream with JSON data payloads. Event types:
+
+                  - `{"type":"metadata","id":"...","created_at":"...","model":"...","chat_id":"...","is_continuation":bool}`
+
+                  - `{"type":"text","text":"..."}`
+
+                  - `{"type":"cell","cell":{...}}` — an execution step (same shape as ChatCell), emitted once when the step starts running (carrying the generated SQL or code) and again when it finishes (carrying outputs, result previews, and timing)
+
+                  - `{"type":"asset","asset":{...}}`
+
+                  - `{"type":"done","status":"completed|failed","error":"..."}`
+
+                  '
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /v2/chats/{id}:
+    get:
+      tags:
+      - Chat
+      summary: Get Chat
+      description: Retrieve a chat by ID, including its messages and generated assets.
+      operationId: v2.getChat
+      parameters:
+      - $ref: '#/components/parameters/ChatId'
+      responses:
+        '200':
+          description: Chat details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetChatResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /v2/chats/{id}/cells:
+    get:
+      tags:
+      - Chat
+      summary: Get Chat Cells
+      description: 'Retrieve a chat''s cells, the per-step execution detail behind each answer: user and assistant messages, generated SQL and Python with their outputs, and the assets each step produced, in conversation order. Paginated newest-first: the default page returns the most recent cells, and offset skips past them toward older ones. Pages extend backward to the start of a conversation turn, so a page can contain slightly more than limit cells.'
+      operationId: v2.getChatCells
+      parameters:
+      - $ref: '#/components/parameters/ChatId'
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 200
+          maximum: 500
+        description: Maximum cells per page (values outside 1-500 fall back to 200)
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 0
+        description: Number of most-recent cells to skip
+      responses:
+        '200':
+          description: Chat cells
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetChatCellsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /v2/chats/{id}/cells/{cellId}:
+    get:
+      tags:
+      - Chat
+      summary: Get Chat Cell
+      description: Retrieve a single cell from a chat by ID.
+      operationId: v2.getChatCell
+      parameters:
+      - $ref: '#/components/parameters/ChatId'
+      - $ref: '#/components/parameters/CellId'
+      responses:
+        '200':
+          description: Chat cell
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatCell'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /v2/chats/{id}/cancel:
+    post:
+      tags:
+      - Chat
+      summary: Cancel Stream
+      description: Cancel a running chat stream.
+      operationId: v2.cancelStream
+      parameters:
+      - $ref: '#/components/parameters/ChatId'
+      responses:
+        '200':
+          description: Cancellation result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cancelled:
+                    type: boolean
+                    description: Whether the stream was successfully cancelled
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /v2/models:
+    get:
+      tags:
+      - Chat
+      summary: List Models
+      description: List the models the authenticated organization may run chats on. The result is scoped to the org's enabled-model catalog and the caller's role allow-list, so it reflects exactly what `POST /v2/chats` will accept in its `model` field. Pass an entry's `id` back as that field.
+      operationId: v2.listModels
+      responses:
+        '200':
+          description: Available models
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListModelsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  schemas:
+    ChatCell:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Cell ID
+        type:
+          type: string
+          description: Cell type (e.g. markdown, python, sql, tableau_sql, metrics, ontology_query, javascript, bash, mcp_tool, preview, web_search)
+        status:
+          type: string
+          enum:
+          - completed
+          - running
+          - pending
+          - halted
+          - failed
+          - unknown
+        created_at:
+          type: string
+          format: date-time
+        error:
+          type: string
+          description: Execution error, when the step failed
+        role:
+          type: string
+          enum:
+          - user
+          - assistant
+          description: Message author (markdown cells only)
+        content:
+          type: string
+          description: Markdown content (markdown cells only)
+        code:
+          type: string
+          description: Executed code (python, javascript, and bash cells)
+        query:
+          type: string
+          description: Executed query (sql, tableau_sql, metrics, and ontology_query cells)
+        connector_id:
+          type: integer
+          format: int32
+          description: Connector the query ran against (sql and ontology_query cells)
+        output:
+          type: array
+          items:
+            type: string
+          description: Captured stdout/stderr (python, javascript, and bash cells)
+        dataframe_preview:
+          type: string
+          description: Markdown preview of the result set (query and python cells)
+        execution_time_ms:
+          type: integer
+          format: int64
+        tool_name:
+          type: string
+          description: MCP tool invoked, as server/tool (mcp_tool cells only)
+        assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Asset'
+          description: Assets this cell produced
+    ListChatsResponse:
+      type: object
+      required:
+      - chats
+      - total_count
+      properties:
+        chats:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatSummary'
+        total_count:
+          type: integer
+          format: int32
+    ChatMessage:
+      type: object
+      properties:
+        role:
+          type: string
+          enum:
+          - user
+          - assistant
+        content:
+          type: string
+          description: Markdown content
+        created_at:
+          type: string
+          format: date-time
+        cell_id:
+          type: string
+          format: uuid
+          description: ID of the cell this message came from. Assets reference it via their message_cell_id.
+        assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Asset'
+          description: Assets produced while generating this message. Only present on assistant messages.
+    ChatResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Message ID
+        created_at:
+          type: string
+          format: date-time
+        model:
+          type: string
+          description: LLM model name (e.g. default, sonnet_4, opus_4)
+        response:
+          type: string
+          description: Markdown-formatted answer
+        chat_id:
+          type: string
+          format: uuid
+          description: Chat session ID
+        assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Asset'
+          description: Assets produced by this response. Earlier turns' assets are available via Get Chat.
+    ChatSummary:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
+          format: uuid
+        summary:
+          type: string
+          description: Chat title or summary
+        timestamp:
+          type: string
+          format: date-time
+          description: When the chat was created
+        updated_at:
+          type: string
+          format: date-time
+          description: When the chat was last updated
+        creator_email:
+          type: string
+          description: Email of the user who created the chat
+        preview:
+          type: string
+          description: Snippet of the first user message (up to 200 characters)
+        source:
+          type: string
+          description: Chat source (e.g. thread, playbook, slack, feed)
+        model:
+          type: string
+          description: LLM model name (e.g. default, sonnet_4, opus_4)
+        is_running:
+          type: boolean
+          description: Whether the chat is currently processing a request
+    Model:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Model identifier — pass this as the `model` field on POST /v2/chats.
+          example: gemini_3_5_flash
+        provider:
+          type: string
+          description: Inference provider for the model.
+          example: google
+        supports_fast_mode:
+          type: boolean
+          description: Whether the model can run in fast mode.
+        default:
+          type: boolean
+          description: Whether this is the model the org default currently resolves to.
+      required:
+      - id
+      - provider
+      - supports_fast_mode
+      - default
+    GetChatCellsResponse:
+      type: object
+      properties:
+        chat_id:
+          type: string
+          format: uuid
+        cells:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatCell'
+        has_more:
+          type: boolean
+          description: Whether older cells exist beyond this page
+    ChatRequest:
+      type: object
+      required:
+      - question
+      properties:
+        question:
+          type: string
+          description: The question to ask
+        chat_id:
+          type: string
+          format: uuid
+          description: Existing chat ID to continue a conversation
+        model:
+          type: string
+          description: Optional model to run this chat on, as an `id` from `GET /v2/models` (e.g. `gemini_3_5_flash`). Omit to use the organization's default model. Only valid on new chats — supplying it together with `chat_id` returns 400, and a model the caller's org/role does not permit returns 403.
+          example: gemini_3_5_flash
+        tools:
+          type: object
+          description: Tool configuration. Enable specific tools for this chat session.
+          properties:
+            connector_ids:
+              type: array
+              items:
+                type: integer
+                format: int32
+              description: Connector IDs to query
+            sql_enabled:
+              type: boolean
+              description: Enable SQL query generation
+            python_enabled:
+              type: boolean
+              description: Enable Python code execution
+            web_search_enabled:
+              type: boolean
+              description: Enable web search
+            ontology_enabled:
+              type: boolean
+              description: Enable ontology-based queries
+            tableau_enabled:
+              type: boolean
+              description: Enable Tableau integration
+            powerbi_enabled:
+              type: boolean
+              description: Enable Power BI integration
+            google_drive_enabled:
+              type: boolean
+              description: Enable Google Drive integration
+        connector_ids:
+          type: array
+          items:
+            type: integer
+            format: int32
+          description: Connector IDs to query (shorthand for tools.connector_ids)
+    GetChatResponse:
+      type: object
+      properties:
+        chat:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            model:
+              type: string
+              description: LLM model name (e.g. default, sonnet_4, opus_4)
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatMessage'
+        assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Asset'
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code
+              enum:
+              - invalid_request
+              - unauthenticated
+              - permission_denied
+              - not_found
+              - conflict
+              - rate_limit_exceeded
+              - internal
+              - timeout
+              - cancelled
+              - execution_failed
+              - no_report
+            message:
+              type: string
+              description: Human-readable error message
+    Asset:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Asset name
+        type:
+          type: string
+          description: Asset type (e.g. chart, image, table, pdf, html, text, download)
+        url:
+          type: string
+          description: Asset URL, freshly signed on every fetch
+        content:
+          type: string
+          description: Inline text content, for text assets served without a URL
+        cell_id:
+          type: string
+          format: uuid
+          description: ID of the cell that produced this asset
+        message_cell_id:
+          type: string
+          format: uuid
+          description: cell_id of the assistant message this asset belongs to (Get Chat only)
+        created_at:
+          type: string
+          format: date-time
+    ListModelsResponse:
+      type: object
+      properties:
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/Model'
+      required:
+      - models
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: not_found
+              message: Resource not found
+    RateLimited:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: rate_limit_exceeded
+              message: Rate limit exceeded
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: internal
+              message: Internal server error
+    Forbidden:
+      description: Insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: permission_denied
+              message: Insufficient permissions
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: invalid_request
+              message: Invalid request body
+    Unauthorized:
+      description: Missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: unauthenticated
+              message: Authentication required
+  parameters:
+    CellId:
+      name: cellId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Cell ID
+    ChatId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Chat ID
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: API key or JWT token

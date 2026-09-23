@@ -1,0 +1,538 @@
+openapi: 3.2.0
+info:
+  title: TextQL SCIM Service API
+  version: 1.0.0
+  description: 'TextQL public API. Generated from protobuf service definitions; internal
+
+    endpoints are excluded via google.api.visibility / file_visibility.'
+servers:
+- url: https://app.textql.com/rpc/public
+security:
+- apiKey: []
+tags:
+- name: ScimService
+paths:
+  /textql.rpc.public.scim.ScimService/CreateScimOAuthClient:
+    post:
+      tags:
+      - ScimService
+      summary: CreateScimOAuthClient
+      operationId: ScimService_CreateScimOAuthClient
+      x-speakeasy-group: scim
+      x-speakeasy-name-override: createOAuthClient
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.scim.CreateScimOAuthClientRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.scim.CreateScimOAuthClientResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.scim.createOAuthClient({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.scim.create_o_auth_client()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.scim.ScimService/CreateScimToken:
+    post:
+      tags:
+      - ScimService
+      summary: CreateScimToken
+      operationId: ScimService_CreateScimToken
+      x-speakeasy-group: scim
+      x-speakeasy-name-override: createScimToken
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.scim.CreateScimTokenRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.scim.CreateScimTokenResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.scim.createScimToken({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.scim.create_scim_token()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.scim.ScimService/ListScimOAuthClients:
+    post:
+      tags:
+      - ScimService
+      summary: ListScimOAuthClients
+      operationId: ScimService_ListScimOAuthClients
+      x-speakeasy-group: scim
+      x-speakeasy-name-override: listScimOAuthClients
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.scim.ListScimOAuthClientsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.scim.ListScimOAuthClientsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.scim.listScimOAuthClients({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.scim.list_scim_o_auth_clients(body={})\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.scim.ScimService/ListScimTokens:
+    post:
+      tags:
+      - ScimService
+      summary: ListScimTokens
+      operationId: ScimService_ListScimTokens
+      x-speakeasy-group: scim
+      x-speakeasy-name-override: list
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.scim.ListScimTokensRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.scim.ListScimTokensResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.scim.list({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.scim.list(body={})\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.scim.ScimService/RevokeScimOAuthClient:
+    post:
+      tags:
+      - ScimService
+      summary: RevokeScimOAuthClient
+      operationId: ScimService_RevokeScimOAuthClient
+      x-speakeasy-group: scim
+      x-speakeasy-name-override: revokeOAuthClient
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.scim.RevokeScimOAuthClientRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.scim.RevokeScimOAuthClientResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.scim.revokeOAuthClient({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.scim.revoke_o_auth_client()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.scim.ScimService/RevokeScimToken:
+    post:
+      tags:
+      - ScimService
+      summary: RevokeScimToken
+      operationId: ScimService_RevokeScimToken
+      x-speakeasy-group: scim
+      x-speakeasy-name-override: revokeScimToken
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.scim.RevokeScimTokenRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.scim.RevokeScimTokenResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.scim.revokeScimToken({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.scim.revoke_scim_token()\n\n    # Handle response\n    print(res)"
+components:
+  schemas:
+    textql.rpc.public.scim.CreateScimOAuthClientRequest:
+      type: object
+      properties:
+        description:
+          type: string
+          title: description
+        expiresInDays:
+          type: integer
+          title: expires_in_days
+          format: int32
+          nullable: true
+      title: CreateScimOAuthClientRequest
+      additionalProperties: false
+    textql.rpc.public.scim.CreateScimTokenRequest:
+      type: object
+      properties:
+        description:
+          type: string
+          title: description
+        expiresInDays:
+          type: integer
+          title: expires_in_days
+          format: int32
+          nullable: true
+      title: CreateScimTokenRequest
+      additionalProperties: false
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
+          type: string
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+          - type: object
+            title: Any
+            additionalProperties: true
+            description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
+    textql.rpc.public.scim.ListScimOAuthClientsResponse:
+      type: object
+      properties:
+        clients:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.scim.ScimOAuthClient'
+          title: clients
+      title: ListScimOAuthClientsResponse
+      additionalProperties: false
+    textql.rpc.public.scim.RevokeScimTokenResponse:
+      type: object
+      title: RevokeScimTokenResponse
+      additionalProperties: false
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    textql.rpc.public.scim.CreateScimTokenResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        token:
+          type: string
+          title: token
+        description:
+          type: string
+          title: description
+        expiresAt:
+          title: expires_at
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: CreateScimTokenResponse
+      additionalProperties: false
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+          - not_found
+          enum:
+          - canceled
+          - unknown
+          - invalid_argument
+          - deadline_exceeded
+          - not_found
+          - already_exists
+          - permission_denied
+          - resource_exhausted
+          - failed_precondition
+          - aborted
+          - out_of_range
+          - unimplemented
+          - internal
+          - unavailable
+          - data_loss
+          - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    textql.rpc.public.scim.ScimOAuthClient:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        clientId:
+          type: string
+          title: client_id
+        description:
+          type: string
+          title: description
+        createdBy:
+          type: string
+          title: created_by
+        expiresAt:
+          title: expires_at
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        revokedAt:
+          title: revoked_at
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: ScimOAuthClient
+      additionalProperties: false
+    textql.rpc.public.scim.RevokeScimOAuthClientResponse:
+      type: object
+      title: RevokeScimOAuthClientResponse
+      additionalProperties: false
+    textql.rpc.public.scim.ListScimOAuthClientsRequest:
+      type: object
+      title: ListScimOAuthClientsRequest
+      additionalProperties: false
+    textql.rpc.public.scim.ScimToken:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        description:
+          type: string
+          title: description
+        createdBy:
+          type: string
+          title: created_by
+        expiresAt:
+          title: expires_at
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        revokedAt:
+          title: revoked_at
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: ScimToken
+      additionalProperties: false
+    google.protobuf.Timestamp:
+      type: string
+      examples:
+      - '2023-01-15T01:30:15.01Z'
+      - '2024-12-25T12:00:00Z'
+      format: date-time
+      description: "A Timestamp represents a point in time independent of any time zone or local\n calendar, encoded as a count of seconds and fractions of seconds at\n nanosecond resolution. The count is relative to an epoch at UTC midnight on\n January 1, 1970, in the proleptic Gregorian calendar which extends the\n Gregorian calendar backwards to year one.\n\n All minutes are 60 seconds long. Leap seconds are \"smeared\" so that no leap\n second table is needed for interpretation, using a [24-hour linear\n smear](https://developers.google.com/time/smear).\n\n The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By\n restricting to that range, we ensure that we can convert to and from [RFC\n 3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.\n\n # Examples\n\n Example 1: Compute Timestamp from POSIX `time()`.\n\n     Timestamp timestamp;\n     timestamp.set_seconds(time(NULL));\n     timestamp.set_nanos(0);\n\n Example 2: Compute Timestamp from POSIX `gettimeofday()`.\n\n     struct timeval tv;\n     gettimeofday(&tv, NULL);\n\n     Timestamp timestamp;\n     timestamp.set_seconds(tv.tv_sec);\n     timestamp.set_nanos(tv.tv_usec * 1000);\n\n Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.\n\n     FILETIME ft;\n     GetSystemTimeAsFileTime(&ft);\n     UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;\n\n     // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z\n     // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.\n     Timestamp timestamp;\n     timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));\n     timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));\n\n Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.\n\n     long millis = System.currentTimeMillis();\n\n     Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)\n         .setNanos((int) ((millis % 1000) * 1000000)).build();\n\n Example 5: Compute Timestamp from Java `Instant.now()`.\n\n     Instant now = Instant.now();\n\n     Timestamp timestamp =\n         Timestamp.newBuilder().setSeconds(now.getEpochSecond())\n             .setNanos(now.getNano()).build();\n\n Example 6: Compute Timestamp from current time in Python.\n\n     timestamp = Timestamp()\n     timestamp.GetCurrentTime()\n\n # JSON Mapping\n\n In JSON format, the Timestamp type is encoded as a string in the\n [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the\n format is \"{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z\"\n where {year} is always expressed using four digits while {month}, {day},\n {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional\n seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),\n are optional. The \"Z\" suffix indicates the timezone (\"UTC\"); the timezone\n is required. A proto3 JSON serializer should always use UTC (as indicated by\n \"Z\") when printing the Timestamp type and a proto3 JSON parser should be\n able to accept both UTC and other timezones (as indicated by an offset).\n\n For example, \"2017-01-15T01:30:15.01Z\" encodes 15.01 seconds past\n 01:30 UTC on January 15, 2017.\n\n In JavaScript, one can convert a Date object to this format using the\n standard\n [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)\n method. In Python, a standard `datetime.datetime` object can be converted\n to this format using\n [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with\n the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use\n the Joda Time's [`ISODateTimeFormat.dateTime()`](\n http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()\n ) to obtain a formatter capable of generating timestamps in this format."
+    textql.rpc.public.scim.RevokeScimTokenRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+      title: RevokeScimTokenRequest
+      additionalProperties: false
+    textql.rpc.public.scim.ListScimTokensResponse:
+      type: object
+      properties:
+        tokens:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.scim.ScimToken'
+          title: tokens
+      title: ListScimTokensResponse
+      additionalProperties: false
+    textql.rpc.public.scim.ListScimTokensRequest:
+      type: object
+      title: ListScimTokensRequest
+      additionalProperties: false
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+      - 1
+      description: Define the version of the Connect protocol
+      const: 1
+      default: 1
+    textql.rpc.public.scim.CreateScimOAuthClientResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        clientId:
+          type: string
+          title: client_id
+        clientSecret:
+          type: string
+          title: client_secret
+        description:
+          type: string
+          title: description
+        expiresAt:
+          title: expires_at
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: CreateScimOAuthClientResponse
+      additionalProperties: false
+    textql.rpc.public.scim.RevokeScimOAuthClientRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+      title: RevokeScimOAuthClientRequest
+      additionalProperties: false
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: tql_api_key

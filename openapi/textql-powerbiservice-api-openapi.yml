@@ -1,0 +1,986 @@
+openapi: 3.2.0
+info:
+  title: TextQL Power BI Service API
+  version: 1.0.0
+  description: 'TextQL public API. Generated from protobuf service definitions; internal
+
+    endpoints are excluded via google.api.visibility / file_visibility.'
+servers:
+- url: https://app.textql.com/rpc/public
+security:
+- apiKey: []
+tags:
+- name: PowerBIService
+paths:
+  /textql.rpc.public.powerbi.PowerBIService/ExportPowerBIReportImage:
+    post:
+      tags:
+      - PowerBIService
+      summary: ExportPowerBIReportImage
+      operationId: PowerBIService_ExportPowerBIReportImage
+      x-speakeasy-group: powerbi
+      x-speakeasy-name-override: exportReportImage
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.powerbi.ExportPowerBIReportImageRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.powerbi.ExportPowerBIReportImageResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.powerbi.exportReportImage({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.powerbi.export_report_image()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.powerbi.PowerBIService/GeneratePowerBIEmbedToken:
+    post:
+      tags:
+      - PowerBIService
+      summary: GeneratePowerBIEmbedToken
+      operationId: PowerBIService_GeneratePowerBIEmbedToken
+      x-speakeasy-group: powerbi
+      x-speakeasy-name-override: generateEmbedToken
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.powerbi.GeneratePowerBIEmbedTokenRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.powerbi.GeneratePowerBIEmbedTokenResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.powerbi.generateEmbedToken({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.powerbi.generate_embed_token()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.powerbi.PowerBIService/GetPowerBIDatasetPreview:
+    post:
+      tags:
+      - PowerBIService
+      summary: GetPowerBIDatasetPreview
+      operationId: PowerBIService_GetPowerBIDatasetPreview
+      x-speakeasy-group: powerbi
+      x-speakeasy-name-override: getDatasetPreview
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.powerbi.GetPowerBIDatasetPreviewRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.powerbi.GetPowerBIDatasetPreviewResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.powerbi.getDatasetPreview({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.powerbi.get_dataset_preview()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.powerbi.PowerBIService/GetSyncedPowerBIItems:
+    post:
+      tags:
+      - PowerBIService
+      summary: GetSyncedPowerBIItems
+      operationId: PowerBIService_GetSyncedPowerBIItems
+      x-speakeasy-group: powerbi
+      x-speakeasy-name-override: getSyncedItems
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.powerbi.GetSyncedPowerBIItemsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.powerbi.GetSyncedPowerBIItemsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.powerbi.getSyncedItems({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.powerbi.get_synced_items()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.powerbi.PowerBIService/ListPowerBIDatasets:
+    post:
+      tags:
+      - PowerBIService
+      summary: ListPowerBIDatasets
+      operationId: PowerBIService_ListPowerBIDatasets
+      x-speakeasy-group: powerbi
+      x-speakeasy-name-override: list
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.powerbi.ListPowerBIDatasetsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.powerbi.ListPowerBIDatasetsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.powerbi.list({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.powerbi.list()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.powerbi.PowerBIService/ListPowerBIReports:
+    post:
+      tags:
+      - PowerBIService
+      summary: ListPowerBIReports
+      operationId: PowerBIService_ListPowerBIReports
+      x-speakeasy-group: powerbi
+      x-speakeasy-name-override: listReports
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.powerbi.ListPowerBIReportsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.powerbi.ListPowerBIReportsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.powerbi.listReports({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.powerbi.list_reports()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.powerbi.PowerBIService/ListPowerBIWorkspaces:
+    post:
+      tags:
+      - PowerBIService
+      summary: ListPowerBIWorkspaces
+      operationId: PowerBIService_ListPowerBIWorkspaces
+      x-speakeasy-group: powerbi
+      x-speakeasy-name-override: listWorkspaces
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.powerbi.ListPowerBIWorkspacesRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.powerbi.ListPowerBIWorkspacesResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.powerbi.listWorkspaces({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.powerbi.list_workspaces()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.powerbi.PowerBIService/SyncPowerBIItems:
+    post:
+      tags:
+      - PowerBIService
+      summary: SyncPowerBIItems
+      operationId: PowerBIService_SyncPowerBIItems
+      x-speakeasy-group: powerbi
+      x-speakeasy-name-override: syncPowerBIItems
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.powerbi.SyncPowerBIItemsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.powerbi.SyncPowerBIItemsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.powerbi.syncPowerBIItems({\n    body: {\n      reports: [\n        {\n          createdDate: new Date(\"2023-01-15T01:30:15.01Z\"),\n        },\n      ],\n      datasets: [\n        {\n          createdDate: new Date(\"2023-01-15T01:30:15.01Z\"),\n        },\n      ],\n    },\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\nfrom textql_sdk.utils import parse_datetime\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.powerbi.sync_power_bi_items(reports=[\n        {\n            \"created_date\": parse_datetime(\"2023-01-15T01:30:15.01Z\"),\n        },\n    ], datasets=[\n        {\n            \"created_date\": parse_datetime(\"2023-01-15T01:30:15.01Z\"),\n        },\n    ])\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.powerbi.PowerBIService/TestPowerBIConnection:
+    post:
+      tags:
+      - PowerBIService
+      summary: TestPowerBIConnection
+      operationId: PowerBIService_TestPowerBIConnection
+      x-speakeasy-group: powerbi
+      x-speakeasy-name-override: testConnection
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.powerbi.TestPowerBIConnectionRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.powerbi.TestPowerBIConnectionResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.powerbi.testConnection({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.powerbi.test_connection()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.powerbi.PowerBIService/UnsyncPowerBIItems:
+    post:
+      tags:
+      - PowerBIService
+      summary: UnsyncPowerBIItems
+      operationId: PowerBIService_UnsyncPowerBIItems
+      x-speakeasy-group: powerbi
+      x-speakeasy-name-override: unsyncItems
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.powerbi.UnsyncPowerBIItemsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.powerbi.UnsyncPowerBIItemsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.powerbi.unsyncItems({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.powerbi.unsync_items()\n\n    # Handle response\n    print(res)"
+components:
+  schemas:
+    textql.rpc.public.powerbi.ListPowerBIDatasetsResponse:
+      type: object
+      properties:
+        datasets:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.powerbi.PowerBIDataset'
+          title: datasets
+        error:
+          type: string
+          title: error
+          nullable: true
+      title: ListPowerBIDatasetsResponse
+      additionalProperties: false
+    textql.rpc.public.powerbi.PowerBIWorkspace:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        name:
+          type: string
+          title: name
+        isReadOnly:
+          type: boolean
+          title: is_read_only
+        isOnPremium:
+          type: boolean
+          title: is_on_premium
+      title: PowerBIWorkspace
+      additionalProperties: false
+    textql.rpc.public.powerbi.TestPowerBIConnectionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+        error:
+          type: string
+          title: error
+      title: TestPowerBIConnectionResponse
+      additionalProperties: false
+    textql.rpc.public.powerbi.ListPowerBIWorkspacesResponse:
+      type: object
+      properties:
+        workspaces:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.powerbi.PowerBIWorkspace'
+          title: workspaces
+        error:
+          type: string
+          title: error
+          nullable: true
+      title: ListPowerBIWorkspacesResponse
+      additionalProperties: false
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
+          type: string
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+          - type: object
+            title: Any
+            additionalProperties: true
+            description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
+    textql.rpc.public.powerbi.PowerBIReport:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        name:
+          type: string
+          title: name
+        webUrl:
+          type: string
+          title: web_url
+        embedUrl:
+          type: string
+          title: embed_url
+        datasetId:
+          type: string
+          title: dataset_id
+        createdBy:
+          type: string
+          title: created_by
+        createdDate:
+          title: created_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: PowerBIReport
+      additionalProperties: false
+    textql.rpc.public.powerbi.ListPowerBIWorkspacesRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+      title: ListPowerBIWorkspacesRequest
+      additionalProperties: false
+    textql.rpc.public.powerbi.GetSyncedPowerBIItemsRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+      title: GetSyncedPowerBIItemsRequest
+      additionalProperties: false
+    textql.rpc.public.powerbi.PowerBIDataset:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        name:
+          type: string
+          title: name
+        addRowsApiEnabled:
+          type: boolean
+          title: add_rows_api_enabled
+        configuredBy:
+          type: string
+          title: configured_by
+        isRefreshable:
+          type: boolean
+          title: is_refreshable
+        isEffectiveIdentityRequired:
+          type: boolean
+          title: is_effective_identity_required
+        isEffectiveIdentityRolesRequired:
+          type: boolean
+          title: is_effective_identity_roles_required
+        isOnPremGatewayRequired:
+          type: boolean
+          title: is_on_prem_gateway_required
+        createdDate:
+          title: created_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        tableNames:
+          type: array
+          items:
+            type: string
+          title: table_names
+      title: PowerBIDataset
+      additionalProperties: false
+    textql.rpc.public.powerbi.SyncedPowerBIDataset:
+      type: object
+      properties:
+        dataset:
+          title: dataset
+          $ref: '#/components/schemas/textql.rpc.public.powerbi.PowerBIDataset'
+        workspaceId:
+          type: string
+          title: workspace_id
+        workspaceName:
+          type: string
+          title: workspace_name
+        syncedAt:
+          title: synced_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: SyncedPowerBIDataset
+      additionalProperties: false
+    textql.rpc.public.powerbi.UnsyncPowerBIItemsRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        reportIds:
+          type: array
+          items:
+            type: string
+          title: report_ids
+        datasetIds:
+          type: array
+          items:
+            type: string
+          title: dataset_ids
+      title: UnsyncPowerBIItemsRequest
+      additionalProperties: false
+    textql.rpc.public.powerbi.ExportPowerBIReportImageResponse:
+      type: object
+      properties:
+        imageData:
+          type: string
+          title: image_data
+          format: byte
+        imageUrl:
+          type: string
+          title: image_url
+        error:
+          type: string
+          title: error
+          nullable: true
+      title: ExportPowerBIReportImageResponse
+      additionalProperties: false
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+          - not_found
+          enum:
+          - canceled
+          - unknown
+          - invalid_argument
+          - deadline_exceeded
+          - not_found
+          - already_exists
+          - permission_denied
+          - resource_exhausted
+          - failed_precondition
+          - aborted
+          - out_of_range
+          - unimplemented
+          - internal
+          - unavailable
+          - data_loss
+          - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    textql.rpc.public.powerbi.GetPowerBIDatasetPreviewRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        workspaceId:
+          type: string
+          title: workspace_id
+        datasetId:
+          type: string
+          title: dataset_id
+        datasetName:
+          type: string
+          title: dataset_name
+        limit:
+          type: integer
+          title: limit
+          format: int32
+      title: GetPowerBIDatasetPreviewRequest
+      additionalProperties: false
+    textql.rpc.public.powerbi.GeneratePowerBIEmbedTokenRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        workspaceId:
+          type: string
+          title: workspace_id
+        reportId:
+          type: string
+          title: report_id
+        datasetId:
+          type: string
+          title: dataset_id
+      title: GeneratePowerBIEmbedTokenRequest
+      additionalProperties: false
+    textql.rpc.public.powerbi.ListPowerBIDatasetsRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        workspaceId:
+          type: string
+          title: workspace_id
+      title: ListPowerBIDatasetsRequest
+      additionalProperties: false
+    textql.rpc.public.powerbi.TestPowerBIConnectionRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+          nullable: true
+        tenantId:
+          type: string
+          title: tenant_id
+          nullable: true
+        clientId:
+          type: string
+          title: client_id
+          nullable: true
+        clientSecret:
+          type: string
+          title: client_secret
+          nullable: true
+      title: TestPowerBIConnectionRequest
+      additionalProperties: false
+    textql.rpc.public.powerbi.SyncedPowerBIReport:
+      type: object
+      properties:
+        report:
+          title: report
+          $ref: '#/components/schemas/textql.rpc.public.powerbi.PowerBIReport'
+        workspaceId:
+          type: string
+          title: workspace_id
+        workspaceName:
+          type: string
+          title: workspace_name
+        syncedAt:
+          title: synced_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: SyncedPowerBIReport
+      additionalProperties: false
+    textql.rpc.public.powerbi.SyncPowerBIItemsRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        workspaceId:
+          type: string
+          title: workspace_id
+        workspaceName:
+          type: string
+          title: workspace_name
+        reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.powerbi.PowerBIReport'
+          title: reports
+        datasets:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.powerbi.PowerBIDataset'
+          title: datasets
+      title: SyncPowerBIItemsRequest
+      additionalProperties: false
+    textql.rpc.public.powerbi.GeneratePowerBIEmbedTokenResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          title: token
+        tokenId:
+          type: string
+          title: token_id
+        expiration:
+          title: expiration
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: GeneratePowerBIEmbedTokenResponse
+      additionalProperties: false
+    google.protobuf.Timestamp:
+      type: string
+      examples:
+      - '2023-01-15T01:30:15.01Z'
+      - '2024-12-25T12:00:00Z'
+      format: date-time
+      description: "A Timestamp represents a point in time independent of any time zone or local\n calendar, encoded as a count of seconds and fractions of seconds at\n nanosecond resolution. The count is relative to an epoch at UTC midnight on\n January 1, 1970, in the proleptic Gregorian calendar which extends the\n Gregorian calendar backwards to year one.\n\n All minutes are 60 seconds long. Leap seconds are \"smeared\" so that no leap\n second table is needed for interpretation, using a [24-hour linear\n smear](https://developers.google.com/time/smear).\n\n The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By\n restricting to that range, we ensure that we can convert to and from [RFC\n 3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.\n\n # Examples\n\n Example 1: Compute Timestamp from POSIX `time()`.\n\n     Timestamp timestamp;\n     timestamp.set_seconds(time(NULL));\n     timestamp.set_nanos(0);\n\n Example 2: Compute Timestamp from POSIX `gettimeofday()`.\n\n     struct timeval tv;\n     gettimeofday(&tv, NULL);\n\n     Timestamp timestamp;\n     timestamp.set_seconds(tv.tv_sec);\n     timestamp.set_nanos(tv.tv_usec * 1000);\n\n Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.\n\n     FILETIME ft;\n     GetSystemTimeAsFileTime(&ft);\n     UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;\n\n     // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z\n     // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.\n     Timestamp timestamp;\n     timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));\n     timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));\n\n Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.\n\n     long millis = System.currentTimeMillis();\n\n     Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)\n         .setNanos((int) ((millis % 1000) * 1000000)).build();\n\n Example 5: Compute Timestamp from Java `Instant.now()`.\n\n     Instant now = Instant.now();\n\n     Timestamp timestamp =\n         Timestamp.newBuilder().setSeconds(now.getEpochSecond())\n             .setNanos(now.getNano()).build();\n\n Example 6: Compute Timestamp from current time in Python.\n\n     timestamp = Timestamp()\n     timestamp.GetCurrentTime()\n\n # JSON Mapping\n\n In JSON format, the Timestamp type is encoded as a string in the\n [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the\n format is \"{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z\"\n where {year} is always expressed using four digits while {month}, {day},\n {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional\n seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),\n are optional. The \"Z\" suffix indicates the timezone (\"UTC\"); the timezone\n is required. A proto3 JSON serializer should always use UTC (as indicated by\n \"Z\") when printing the Timestamp type and a proto3 JSON parser should be\n able to accept both UTC and other timezones (as indicated by an offset).\n\n For example, \"2017-01-15T01:30:15.01Z\" encodes 15.01 seconds past\n 01:30 UTC on January 15, 2017.\n\n In JavaScript, one can convert a Date object to this format using the\n standard\n [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)\n method. In Python, a standard `datetime.datetime` object can be converted\n to this format using\n [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with\n the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use\n the Joda Time's [`ISODateTimeFormat.dateTime()`](\n http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()\n ) to obtain a formatter capable of generating timestamps in this format."
+    textql.rpc.public.powerbi.UnsyncPowerBIItemsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+        error:
+          type: string
+          title: error
+          nullable: true
+      title: UnsyncPowerBIItemsResponse
+      additionalProperties: false
+    textql.rpc.public.powerbi.ExportPowerBIReportImageRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        workspaceId:
+          type: string
+          title: workspace_id
+        reportId:
+          type: string
+          title: report_id
+      title: ExportPowerBIReportImageRequest
+      additionalProperties: false
+    textql.rpc.public.powerbi.SyncPowerBIItemsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+        error:
+          type: string
+          title: error
+          nullable: true
+        syncedReportIds:
+          type: array
+          items:
+            type: string
+          title: synced_report_ids
+        syncedDatasetIds:
+          type: array
+          items:
+            type: string
+          title: synced_dataset_ids
+      title: SyncPowerBIItemsResponse
+      additionalProperties: false
+    textql.rpc.public.powerbi.GetPowerBIDatasetPreviewResponse:
+      type: object
+      properties:
+        tablePreviews:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.powerbi.PowerBITablePreview'
+          title: table_previews
+        success:
+          type: boolean
+          title: success
+        error:
+          type: string
+          title: error
+          nullable: true
+      title: GetPowerBIDatasetPreviewResponse
+      additionalProperties: false
+    textql.rpc.public.powerbi.ListPowerBIReportsResponse:
+      type: object
+      properties:
+        reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.powerbi.PowerBIReport'
+          title: reports
+        error:
+          type: string
+          title: error
+          nullable: true
+      title: ListPowerBIReportsResponse
+      additionalProperties: false
+    textql.rpc.public.powerbi.GetSyncedPowerBIItemsResponse:
+      type: object
+      properties:
+        reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.powerbi.SyncedPowerBIReport'
+          title: reports
+        datasets:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.powerbi.SyncedPowerBIDataset'
+          title: datasets
+      title: GetSyncedPowerBIItemsResponse
+      additionalProperties: false
+    textql.rpc.public.powerbi.ListPowerBIReportsRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        workspaceId:
+          type: string
+          title: workspace_id
+      title: ListPowerBIReportsRequest
+      additionalProperties: false
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+      - 1
+      description: Define the version of the Connect protocol
+      const: 1
+      default: 1
+    textql.rpc.public.powerbi.PowerBITablePreview:
+      type: object
+      properties:
+        tableName:
+          type: string
+          title: table_name
+        arrowData:
+          type: string
+          title: arrow_data
+          format: byte
+        totalRows:
+          type:
+          - integer
+          - string
+          title: total_rows
+          format: int64
+        error:
+          type: string
+          title: error
+          nullable: true
+      title: PowerBITablePreview
+      additionalProperties: false
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: tql_api_key

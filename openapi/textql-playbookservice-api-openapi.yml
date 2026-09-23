@@ -1,0 +1,4463 @@
+openapi: 3.2.0
+info:
+  title: TextQL Playbook Service API
+  version: 1.0.0
+  description: 'TextQL public API. Generated from protobuf service definitions; internal
+
+    endpoints are excluded via google.api.visibility / file_visibility.'
+servers:
+- url: https://app.textql.com/rpc/public
+security:
+- apiKey: []
+tags:
+- name: PlaybookService
+paths:
+  /textql.rpc.public.playbook.PlaybookService/AttachDashboard:
+    post:
+      tags:
+      - PlaybookService
+      summary: AttachDashboard
+      operationId: PlaybookService_AttachDashboard
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: attachDashboard
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookAttachDashboardRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookAttachDashboardResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.attachDashboard({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.attach_dashboard()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/AttachDataset:
+    post:
+      tags:
+      - PlaybookService
+      summary: AttachDataset
+      operationId: PlaybookService_AttachDataset
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: attachDataset
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookAttachDatasetRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookAttachDatasetResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.attachDataset({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.attach_dataset()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/CancelTemplateExecution:
+    post:
+      tags:
+      - PlaybookService
+      summary: Cancel template execution for a specific template header
+      operationId: PlaybookService_CancelTemplateExecution
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: cancelTemplateExecution
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.CancelTemplateExecutionRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.CancelTemplateExecutionResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.cancelTemplateExecution({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.cancel_template_execution()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/CreatePlaybook:
+    post:
+      tags:
+      - PlaybookService
+      summary: CreatePlaybook
+      operationId: PlaybookService_CreatePlaybook
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: createPlaybook
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.CreatePlaybookRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.CreatePlaybookResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.createPlaybook({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.create_playbook(body={})\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/DeactivatePlaybook:
+    post:
+      tags:
+      - PlaybookService
+      summary: DeactivatePlaybook
+      operationId: PlaybookService_DeactivatePlaybook
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: deactivate
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.DeactivatePlaybookRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/google.protobuf.Empty'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.deactivate({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.deactivate()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/DeletePlaybook:
+    post:
+      tags:
+      - PlaybookService
+      summary: DeletePlaybook
+      operationId: PlaybookService_DeletePlaybook
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: delete
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.DeletePlaybookRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.DeletePlaybookResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.delete({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.delete()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/DemoPlaybook:
+    post:
+      tags:
+      - PlaybookService
+      summary: DemoPlaybook
+      operationId: PlaybookService_DemoPlaybook
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: demoPlaybook
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.DemoPlaybookRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.DemoPlaybookResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.demoPlaybook({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.demo_playbook()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/DeployPlaybook:
+    post:
+      tags:
+      - PlaybookService
+      summary: DeployPlaybook
+      operationId: PlaybookService_DeployPlaybook
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: deploy
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.DeployPlaybookRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.DeployPlaybookResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.deploy({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.deploy()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/DuplicatePlaybook:
+    post:
+      tags:
+      - PlaybookService
+      summary: DuplicatePlaybook
+      operationId: PlaybookService_DuplicatePlaybook
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: duplicate
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.DuplicatePlaybookRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.DuplicatePlaybookResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.duplicate({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.duplicate()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/FavoriteReport:
+    post:
+      tags:
+      - PlaybookService
+      summary: Favorite report management
+      operationId: PlaybookService_FavoriteReport
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: favoriteReport
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.FavoriteReportRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.FavoriteReportResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.favoriteReport({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.favorite_report()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/GetActiveSubscribedPlaybooksCount:
+    post:
+      tags:
+      - PlaybookService
+      summary: GetActiveSubscribedPlaybooksCount
+      operationId: PlaybookService_GetActiveSubscribedPlaybooksCount
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: getActiveSubscribedCount
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.GetActiveSubscribedPlaybooksCountRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.GetActiveSubscribedPlaybooksCountResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.getActiveSubscribedCount({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.get_active_subscribed_count(body={})\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/GetChatReportsSummary:
+    post:
+      tags:
+      - PlaybookService
+      summary: Lightweight endpoint for chat report drawer - returns summaries without full…
+      description: Lightweight endpoint for chat report drawer - returns summaries without full blocks
+      operationId: PlaybookService_GetChatReportsSummary
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: getChatReportsSummary
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.GetChatReportsSummaryRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.GetChatReportsSummaryResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.getChatReportsSummary({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.get_chat_reports_summary()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/GetMembersWithPlaybooks:
+    post:
+      tags:
+      - PlaybookService
+      summary: GetMembersWithPlaybooks
+      operationId: PlaybookService_GetMembersWithPlaybooks
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: getMembersWith
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.GetMembersWithPlaybooksRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.GetMembersWithPlaybooksResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.getMembersWith({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.get_members_with(body={})\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/GetPlaybook:
+    post:
+      tags:
+      - PlaybookService
+      summary: GetPlaybook
+      operationId: PlaybookService_GetPlaybook
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: fetch
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.GetPlaybookRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.GetPlaybookResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.fetch({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.fetch()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/GetPlaybookBatchRun:
+    post:
+      tags:
+      - PlaybookService
+      summary: Get a specific batch run
+      operationId: PlaybookService_GetPlaybookBatchRun
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: getBatchRun
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.GetPlaybookBatchRunRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.GetPlaybookBatchRunResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.getBatchRun({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.get_batch_run()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/GetPlaybookLineage:
+    post:
+      tags:
+      - PlaybookService
+      summary: GetPlaybookLineage
+      operationId: PlaybookService_GetPlaybookLineage
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: getPlaybookLineage
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.GetPlaybookLineageRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.GetPlaybookLineageResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.getPlaybookLineage({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.get_playbook_lineage()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/GetPlaybookReports:
+    post:
+      tags:
+      - PlaybookService
+      summary: GetPlaybookReports
+      operationId: PlaybookService_GetPlaybookReports
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: getReports
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.GetPlaybookReportsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.GetPlaybookReportsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.getReports({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.get_reports()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/GetPlaybookReportsBatch:
+    post:
+      tags:
+      - PlaybookService
+      summary: Get reports for multiple template data IDs in a single batch request
+      operationId: PlaybookService_GetPlaybookReportsBatch
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: getPlaybookReportsBatch
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.GetPlaybookReportsBatchRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.GetPlaybookReportsBatchResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.getPlaybookReportsBatch({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.get_playbook_reports_batch()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/GetPlaybooks:
+    post:
+      tags:
+      - PlaybookService
+      summary: GetPlaybooks
+      operationId: PlaybookService_GetPlaybooks
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: get
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.GetPlaybooksRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.GetPlaybooksResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.get({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.get()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/GetPlaybooksPreviews:
+    post:
+      tags:
+      - PlaybookService
+      summary: GetPlaybooksPreviews
+      operationId: PlaybookService_GetPlaybooksPreviews
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: getPlaybooksPreviews
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.GetPlaybooksPreviewsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.GetPlaybooksPreviewsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.getPlaybooksPreviews({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.get_playbooks_previews()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/GetReportById:
+    post:
+      tags:
+      - PlaybookService
+      summary: Get a single report by ID
+      operationId: PlaybookService_GetReportById
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: getReportById
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.GetReportByIdRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.GetReportByIdResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.getReportById({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.get_report_by_id()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/GetReportsWithFilters:
+    post:
+      tags:
+      - PlaybookService
+      summary: GetReportsWithFilters
+      operationId: PlaybookService_GetReportsWithFilters
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: getReportsWithFilters
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.GetReportsWithFiltersRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.GetReportsWithFiltersResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.getReportsWithFilters({\n    body: {\n      filters: {\n        startTime: new Date(\"2023-01-15T01:30:15.01Z\"),\n        endTime: new Date(\"2023-01-15T01:30:15.01Z\"),\n      },\n    },\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\nfrom textql_sdk.utils import parse_datetime\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.get_reports_with_filters(filters={\n        \"start_time\": parse_datetime(\"2023-01-15T01:30:15.01Z\"),\n        \"end_time\": parse_datetime(\"2023-01-15T01:30:15.01Z\"),\n    })\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/ListAllSlackChannelContextPlaybooks:
+    post:
+      tags:
+      - PlaybookService
+      summary: List all Slack channels context playbook mappings for the organization
+      operationId: PlaybookService_ListAllSlackChannelContextPlaybooks
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: listSlackChannelContextPlaybooks
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.ListAllSlackChannelContextPlaybooksRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.ListAllSlackChannelContextPlaybooksResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.listSlackChannelContextPlaybooks({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.list_slack_channel_context_playbooks(body={})\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/ListAllTeamsChannelContextPlaybooks:
+    post:
+      tags:
+      - PlaybookService
+      summary: ListAllTeamsChannelContextPlaybooks
+      operationId: PlaybookService_ListAllTeamsChannelContextPlaybooks
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: listAllTeamsChannelContextPlaybooks
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.ListAllTeamsChannelContextPlaybooksRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.ListAllTeamsChannelContextPlaybooksResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.listAllTeamsChannelContextPlaybooks({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.list_all_teams_channel_context_playbooks(body={})\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/ListPlaybookBatchRuns:
+    post:
+      tags:
+      - PlaybookService
+      summary: List batch runs for a playbook
+      operationId: PlaybookService_ListPlaybookBatchRuns
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: listBatchRuns
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.ListPlaybookBatchRunsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.ListPlaybookBatchRunsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.listBatchRuns({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.list_batch_runs()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/ListSlackChannelsForContextPlaybook:
+    post:
+      tags:
+      - PlaybookService
+      summary: List Slack channel IDs where the given playbook is set as the context
+      operationId: PlaybookService_ListSlackChannelsForContextPlaybook
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: listSlackChannelsForContext
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.ListSlackChannelsForContextPlaybookRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.ListSlackChannelsForContextPlaybookResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.listSlackChannelsForContext({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.list_slack_channels_for_context()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/ListTeamsChannelsForContextPlaybook:
+    post:
+      tags:
+      - PlaybookService
+      summary: ListTeamsChannelsForContextPlaybook
+      operationId: PlaybookService_ListTeamsChannelsForContextPlaybook
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: listTeamsChannelsForContextPlaybook
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.ListTeamsChannelsForContextPlaybookRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.ListTeamsChannelsForContextPlaybookResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.listTeamsChannelsForContextPlaybook({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.list_teams_channels_for_context_playbook()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/MarkReportAsRead:
+    post:
+      tags:
+      - PlaybookService
+      summary: Report read tracking
+      operationId: PlaybookService_MarkReportAsRead
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: markReportAsRead
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.MarkReportAsReadRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.MarkReportAsReadResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.markReportAsRead({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.mark_report_as_read()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/PreviewSlackReport:
+    post:
+      tags:
+      - PlaybookService
+      summary: PreviewSlackReport
+      operationId: PlaybookService_PreviewSlackReport
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: previewSlackReport
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.PreviewSlackReportRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.PreviewSlackReportResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.previewSlackReport({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.preview_slack_report()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/RemoveDashboard:
+    post:
+      tags:
+      - PlaybookService
+      summary: RemoveDashboard
+      operationId: PlaybookService_RemoveDashboard
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: removeDashboard
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookRemoveDashboardRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookRemoveDashboardResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.removeDashboard({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.remove_dashboard()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/RemoveDataset:
+    post:
+      tags:
+      - PlaybookService
+      summary: RemoveDataset
+      operationId: PlaybookService_RemoveDataset
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: removeDataset
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookRemoveDatasetRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookRemoveDatasetResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.removeDataset({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.remove_dataset()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/RunPlaybook:
+    post:
+      tags:
+      - PlaybookService
+      summary: RunPlaybook
+      operationId: PlaybookService_RunPlaybook
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: run
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.RunPlaybookRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.RunPlaybookResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.run({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.run()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/SetSlackChannelContextPlaybook:
+    post:
+      tags:
+      - PlaybookService
+      summary: Set the context playbook for a Slack channel.
+      description: 'Set the context playbook for a Slack channel. This associates the given
+
+        playbook to a Slack channel so that Slack messages in that channel use the
+
+        playbook''s context by default.'
+      operationId: PlaybookService_SetSlackChannelContextPlaybook
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: setSlackChannelContextPlaybook
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.SetSlackChannelContextPlaybookRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.SetSlackChannelContextPlaybookResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.setSlackChannelContextPlaybook({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.set_slack_channel_context_playbook()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/SetTeamsChannelContextPlaybook:
+    post:
+      tags:
+      - PlaybookService
+      summary: SetTeamsChannelContextPlaybook
+      operationId: PlaybookService_SetTeamsChannelContextPlaybook
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: setTeamsChannelContext
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.SetTeamsChannelContextPlaybookRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.SetTeamsChannelContextPlaybookResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.setTeamsChannelContext({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.set_teams_channel_context()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/SubscribeToPlaybook:
+    post:
+      tags:
+      - PlaybookService
+      summary: SubscribeToPlaybook
+      operationId: PlaybookService_SubscribeToPlaybook
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: subscribe
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.SubscribeToPlaybookRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.SubscribeToPlaybookResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.subscribe({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.subscribe()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/UnsetSlackChannelContextPlaybook:
+    post:
+      tags:
+      - PlaybookService
+      summary: Unset the context playbook for a Slack channel.
+      description: 'Unset the context playbook for a Slack channel. This clears any association
+
+        so that messages in this channel no longer use a specific playbook context.'
+      operationId: PlaybookService_UnsetSlackChannelContextPlaybook
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: unsetSlackChannelContextPlaybook
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.UnsetSlackChannelContextPlaybookRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.UnsetSlackChannelContextPlaybookResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.unsetSlackChannelContextPlaybook({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.unset_slack_channel_context_playbook()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/UnsetTeamsChannelContextPlaybook:
+    post:
+      tags:
+      - PlaybookService
+      summary: UnsetTeamsChannelContextPlaybook
+      operationId: PlaybookService_UnsetTeamsChannelContextPlaybook
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: unsetTeamsChannelContext
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.UnsetTeamsChannelContextPlaybookRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.UnsetTeamsChannelContextPlaybookResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.unsetTeamsChannelContext({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.unset_teams_channel_context()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/UnsubscribeFromPlaybook:
+    post:
+      tags:
+      - PlaybookService
+      summary: UnsubscribeFromPlaybook
+      operationId: PlaybookService_UnsubscribeFromPlaybook
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: unsubscribe
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.UnsubscribeFromPlaybookRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.UnsubscribeFromPlaybookResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.unsubscribe({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.unsubscribe()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.playbook.PlaybookService/UpdatePlaybook:
+    post:
+      tags:
+      - PlaybookService
+      summary: UpdatePlaybook
+      operationId: PlaybookService_UpdatePlaybook
+      x-speakeasy-group: playbooks
+      x-speakeasy-name-override: update
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.playbook.UpdatePlaybookRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.playbook.UpdatePlaybookResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.playbooks.update({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.update()\n\n    # Handle response\n    print(res)"
+components:
+  schemas:
+    textql.rpc.public.common.SortDirection:
+      type: string
+      title: SortDirection
+      enum:
+      - SORT_DIRECTION_UNKNOWN
+      - SORT_DIRECTION_ASC
+      - SORT_DIRECTION_DESC
+      description: Common enum for sort direction used across multiple services
+    textql.rpc.public.dashboard.Grant:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            type: string
+          title: roles
+          description: org role names
+        members:
+          type: array
+          items:
+            type: string
+          title: members
+          description: explicit member ids
+      title: Grant
+      additionalProperties: false
+      description: "Grant is an author allowlist gating a data source or compute function. A viewer whose\n effective role names intersect roles, or whose member id is listed in members, may call it.\n Absent grant = org-visible (today's behavior); an empty grant object is invalid."
+    textql.rpc.public.playbook.CancelTemplateExecutionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+        cancelledCount:
+          type: integer
+          title: cancelled_count
+          format: int32
+          description: Number of template executions that were cancelled
+      title: CancelTemplateExecutionResponse
+      additionalProperties: false
+      description: Response from canceling template execution
+    textql.rpc.public.reports.ReportBlock:
+      type: object
+      oneOf:
+      - type: object
+        properties:
+          card:
+            title: card
+            $ref: '#/components/schemas/textql.rpc.public.reports.CardBlock'
+        title: card
+        required:
+        - card
+      - type: object
+        properties:
+          divider:
+            title: divider
+            $ref: '#/components/schemas/textql.rpc.public.reports.DividerBlock'
+        title: divider
+        required:
+        - divider
+      - type: object
+        properties:
+          hero:
+            title: hero
+            $ref: '#/components/schemas/textql.rpc.public.reports.HeroBlock'
+        title: hero
+        required:
+        - hero
+      - type: object
+        properties:
+          image:
+            title: image
+            $ref: '#/components/schemas/textql.rpc.public.reports.ImageBlock'
+        title: image
+        required:
+        - image
+      - type: object
+        properties:
+          imageText:
+            title: image_text
+            $ref: '#/components/schemas/textql.rpc.public.reports.ImageTextBlock'
+        title: image_text
+        required:
+        - imageText
+      - type: object
+        properties:
+          list:
+            title: list
+            $ref: '#/components/schemas/textql.rpc.public.reports.ListBlock'
+        title: list
+        required:
+        - list
+      - type: object
+        properties:
+          spacer:
+            title: spacer
+            $ref: '#/components/schemas/textql.rpc.public.reports.SpacerBlock'
+        title: spacer
+        required:
+        - spacer
+      - type: object
+        properties:
+          text:
+            title: text
+            $ref: '#/components/schemas/textql.rpc.public.reports.TextBlock'
+        title: text
+        required:
+        - text
+      title: ReportBlock
+      additionalProperties: false
+    textql.rpc.public.playbook.ListAllTeamsChannelContextPlaybooksRequest:
+      type: object
+      title: ListAllTeamsChannelContextPlaybooksRequest
+      additionalProperties: false
+    textql.rpc.public.dashboard.Dashboard:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        orgId:
+          type: string
+          title: org_id
+        creatorId:
+          type: string
+          title: creator_id
+        name:
+          type: string
+          title: name
+        description:
+          type: string
+          title: description
+          nullable: true
+        code:
+          type: string
+          title: code
+        type:
+          title: type
+          $ref: '#/components/schemas/textql.rpc.public.dashboard.DashboardType'
+        chatId:
+          type: string
+          title: chat_id
+          nullable: true
+        cellId:
+          type: string
+          title: cell_id
+          nullable: true
+        isPublic:
+          type: boolean
+          title: is_public
+        screenshotUrl:
+          type: string
+          title: screenshot_url
+          nullable: true
+        htmlUrl:
+          type: string
+          title: html_url
+          description: URL for serving HTML dashboards
+          nullable: true
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        refreshedAt:
+          title: refreshed_at
+          description: Last time dashboard was executed (manual or scheduled)
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        creator:
+          title: creator
+          description: Enriched fields (not stored in DB)
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.dashboard.DashboardCreator'
+        streamlitUrl:
+          type: string
+          title: streamlit_url
+          description: Active URL if spawned
+          nullable: true
+        status:
+          title: status
+          description: Workflow fields
+          $ref: '#/components/schemas/textql.rpc.public.dashboard.DashboardStatus'
+        publishedCode:
+          type: string
+          title: published_code
+          nullable: true
+        publishedAt:
+          title: published_at
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        hasUnpublishedChanges:
+          type: boolean
+          title: has_unpublished_changes
+          description: 'Computed: code != published_code'
+        dataSources:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dashboard.DataSource'
+          title: data_sources
+          description: Data sources (SQL queries, uploaded files, etc.)
+        scheduleEnabled:
+          type: boolean
+          title: schedule_enabled
+          description: Scheduling
+        cronString:
+          type: string
+          title: cron_string
+          nullable: true
+        latestScheduledRunAt:
+          title: latest_scheduled_run_at
+          description: Last time scheduled run was triggered
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        folderId:
+          type: string
+          title: folder_id
+          description: Folder
+          nullable: true
+        configSource:
+          title: config_source
+          description: "Config-management metadata (ADR-0014/0021). Present ⇒ the dashboard is defined\n by a `.dashboard` Library file: it is read-only in the UI (mutating RPCs are\n rejected) and changed only by editing its file. Clients detect config-management\n by presence, the same way they do for playbooks."
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.config_source.ConfigSource'
+        isFavorited:
+          type: boolean
+          title: is_favorited
+          description: per-caller pin state (enriched, not stored on the dashboard)
+      title: Dashboard
+      additionalProperties: false
+    textql.rpc.public.playbook.CreatePlaybookRequest:
+      type: object
+      title: CreatePlaybookRequest
+      additionalProperties: false
+    textql.rpc.public.dashboard.PythonCodeSource:
+      type: object
+      properties:
+        code:
+          type: string
+          title: code
+      title: PythonCodeSource
+      additionalProperties: false
+    textql.rpc.identity.MemberPreview:
+      type: object
+      properties:
+        memberId:
+          type: string
+          title: member_id
+        memberEmail:
+          type: string
+          title: member_email
+          description: "the fields are optionally populated, depending on the context\n may require RPC fields such as `include_owner` to be set to true"
+          nullable: true
+        memberName:
+          type: string
+          title: member_name
+          nullable: true
+        memberPictureUrl:
+          type: string
+          title: member_picture_url
+          nullable: true
+      title: MemberPreview
+      additionalProperties: false
+    textql.rpc.public.dashboard.SqlQuerySource:
+      type: object
+      properties:
+        query:
+          type: string
+          title: query
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        predicate:
+          type: string
+          title: predicate
+          description: Optional viewer row-filter appended server-side at live-query time; binds :viewer_member_id / :viewer_email. Presence forces the source out of the published snapshot.
+      title: SqlQuerySource
+      additionalProperties: false
+    textql.rpc.public.playbook.UnsetSlackChannelContextPlaybookResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: UnsetSlackChannelContextPlaybookResponse
+      additionalProperties: false
+    textql.rpc.public.reports.HeroBlock:
+      type: object
+      properties:
+        imageUrl:
+          type: string
+          title: image_url
+        imageAlt:
+          type: string
+          title: image_alt
+          nullable: true
+      title: HeroBlock
+      additionalProperties: false
+    textql.rpc.public.playbook.PlaybookStatus:
+      type: string
+      title: PlaybookStatus
+      enum:
+      - STATUS_UNKNOWN
+      - STATUS_ACTIVE
+      - STATUS_INACTIVE
+      - STATUS_EMPTY
+      - ALL_PLAYBOOKS
+    textql.rpc.public.playbook.CancelTemplateExecutionRequest:
+      type: object
+      properties:
+        templateHeaderId:
+          type: string
+          title: template_header_id
+        playbookId:
+          type: string
+          title: playbook_id
+      title: CancelTemplateExecutionRequest
+      additionalProperties: false
+      description: Request to cancel template execution
+    textql.rpc.public.tableau.TableauView:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        name:
+          type: string
+          title: name
+        contentUrl:
+          type: string
+          title: content_url
+        workbookId:
+          type: string
+          title: workbook_id
+        workbookName:
+          type: string
+          title: workbook_name
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        embedUrl:
+          type: string
+          title: embed_url
+      title: TableauView
+      additionalProperties: false
+    textql.rpc.public.playbook.SubscribeToPlaybookResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: SubscribeToPlaybookResponse
+      additionalProperties: false
+    textql.rpc.public.reports.CardBlock:
+      type: object
+      properties:
+        blocks:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.reports.ReportBlock'
+          title: blocks
+      title: CardBlock
+      additionalProperties: false
+    textql.rpc.public.playbook.GetPlaybookReportsBatchRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+          description: UUID
+        templateDataIds:
+          type: array
+          items:
+            type: string
+          title: template_data_ids
+          description: List of template data UUIDs to fetch reports for
+        limitPerTemplate:
+          type: integer
+          title: limit_per_template
+          format: int32
+          description: 'Max reports to return per template_data_id (default: 100)'
+        batchRunId:
+          type: string
+          title: batch_run_id
+          description: UUID - filter reports and artifacts by batch run
+          nullable: true
+      title: GetPlaybookReportsBatchRequest
+      additionalProperties: false
+      description: Batch request to get reports for multiple template data IDs efficiently
+    textql.rpc.public.dataset.DatasetType:
+      type: string
+      title: DatasetType
+      enum:
+      - TYPE_UNKNOWN
+      - TYPE_TABULAR
+      - TYPE_DATAFRAME
+      - TYPE_DOCUMENT
+      - TYPE_TABLEAU
+      - TYPE_IMAGE
+      - TYPE_TEXT
+      - TYPE_POWERBI
+      description: never change the names or numbers of existing dataset types!
+    textql.rpc.public.playbook.MarkReportAsReadResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+        readAt:
+          title: read_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: MarkReportAsReadResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.PlaybookSortField:
+      type: string
+      title: PlaybookSortField
+      enum:
+      - SORT_FIELD_UNKNOWN
+      - SORT_FIELD_NAME
+      - SORT_FIELD_CREATED_AT
+      - SORT_FIELD_UPDATED_AT
+      - SORT_FIELD_SCHEDULE
+    textql.rpc.public.playbook.SetTeamsChannelContextPlaybookRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+        teamsChannelId:
+          type: string
+          title: teams_channel_id
+      title: SetTeamsChannelContextPlaybookRequest
+      additionalProperties: false
+    textql.rpc.public.playbook.ChatAccessOverride:
+      type: object
+      properties:
+        memberId:
+          type: string
+          title: member_id
+          nullable: true
+        roleId:
+          type: string
+          title: role_id
+          nullable: true
+        accessType:
+          type: string
+          title: access_type
+          description: '"owner", "editor", "viewer"'
+      title: ChatAccessOverride
+      additionalProperties: false
+    textql.rpc.public.dashboard.DashboardCreator:
+      type: object
+      properties:
+        memberId:
+          type: string
+          title: member_id
+        memberEmail:
+          type: string
+          title: member_email
+          nullable: true
+        memberName:
+          type: string
+          title: member_name
+          nullable: true
+      title: DashboardCreator
+      additionalProperties: false
+    textql.rpc.public.config_source.ConfigSyncStatus:
+      type: string
+      title: ConfigSyncStatus
+      enum:
+      - CONFIG_SYNC_STATUS_UNSPECIFIED
+      - CONFIG_SYNC_STATUS_SYNCING
+      - CONFIG_SYNC_STATUS_SYNCED
+      - CONFIG_SYNC_STATUS_ERROR
+    textql.rpc.public.dataset.SandboxDataFrame:
+      type: object
+      properties:
+        info:
+          title: info
+          $ref: '#/components/schemas/textql.rpc.public.dataframe.DataFrameInfo'
+      title: SandboxDataFrame
+      additionalProperties: false
+    textql.rpc.public.playbook.GetChatReportsSummaryRequest:
+      type: object
+      properties:
+        chatId:
+          type: string
+          title: chat_id
+      title: GetChatReportsSummaryRequest
+      additionalProperties: false
+    textql.rpc.public.playbook.GetPlaybooksRequest:
+      type: object
+      properties:
+        memberOnly:
+          type: boolean
+          title: member_only
+        limit:
+          type: integer
+          title: limit
+          format: int32
+        offset:
+          type: integer
+          title: offset
+          format: int32
+        searchTerm:
+          type: string
+          title: search_term
+          nullable: true
+        statusFilter:
+          title: status_filter
+          description: single-select; superseded by `statuses` when that is non-empty
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookStatus'
+        creatorMemberId:
+          type: string
+          title: creator_member_id
+          description: single-select; superseded by `creator_member_ids` when that is non-empty
+          nullable: true
+        sortBy:
+          title: sort_by
+          $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookSortField'
+        sortDirection:
+          title: sort_direction
+          $ref: '#/components/schemas/textql.rpc.public.common.SortDirection'
+        subscribedFirst:
+          type: boolean
+          title: subscribed_first
+          nullable: true
+        onlySubscribed:
+          type: boolean
+          title: only_subscribed
+          nullable: true
+        sharedWithMe:
+          type: boolean
+          title: shared_with_me
+          nullable: true
+        includeSharedDrafts:
+          type: boolean
+          title: include_shared_drafts
+          nullable: true
+        statuses:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookStatus'
+          title: statuses
+          description: Multi-select filters (union). Each supersedes its single-value counterpart when non-empty.
+        creatorMemberIds:
+          type: array
+          items:
+            type: string
+          title: creator_member_ids
+      title: GetPlaybooksRequest
+      additionalProperties: false
+    textql.rpc.public.playbook.ListPlaybookBatchRunsRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+          description: UUID
+        limit:
+          type: integer
+          title: limit
+          format: int32
+          description: 'Max number of results (default: 50)'
+          nullable: true
+        offset:
+          type: integer
+          title: offset
+          format: int32
+          description: 'Offset for pagination (default: 0)'
+          nullable: true
+      title: ListPlaybookBatchRunsRequest
+      additionalProperties: false
+      description: Request to list batch runs for a playbook
+    textql.rpc.public.playbook.ListPlaybookBatchRunsResponse:
+      type: object
+      properties:
+        batchRuns:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookBatchRun'
+          title: batch_runs
+        totalCount:
+          type: integer
+          title: total_count
+          format: int32
+          description: Total number of batch runs for this playbook
+      title: ListPlaybookBatchRunsResponse
+      additionalProperties: false
+      description: Response containing list of batch runs
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+      - 1
+      description: Define the version of the Connect protocol
+      const: 1
+      default: 1
+    textql.rpc.public.playbook.FilterConditionList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.playbook.FilterCondition'
+          title: items
+      title: FilterConditionList
+      additionalProperties: false
+    textql.rpc.public.playbook.ListTeamsChannelsForContextPlaybookRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+      title: ListTeamsChannelsForContextPlaybookRequest
+      additionalProperties: false
+    textql.rpc.public.playbook.GetPlaybookBatchRunResponse:
+      type: object
+      properties:
+        batchRun:
+          title: batch_run
+          $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookBatchRun'
+      title: GetPlaybookBatchRunResponse
+      additionalProperties: false
+      description: Response containing batch run details
+    textql.rpc.public.playbook.DemoPlaybookRequest:
+      type: object
+      properties:
+        chatId:
+          type: string
+          title: chat_id
+        personName:
+          type: string
+          title: person_name
+        jobTitle:
+          type: string
+          title: job_title
+        targetEmail:
+          type: string
+          title: target_email
+      title: DemoPlaybookRequest
+      additionalProperties: false
+    textql.rpc.public.playbook.ListSlackChannelsForContextPlaybookRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+          description: UUID
+      title: ListSlackChannelsForContextPlaybookRequest
+      additionalProperties: false
+      description: Lists Slack channel IDs that have this playbook set as the context playbook.
+    textql.rpc.public.playbook.PlaybookRemoveDashboardRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+        dashboardId:
+          type: string
+          title: dashboard_id
+      title: PlaybookRemoveDashboardRequest
+      additionalProperties: false
+    textql.rpc.public.playbook.ListAllSlackChannelContextPlaybooksRequest:
+      type: object
+      title: ListAllSlackChannelContextPlaybooksRequest
+      additionalProperties: false
+      description: List all Slack channel context playbook mappings for organization
+    textql.rpc.public.playbook.RunPlaybookRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+        dryRun:
+          type: boolean
+          title: dry_run
+          description: If true, runs without sending notifications
+        templateId:
+          type: string
+          title: template_id
+          nullable: true
+      title: RunPlaybookRequest
+      additionalProperties: false
+    textql.rpc.public.playbook.PlaybookAttachDatasetRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+        datasetId:
+          type: string
+          title: dataset_id
+      title: PlaybookAttachDatasetRequest
+      additionalProperties: false
+    textql.rpc.public.reports.DividerBlock:
+      type: object
+      title: DividerBlock
+      additionalProperties: false
+    textql.rpc.public.playbook.UnsetSlackChannelContextPlaybookRequest:
+      type: object
+      properties:
+        slackChannelId:
+          type: string
+          title: slack_channel_id
+      title: UnsetSlackChannelContextPlaybookRequest
+      additionalProperties: false
+      description: Unsets the context playbook for a Slack channel by channel ID only.
+    textql.rpc.public.playbook.ListAllSlackChannelContextPlaybooksResponse:
+      type: object
+      properties:
+        mappings:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.playbook.SlackChannelPlaybookMapping'
+          title: mappings
+      title: ListAllSlackChannelContextPlaybooksResponse
+      additionalProperties: false
+    textql.rpc.public.dashboard.DataSource:
+      type: object
+      allOf:
+      - type: object
+        properties:
+          type:
+            type: string
+            title: type
+            description: '"sql_query", "file", "python_code", "ontology_sql", or "library_tql"'
+          name:
+            type: string
+            title: name
+          parameters:
+            type: array
+            items:
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.QueryParameter'
+            title: parameters
+            description: Parameters for live parameterized queries (sql_query type only)
+          grant:
+            title: grant
+            description: "Optional author allowlist gating this source to specific org roles / members.\n Presence forces the source out of the published snapshot (live-only, viewer-enforced)."
+            $ref: '#/components/schemas/textql.rpc.public.dashboard.Grant'
+      - oneOf:
+        - type: object
+          properties:
+            file:
+              title: file
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.FileSource'
+          title: file
+          required:
+          - file
+        - type: object
+          properties:
+            libraryTql:
+              title: library_tql
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.LibraryTQLSource'
+          title: library_tql
+          required:
+          - libraryTql
+        - type: object
+          properties:
+            ontologySql:
+              title: ontology_sql
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.OntologySqlSource'
+          title: ontology_sql
+          required:
+          - ontologySql
+        - type: object
+          properties:
+            pythonCode:
+              title: python_code
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.PythonCodeSource'
+          title: python_code
+          required:
+          - pythonCode
+        - type: object
+          properties:
+            sqlQuery:
+              title: sql_query
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.SqlQuerySource'
+          title: sql_query
+          required:
+          - sqlQuery
+      title: DataSource
+      additionalProperties: false
+      description: Unified data source for dashboards
+    textql.rpc.public.playbook.GetPlaybookReportsResponse:
+      type: object
+      properties:
+        reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookReport'
+          title: reports
+        totalCount:
+          type: integer
+          title: total_count
+          format: int32
+      title: GetPlaybookReportsResponse
+      additionalProperties: false
+    textql.rpc.public.dataset.PowerBIData:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        reportIds:
+          type: array
+          items:
+            type: string
+          title: report_ids
+        datasetIds:
+          type: array
+          items:
+            type: string
+          title: dataset_ids
+        reportNames:
+          type: array
+          items:
+            type: string
+          title: report_names
+        datasetNames:
+          type: array
+          items:
+            type: string
+          title: dataset_names
+        workspaceId:
+          type: string
+          title: workspace_id
+        workspaceName:
+          type: string
+          title: workspace_name
+      title: PowerBIData
+      additionalProperties: false
+    textql.rpc.public.playbook.GetActiveSubscribedPlaybooksCountRequest:
+      type: object
+      title: GetActiveSubscribedPlaybooksCountRequest
+      additionalProperties: false
+    textql.rpc.public.playbook.DuplicatePlaybookResponse:
+      type: object
+      properties:
+        playbook:
+          title: playbook
+          $ref: '#/components/schemas/textql.rpc.public.playbook.Playbook'
+      title: DuplicatePlaybookResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.GetMembersWithPlaybooksResponse:
+      type: object
+      properties:
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.identity.MemberPreview'
+          title: members
+      title: GetMembersWithPlaybooksResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.PlaybookReport:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+          description: UUID
+        chatId:
+          type: string
+          title: chat_id
+          description: UUID
+        cellId:
+          type: string
+          title: cell_id
+          description: UUID
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        subject:
+          type: string
+          title: subject
+        summary:
+          type: string
+          title: summary
+        blocks:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.reports.ReportBlock'
+          title: blocks
+        htmlPreview:
+          type: string
+          title: html_preview
+        playbookId:
+          type: string
+          title: playbook_id
+          description: UUID
+        readAt:
+          title: read_at
+          description: When the current member read this report, not present if the current member hasn't read it
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        playbookTemplateDataId:
+          type: string
+          title: playbook_template_data_id
+          description: References UUID
+          nullable: true
+      title: PlaybookReport
+      additionalProperties: false
+    textql.rpc.public.playbook.GetPlaybookResponse:
+      type: object
+      properties:
+        playbook:
+          title: playbook
+          $ref: '#/components/schemas/textql.rpc.public.playbook.Playbook'
+        reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookReport'
+          title: reports
+        totalReportsCount:
+          type: integer
+          title: total_reports_count
+          format: int32
+      title: GetPlaybookResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.PlaybookAttachDashboardRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+        dashboardId:
+          type: string
+          title: dashboard_id
+      title: PlaybookAttachDashboardRequest
+      additionalProperties: false
+    textql.rpc.public.playbook.Int32List:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: integer
+            format: int32
+          title: items
+      title: Int32List
+      additionalProperties: false
+    textql.rpc.public.playbook.GetPlaybookRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+        limit:
+          type: integer
+          title: limit
+          format: int32
+        offset:
+          type: integer
+          title: offset
+          format: int32
+      title: GetPlaybookRequest
+      additionalProperties: false
+    textql.rpc.public.dataset.TabularFile:
+      type: object
+      properties:
+        category:
+          title: category
+          $ref: '#/components/schemas/textql.rpc.public.dataset.TabularFileCategory'
+        rowCount:
+          type:
+          - integer
+          - string
+          title: row_count
+          format: int64
+        columnCount:
+          type:
+          - integer
+          - string
+          title: column_count
+          format: int64
+        sheetCount:
+          type: integer
+          title: sheet_count
+          format: int32
+      title: TabularFile
+      additionalProperties: false
+    textql.rpc.public.playbook.ListSlackChannelsForContextPlaybookResponse:
+      type: object
+      properties:
+        slackChannelIds:
+          type: array
+          items:
+            type: string
+          title: slack_channel_ids
+          description: e.g., ["C123", "C456"]
+      title: ListSlackChannelsForContextPlaybookResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.PlaybookBatchRun:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+          description: UUID
+        playbookId:
+          type: string
+          title: playbook_id
+          description: UUID
+        templateHeaderId:
+          type: string
+          title: template_header_id
+          description: UUID
+        templateDataIds:
+          type: array
+          items:
+            type: string
+          title: template_data_ids
+          description: List of UUID references
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: PlaybookBatchRun
+      additionalProperties: false
+      description: Batch run record
+    textql.rpc.public.playbook.MarkReportAsReadRequest:
+      type: object
+      properties:
+        reportId:
+          type: string
+          title: report_id
+          description: UUID
+      title: MarkReportAsReadRequest
+      additionalProperties: false
+      description: Report read tracking messages
+    textql.rpc.public.reports.ImageTextBlock:
+      type: object
+      properties:
+        imageUrl:
+          type: string
+          title: image_url
+        imageAlt:
+          type: string
+          title: image_alt
+          nullable: true
+        variant:
+          title: variant
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.reports.ImageVariant'
+        heading:
+          type: string
+          title: heading
+          nullable: true
+        content:
+          type: string
+          title: content
+          nullable: true
+      title: ImageTextBlock
+      additionalProperties: false
+    textql.rpc.public.playbook.TeamsChannelPlaybookMapping:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+        teamsChannelId:
+          type: string
+          title: teams_channel_id
+      title: TeamsChannelPlaybookMapping
+      additionalProperties: false
+    textql.rpc.public.playbook.TemplateDataReports:
+      type: object
+      properties:
+        templateDataId:
+          type: string
+          title: template_data_id
+          description: UUID
+        reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookReport'
+          title: reports
+        totalCount:
+          type: integer
+          title: total_count
+          format: int32
+          description: Total number of reports for this template_data_id
+        previewCells:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.cells.PreviewCellRef'
+          title: preview_cells
+          description: Execution artifacts (charts, CSVs, etc.) from latest execution
+      title: TemplateDataReports
+      additionalProperties: false
+      description: Grouped reports by template_data_id
+    textql.rpc.public.playbook.SetSlackChannelContextPlaybookRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+          description: The playbook to associate
+        slackChannelId:
+          type: string
+          title: slack_channel_id
+          description: Slack channel ID (e.g., C123...)
+      title: SetSlackChannelContextPlaybookRequest
+      additionalProperties: false
+      description: Associates a playbook to a Slack channel as its context playbook.
+    textql.rpc.public.playbook.DeployPlaybookRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+      title: DeployPlaybookRequest
+      additionalProperties: false
+    textql.rpc.public.reports.SpacerBlock:
+      type: object
+      properties:
+        height:
+          type: integer
+          title: height
+          format: int32
+          nullable: true
+      title: SpacerBlock
+      additionalProperties: false
+    textql.rpc.public.dashboard.DashboardStatus:
+      type: string
+      title: DashboardStatus
+      enum:
+      - DASHBOARD_STATUS_UNSPECIFIED
+      - DASHBOARD_STATUS_DRAFT
+      - DASHBOARD_STATUS_PUBLISHED
+    textql.rpc.public.playbook.ChatAccessMode:
+      type: string
+      title: ChatAccessMode
+      enum:
+      - CHAT_ACCESS_MODE_INHERIT
+      - CHAT_ACCESS_MODE_CUSTOM
+    textql.rpc.public.dashboard.FileSource:
+      type: object
+      properties:
+        datasetId:
+          type: string
+          title: dataset_id
+        fileName:
+          type: string
+          title: file_name
+          description: Original filename for display
+        sheetIndex:
+          type: integer
+          title: sheet_index
+          format: int32
+          description: Zero-based sheet index for multi-sheet files (default 0)
+      title: FileSource
+      additionalProperties: false
+    textql.rpc.public.playbook.PlaybookReportStyle:
+      type: string
+      title: PlaybookReportStyle
+      enum:
+      - REPORT_STYLE_UNKNOWN
+      - EXECUTIVE_REPORT
+      - VERBOSE
+      - CONCISE
+    textql.rpc.powerbi_selection.PowerBISelection:
+      type: object
+      properties:
+        workspaceId:
+          type: string
+          title: workspace_id
+        reportIds:
+          type: array
+          items:
+            type: string
+          title: report_ids
+        datasetIds:
+          type: array
+          items:
+            type: string
+          title: dataset_ids
+        workspaceName:
+          type: string
+          title: workspace_name
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+      title: PowerBISelection
+      additionalProperties: false
+      description: "PowerBISelection captures a chosen PowerBI workspace (and optionally the\n specific reports/datasets within it) for attaching to a chat. Field shape\n mirrors textql.rpc.public.paradigm.PowerBISelection; kept in a standalone\n package so it can be shared by paradigm_params without an import cycle\n (public/paradigm.proto already imports paradigm_params.proto)."
+    textql.rpc.public.playbook.SetSlackChannelContextPlaybookResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: SetSlackChannelContextPlaybookResponse
+      additionalProperties: false
+    textql.rpc.public.dataset.TableauData:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        projectId:
+          type: string
+          title: project_id
+        projectName:
+          type: string
+          title: project_name
+        views:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.tableau.TableauView'
+          title: views
+        datasources:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.tableau.TableauDatasource'
+          title: datasources
+      title: TableauData
+      additionalProperties: false
+    textql.rpc.public.playbook.PlaybookRemoveDatasetResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: PlaybookRemoveDatasetResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.DemoPlaybookResponse:
+      type: object
+      title: DemoPlaybookResponse
+      additionalProperties: false
+    textql.rpc.public.paradigm.UniversalOptions:
+      type: object
+      properties:
+        connectorIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+          title: connector_ids
+        datasetId:
+          type: string
+          title: dataset_id
+          nullable: true
+        webSearchEnabled:
+          type: boolean
+          title: web_search_enabled
+        sqlEnabled:
+          type: boolean
+          title: sql_enabled
+        ontologyEnabled:
+          type: boolean
+          title: ontology_enabled
+        ontologyEditingEnabled:
+          type: boolean
+          title: ontology_editing_enabled
+        pythonEnabled:
+          type: boolean
+          title: python_enabled
+        autoApproveEnabled:
+          type: boolean
+          title: auto_approve_enabled
+        googleDriveEnabled:
+          type: boolean
+          title: google_drive_enabled
+        powerbiEnabled:
+          type: boolean
+          title: powerbi_enabled
+        contextEditingEnabled:
+          type: boolean
+          title: context_editing_enabled
+        formEditorEnabled:
+          type: boolean
+          title: form_editor_enabled
+        playbookToolsEnabled:
+          type: boolean
+          title: playbook_tools_enabled
+        microsoft365Enabled:
+          type: boolean
+          title: microsoft365_enabled
+        feedExplorerEnabled:
+          type: boolean
+          title: feed_explorer_enabled
+        bashEnabled:
+          type: boolean
+          title: bash_enabled
+        javascriptEnabled:
+          type: boolean
+          title: javascript_enabled
+        feedPostEnabled:
+          type: boolean
+          title: feed_post_enabled
+        feedCommentEnabled:
+          type: boolean
+          title: feed_comment_enabled
+        feedEngageEnabled:
+          type: boolean
+          title: feed_engage_enabled
+        streamlitEnabled:
+          type: boolean
+          title: streamlit_enabled
+        compactionDisabled:
+          type: boolean
+          title: compaction_disabled
+        gmailEnabled:
+          type: boolean
+          title: gmail_enabled
+        chatHistorySearchEnabled:
+          type: boolean
+          title: chat_history_search_enabled
+        googleCalendarEnabled:
+          type: boolean
+          title: google_calendar_enabled
+        emailOutputEnabled:
+          type: boolean
+          title: email_output_enabled
+        powerbiSelections:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.powerbi_selection.PowerBISelection'
+          title: powerbi_selections
+        smsMode:
+          type: boolean
+          title: sms_mode
+        apiAccessKeyIds:
+          type: array
+          items:
+            type: string
+          title: api_access_key_ids
+        feedEnabled:
+          type: boolean
+          title: feed_enabled
+          nullable: true
+        fileGenerationDisabled:
+          type: boolean
+          title: file_generation_disabled
+      title: UniversalOptions
+      additionalProperties: false
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
+          type: string
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+          - type: object
+            title: Any
+            additionalProperties: true
+            description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
+    textql.rpc.public.playbook.GetPlaybookLineageResponse:
+      type: object
+      properties:
+        parent:
+          title: parent
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookLineageNode'
+        duplicates:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookLineageNode'
+          title: duplicates
+        originPlaybookId:
+          type: string
+          title: origin_playbook_id
+          nullable: true
+      title: GetPlaybookLineageResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.PreviewSlackReportResponse:
+      type: object
+      title: PreviewSlackReportResponse
+      additionalProperties: false
+    textql.rpc.public.cells.ReportCell:
+      type: object
+      properties:
+        subject:
+          type: string
+          title: subject
+        summary:
+          type: string
+          title: summary
+        blocks:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.reports.ReportBlock'
+          title: blocks
+        htmlPreview:
+          type: string
+          title: html_preview
+        chatId:
+          type: string
+          title: chat_id
+        reportId:
+          type: string
+          title: report_id
+      title: ReportCell
+      additionalProperties: false
+    textql.rpc.public.dashboard.QueryParameter:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+        type:
+          type: string
+          title: type
+          description: '"string", "int", "float", "date"'
+        default:
+          type: string
+          title: default
+          nullable: true
+      title: QueryParameter
+      additionalProperties: false
+    textql.rpc.public.dataset.Dataset:
+      type: object
+      allOf:
+      - type: object
+        properties:
+          id:
+            type: string
+            title: id
+          type:
+            title: type
+            $ref: '#/components/schemas/textql.rpc.public.dataset.DatasetType'
+          name:
+            type: string
+            title: name
+          version:
+            type: integer
+            title: version
+            format: int32
+          path:
+            type: string
+            title: path
+            description: folder structure to reach this file
+          owner:
+            title: owner
+            $ref: '#/components/schemas/textql.rpc.identity.MemberPreview'
+          userPermissions:
+            title: user_permissions
+            description: for logged in user
+            $ref: '#/components/schemas/textql.rpc.public.dataset.DatasetPermission'
+          createdAt:
+            title: created_at
+            $ref: '#/components/schemas/google.protobuf.Timestamp'
+          updatedAt:
+            title: updated_at
+            $ref: '#/components/schemas/google.protobuf.Timestamp'
+          expiresAt:
+            title: expires_at
+            nullable: true
+            $ref: '#/components/schemas/google.protobuf.Timestamp'
+          ephemeral:
+            type: boolean
+            title: ephemeral
+      - oneOf:
+        - type: object
+          properties:
+            dataframe:
+              title: dataframe
+              $ref: '#/components/schemas/textql.rpc.public.dataset.SandboxDataFrame'
+          title: dataframe
+          required:
+          - dataframe
+        - type: object
+          properties:
+            document:
+              title: document
+              $ref: '#/components/schemas/textql.rpc.public.dataset.Document'
+          title: document
+          required:
+          - document
+        - type: object
+          properties:
+            powerbiData:
+              title: powerbi_data
+              $ref: '#/components/schemas/textql.rpc.public.dataset.PowerBIData'
+          title: powerbi_data
+          required:
+          - powerbiData
+        - type: object
+          properties:
+            tableauData:
+              title: tableau_data
+              $ref: '#/components/schemas/textql.rpc.public.dataset.TableauData'
+          title: tableau_data
+          required:
+          - tableauData
+        - type: object
+          properties:
+            tabularFile:
+              title: tabular_file
+              $ref: '#/components/schemas/textql.rpc.public.dataset.TabularFile'
+          title: tabular_file
+          required:
+          - tabularFile
+      title: Dataset
+      additionalProperties: false
+    textql.rpc.public.playbook.PlaybookLineageNode:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+        name:
+          type: string
+          title: name
+        status:
+          title: status
+          $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookStatus'
+        duplicatedAt:
+          title: duplicated_at
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        duplicatedBy:
+          title: duplicated_by
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.identity.MemberPreview'
+      title: PlaybookLineageNode
+      additionalProperties: false
+    textql.rpc.public.playbook.PlaybookAttachDashboardResponse:
+      type: object
+      properties:
+        dashboard:
+          title: dashboard
+          $ref: '#/components/schemas/textql.rpc.public.dashboard.Dashboard'
+      title: PlaybookAttachDashboardResponse
+      additionalProperties: false
+    textql.rpc.public.cells.PreviewCellRef:
+      type: object
+      properties:
+        target:
+          type: string
+          title: target
+        previewType:
+          type: string
+          title: preview_type
+        name:
+          type: string
+          title: name
+        url:
+          type: string
+          title: url
+          nullable: true
+      title: PreviewCellRef
+      additionalProperties: false
+      description: Preview cell reference for report history
+    textql.rpc.public.reports.ImageBlock:
+      type: object
+      properties:
+        imageUrl:
+          type: string
+          title: image_url
+        imageAlt:
+          type: string
+          title: image_alt
+          nullable: true
+        variant:
+          title: variant
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.reports.ImageVariant'
+      title: ImageBlock
+      additionalProperties: false
+    textql.rpc.public.playbook.DeletePlaybookRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+      title: DeletePlaybookRequest
+      additionalProperties: false
+    textql.rpc.public.reports.TextBlock:
+      type: object
+      properties:
+        heading:
+          type: string
+          title: heading
+          nullable: true
+        content:
+          type: string
+          title: content
+          nullable: true
+      title: TextBlock
+      additionalProperties: false
+    textql.rpc.public.dashboard.OntologySqlSource:
+      type: object
+      properties:
+        query:
+          type: string
+          title: query
+        dataset:
+          type: string
+          title: dataset
+        ontologyId:
+          type: integer
+          title: ontology_id
+          format: int32
+      title: OntologySqlSource
+      additionalProperties: false
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+          - not_found
+          enum:
+          - canceled
+          - unknown
+          - invalid_argument
+          - deadline_exceeded
+          - not_found
+          - already_exists
+          - permission_denied
+          - resource_exhausted
+          - failed_precondition
+          - aborted
+          - out_of_range
+          - unimplemented
+          - internal
+          - unavailable
+          - data_loss
+          - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    textql.rpc.public.paradigm.ParadigmOptions:
+      type: object
+      oneOf:
+      - type: object
+        properties:
+          universal:
+            title: universal
+            $ref: '#/components/schemas/textql.rpc.public.paradigm.UniversalOptions'
+        title: universal
+        required:
+        - universal
+      title: ParadigmOptions
+      additionalProperties: false
+    textql.rpc.public.playbook.SetTeamsChannelContextPlaybookResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: SetTeamsChannelContextPlaybookResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.GetChatReportsSummaryResponse:
+      type: object
+      properties:
+        reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.playbook.ChatReportSummary'
+          title: reports
+      title: GetChatReportsSummaryResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.Playbook:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+          description: UUID
+        orgId:
+          type: string
+          title: org_id
+        memberId:
+          type: string
+          title: member_id
+          nullable: true
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+          description: 'Deprecated: use connector_ids instead'
+          nullable: true
+          deprecated: true
+        name:
+          type: string
+          title: name
+        prompt:
+          type: string
+          title: prompt
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        status:
+          title: status
+          $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookStatus'
+        triggerType:
+          title: trigger_type
+          $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookTriggerType'
+        cronString:
+          type: string
+          title: cron_string
+          nullable: true
+        datasetIds:
+          type: array
+          items:
+            type: string
+          title: dataset_ids
+          description: List of UUIDs
+        referenceReportId:
+          type: string
+          title: reference_report_id
+          nullable: true
+        latestChatId:
+          type: string
+          title: latest_chat_id
+          nullable: true
+        emailAddresses:
+          type: array
+          items:
+            type: string
+          title: email_addresses
+        slackChannelId:
+          type: string
+          title: slack_channel_id
+          nullable: true
+        taggedSlackUserIds:
+          type: array
+          items:
+            type: string
+          title: tagged_slack_user_ids
+        llmModel:
+          title: llm_model
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.chat.LlmModel'
+        paradigmOptions:
+          title: paradigm_options
+          $ref: '#/components/schemas/textql.rpc.public.paradigm.ParadigmOptions'
+        paradigmType:
+          title: paradigm_type
+          $ref: '#/components/schemas/textql.rpc.paradigm_params.ParadigmType'
+        isRunning:
+          type: boolean
+          title: is_running
+          nullable: true
+        owner:
+          title: owner
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.identity.MemberPreview'
+        hasWritePermission:
+          type: boolean
+          title: has_write_permission
+          nullable: true
+        isSubscribed:
+          type: boolean
+          title: is_subscribed
+          nullable: true
+        reportOutputStyle:
+          title: report_output_style
+          description: Report output length
+          $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookReportStyle'
+        templateHeaderId:
+          type: string
+          title: template_header_id
+          description: UUID reference to PlaybookTemplateHeader
+          nullable: true
+        selectedTemplateDataIds:
+          type: array
+          items:
+            type: string
+          title: selected_template_data_ids
+          description: List of UUIDs for selected template data rows
+        maxConcurrentTemplates:
+          type: integer
+          title: max_concurrent_templates
+          format: int32
+          description: Maximum number of templates to run concurrently
+          nullable: true
+        autoOptimizeConcurrency:
+          type: boolean
+          title: auto_optimize_concurrency
+          description: Auto-optimize concurrency based on runtime
+          nullable: true
+        connectorIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+          title: connector_ids
+        templateDataFilters:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.playbook.FilterCondition'
+          title: template_data_filters
+          description: Filter conditions for template data
+        parentPlaybookId:
+          type: string
+          title: parent_playbook_id
+          nullable: true
+        originPlaybookId:
+          type: string
+          title: origin_playbook_id
+          nullable: true
+        duplicatedByMemberId:
+          type: string
+          title: duplicated_by_member_id
+          nullable: true
+        duplicatedAt:
+          title: duplicated_at
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        chatAccessMode:
+          title: chat_access_mode
+          $ref: '#/components/schemas/textql.rpc.public.playbook.ChatAccessMode'
+        chatAccessOverrides:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.playbook.ChatAccessOverride'
+          title: chat_access_overrides
+        chatIsPublic:
+          type: boolean
+          title: chat_is_public
+        dashboardIds:
+          type: array
+          items:
+            type: string
+          title: dashboard_ids
+          description: List of dashboard UUIDs attached to this playbook
+        recipientEmailColumn:
+          type: string
+          title: recipient_email_column
+          description: Column name in template data to use as recipient email override
+          nullable: true
+        teamsChannelId:
+          type: string
+          title: teams_channel_id
+          nullable: true
+        taggedTeamsUserAadIds:
+          type: array
+          items:
+            type: string
+          title: tagged_teams_user_aad_ids
+        configSource:
+          title: config_source
+          description: present ⇒ config-managed (defined by a Library file; config-owned fields read-only in UI)
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.config_source.ConfigSource'
+        apiAccessKeyIds:
+          type: array
+          items:
+            type: string
+          title: api_access_key_ids
+      title: Playbook
+      additionalProperties: false
+    textql.rpc.public.reports.ImageVariant:
+      type: string
+      title: ImageVariant
+      enum:
+      - IMAGE_VARIANT_CIRCULAR
+      - IMAGE_VARIANT_ROUNDED
+      - IMAGE_VARIANT_PILL
+      - IMAGE_VARIANT_NONE
+    textql.rpc.public.playbook.SubscribeToPlaybookRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+      title: SubscribeToPlaybookRequest
+      additionalProperties: false
+    textql.rpc.public.config_source.ConfigSource:
+      type: object
+      properties:
+        filePath:
+          type: string
+          title: file_path
+          description: Library file that defines the object
+        syncStatus:
+          title: sync_status
+          $ref: '#/components/schemas/textql.rpc.public.config_source.ConfigSyncStatus'
+        syncError:
+          type: string
+          title: sync_error
+          description: set only when sync_status = ERROR
+          nullable: true
+        breakingPatchId:
+          type: string
+          title: breaking_patch_id
+          description: patch that drove it to ERROR (Quick Revert target)
+          nullable: true
+      title: ConfigSource
+      additionalProperties: false
+      description: "Config-management metadata (provenance + reconcile state) for any file-based\n object. Presence on an object ⇒ the object is config-managed."
+    textql.rpc.public.playbook.SlackChannelPlaybookMapping:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+        slackChannelId:
+          type: string
+          title: slack_channel_id
+      title: SlackChannelPlaybookMapping
+      additionalProperties: false
+      description: Maps playbook to its associated Slack channel
+    textql.rpc.public.playbook.FavoriteReportResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: FavoriteReportResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.GetPlaybookLineageRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+      title: GetPlaybookLineageRequest
+      additionalProperties: false
+    textql.rpc.public.playbook.PlaybookRemoveDashboardResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: PlaybookRemoveDashboardResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.UpdatePlaybookRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+        name:
+          type: string
+          title: name
+          nullable: true
+        prompt:
+          type: string
+          title: prompt
+          nullable: true
+        status:
+          title: status
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookStatus'
+        triggerType:
+          title: trigger_type
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookTriggerType'
+        cronString:
+          type: string
+          title: cron_string
+          nullable: true
+        datasetIds:
+          title: dataset_ids
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.playbook.StringList'
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+          description: 'Deprecated: use connector_ids instead'
+          nullable: true
+          deprecated: true
+        referenceReportId:
+          type: string
+          title: reference_report_id
+          nullable: true
+        paradigmOptions:
+          title: paradigm_options
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.paradigm.ParadigmOptions'
+        paradigmType:
+          title: paradigm_type
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.paradigm_params.ParadigmType'
+        emailAddresses:
+          title: email_addresses
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.playbook.StringList'
+        slackChannelId:
+          type: string
+          title: slack_channel_id
+          nullable: true
+        taggedSlackUserIds:
+          title: tagged_slack_user_ids
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.playbook.StringList'
+        reportOutputStyle:
+          title: report_output_style
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookReportStyle'
+        templateHeaderId:
+          type: string
+          title: template_header_id
+          nullable: true
+        selectedTemplateDataIds:
+          title: selected_template_data_ids
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.playbook.StringList'
+        maxConcurrentTemplates:
+          type: integer
+          title: max_concurrent_templates
+          format: int32
+          nullable: true
+        autoOptimizeConcurrency:
+          type: boolean
+          title: auto_optimize_concurrency
+          nullable: true
+        connectorIds:
+          title: connector_ids
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.playbook.Int32List'
+        templateDataFilters:
+          title: template_data_filters
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.playbook.FilterConditionList'
+        llmModel:
+          title: llm_model
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.chat.LlmModel'
+        chatAccessMode:
+          title: chat_access_mode
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.playbook.ChatAccessMode'
+        chatAccessOverrides:
+          title: chat_access_overrides
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.playbook.ChatAccessOverrideList'
+        chatIsPublic:
+          type: boolean
+          title: chat_is_public
+          nullable: true
+        dashboardIds:
+          title: dashboard_ids
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.playbook.StringList'
+        recipientEmailColumn:
+          type: string
+          title: recipient_email_column
+          nullable: true
+        teamsChannelId:
+          type: string
+          title: teams_channel_id
+          nullable: true
+        taggedTeamsUserAadIds:
+          title: tagged_teams_user_aad_ids
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.playbook.StringList'
+        apiAccessKeyIds:
+          title: api_access_key_ids
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.playbook.StringList'
+      title: UpdatePlaybookRequest
+      additionalProperties: false
+    textql.rpc.public.playbook.GetReportsWithFiltersRequest:
+      type: object
+      properties:
+        filters:
+          title: filters
+          $ref: '#/components/schemas/textql.rpc.public.playbook.ReportFilters'
+      title: GetReportsWithFiltersRequest
+      additionalProperties: false
+    textql.rpc.public.playbook.GetPlaybooksPreviewsRequest:
+      type: object
+      properties:
+        onlySubscribed:
+          type: boolean
+          title: only_subscribed
+        statusFilter:
+          title: status_filter
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookStatus'
+      title: GetPlaybooksPreviewsRequest
+      additionalProperties: false
+    textql.rpc.public.playbook.PreviewSlackReportRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+        cell:
+          title: cell
+          $ref: '#/components/schemas/textql.rpc.public.cells.ReportCell'
+        chatId:
+          type: string
+          title: chat_id
+        slackChannelId:
+          type: string
+          title: slack_channel_id
+      title: PreviewSlackReportRequest
+      additionalProperties: false
+    textql.rpc.public.playbook.GetMembersWithPlaybooksRequest:
+      type: object
+      title: GetMembersWithPlaybooksRequest
+      additionalProperties: false
+    textql.rpc.public.dataset.TabularFileCategory:
+      type: string
+      title: TabularFileCategory
+      enum:
+      - CATEGORY_UNKNOWN
+      - CATEGORY_CSV
+      - CATEGORY_TSV
+      - CATEGORY_XLSX
+      - CATEGORY_XLS
+      - CATEGORY_PARQUET
+      - CATEGORY_ODS
+      description: never change the names or numbers of existing tabular file categories!
+    textql.rpc.public.reports.ListBlock:
+      type: object
+      properties:
+        heading:
+          type: string
+          title: heading
+          nullable: true
+        items:
+          type: array
+          items:
+            type: string
+          title: items
+      title: ListBlock
+      additionalProperties: false
+    textql.rpc.public.playbook.StringList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: string
+          title: items
+      title: StringList
+      additionalProperties: false
+    textql.rpc.public.dataframe.DataFrameInfo:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+        external:
+          type: boolean
+          title: external
+        numRows:
+          type:
+          - integer
+          - string
+          title: num_rows
+          format: int64
+        numCols:
+          type:
+          - integer
+          - string
+          title: num_cols
+          format: int64
+        memoryUsage:
+          type:
+          - integer
+          - string
+          title: memory_usage
+          format: int64
+          description: in bytes
+      title: DataFrameInfo
+      additionalProperties: false
+    textql.rpc.public.playbook.GetPlaybooksPreviewsResponse:
+      type: object
+      properties:
+        playbooks:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookPreview'
+          title: playbooks
+      title: GetPlaybooksPreviewsResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.DeletePlaybookResponse:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+        deletedAt:
+          title: deleted_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: DeletePlaybookResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.GetPlaybookReportsRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+          description: UUID
+        limit:
+          type: integer
+          title: limit
+          format: int32
+        offset:
+          type: integer
+          title: offset
+          format: int32
+        chatId:
+          type: string
+          title: chat_id
+          description: UUID
+          nullable: true
+        templateDataId:
+          type: string
+          title: template_data_id
+          description: UUID
+          nullable: true
+        batchRunId:
+          type: string
+          title: batch_run_id
+          description: UUID - filter reports by batch run
+          nullable: true
+      title: GetPlaybookReportsRequest
+      additionalProperties: false
+    textql.rpc.public.playbook.ListAllTeamsChannelContextPlaybooksResponse:
+      type: object
+      properties:
+        mappings:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.playbook.TeamsChannelPlaybookMapping'
+          title: mappings
+      title: ListAllTeamsChannelContextPlaybooksResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.PlaybookAttachDatasetResponse:
+      type: object
+      properties:
+        dataset:
+          title: dataset
+          $ref: '#/components/schemas/textql.rpc.public.dataset.Dataset'
+      title: PlaybookAttachDatasetResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.ListTeamsChannelsForContextPlaybookResponse:
+      type: object
+      properties:
+        teamsChannelIds:
+          type: array
+          items:
+            type: string
+          title: teams_channel_ids
+      title: ListTeamsChannelsForContextPlaybookResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.GetPlaybookReportsBatchResponse:
+      type: object
+      properties:
+        templateDataReports:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.playbook.TemplateDataReports'
+          title: template_data_reports
+      title: GetPlaybookReportsBatchResponse
+      additionalProperties: false
+      description: Batch response with reports grouped by template_data_id
+    textql.rpc.public.playbook.DeployPlaybookResponse:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+        deployedAt:
+          title: deployed_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: DeployPlaybookResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.UnsetTeamsChannelContextPlaybookRequest:
+      type: object
+      properties:
+        teamsChannelId:
+          type: string
+          title: teams_channel_id
+      title: UnsetTeamsChannelContextPlaybookRequest
+      additionalProperties: false
+    textql.rpc.public.playbook.CreatePlaybookResponse:
+      type: object
+      properties:
+        playbook:
+          title: playbook
+          $ref: '#/components/schemas/textql.rpc.public.playbook.Playbook'
+      title: CreatePlaybookResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.FilterCondition:
+      type: object
+      properties:
+        field:
+          type: string
+          title: field
+          description: JSON field name
+        operator:
+          type: string
+          title: operator
+          description: '"equals", "contains", "starts_with", "ends_with", "gt", "gte", "lt", "lte"'
+        value:
+          type: string
+          title: value
+          description: Value to filter by
+      title: FilterCondition
+      additionalProperties: false
+      description: Filter condition for template data searches
+    textql.rpc.public.playbook.UnsubscribeFromPlaybookRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+      title: UnsubscribeFromPlaybookRequest
+      additionalProperties: false
+    google.protobuf.Empty:
+      type: object
+      description: "A generic empty message that you can re-use to avoid defining duplicated\n empty messages in your APIs. A typical example is to use it as the request\n or the response type of an API method. For instance:\n\n     service Foo {\n       rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);\n     }"
+    textql.rpc.public.playbook.RunPlaybookResponse:
+      type: object
+      properties:
+        chatId:
+          type: string
+          title: chat_id
+      title: RunPlaybookResponse
+      additionalProperties: false
+    textql.rpc.public.dashboard.DashboardType:
+      type: string
+      title: DashboardType
+      enum:
+      - DASHBOARD_TYPE_UNSPECIFIED
+      - DASHBOARD_TYPE_STREAMLIT
+      - DASHBOARD_TYPE_HTML
+      - DASHBOARD_TYPE_DASH
+    textql.rpc.public.playbook.ReportFilters:
+      type: object
+      properties:
+        playbookIds:
+          type: array
+          items:
+            type: string
+          title: playbook_ids
+        searchTerm:
+          type: string
+          title: search_term
+          nullable: true
+        startTime:
+          title: start_time
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        endTime:
+          title: end_time
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        sortBy:
+          type: string
+          title: sort_by
+        sortDirection:
+          title: sort_direction
+          $ref: '#/components/schemas/textql.rpc.public.common.SortDirection'
+        limit:
+          type: integer
+          title: limit
+          format: int32
+          nullable: true
+        offset:
+          type: integer
+          title: offset
+          format: int32
+          nullable: true
+        onlySubscribed:
+          type: boolean
+          title: only_subscribed
+          nullable: true
+        includeHeader:
+          type: boolean
+          title: include_header
+          nullable: true
+        includeWithHeader:
+          type: boolean
+          title: include_with_header
+          nullable: true
+        chatId:
+          type: string
+          title: chat_id
+          nullable: true
+      title: ReportFilters
+      additionalProperties: false
+    textql.rpc.public.playbook.PlaybookTriggerType:
+      type: string
+      title: PlaybookTriggerType
+      enum:
+      - TRIGGER_TYPE_UNKNOWN
+      - TRIGGER_TYPE_CRON
+      - TRIGGER_TYPE_WEBHOOK
+    textql.rpc.public.playbook.ChatAccessOverrideList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.playbook.ChatAccessOverride'
+          title: items
+      title: ChatAccessOverrideList
+      additionalProperties: false
+    textql.rpc.public.playbook.PlaybookRemoveDatasetRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+        datasetId:
+          type: string
+          title: dataset_id
+      title: PlaybookRemoveDatasetRequest
+      additionalProperties: false
+    textql.rpc.public.playbook.DeactivatePlaybookRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+      title: DeactivatePlaybookRequest
+      additionalProperties: false
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    textql.rpc.public.playbook.FavoriteReportRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+          description: UUID
+        reportId:
+          type: string
+          title: report_id
+          description: UUID
+      title: FavoriteReportRequest
+      additionalProperties: false
+      description: Favorite report messages
+    textql.rpc.public.tableau.TableauDatasource:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        name:
+          type: string
+          title: name
+        type:
+          type: string
+          title: type
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        isPublished:
+          type: boolean
+          title: is_published
+        projectId:
+          type: string
+          title: project_id
+        projectName:
+          type: string
+          title: project_name
+      title: TableauDatasource
+      additionalProperties: false
+      description: 'TODO: Add datasources support'
+    textql.rpc.public.dataset.Document:
+      type: object
+      properties:
+        previewUrl:
+          type: string
+          title: preview_url
+        pageCount:
+          type: integer
+          title: page_count
+          format: int32
+      title: Document
+      additionalProperties: false
+    textql.rpc.public.playbook.ChatReportSummary:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        chatId:
+          type: string
+          title: chat_id
+        subject:
+          type: string
+          title: subject
+        summary:
+          type: string
+          title: summary
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        heroImageUrl:
+          type: string
+          title: hero_image_url
+          description: First hero block image if present
+          nullable: true
+      title: ChatReportSummary
+      additionalProperties: false
+      description: Lightweight report summary for chat drawer - excludes full blocks
+    textql.rpc.public.playbook.UnsubscribeFromPlaybookResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: UnsubscribeFromPlaybookResponse
+      additionalProperties: false
+    textql.rpc.public.dashboard.LibraryTQLSource:
+      type: object
+      properties:
+        tqlPath:
+          type: string
+          title: tql_path
+          description: path to the .tql file in the Context Library (must end in .tql)
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+          description: SQL connector to execute the rendered query against
+        paramsJson:
+          type: string
+          title: params_json
+          description: JSON object mapping parameter names to values; "" means no params
+      title: LibraryTQLSource
+      additionalProperties: false
+      description: "References a .tql file stored in the Context Library. The file is rendered\n to SQL at fetch time and executed against the provided connector. Template\n parameter values are JSON-encoded in `params_json` (e.g. {\"region\":\"EU\"})."
+    textql.rpc.public.playbook.UnsetTeamsChannelContextPlaybookResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: UnsetTeamsChannelContextPlaybookResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.GetReportByIdResponse:
+      type: object
+      properties:
+        report:
+          title: report
+          $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookReport'
+      title: GetReportByIdResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.GetPlaybookBatchRunRequest:
+      type: object
+      properties:
+        batchRunId:
+          type: string
+          title: batch_run_id
+          description: UUID
+      title: GetPlaybookBatchRunRequest
+      additionalProperties: false
+      description: Request to get a specific batch run
+    textql.rpc.public.playbook.GetPlaybooksResponse:
+      type: object
+      properties:
+        playbooks:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.playbook.Playbook'
+          title: playbooks
+        totalCount:
+          type: integer
+          title: total_count
+          format: int32
+      title: GetPlaybooksResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.PlaybookPreview:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        name:
+          type: string
+          title: name
+        status:
+          title: status
+          $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookStatus'
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: PlaybookPreview
+      additionalProperties: false
+    google.protobuf.Timestamp:
+      type: string
+      examples:
+      - '2023-01-15T01:30:15.01Z'
+      - '2024-12-25T12:00:00Z'
+      format: date-time
+      description: "A Timestamp represents a point in time independent of any time zone or local\n calendar, encoded as a count of seconds and fractions of seconds at\n nanosecond resolution. The count is relative to an epoch at UTC midnight on\n January 1, 1970, in the proleptic Gregorian calendar which extends the\n Gregorian calendar backwards to year one.\n\n All minutes are 60 seconds long. Leap seconds are \"smeared\" so that no leap\n second table is needed for interpretation, using a [24-hour linear\n smear](https://developers.google.com/time/smear).\n\n The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By\n restricting to that range, we ensure that we can convert to and from [RFC\n 3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.\n\n # Examples\n\n Example 1: Compute Timestamp from POSIX `time()`.\n\n     Timestamp timestamp;\n     timestamp.set_seconds(time(NULL));\n     timestamp.set_nanos(0);\n\n Example 2: Compute Timestamp from POSIX `gettimeofday()`.\n\n     struct timeval tv;\n     gettimeofday(&tv, NULL);\n\n     Timestamp timestamp;\n     timestamp.set_seconds(tv.tv_sec);\n     timestamp.set_nanos(tv.tv_usec * 1000);\n\n Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.\n\n     FILETIME ft;\n     GetSystemTimeAsFileTime(&ft);\n     UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;\n\n     // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z\n     // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.\n     Timestamp timestamp;\n     timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));\n     timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));\n\n Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.\n\n     long millis = System.currentTimeMillis();\n\n     Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)\n         .setNanos((int) ((millis % 1000) * 1000000)).build();\n\n Example 5: Compute Timestamp from Java `Instant.now()`.\n\n     Instant now = Instant.now();\n\n     Timestamp timestamp =\n         Timestamp.newBuilder().setSeconds(now.getEpochSecond())\n             .setNanos(now.getNano()).build();\n\n Example 6: Compute Timestamp from current time in Python.\n\n     timestamp = Timestamp()\n     timestamp.GetCurrentTime()\n\n # JSON Mapping\n\n In JSON format, the Timestamp type is encoded as a string in the\n [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the\n format is \"{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z\"\n where {year} is always expressed using four digits while {month}, {day},\n {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional\n seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),\n are optional. The \"Z\" suffix indicates the timezone (\"UTC\"); the timezone\n is required. A proto3 JSON serializer should always use UTC (as indicated by\n \"Z\") when printing the Timestamp type and a proto3 JSON parser should be\n able to accept both UTC and other timezones (as indicated by an offset).\n\n For example, \"2017-01-15T01:30:15.01Z\" encodes 15.01 seconds past\n 01:30 UTC on January 15, 2017.\n\n In JavaScript, one can convert a Date object to this format using the\n standard\n [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)\n method. In Python, a standard `datetime.datetime` object can be converted\n to this format using\n [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with\n the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use\n the Joda Time's [`ISODateTimeFormat.dateTime()`](\n http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()\n ) to obtain a formatter capable of generating timestamps in this format."
+    textql.rpc.public.playbook.UpdatePlaybookResponse:
+      type: object
+      properties:
+        playbook:
+          title: playbook
+          $ref: '#/components/schemas/textql.rpc.public.playbook.Playbook'
+      title: UpdatePlaybookResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.DuplicatePlaybookRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+      title: DuplicatePlaybookRequest
+      additionalProperties: false
+    textql.rpc.paradigm_params.ParadigmType:
+      type: string
+      title: ParadigmType
+      enum:
+      - TYPE_UNKNOWN
+      - TYPE_UNIVERSAL
+    textql.rpc.public.playbook.GetReportsWithFiltersResponse:
+      type: object
+      properties:
+        reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookReport'
+          title: reports
+        reportsWithHeader:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookReport'
+          title: reports_with_header
+        totalCount:
+          type: integer
+          title: total_count
+          format: int32
+        unreadCount:
+          type: integer
+          title: unread_count
+          format: int32
+      title: GetReportsWithFiltersResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.GetReportByIdRequest:
+      type: object
+      properties:
+        reportId:
+          type: string
+          title: report_id
+      title: GetReportByIdRequest
+      additionalProperties: false
+    textql.rpc.public.playbook.GetActiveSubscribedPlaybooksCountResponse:
+      type: object
+      properties:
+        count:
+          type: integer
+          title: count
+          format: int32
+      title: GetActiveSubscribedPlaybooksCountResponse
+      additionalProperties: false
+    textql.rpc.public.dataset.DatasetPermission:
+      type: string
+      title: DatasetPermission
+      enum:
+      - PERMISSION_UNKNOWN
+      - PERMISSION_READ
+      - PERMISSION_EDIT
+      - PERMISSION_ADMIN
+    textql.rpc.public.chat.LlmModel:
+      type: string
+      title: LlmModel
+      enum:
+      - MODEL_UNKNOWN
+      - MODEL_DEFAULT
+      - MODEL_DEFAULT_SYSTEM
+      - MODEL_HAIKU_4_5
+      - MODEL_OPUS_4_8
+      - MODEL_FABLE_5
+      - MODEL_SONNET_5
+      - MODEL_OPUS_5
+      - MODEL_GPT_5_6_SOL
+      - MODEL_GEMINI_3_FLASH
+      - MODEL_GEMINI_3_PRO
+      - MODEL_GEMINI_3_1_PRO
+      - MODEL_GEMINI_3_5_FLASH
+      - MODEL_GPT_5_6_TERRA
+      - MODEL_GPT_5_6_LUNA
+      - MODEL_DEEPSEEK_3_2
+      - MODEL_GLM_5
+      - MODEL_VLLM
+      - MODEL_KIMI_K2_6
+      - MODEL_GLM_5_2
+      - MODEL_KIMI_K2_7_CODE
+      - MODEL_QWEN3_7_PLUS
+      - MODEL_KIMI_K3
+      - MODEL_DEEPSEEK_V4_FLASH_0731
+      - MODEL_MUSE_SPARK_1_1
+      - MODEL_MUSE_SPARK_1_2
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: tql_api_key

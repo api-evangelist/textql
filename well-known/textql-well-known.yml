@@ -1,14 +1,19 @@
-generated: '2026-08-30'
+generated: '2026-09-19'
 method: probed
 source: live GET probes of /.well-known/* on every TextQL host named in apis.yml and in the OpenAPI servers[]
-note: >-
-  app.textql.com serves four real, parsing JSON documents: an OAuth 2.1 authorization-server metadata
+note: 'app.textql.com serves four real, parsing JSON documents: an OAuth 2.1 authorization-server metadata
   document (RFC 8414), two protected-resource metadata documents (RFC 9728 — one for the resource root
-  and one specifically for the /mcp endpoint), and an OpenID Connect discovery document with a live
-  JWKS. The MCP endpoint's 401 carries a WWW-Authenticate header pointing at its own protected-resource
-  document, which is the RFC 9728 discovery flow working end to end. docs.textql.com serves an A2A agent
-  card (recorded in a2a/). No security.txt, api-catalog or ai-plugin.json is served on any host; the
-  404s on textql.com and app.textql.com return the SPA HTML shell, which is a miss, not a document.
+  and one specifically for the /mcp endpoint), and an OpenID Connect discovery document with a live JWKS.
+  The MCP endpoint''s 401 carries a WWW-Authenticate header pointing at its own protected-resource document,
+  which is the RFC 9728 discovery flow working end to end. docs.textql.com serves an A2A agent card (recorded
+  in a2a/). No security.txt, api-catalog or ai-plugin.json is served on any host; the 404s on textql.com
+  and app.textql.com return the SPA HTML shell, which is a miss, not a document.
+
+
+  MCP-host OAuth discovery added 2026-09-19 (roadmap#321/#337): the harvest visits a provider''s primary
+  hosts, and RFC 9728 protected-resource metadata lives on the MCP host, so these documents existed and
+  were invisible to the scorer. Fetched live and validated on `resource`/`issuer`; one negative control
+  per host.'
 hosts:
 - host: app.textql.com
   documents:
@@ -37,6 +42,15 @@ hosts:
     status: 404
   - path: /.well-known/ai-plugin.json
     status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    file: textql-app-oauth-protected-resource.json
+    bytes: 189
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: textql-app-oauth-authorization-server.json
+    bytes: 1117
+  path_echo_control: passed
 - host: docs.textql.com
   documents:
   - path: /.well-known/agent-card.json
@@ -73,3 +87,15 @@ hosts:
     status: 404
   - path: /.well-known/ai-plugin.json
     status: 404
+x-mcp-probe:
+  probed: '2026-09-19'
+  issue: roadmap#321, roadmap#337
+  documents:
+  - host: https://app.textql.com
+    path: /.well-known/oauth-protected-resource
+    file: textql-app-oauth-protected-resource.json
+  - host: https://app.textql.com
+    path: /.well-known/oauth-authorization-server
+    file: textql-app-oauth-authorization-server.json
+  validated_on: resource (RFC 9728) / issuer (RFC 8414, OIDC)
+  negative_control: one per host; a 2xx JSON object at an impossible path discards the host

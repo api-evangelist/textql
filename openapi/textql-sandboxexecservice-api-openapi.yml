@@ -1,0 +1,551 @@
+openapi: 3.2.0
+info:
+  title: TextQL Sandbox Exec Service API
+  version: 1.0.0
+  description: 'TextQL public API. Generated from protobuf service definitions; internal
+
+    endpoints are excluded via google.api.visibility / file_visibility.'
+servers:
+- url: https://app.textql.com/rpc/public
+security:
+- apiKey: []
+tags:
+- name: SandboxExecService
+paths:
+  /textql.rpc.public.sandbox_exec.SandboxExecService/CreateSandbox:
+    post:
+      tags:
+      - SandboxExecService
+      summary: CreateSandbox
+      operationId: SandboxExecService_CreateSandbox
+      x-speakeasy-group: sandbox
+      x-speakeasy-name-override: create
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.sandbox_exec.CreateSandboxRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.sandbox_exec.CreateSandboxResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.sandbox.create({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.sandbox.create()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.sandbox_exec.SandboxExecService/Exec:
+    post:
+      tags:
+      - SandboxExecService
+      summary: Exec
+      operationId: SandboxExecService_Exec
+      x-speakeasy-group: sandbox
+      x-speakeasy-name-override: exec
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.sandbox_exec.SandboxExecRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.sandbox_exec.SandboxExecResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.sandbox.exec({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.sandbox.exec()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.sandbox_exec.SandboxExecService/ExecuteCode:
+    post:
+      tags:
+      - SandboxExecService
+      summary: ExecuteCode
+      operationId: SandboxExecService_ExecuteCode
+      x-speakeasy-group: sandbox
+      x-speakeasy-name-override: executeCode
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.sandbox_exec.SandboxExecuteCodeRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.sandbox_exec.SandboxExecuteCodeResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.sandbox.executeCode({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.sandbox.execute_code()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.sandbox_exec.SandboxExecService/GetToolAvailability:
+    post:
+      tags:
+      - SandboxExecService
+      summary: GetToolAvailability
+      operationId: SandboxExecService_GetToolAvailability
+      x-speakeasy-group: sandbox
+      x-speakeasy-name-override: getToolAvailability
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.sandbox_exec.GetToolAvailabilityRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.sandbox_exec.GetToolAvailabilityResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.sandbox.getToolAvailability({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.sandbox.get_tool_availability(body={})\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.sandbox_exec.SandboxExecService/LoadConnectorData:
+    post:
+      tags:
+      - SandboxExecService
+      summary: LoadConnectorData
+      operationId: SandboxExecService_LoadConnectorData
+      x-speakeasy-group: sandbox
+      x-speakeasy-name-override: loadConnectorData
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.sandbox_exec.SandboxLoadConnectorDataRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.sandbox_exec.SandboxLoadConnectorDataResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.sandbox.loadConnectorData({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.sandbox.load_connector_data()\n\n    # Handle response\n    print(res)"
+components:
+  schemas:
+    textql.rpc.public.sandbox_exec.SandboxDataFrameOutput:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+        numRows:
+          type: integer
+          title: num_rows
+          format: int32
+        numCols:
+          type: integer
+          title: num_cols
+          format: int32
+      title: SandboxDataFrameOutput
+      additionalProperties: false
+    textql.rpc.public.sandbox_exec.SandboxExecRequest:
+      type: object
+      properties:
+        sandboxId:
+          type: string
+          title: sandbox_id
+          minLength: 1
+        command:
+          type: string
+          title: command
+          minLength: 1
+        kind:
+          type: string
+          title: kind
+          description: '"" | "bash" | "sh" | "shell" | "python" | "py"'
+        env:
+          type: object
+          title: env
+          additionalProperties:
+            type: string
+            title: value
+      title: SandboxExecRequest
+      additionalProperties: false
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
+          type: string
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+          - type: object
+            title: Any
+            additionalProperties: true
+            description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
+    textql.rpc.public.sandbox_exec.SandboxExecResponse:
+      type: object
+      properties:
+        stdout:
+          type: string
+          title: stdout
+        stderr:
+          type: string
+          title: stderr
+        exitCode:
+          type: integer
+          title: exit_code
+          format: int32
+        error:
+          type: string
+          title: error
+          nullable: true
+      title: SandboxExecResponse
+      additionalProperties: false
+    google.protobuf.Struct:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/google.protobuf.Value'
+      description: "`Struct` represents a structured data value, consisting of fields\n which map to dynamically typed values. In some languages, `Struct`\n might be supported by a native representation. For example, in\n scripting languages like JS a struct is represented as an\n object. The details of that representation are described together\n with the proto support for the language.\n\n The JSON representation for `Struct` is JSON object."
+    textql.rpc.public.sandbox_exec.SandboxLoadConnectorDataRequest:
+      type: object
+      properties:
+        sandboxId:
+          type: string
+          title: sandbox_id
+          minLength: 1
+        connectorId:
+          exclusiveMinimum: 0
+          type: integer
+          title: connector_id
+          format: int32
+        query:
+          type: string
+          title: query
+        tqlPath:
+          type: string
+          title: tql_path
+        params:
+          title: params
+          $ref: '#/components/schemas/google.protobuf.Struct'
+        maxRows:
+          type: integer
+          title: max_rows
+          format: int32
+        dataframeName:
+          type: string
+          title: dataframe_name
+          nullable: true
+      title: SandboxLoadConnectorDataRequest
+      additionalProperties: false
+    textql.rpc.public.sandbox_exec.CreateSandboxResponse:
+      type: object
+      properties:
+        sandboxId:
+          type: string
+          title: sandbox_id
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: CreateSandboxResponse
+      additionalProperties: false
+    textql.rpc.public.sandbox_exec.CreateSandboxRequest:
+      type: object
+      properties:
+        sandboxId:
+          type: string
+          title: sandbox_id
+          nullable: true
+      title: CreateSandboxRequest
+      additionalProperties: false
+    textql.rpc.public.sandbox_exec.SandboxFileOutput:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+        url:
+          type: string
+          title: url
+        mimeType:
+          type: string
+          title: mime_type
+      title: SandboxFileOutput
+      additionalProperties: false
+    textql.rpc.public.sandbox_exec.GetToolAvailabilityRequest:
+      type: object
+      title: GetToolAvailabilityRequest
+      additionalProperties: false
+    textql.rpc.public.sandbox_exec.SandboxExecuteCodeResponse:
+      type: object
+      properties:
+        output:
+          type: array
+          items:
+            type: string
+          title: output
+        error:
+          type: string
+          title: error
+          nullable: true
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.sandbox_exec.SandboxFileOutput'
+          title: files
+        dataframes:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.sandbox_exec.SandboxDataFrameOutput'
+          title: dataframes
+        executionTimeMs:
+          type:
+          - integer
+          - string
+          title: execution_time_ms
+          format: int64
+      title: SandboxExecuteCodeResponse
+      additionalProperties: false
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    textql.rpc.public.sandbox_exec.GetToolAvailabilityResponse:
+      type: object
+      properties:
+        tools:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.sandbox_exec.ToolAvailability'
+          title: tools
+      title: GetToolAvailabilityResponse
+      additionalProperties: false
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+          - not_found
+          enum:
+          - canceled
+          - unknown
+          - invalid_argument
+          - deadline_exceeded
+          - not_found
+          - already_exists
+          - permission_denied
+          - resource_exhausted
+          - failed_precondition
+          - aborted
+          - out_of_range
+          - unimplemented
+          - internal
+          - unavailable
+          - data_loss
+          - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    textql.rpc.public.sandbox_exec.SandboxLoadConnectorDataResponse:
+      type: object
+      properties:
+        dataframeName:
+          type: string
+          title: dataframe_name
+        numRows:
+          type:
+          - integer
+          - string
+          title: num_rows
+          format: int64
+        numCols:
+          type:
+          - integer
+          - string
+          title: num_cols
+          format: int64
+        preview:
+          type: string
+          title: preview
+      title: SandboxLoadConnectorDataResponse
+      additionalProperties: false
+    textql.rpc.public.sandbox_exec.ToolAvailability:
+      type: object
+      properties:
+        tool:
+          type: string
+          title: tool
+          description: '"python" | "bash" | "sql"'
+        enabled:
+          type: boolean
+          title: enabled
+        reason:
+          type: string
+          title: reason
+      title: ToolAvailability
+      additionalProperties: false
+    textql.rpc.public.sandbox_exec.SandboxExecuteCodeRequest:
+      type: object
+      properties:
+        sandboxId:
+          type: string
+          title: sandbox_id
+          minLength: 1
+        code:
+          type: string
+          title: code
+          minLength: 1
+      title: SandboxExecuteCodeRequest
+      additionalProperties: false
+    google.protobuf.Timestamp:
+      type: string
+      examples:
+      - '2023-01-15T01:30:15.01Z'
+      - '2024-12-25T12:00:00Z'
+      format: date-time
+      description: "A Timestamp represents a point in time independent of any time zone or local\n calendar, encoded as a count of seconds and fractions of seconds at\n nanosecond resolution. The count is relative to an epoch at UTC midnight on\n January 1, 1970, in the proleptic Gregorian calendar which extends the\n Gregorian calendar backwards to year one.\n\n All minutes are 60 seconds long. Leap seconds are \"smeared\" so that no leap\n second table is needed for interpretation, using a [24-hour linear\n smear](https://developers.google.com/time/smear).\n\n The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By\n restricting to that range, we ensure that we can convert to and from [RFC\n 3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.\n\n # Examples\n\n Example 1: Compute Timestamp from POSIX `time()`.\n\n     Timestamp timestamp;\n     timestamp.set_seconds(time(NULL));\n     timestamp.set_nanos(0);\n\n Example 2: Compute Timestamp from POSIX `gettimeofday()`.\n\n     struct timeval tv;\n     gettimeofday(&tv, NULL);\n\n     Timestamp timestamp;\n     timestamp.set_seconds(tv.tv_sec);\n     timestamp.set_nanos(tv.tv_usec * 1000);\n\n Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.\n\n     FILETIME ft;\n     GetSystemTimeAsFileTime(&ft);\n     UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;\n\n     // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z\n     // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.\n     Timestamp timestamp;\n     timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));\n     timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));\n\n Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.\n\n     long millis = System.currentTimeMillis();\n\n     Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)\n         .setNanos((int) ((millis % 1000) * 1000000)).build();\n\n Example 5: Compute Timestamp from Java `Instant.now()`.\n\n     Instant now = Instant.now();\n\n     Timestamp timestamp =\n         Timestamp.newBuilder().setSeconds(now.getEpochSecond())\n             .setNanos(now.getNano()).build();\n\n Example 6: Compute Timestamp from current time in Python.\n\n     timestamp = Timestamp()\n     timestamp.GetCurrentTime()\n\n # JSON Mapping\n\n In JSON format, the Timestamp type is encoded as a string in the\n [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the\n format is \"{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z\"\n where {year} is always expressed using four digits while {month}, {day},\n {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional\n seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),\n are optional. The \"Z\" suffix indicates the timezone (\"UTC\"); the timezone\n is required. A proto3 JSON serializer should always use UTC (as indicated by\n \"Z\") when printing the Timestamp type and a proto3 JSON parser should be\n able to accept both UTC and other timezones (as indicated by an offset).\n\n For example, \"2017-01-15T01:30:15.01Z\" encodes 15.01 seconds past\n 01:30 UTC on January 15, 2017.\n\n In JavaScript, one can convert a Date object to this format using the\n standard\n [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)\n method. In Python, a standard `datetime.datetime` object can be converted\n to this format using\n [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with\n the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use\n the Joda Time's [`ISODateTimeFormat.dateTime()`](\n http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()\n ) to obtain a formatter capable of generating timestamps in this format."
+    google.protobuf.Value:
+      oneOf:
+      - type: 'null'
+      - type: number
+      - type: string
+      - type: boolean
+      - type: array
+      - type: object
+        additionalProperties: true
+      description: "`Value` represents a dynamically typed value which can be either\n null, a number, a string, a boolean, a recursive struct value, or a\n list of values. A producer of value is expected to set one of these\n variants. Absence of any variant indicates an error.\n\n The JSON representation for `Value` is JSON value."
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+      - 1
+      description: Define the version of the Connect protocol
+      const: 1
+      default: 1
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: tql_api_key

@@ -1,0 +1,684 @@
+openapi: 3.2.0
+info:
+  title: TextQL MCP Service API
+  version: 1.0.0
+  description: 'TextQL public API. Generated from protobuf service definitions; internal
+
+    endpoints are excluded via google.api.visibility / file_visibility.'
+servers:
+- url: https://app.textql.com/rpc/public
+security:
+- apiKey: []
+tags:
+- name: MCPService
+paths:
+  /textql.rpc.public.mcp.MCPService/ClearOAuthToken:
+    post:
+      tags:
+      - MCPService
+      summary: ClearOAuthToken
+      operationId: MCPService_ClearOAuthToken
+      x-speakeasy-group: mcp
+      x-speakeasy-name-override: clearOAuthToken
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.mcp.ClearOAuthTokenRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.mcp.ClearOAuthTokenResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.mcp.clearOAuthToken({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.mcp.clear_o_auth_token()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.mcp.MCPService/DeleteMCPServer:
+    post:
+      tags:
+      - MCPService
+      summary: DeleteMCPServer
+      operationId: MCPService_DeleteMCPServer
+      x-speakeasy-group: mcp
+      x-speakeasy-name-override: delete
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.mcp.DeleteMCPServerRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.mcp.DeleteMCPServerResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.mcp.delete({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.mcp.delete()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.mcp.MCPService/GetMCPServers:
+    post:
+      tags:
+      - MCPService
+      summary: GetMCPServers
+      operationId: MCPService_GetMCPServers
+      x-speakeasy-group: mcp
+      x-speakeasy-name-override: getServers
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.mcp.GetMCPServersRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.mcp.GetMCPServersResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.mcp.getServers({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.mcp.get_servers(body={})\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.mcp.MCPService/HandleOAuthCallback:
+    post:
+      tags:
+      - MCPService
+      summary: HandleOAuthCallback
+      operationId: MCPService_HandleOAuthCallback
+      x-speakeasy-group: mcp
+      x-speakeasy-name-override: handleOAuthCallback
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.mcp.HandleOAuthCallbackRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.mcp.HandleOAuthCallbackResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.mcp.handleOAuthCallback({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.mcp.handle_o_auth_callback()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.mcp.MCPService/InitiateOAuthFlow:
+    post:
+      tags:
+      - MCPService
+      summary: InitiateOAuthFlow
+      operationId: MCPService_InitiateOAuthFlow
+      x-speakeasy-group: mcp
+      x-speakeasy-name-override: initiateOAuthFlow
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.mcp.InitiateOAuthFlowRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.mcp.InitiateOAuthFlowResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.mcp.initiateOAuthFlow({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.mcp.initiate_o_auth_flow()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.mcp.MCPService/ToggleMCPServer:
+    post:
+      tags:
+      - MCPService
+      summary: ToggleMCPServer
+      operationId: MCPService_ToggleMCPServer
+      x-speakeasy-group: mcp
+      x-speakeasy-name-override: toggleServer
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.mcp.ToggleMCPServerRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.mcp.ToggleMCPServerResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.mcp.toggleServer({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.mcp.toggle_server()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.mcp.MCPService/UpsertMCPServers:
+    post:
+      tags:
+      - MCPService
+      summary: UpsertMCPServers
+      operationId: MCPService_UpsertMCPServers
+      x-speakeasy-group: mcp
+      x-speakeasy-name-override: upsertMCPServers
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.mcp.UpsertMCPServersRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.mcp.UpsertMCPServersResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.mcp.upsertMCPServers({\n    body: {\n      mcpServers: [\n        {\n          sseConfig: {},\n          createdAt: new Date(\"2023-01-15T01:30:15.01Z\"),\n          updatedAt: new Date(\"2023-01-15T01:30:15.01Z\"),\n        },\n      ],\n    },\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\nfrom textql_sdk.utils import parse_datetime\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.mcp.upsert_mcp_servers(mcp_servers=[\n        {\n            \"sse_config\": {},\n            \"created_at\": parse_datetime(\"2023-01-15T01:30:15.01Z\"),\n            \"updated_at\": parse_datetime(\"2023-01-15T01:30:15.01Z\"),\n        },\n    ])\n\n    # Handle response\n    print(res)"
+components:
+  schemas:
+    textql.rpc.public.mcp.HandleOAuthCallbackRequest:
+      type: object
+      properties:
+        serverId:
+          type: string
+          title: server_id
+        code:
+          type: string
+          title: code
+        state:
+          type: string
+          title: state
+      title: HandleOAuthCallbackRequest
+      additionalProperties: false
+    textql.rpc.public.mcp.MCPTransportType:
+      type: string
+      title: MCPTransportType
+      enum:
+      - MCP_TRANSPORT_TYPE_UNSPECIFIED
+      - SSE
+      - HTTP
+    textql.rpc.public.mcp.ClearOAuthTokenRequest:
+      type: object
+      properties:
+        serverId:
+          type: string
+          title: server_id
+      title: ClearOAuthTokenRequest
+      additionalProperties: false
+    textql.rpc.public.mcp.MCPServer:
+      type: object
+      allOf:
+      - type: object
+        properties:
+          id:
+            type: string
+            title: id
+          name:
+            type: string
+            title: name
+          transport:
+            title: transport
+            $ref: '#/components/schemas/textql.rpc.public.mcp.MCPTransportType'
+          memberId:
+            type: string
+            title: member_id
+          organizationId:
+            type: string
+            title: organization_id
+          createdAt:
+            title: created_at
+            $ref: '#/components/schemas/google.protobuf.Timestamp'
+          updatedAt:
+            title: updated_at
+            $ref: '#/components/schemas/google.protobuf.Timestamp'
+          enabled:
+            type: boolean
+            title: enabled
+      - oneOf:
+        - type: object
+          properties:
+            httpConfig:
+              title: http_config
+              $ref: '#/components/schemas/textql.rpc.public.mcp.HttpConfig'
+          title: http_config
+          required:
+          - httpConfig
+        - type: object
+          properties:
+            sseConfig:
+              title: sse_config
+              $ref: '#/components/schemas/textql.rpc.public.mcp.SseConfig'
+          title: sse_config
+          required:
+          - sseConfig
+      title: MCPServer
+      additionalProperties: false
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
+          type: string
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+          - type: object
+            title: Any
+            additionalProperties: true
+            description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
+    textql.rpc.public.mcp.GetMCPServersResponse:
+      type: object
+      properties:
+        mcpServers:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.mcp.MCPServerWithTools'
+          title: mcp_servers
+      title: GetMCPServersResponse
+      additionalProperties: false
+    textql.rpc.public.mcp.ClearOAuthTokenResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+        error:
+          type: string
+          title: error
+      title: ClearOAuthTokenResponse
+      additionalProperties: false
+    textql.rpc.public.mcp.HttpConfig:
+      type: object
+      properties:
+        url:
+          type: string
+          title: url
+        headers:
+          type: object
+          title: headers
+          additionalProperties:
+            type: string
+            title: value
+        oauthClientId:
+          type: string
+          title: oauth_client_id
+          nullable: true
+        oauthClientSecret:
+          type: string
+          title: oauth_client_secret
+          nullable: true
+      title: HttpConfig
+      additionalProperties: false
+    textql.rpc.public.mcp.InitiateOAuthFlowRequest:
+      type: object
+      properties:
+        serverId:
+          type: string
+          title: server_id
+      title: InitiateOAuthFlowRequest
+      additionalProperties: false
+    textql.rpc.public.mcp.UpsertMCPServersRequest:
+      type: object
+      properties:
+        mcpServers:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.mcp.MCPServer'
+          title: mcp_servers
+      title: UpsertMCPServersRequest
+      additionalProperties: false
+    textql.rpc.public.mcp.MCPServerWithTools:
+      type: object
+      properties:
+        mcpServer:
+          title: mcp_server
+          $ref: '#/components/schemas/textql.rpc.public.mcp.MCPServer'
+        tools:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.mcp.MCPTool'
+          title: tools
+        error:
+          title: error
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.mcp.MCPError'
+      title: MCPServerWithTools
+      additionalProperties: false
+    textql.rpc.public.mcp.DeleteMCPServerRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+      title: DeleteMCPServerRequest
+      additionalProperties: false
+    textql.rpc.public.mcp.SseConfig:
+      type: object
+      properties:
+        url:
+          type: string
+          title: url
+        headers:
+          type: object
+          title: headers
+          additionalProperties:
+            type: string
+            title: value
+        oauthClientId:
+          type: string
+          title: oauth_client_id
+          nullable: true
+        oauthClientSecret:
+          type: string
+          title: oauth_client_secret
+          nullable: true
+      title: SseConfig
+      additionalProperties: false
+    textql.rpc.public.mcp.ToggleMCPServerRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+      title: ToggleMCPServerRequest
+      additionalProperties: false
+    textql.rpc.public.mcp.InitiateOAuthFlowResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+        error:
+          type: string
+          title: error
+        authorizationUrl:
+          type: string
+          title: authorization_url
+      title: InitiateOAuthFlowResponse
+      additionalProperties: false
+    textql.rpc.public.mcp.DeleteMCPServerResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+        error:
+          type: string
+          title: error
+      title: DeleteMCPServerResponse
+      additionalProperties: false
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+          - not_found
+          enum:
+          - canceled
+          - unknown
+          - invalid_argument
+          - deadline_exceeded
+          - not_found
+          - already_exists
+          - permission_denied
+          - resource_exhausted
+          - failed_precondition
+          - aborted
+          - out_of_range
+          - unimplemented
+          - internal
+          - unavailable
+          - data_loss
+          - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    textql.rpc.public.mcp.MCPTool:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+        description:
+          type: string
+          title: description
+        schema:
+          type: string
+          title: schema
+          description: JSON schema for input parameters
+      title: MCPTool
+      additionalProperties: false
+    textql.rpc.public.mcp.MCPError:
+      type: string
+      title: MCPError
+      enum:
+      - MCP_ERROR_UNSPECIFIED
+      - MCP_ERROR_INVALID_TOKEN
+      - MCP_ERROR_AUTHENTICATION_REQUIRED
+      - MCP_ERROR_UNSUPPORTED_PROTOCOL_VERSION
+      - MCP_ERROR_CLIENT_NOT_INITIALIZED
+      - MCP_ERROR_URL_REQUIRED
+      - MCP_ERROR_UNSUPPORTED_TRANSPORT_TYPE
+      - MCP_ERROR_SERVER_NOT_FOUND
+    google.protobuf.Timestamp:
+      type: string
+      examples:
+      - '2023-01-15T01:30:15.01Z'
+      - '2024-12-25T12:00:00Z'
+      format: date-time
+      description: "A Timestamp represents a point in time independent of any time zone or local\n calendar, encoded as a count of seconds and fractions of seconds at\n nanosecond resolution. The count is relative to an epoch at UTC midnight on\n January 1, 1970, in the proleptic Gregorian calendar which extends the\n Gregorian calendar backwards to year one.\n\n All minutes are 60 seconds long. Leap seconds are \"smeared\" so that no leap\n second table is needed for interpretation, using a [24-hour linear\n smear](https://developers.google.com/time/smear).\n\n The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By\n restricting to that range, we ensure that we can convert to and from [RFC\n 3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.\n\n # Examples\n\n Example 1: Compute Timestamp from POSIX `time()`.\n\n     Timestamp timestamp;\n     timestamp.set_seconds(time(NULL));\n     timestamp.set_nanos(0);\n\n Example 2: Compute Timestamp from POSIX `gettimeofday()`.\n\n     struct timeval tv;\n     gettimeofday(&tv, NULL);\n\n     Timestamp timestamp;\n     timestamp.set_seconds(tv.tv_sec);\n     timestamp.set_nanos(tv.tv_usec * 1000);\n\n Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.\n\n     FILETIME ft;\n     GetSystemTimeAsFileTime(&ft);\n     UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;\n\n     // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z\n     // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.\n     Timestamp timestamp;\n     timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));\n     timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));\n\n Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.\n\n     long millis = System.currentTimeMillis();\n\n     Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)\n         .setNanos((int) ((millis % 1000) * 1000000)).build();\n\n Example 5: Compute Timestamp from Java `Instant.now()`.\n\n     Instant now = Instant.now();\n\n     Timestamp timestamp =\n         Timestamp.newBuilder().setSeconds(now.getEpochSecond())\n             .setNanos(now.getNano()).build();\n\n Example 6: Compute Timestamp from current time in Python.\n\n     timestamp = Timestamp()\n     timestamp.GetCurrentTime()\n\n # JSON Mapping\n\n In JSON format, the Timestamp type is encoded as a string in the\n [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the\n format is \"{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z\"\n where {year} is always expressed using four digits while {month}, {day},\n {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional\n seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),\n are optional. The \"Z\" suffix indicates the timezone (\"UTC\"); the timezone\n is required. A proto3 JSON serializer should always use UTC (as indicated by\n \"Z\") when printing the Timestamp type and a proto3 JSON parser should be\n able to accept both UTC and other timezones (as indicated by an offset).\n\n For example, \"2017-01-15T01:30:15.01Z\" encodes 15.01 seconds past\n 01:30 UTC on January 15, 2017.\n\n In JavaScript, one can convert a Date object to this format using the\n standard\n [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)\n method. In Python, a standard `datetime.datetime` object can be converted\n to this format using\n [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with\n the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use\n the Joda Time's [`ISODateTimeFormat.dateTime()`](\n http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()\n ) to obtain a formatter capable of generating timestamps in this format."
+    textql.rpc.public.mcp.HandleOAuthCallbackResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+        error:
+          type: string
+          title: error
+      title: HandleOAuthCallbackResponse
+      additionalProperties: false
+    textql.rpc.public.mcp.ToggleMCPServerResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: ToggleMCPServerResponse
+      additionalProperties: false
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+      - 1
+      description: Define the version of the Connect protocol
+      const: 1
+      default: 1
+    textql.rpc.public.mcp.UpsertMCPServersResponse:
+      type: object
+      properties:
+        mcpServers:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.mcp.MCPServerWithTools'
+          title: mcp_servers
+      title: UpsertMCPServersResponse
+      additionalProperties: false
+    textql.rpc.public.mcp.GetMCPServersRequest:
+      type: object
+      title: GetMCPServersRequest
+      additionalProperties: false
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: tql_api_key

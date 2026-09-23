@@ -1,0 +1,329 @@
+openapi: 3.2.0
+info:
+  title: TextQL Sandbox Query Service API
+  version: 1.0.0
+  description: 'TextQL public API. Generated from protobuf service definitions; internal
+
+    endpoints are excluded via google.api.visibility / file_visibility.'
+servers:
+- url: https://app.textql.com/rpc/public
+security:
+- apiKey: []
+tags:
+- name: SandboxQueryService
+paths:
+  /textql.rpc.public.sandbox_query.SandboxQueryService/ExecuteBash:
+    post:
+      tags:
+      - SandboxQueryService
+      summary: Runs in the caller's own worker; no connector/source scoping
+      description: Runs in the caller's own worker; no connector/source scoping.
+      operationId: SandboxQueryService_ExecuteBash
+      x-speakeasy-group: sandbox
+      x-speakeasy-name-override: executeBash
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.sandbox_query.SandboxExecuteBashRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.sandbox_query.SandboxExecuteBashResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.sandbox.executeBash({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.sandbox.execute_bash()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.sandbox_query.SandboxQueryService/ExecuteQuery:
+    post:
+      tags:
+      - SandboxQueryService
+      summary: ExecuteQuery
+      operationId: SandboxQueryService_ExecuteQuery
+      x-speakeasy-group: sandbox
+      x-speakeasy-name-override: executeQuery
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.sandbox_query.SandboxExecuteQueryRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.sandbox_query.SandboxExecuteQueryResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.sandbox.executeQuery({\n    body: {\n      sqlQuery: {},\n    },\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.sandbox.execute_query(body={\n        \"sql_query\": {},\n    })\n\n    # Handle response\n    print(res)"
+components:
+  schemas:
+    textql.rpc.public.sandbox_query.LibraryTQLTemplate:
+      type: object
+      properties:
+        tqlPath:
+          type: string
+          title: tql_path
+          description: library path to a .tql file
+      title: LibraryTQLTemplate
+      additionalProperties: false
+    textql.rpc.public.sandbox_query.SandboxExecuteQueryResponse:
+      type: object
+      properties:
+        arrowData:
+          type: string
+          title: arrow_data
+          format: byte
+        totalRows:
+          type:
+          - integer
+          - string
+          title: total_rows
+          format: int64
+        error:
+          type: string
+          title: error
+        refreshedToken:
+          type: string
+          title: refreshed_token
+          nullable: true
+      title: SandboxExecuteQueryResponse
+      additionalProperties: false
+    textql.rpc.public.sandbox_query.AppDBTemplate:
+      type: object
+      properties:
+        query:
+          type: string
+          title: query
+          description: SQL to run against the app's private DuckDB database
+      title: AppDBTemplate
+      additionalProperties: false
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+          - not_found
+          enum:
+          - canceled
+          - unknown
+          - invalid_argument
+          - deadline_exceeded
+          - not_found
+          - already_exists
+          - permission_denied
+          - resource_exhausted
+          - failed_precondition
+          - aborted
+          - out_of_range
+          - unimplemented
+          - internal
+          - unavailable
+          - data_loss
+          - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    textql.rpc.public.sandbox_query.SandboxExecuteBashResponse:
+      type: object
+      properties:
+        stdout:
+          type: string
+          title: stdout
+          format: byte
+        stderr:
+          type: string
+          title: stderr
+          format: byte
+        exitCode:
+          type: integer
+          title: exit_code
+          format: int32
+        error:
+          type: string
+          title: error
+          description: non-empty on execution-level failure (timeout, spawn error)
+        refreshedToken:
+          type: string
+          title: refreshed_token
+          nullable: true
+      title: SandboxExecuteBashResponse
+      additionalProperties: false
+    textql.rpc.public.sandbox_query.SandboxExecuteQueryRequest:
+      type: object
+      allOf:
+      - type: object
+        properties:
+          sourceName:
+            type: string
+            title: source_name
+          connectorId:
+            type: integer
+            title: connector_id
+            format: int32
+          parameters:
+            type: array
+            items:
+              $ref: '#/components/schemas/textql.rpc.public.sandbox_query.SandboxQueryParam'
+            title: parameters
+          maxRows:
+            type:
+            - integer
+            - string
+            title: max_rows
+            format: int64
+      - oneOf:
+        - type: object
+          properties:
+            appDb:
+              title: app_db
+              $ref: '#/components/schemas/textql.rpc.public.sandbox_query.AppDBTemplate'
+          title: app_db
+          required:
+          - appDb
+        - type: object
+          properties:
+            libraryTql:
+              title: library_tql
+              $ref: '#/components/schemas/textql.rpc.public.sandbox_query.LibraryTQLTemplate'
+          title: library_tql
+          required:
+          - libraryTql
+        - type: object
+          properties:
+            sqlQuery:
+              title: sql_query
+              $ref: '#/components/schemas/textql.rpc.public.sandbox_query.SqlQueryTemplate'
+          title: sql_query
+          required:
+          - sqlQuery
+      title: SandboxExecuteQueryRequest
+      additionalProperties: false
+    textql.rpc.public.sandbox_query.SqlQueryTemplate:
+      type: object
+      properties:
+        query:
+          type: string
+          title: query
+          description: SQL with :param placeholders
+      title: SqlQueryTemplate
+      additionalProperties: false
+    textql.rpc.public.sandbox_query.SandboxExecuteBashRequest:
+      type: object
+      properties:
+        script:
+          type: string
+          title: script
+        env:
+          type: object
+          title: env
+          additionalProperties:
+            type: string
+            title: value
+      title: SandboxExecuteBashRequest
+      additionalProperties: false
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+      - 1
+      description: Define the version of the Connect protocol
+      const: 1
+      default: 1
+    textql.rpc.public.sandbox_query.SandboxQueryParam:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+        value:
+          type: string
+          title: value
+      title: SandboxQueryParam
+      additionalProperties: false
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
+          type: string
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+          - type: object
+            title: Any
+            additionalProperties: true
+            description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: tql_api_key

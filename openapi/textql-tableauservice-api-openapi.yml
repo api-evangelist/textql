@@ -1,0 +1,1124 @@
+openapi: 3.2.0
+info:
+  title: TextQL Tableau Service API
+  version: 1.0.0
+  description: 'TextQL public API. Generated from protobuf service definitions; internal
+
+    endpoints are excluded via google.api.visibility / file_visibility.'
+servers:
+- url: https://app.textql.com/rpc/public
+security:
+- apiKey: []
+tags:
+- name: TableauService
+paths:
+  /textql.rpc.public.tableau.TableauService/GenerateEmbedToken:
+    post:
+      tags:
+      - TableauService
+      summary: Generate JWT token for embedding views
+      operationId: TableauService_GenerateEmbedToken
+      x-speakeasy-group: tableau
+      x-speakeasy-name-override: generateEmbedToken
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.tableau.GenerateEmbedTokenRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.tableau.GenerateEmbedTokenResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.tableau.generateEmbedToken({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.tableau.generate_embed_token()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.tableau.TableauService/GetCollectionThumbnail:
+    post:
+      tags:
+      - TableauService
+      summary: Get collection thumbnail (first view image)
+      operationId: TableauService_GetCollectionThumbnail
+      x-speakeasy-group: tableau
+      x-speakeasy-name-override: getCollectionThumbnail
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.tableau.GetCollectionThumbnailRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.tableau.GetCollectionThumbnailResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.tableau.getCollectionThumbnail({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.tableau.get_collection_thumbnail()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.tableau.TableauService/GetConnectedAppStatus:
+    post:
+      tags:
+      - TableauService
+      summary: GetConnectedAppStatus
+      operationId: TableauService_GetConnectedAppStatus
+      x-speakeasy-group: tableau
+      x-speakeasy-name-override: getConnectedAppStatus
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.tableau.GetConnectedAppStatusRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.tableau.GetConnectedAppStatusResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.tableau.getConnectedAppStatus({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.tableau.get_connected_app_status()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.tableau.TableauService/GetStarredTableauItems:
+    post:
+      tags:
+      - TableauService
+      summary: GetStarredTableauItems
+      operationId: TableauService_GetStarredTableauItems
+      x-speakeasy-group: tableau
+      x-speakeasy-name-override: getStarredItems
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.tableau.GetStarredTableauItemsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.tableau.GetStarredTableauItemsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.tableau.getStarredItems({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.tableau.get_starred_items()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.tableau.TableauService/ListTableauDatasources:
+    post:
+      tags:
+      - TableauService
+      summary: List Tableau datasources
+      operationId: TableauService_ListTableauDatasources
+      x-speakeasy-group: tableau
+      x-speakeasy-name-override: listTableauDatasources
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.tableau.ListTableauDatasourcesRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.tableau.ListTableauDatasourcesResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.tableau.listTableauDatasources({\n    body: {\n      projectId: \"<id>\",\n    },\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.tableau.list_tableau_datasources(body={\n        \"project_id\": \"<id>\",\n    })\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.tableau.TableauService/ListTableauProjects:
+    post:
+      tags:
+      - TableauService
+      summary: List Tableau projects
+      operationId: TableauService_ListTableauProjects
+      x-speakeasy-group: tableau
+      x-speakeasy-name-override: listProjects
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.tableau.ListTableauProjectsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.tableau.ListTableauProjectsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.tableau.listProjects({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.tableau.list_projects()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.tableau.TableauService/ListTableauViews:
+    post:
+      tags:
+      - TableauService
+      summary: List Tableau views
+      operationId: TableauService_ListTableauViews
+      x-speakeasy-group: tableau
+      x-speakeasy-name-override: listViews
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.tableau.ListTableauViewsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.tableau.ListTableauViewsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.tableau.listViews({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.tableau.list_views()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.tableau.TableauService/ListTableauWorkbooks:
+    post:
+      tags:
+      - TableauService
+      summary: List Tableau workbooks
+      operationId: TableauService_ListTableauWorkbooks
+      x-speakeasy-group: tableau
+      x-speakeasy-name-override: listWorkbooks
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.tableau.ListTableauWorkbooksRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.tableau.ListTableauWorkbooksResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.tableau.listWorkbooks({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.tableau.list_workbooks()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.tableau.TableauService/RefreshTableauCollection:
+    post:
+      tags:
+      - TableauService
+      summary: RefreshTableauCollection
+      operationId: TableauService_RefreshTableauCollection
+      x-speakeasy-group: tableau
+      x-speakeasy-name-override: refreshCollection
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.tableau.RefreshTableauCollectionRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.tableau.RefreshTableauCollectionResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.tableau.refreshCollection({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.tableau.refresh_collection()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.tableau.TableauService/ResetConnectedApp:
+    post:
+      tags:
+      - TableauService
+      summary: ResetConnectedApp
+      operationId: TableauService_ResetConnectedApp
+      x-speakeasy-group: tableau
+      x-speakeasy-name-override: resetConnectedApp
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.tableau.ResetConnectedAppRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.tableau.ResetConnectedAppResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.tableau.resetConnectedApp({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.tableau.reset_connected_app()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.tableau.TableauService/StarTableauItem:
+    post:
+      tags:
+      - TableauService
+      summary: Star/unstar items
+      operationId: TableauService_StarTableauItem
+      x-speakeasy-group: tableau
+      x-speakeasy-name-override: starItem
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.tableau.StarTableauItemRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.tableau.StarTableauItemResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.tableau.starItem({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.tableau.star_item()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.tableau.TableauService/TestTableauConnection:
+    post:
+      tags:
+      - TableauService
+      summary: Test a Tableau connection
+      operationId: TableauService_TestTableauConnection
+      x-speakeasy-group: tableau
+      x-speakeasy-name-override: testTableauConnection
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.tableau.TestTableauConnectionRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.tableau.TestTableauConnectionResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.tableau.testTableauConnection({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.tableau.test_tableau_connection()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.tableau.TableauService/UnstarTableauItem:
+    post:
+      tags:
+      - TableauService
+      summary: UnstarTableauItem
+      operationId: TableauService_UnstarTableauItem
+      x-speakeasy-group: tableau
+      x-speakeasy-name-override: unstarTableauItem
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.tableau.UnstarTableauItemRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.tableau.UnstarTableauItemResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.tableau.unstarTableauItem({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.tableau.unstar_tableau_item()\n\n    # Handle response\n    print(res)"
+components:
+  schemas:
+    textql.rpc.public.tableau.UnstarTableauItemRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        itemType:
+          title: item_type
+          $ref: '#/components/schemas/textql.rpc.public.tableau.TableauItemType'
+        itemId:
+          type: string
+          title: item_id
+      title: UnstarTableauItemRequest
+      additionalProperties: false
+    textql.rpc.public.tableau.GenerateEmbedTokenResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          title: token
+        embedUrl:
+          type: string
+          title: embed_url
+      title: GenerateEmbedTokenResponse
+      additionalProperties: false
+    textql.rpc.public.tableau.ListTableauDatasourcesResponse:
+      type: object
+      properties:
+        datasources:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.tableau.TableauDatasource'
+          title: datasources
+      title: ListTableauDatasourcesResponse
+      additionalProperties: false
+    textql.rpc.public.tableau.TableauItemType:
+      type: string
+      title: TableauItemType
+      enum:
+      - ITEM_TYPE_UNKNOWN
+      - ITEM_TYPE_PROJECT
+      - ITEM_TYPE_WORKBOOK
+      - ITEM_TYPE_VIEW
+      - ITEM_TYPE_DATASOURCE
+      description: Starred items
+    textql.rpc.public.tableau.TableauProject:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        name:
+          type: string
+          title: name
+        description:
+          type: string
+          title: description
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        contentPermissions:
+          type: string
+          title: content_permissions
+        parentProjectId:
+          type: string
+          title: parent_project_id
+      title: TableauProject
+      additionalProperties: false
+    textql.rpc.public.tableau.ListTableauWorkbooksRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        projectId:
+          type: string
+          title: project_id
+        projectName:
+          type: string
+          title: project_name
+      title: ListTableauWorkbooksRequest
+      additionalProperties: false
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
+          type: string
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+          - type: object
+            title: Any
+            additionalProperties: true
+            description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
+    textql.rpc.public.tableau.GetStarredTableauItemsRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+      title: GetStarredTableauItemsRequest
+      additionalProperties: false
+    textql.rpc.public.tableau.TestTableauConnectionRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+          nullable: true
+        serverUrl:
+          type: string
+          title: server_url
+          nullable: true
+        siteName:
+          type: string
+          title: site_name
+          nullable: true
+        patName:
+          type: string
+          title: pat_name
+          nullable: true
+        patSecret:
+          type: string
+          title: pat_secret
+          nullable: true
+      title: TestTableauConnectionRequest
+      additionalProperties: false
+    textql.rpc.public.tableau.StarTableauItemResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: StarTableauItemResponse
+      additionalProperties: false
+    textql.rpc.public.tableau.UnstarTableauItemResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: UnstarTableauItemResponse
+      additionalProperties: false
+    textql.rpc.public.tableau.GetStarredTableauItemsResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.tableau.TableauStarredItem'
+          title: items
+      title: GetStarredTableauItemsResponse
+      additionalProperties: false
+    textql.rpc.public.tableau.GetCollectionThumbnailResponse:
+      type: object
+      properties:
+        imageUrl:
+          type: string
+          title: image_url
+      title: GetCollectionThumbnailResponse
+      additionalProperties: false
+    textql.rpc.public.tableau.GetConnectedAppStatusRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+      title: GetConnectedAppStatusRequest
+      additionalProperties: false
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    textql.rpc.public.tableau.ListTableauProjectsRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+      title: ListTableauProjectsRequest
+      additionalProperties: false
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+          - not_found
+          enum:
+          - canceled
+          - unknown
+          - invalid_argument
+          - deadline_exceeded
+          - not_found
+          - already_exists
+          - permission_denied
+          - resource_exhausted
+          - failed_precondition
+          - aborted
+          - out_of_range
+          - unimplemented
+          - internal
+          - unavailable
+          - data_loss
+          - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    textql.rpc.public.tableau.TableauView:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        name:
+          type: string
+          title: name
+        contentUrl:
+          type: string
+          title: content_url
+        workbookId:
+          type: string
+          title: workbook_id
+        workbookName:
+          type: string
+          title: workbook_name
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        embedUrl:
+          type: string
+          title: embed_url
+      title: TableauView
+      additionalProperties: false
+    textql.rpc.public.tableau.ListTableauProjectsResponse:
+      type: object
+      properties:
+        projects:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.tableau.TableauProject'
+          title: projects
+      title: ListTableauProjectsResponse
+      additionalProperties: false
+    textql.rpc.public.tableau.ListTableauViewsRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        workbookId:
+          type: string
+          title: workbook_id
+        workbookName:
+          type: string
+          title: workbook_name
+      title: ListTableauViewsRequest
+      additionalProperties: false
+    textql.rpc.public.tableau.TableauDatasource:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        name:
+          type: string
+          title: name
+        type:
+          type: string
+          title: type
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        isPublished:
+          type: boolean
+          title: is_published
+        projectId:
+          type: string
+          title: project_id
+        projectName:
+          type: string
+          title: project_name
+      title: TableauDatasource
+      additionalProperties: false
+      description: 'TODO: Add datasources support'
+    textql.rpc.public.tableau.TestTableauConnectionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+        error:
+          type: string
+          title: error
+      title: TestTableauConnectionResponse
+      additionalProperties: false
+    textql.rpc.public.tableau.RefreshTableauCollectionRequest:
+      type: object
+      properties:
+        datasetId:
+          type: string
+          title: dataset_id
+      title: RefreshTableauCollectionRequest
+      additionalProperties: false
+    textql.rpc.public.tableau.ListTableauViewsResponse:
+      type: object
+      properties:
+        views:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.tableau.TableauView'
+          title: views
+      title: ListTableauViewsResponse
+      additionalProperties: false
+    textql.rpc.public.tableau.GetConnectedAppStatusResponse:
+      type: object
+      properties:
+        configured:
+          type: boolean
+          title: configured
+        appName:
+          type: string
+          title: app_name
+        clientIdSuffix:
+          type: string
+          title: client_id_suffix
+        secretIdSuffix:
+          type: string
+          title: secret_id_suffix
+      title: GetConnectedAppStatusResponse
+      additionalProperties: false
+    google.protobuf.Timestamp:
+      type: string
+      examples:
+      - '2023-01-15T01:30:15.01Z'
+      - '2024-12-25T12:00:00Z'
+      format: date-time
+      description: "A Timestamp represents a point in time independent of any time zone or local\n calendar, encoded as a count of seconds and fractions of seconds at\n nanosecond resolution. The count is relative to an epoch at UTC midnight on\n January 1, 1970, in the proleptic Gregorian calendar which extends the\n Gregorian calendar backwards to year one.\n\n All minutes are 60 seconds long. Leap seconds are \"smeared\" so that no leap\n second table is needed for interpretation, using a [24-hour linear\n smear](https://developers.google.com/time/smear).\n\n The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By\n restricting to that range, we ensure that we can convert to and from [RFC\n 3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.\n\n # Examples\n\n Example 1: Compute Timestamp from POSIX `time()`.\n\n     Timestamp timestamp;\n     timestamp.set_seconds(time(NULL));\n     timestamp.set_nanos(0);\n\n Example 2: Compute Timestamp from POSIX `gettimeofday()`.\n\n     struct timeval tv;\n     gettimeofday(&tv, NULL);\n\n     Timestamp timestamp;\n     timestamp.set_seconds(tv.tv_sec);\n     timestamp.set_nanos(tv.tv_usec * 1000);\n\n Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.\n\n     FILETIME ft;\n     GetSystemTimeAsFileTime(&ft);\n     UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;\n\n     // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z\n     // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.\n     Timestamp timestamp;\n     timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));\n     timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));\n\n Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.\n\n     long millis = System.currentTimeMillis();\n\n     Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)\n         .setNanos((int) ((millis % 1000) * 1000000)).build();\n\n Example 5: Compute Timestamp from Java `Instant.now()`.\n\n     Instant now = Instant.now();\n\n     Timestamp timestamp =\n         Timestamp.newBuilder().setSeconds(now.getEpochSecond())\n             .setNanos(now.getNano()).build();\n\n Example 6: Compute Timestamp from current time in Python.\n\n     timestamp = Timestamp()\n     timestamp.GetCurrentTime()\n\n # JSON Mapping\n\n In JSON format, the Timestamp type is encoded as a string in the\n [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the\n format is \"{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z\"\n where {year} is always expressed using four digits while {month}, {day},\n {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional\n seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),\n are optional. The \"Z\" suffix indicates the timezone (\"UTC\"); the timezone\n is required. A proto3 JSON serializer should always use UTC (as indicated by\n \"Z\") when printing the Timestamp type and a proto3 JSON parser should be\n able to accept both UTC and other timezones (as indicated by an offset).\n\n For example, \"2017-01-15T01:30:15.01Z\" encodes 15.01 seconds past\n 01:30 UTC on January 15, 2017.\n\n In JavaScript, one can convert a Date object to this format using the\n standard\n [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)\n method. In Python, a standard `datetime.datetime` object can be converted\n to this format using\n [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with\n the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use\n the Joda Time's [`ISODateTimeFormat.dateTime()`](\n http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()\n ) to obtain a formatter capable of generating timestamps in this format."
+    textql.rpc.public.tableau.ListTableauDatasourcesRequest:
+      type: object
+      allOf:
+      - type: object
+        properties:
+          connectorId:
+            type: integer
+            title: connector_id
+            format: int32
+      - oneOf:
+        - type: object
+          properties:
+            projectId:
+              type: string
+              title: project_id
+          title: project_id
+          required:
+          - projectId
+        - type: object
+          properties:
+            workbookId:
+              type: string
+              title: workbook_id
+          title: workbook_id
+          required:
+          - workbookId
+      title: ListTableauDatasourcesRequest
+      additionalProperties: false
+    textql.rpc.public.tableau.StarTableauItemRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        itemType:
+          title: item_type
+          $ref: '#/components/schemas/textql.rpc.public.tableau.TableauItemType'
+        itemId:
+          type: string
+          title: item_id
+        itemName:
+          type: string
+          title: item_name
+      title: StarTableauItemRequest
+      additionalProperties: false
+    textql.rpc.public.tableau.TableauStarredItem:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        itemType:
+          title: item_type
+          $ref: '#/components/schemas/textql.rpc.public.tableau.TableauItemType'
+        itemId:
+          type: string
+          title: item_id
+        itemName:
+          type: string
+          title: item_name
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: TableauStarredItem
+      additionalProperties: false
+    textql.rpc.public.tableau.TableauWorkbook:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        name:
+          type: string
+          title: name
+        projectName:
+          type: string
+          title: project_name
+        projectId:
+          type: string
+          title: project_id
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: TableauWorkbook
+      additionalProperties: false
+    textql.rpc.public.tableau.ResetConnectedAppRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+      title: ResetConnectedAppRequest
+      additionalProperties: false
+    textql.rpc.public.tableau.GetCollectionThumbnailRequest:
+      type: object
+      properties:
+        datasetId:
+          type: string
+          title: dataset_id
+      title: GetCollectionThumbnailRequest
+      additionalProperties: false
+    textql.rpc.public.tableau.ListTableauWorkbooksResponse:
+      type: object
+      properties:
+        workbooks:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.tableau.TableauWorkbook'
+          title: workbooks
+      title: ListTableauWorkbooksResponse
+      additionalProperties: false
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+      - 1
+      description: Define the version of the Connect protocol
+      const: 1
+      default: 1
+    textql.rpc.public.tableau.RefreshTableauCollectionResponse:
+      type: object
+      properties:
+        viewsCount:
+          type: integer
+          title: views_count
+          format: int32
+        datasourcesCount:
+          type: integer
+          title: datasources_count
+          format: int32
+      title: RefreshTableauCollectionResponse
+      additionalProperties: false
+    textql.rpc.public.tableau.ResetConnectedAppResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: ResetConnectedAppResponse
+      additionalProperties: false
+    textql.rpc.public.tableau.GenerateEmbedTokenRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        viewId:
+          type: string
+          title: view_id
+      title: GenerateEmbedTokenRequest
+      additionalProperties: false
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: tql_api_key

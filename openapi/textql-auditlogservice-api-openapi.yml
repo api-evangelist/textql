@@ -1,0 +1,974 @@
+openapi: 3.2.0
+info:
+  title: TextQL Audit Log Service API
+  version: 1.0.0
+  description: 'TextQL public API. Generated from protobuf service definitions; internal
+
+    endpoints are excluded via google.api.visibility / file_visibility.'
+servers:
+- url: https://app.textql.com/rpc/public
+security:
+- apiKey: []
+tags:
+- name: AuditLogService
+paths:
+  /textql.rpc.public.audit_log.AuditLogService/ConfigureOtlpExport:
+    post:
+      tags:
+      - AuditLogService
+      summary: ConfigureOtlpExport
+      operationId: AuditLogService_ConfigureOtlpExport
+      x-speakeasy-group: auditLogs
+      x-speakeasy-name-override: configureOtlpExport
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.audit_log.ConfigureOtlpExportRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.audit_log.ConfigureOtlpExportResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.auditLogs.configureOtlpExport({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.audit_logs.configure_otlp_export()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.audit_log.AuditLogService/ConfigureS3Export:
+    post:
+      tags:
+      - AuditLogService
+      summary: ConfigureS3Export
+      operationId: AuditLogService_ConfigureS3Export
+      x-speakeasy-group: auditLogs
+      x-speakeasy-name-override: configureS3Export
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.audit_log.ConfigureS3ExportRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.audit_log.ConfigureS3ExportResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.auditLogs.configureS3Export({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.audit_logs.configure_s3_export()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.audit_log.AuditLogService/DeleteOtlpExportConfig:
+    post:
+      tags:
+      - AuditLogService
+      summary: DeleteOtlpExportConfig
+      operationId: AuditLogService_DeleteOtlpExportConfig
+      x-speakeasy-group: auditLogs
+      x-speakeasy-name-override: deleteOtlpExportConfig
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.audit_log.DeleteOtlpExportConfigRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.audit_log.DeleteOtlpExportConfigResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.auditLogs.deleteOtlpExportConfig({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.audit_logs.delete_otlp_export_config(body={})\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.audit_log.AuditLogService/DeleteS3ExportConfig:
+    post:
+      tags:
+      - AuditLogService
+      summary: DeleteS3ExportConfig
+      operationId: AuditLogService_DeleteS3ExportConfig
+      x-speakeasy-group: auditLogs
+      x-speakeasy-name-override: deleteS3ExportConfig
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.audit_log.DeleteS3ExportConfigRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.audit_log.DeleteS3ExportConfigResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.auditLogs.deleteS3ExportConfig({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.audit_logs.delete_s3_export_config(body={})\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.audit_log.AuditLogService/GetOtlpExportConfig:
+    post:
+      tags:
+      - AuditLogService
+      summary: GetOtlpExportConfig
+      operationId: AuditLogService_GetOtlpExportConfig
+      x-speakeasy-group: auditLogs
+      x-speakeasy-name-override: getOtlpExportConfig
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.audit_log.GetOtlpExportConfigRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.audit_log.GetOtlpExportConfigResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.auditLogs.getOtlpExportConfig({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.audit_logs.get_otlp_export_config(body={})\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.audit_log.AuditLogService/GetS3ExportConfig:
+    post:
+      tags:
+      - AuditLogService
+      summary: GetS3ExportConfig
+      operationId: AuditLogService_GetS3ExportConfig
+      x-speakeasy-group: auditLogs
+      x-speakeasy-name-override: getS3ExportConfig
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.audit_log.GetS3ExportConfigRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.audit_log.GetS3ExportConfigResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.auditLogs.getS3ExportConfig({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.audit_logs.get_s3_export_config(body={})\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.audit_log.AuditLogService/ListAuditLogs:
+    post:
+      tags:
+      - AuditLogService
+      summary: ListAuditLogs
+      operationId: AuditLogService_ListAuditLogs
+      x-speakeasy-group: auditLogs
+      x-speakeasy-name-override: list
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.audit_log.ListAuditLogsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.audit_log.ListAuditLogsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.auditLogs.list({\n    body: {\n      after: new Date(\"2023-01-15T01:30:15.01Z\"),\n    },\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\nfrom textql_sdk.utils import parse_datetime\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.audit_logs.list(after=parse_datetime(\"2023-01-15T01:30:15.01Z\"))\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.audit_log.AuditLogService/TestOtlpExportConnection:
+    post:
+      tags:
+      - AuditLogService
+      summary: TestOtlpExportConnection
+      operationId: AuditLogService_TestOtlpExportConnection
+      x-speakeasy-group: auditLogs
+      x-speakeasy-name-override: testOtlpExportConnection
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.audit_log.TestOtlpExportConnectionRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.audit_log.TestOtlpExportConnectionResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.auditLogs.testOtlpExportConnection({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.audit_logs.test_otlp_export_connection()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.audit_log.AuditLogService/TestS3ExportConnection:
+    post:
+      tags:
+      - AuditLogService
+      summary: TestS3ExportConnection
+      operationId: AuditLogService_TestS3ExportConnection
+      x-speakeasy-group: auditLogs
+      x-speakeasy-name-override: testS3ExportConnection
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.audit_log.TestS3ExportConnectionRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.audit_log.TestS3ExportConnectionResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.auditLogs.testS3ExportConnection({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.audit_logs.test_s3_export_connection()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.audit_log.AuditLogService/TriggerOtlpExport:
+    post:
+      tags:
+      - AuditLogService
+      summary: TriggerOtlpExport
+      operationId: AuditLogService_TriggerOtlpExport
+      x-speakeasy-group: auditLogs
+      x-speakeasy-name-override: triggerOtlpExport
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.audit_log.TriggerOtlpExportRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.audit_log.TriggerOtlpExportResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.auditLogs.triggerOtlpExport({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.audit_logs.trigger_otlp_export(body={})\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.audit_log.AuditLogService/TriggerS3Export:
+    post:
+      tags:
+      - AuditLogService
+      summary: TriggerS3Export
+      operationId: AuditLogService_TriggerS3Export
+      x-speakeasy-group: auditLogs
+      x-speakeasy-name-override: triggerS3Export
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.audit_log.TriggerS3ExportRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.audit_log.TriggerS3ExportResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.auditLogs.triggerS3Export({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.audit_logs.trigger_s3_export(body={})\n\n    # Handle response\n    print(res)"
+components:
+  schemas:
+    textql.rpc.public.audit_log.GetOtlpExportConfigResponse:
+      type: object
+      properties:
+        config:
+          title: config
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.audit_log.OtlpExportConfig'
+      title: GetOtlpExportConfigResponse
+      additionalProperties: false
+    textql.rpc.public.audit_log.DeleteOtlpExportConfigResponse:
+      type: object
+      title: DeleteOtlpExportConfigResponse
+      additionalProperties: false
+    textql.rpc.public.audit_log.TriggerS3ExportRequest:
+      type: object
+      title: TriggerS3ExportRequest
+      additionalProperties: false
+    textql.rpc.public.audit_log.GetS3ExportConfigResponse:
+      type: object
+      properties:
+        config:
+          title: config
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.audit_log.S3ExportConfig'
+      title: GetS3ExportConfigResponse
+      additionalProperties: false
+    textql.rpc.public.audit_log.S3ExportConfig:
+      type: object
+      properties:
+        bucket:
+          type: string
+          title: bucket
+        region:
+          type: string
+          title: region
+        prefix:
+          type: string
+          title: prefix
+        awsAccessKeyId:
+          type: string
+          title: aws_access_key_id
+        awsSecretAccessKey:
+          type: string
+          title: aws_secret_access_key
+        enabled:
+          type: boolean
+          title: enabled
+        lastExportedAt:
+          title: last_exported_at
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        authMode:
+          title: auth_mode
+          $ref: '#/components/schemas/textql.rpc.public.audit_log.S3AuthMode'
+        roleArn:
+          type: string
+          title: role_arn
+        externalId:
+          type: string
+          title: external_id
+        exportIntervalSeconds:
+          type: integer
+          title: export_interval_seconds
+          format: int32
+      title: S3ExportConfig
+      additionalProperties: false
+    textql.rpc.public.audit_log.OtlpExportConfig:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          title: enabled
+        otlpEndpoint:
+          type: string
+          title: otlp_endpoint
+        otlpHeaders:
+          type: string
+          title: otlp_headers
+        otlpProtocol:
+          type: string
+          title: otlp_protocol
+        pushIntervalSeconds:
+          type: integer
+          title: push_interval_seconds
+          format: int32
+        lastPushedAt:
+          title: last_pushed_at
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: OtlpExportConfig
+      additionalProperties: false
+    textql.rpc.public.audit_log.GetS3ExportConfigRequest:
+      type: object
+      title: GetS3ExportConfigRequest
+      additionalProperties: false
+    textql.rpc.public.audit_log.AuditLogEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        orgId:
+          type: string
+          title: org_id
+        actorId:
+          type: string
+          title: actor_id
+        actorEmail:
+          type: string
+          title: actor_email
+        action:
+          type: string
+          title: action
+        category:
+          type: string
+          title: category
+        resourceType:
+          type: string
+          title: resource_type
+        resourceId:
+          type: string
+          title: resource_id
+        details:
+          title: details
+          $ref: '#/components/schemas/google.protobuf.Struct'
+        ipAddress:
+          type: string
+          title: ip_address
+        authMethod:
+          type: string
+          title: auth_method
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: AuditLogEntry
+      additionalProperties: false
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
+          type: string
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+          - type: object
+            title: Any
+            additionalProperties: true
+            description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
+    textql.rpc.public.audit_log.TriggerOtlpExportResponse:
+      type: object
+      properties:
+        triggered:
+          type: boolean
+          title: triggered
+      title: TriggerOtlpExportResponse
+      additionalProperties: false
+    textql.rpc.public.audit_log.TriggerOtlpExportRequest:
+      type: object
+      title: TriggerOtlpExportRequest
+      additionalProperties: false
+    textql.rpc.public.audit_log.TestOtlpExportConnectionRequest:
+      type: object
+      properties:
+        otlpEndpoint:
+          type: string
+          title: otlp_endpoint
+        otlpHeaders:
+          type: string
+          title: otlp_headers
+        otlpProtocol:
+          type: string
+          title: otlp_protocol
+      title: TestOtlpExportConnectionRequest
+      additionalProperties: false
+    textql.rpc.public.audit_log.TriggerS3ExportResponse:
+      type: object
+      properties:
+        triggered:
+          type: boolean
+          title: triggered
+      title: TriggerS3ExportResponse
+      additionalProperties: false
+    google.protobuf.Struct:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/google.protobuf.Value'
+      description: "`Struct` represents a structured data value, consisting of fields\n which map to dynamically typed values. In some languages, `Struct`\n might be supported by a native representation. For example, in\n scripting languages like JS a struct is represented as an\n object. The details of that representation are described together\n with the proto support for the language.\n\n The JSON representation for `Struct` is JSON object."
+    textql.rpc.public.audit_log.TestOtlpExportConnectionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+        errorMessage:
+          type: string
+          title: error_message
+      title: TestOtlpExportConnectionResponse
+      additionalProperties: false
+    textql.rpc.public.audit_log.ConfigureOtlpExportResponse:
+      type: object
+      properties:
+        config:
+          title: config
+          $ref: '#/components/schemas/textql.rpc.public.audit_log.OtlpExportConfig'
+      title: ConfigureOtlpExportResponse
+      additionalProperties: false
+    textql.rpc.public.audit_log.TestS3ExportConnectionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+        errorMessage:
+          type: string
+          title: error_message
+      title: TestS3ExportConnectionResponse
+      additionalProperties: false
+    textql.rpc.public.audit_log.TestS3ExportConnectionRequest:
+      type: object
+      properties:
+        bucket:
+          type: string
+          title: bucket
+        region:
+          type: string
+          title: region
+        awsAccessKeyId:
+          type: string
+          title: aws_access_key_id
+        awsSecretAccessKey:
+          type: string
+          title: aws_secret_access_key
+        authMode:
+          title: auth_mode
+          $ref: '#/components/schemas/textql.rpc.public.audit_log.S3AuthMode'
+        roleArn:
+          type: string
+          title: role_arn
+        externalId:
+          type: string
+          title: external_id
+      title: TestS3ExportConnectionRequest
+      additionalProperties: false
+    textql.rpc.public.audit_log.ConfigureS3ExportRequest:
+      type: object
+      properties:
+        bucket:
+          type: string
+          title: bucket
+        region:
+          type: string
+          title: region
+        prefix:
+          type: string
+          title: prefix
+        awsAccessKeyId:
+          type: string
+          title: aws_access_key_id
+        awsSecretAccessKey:
+          type: string
+          title: aws_secret_access_key
+        enabled:
+          type: boolean
+          title: enabled
+        authMode:
+          title: auth_mode
+          $ref: '#/components/schemas/textql.rpc.public.audit_log.S3AuthMode'
+        roleArn:
+          type: string
+          title: role_arn
+        externalId:
+          type: string
+          title: external_id
+        exportIntervalSeconds:
+          type: integer
+          title: export_interval_seconds
+          format: int32
+      title: ConfigureS3ExportRequest
+      additionalProperties: false
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+          - not_found
+          enum:
+          - canceled
+          - unknown
+          - invalid_argument
+          - deadline_exceeded
+          - not_found
+          - already_exists
+          - permission_denied
+          - resource_exhausted
+          - failed_precondition
+          - aborted
+          - out_of_range
+          - unimplemented
+          - internal
+          - unavailable
+          - data_loss
+          - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    textql.rpc.public.audit_log.ListAuditLogsResponse:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.audit_log.AuditLogEntry'
+          title: entries
+        nextCursor:
+          type: string
+          title: next_cursor
+          nullable: true
+      title: ListAuditLogsResponse
+      additionalProperties: false
+    textql.rpc.public.audit_log.ListAuditLogsRequest:
+      type: object
+      properties:
+        category:
+          type: string
+          title: category
+          nullable: true
+        actorId:
+          type: string
+          title: actor_id
+          nullable: true
+        action:
+          type: string
+          title: action
+          nullable: true
+        resourceType:
+          type: string
+          title: resource_type
+          nullable: true
+        cursor:
+          type: string
+          title: cursor
+          nullable: true
+        pageSize:
+          type: integer
+          title: page_size
+          nullable: true
+        searchTerm:
+          type: string
+          title: search_term
+          nullable: true
+        after:
+          title: after
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: ListAuditLogsRequest
+      additionalProperties: false
+    textql.rpc.public.audit_log.GetOtlpExportConfigRequest:
+      type: object
+      title: GetOtlpExportConfigRequest
+      additionalProperties: false
+    textql.rpc.public.audit_log.ConfigureS3ExportResponse:
+      type: object
+      properties:
+        config:
+          title: config
+          $ref: '#/components/schemas/textql.rpc.public.audit_log.S3ExportConfig'
+      title: ConfigureS3ExportResponse
+      additionalProperties: false
+    textql.rpc.public.audit_log.DeleteS3ExportConfigResponse:
+      type: object
+      title: DeleteS3ExportConfigResponse
+      additionalProperties: false
+    google.protobuf.Timestamp:
+      type: string
+      examples:
+      - '2023-01-15T01:30:15.01Z'
+      - '2024-12-25T12:00:00Z'
+      format: date-time
+      description: "A Timestamp represents a point in time independent of any time zone or local\n calendar, encoded as a count of seconds and fractions of seconds at\n nanosecond resolution. The count is relative to an epoch at UTC midnight on\n January 1, 1970, in the proleptic Gregorian calendar which extends the\n Gregorian calendar backwards to year one.\n\n All minutes are 60 seconds long. Leap seconds are \"smeared\" so that no leap\n second table is needed for interpretation, using a [24-hour linear\n smear](https://developers.google.com/time/smear).\n\n The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By\n restricting to that range, we ensure that we can convert to and from [RFC\n 3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.\n\n # Examples\n\n Example 1: Compute Timestamp from POSIX `time()`.\n\n     Timestamp timestamp;\n     timestamp.set_seconds(time(NULL));\n     timestamp.set_nanos(0);\n\n Example 2: Compute Timestamp from POSIX `gettimeofday()`.\n\n     struct timeval tv;\n     gettimeofday(&tv, NULL);\n\n     Timestamp timestamp;\n     timestamp.set_seconds(tv.tv_sec);\n     timestamp.set_nanos(tv.tv_usec * 1000);\n\n Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.\n\n     FILETIME ft;\n     GetSystemTimeAsFileTime(&ft);\n     UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;\n\n     // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z\n     // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.\n     Timestamp timestamp;\n     timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));\n     timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));\n\n Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.\n\n     long millis = System.currentTimeMillis();\n\n     Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)\n         .setNanos((int) ((millis % 1000) * 1000000)).build();\n\n Example 5: Compute Timestamp from Java `Instant.now()`.\n\n     Instant now = Instant.now();\n\n     Timestamp timestamp =\n         Timestamp.newBuilder().setSeconds(now.getEpochSecond())\n             .setNanos(now.getNano()).build();\n\n Example 6: Compute Timestamp from current time in Python.\n\n     timestamp = Timestamp()\n     timestamp.GetCurrentTime()\n\n # JSON Mapping\n\n In JSON format, the Timestamp type is encoded as a string in the\n [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the\n format is \"{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z\"\n where {year} is always expressed using four digits while {month}, {day},\n {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional\n seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),\n are optional. The \"Z\" suffix indicates the timezone (\"UTC\"); the timezone\n is required. A proto3 JSON serializer should always use UTC (as indicated by\n \"Z\") when printing the Timestamp type and a proto3 JSON parser should be\n able to accept both UTC and other timezones (as indicated by an offset).\n\n For example, \"2017-01-15T01:30:15.01Z\" encodes 15.01 seconds past\n 01:30 UTC on January 15, 2017.\n\n In JavaScript, one can convert a Date object to this format using the\n standard\n [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)\n method. In Python, a standard `datetime.datetime` object can be converted\n to this format using\n [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with\n the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use\n the Joda Time's [`ISODateTimeFormat.dateTime()`](\n http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()\n ) to obtain a formatter capable of generating timestamps in this format."
+    textql.rpc.public.audit_log.S3AuthMode:
+      type: string
+      title: S3AuthMode
+      enum:
+      - S3_AUTH_MODE_UNSPECIFIED
+      - S3_AUTH_MODE_ACCESS_KEY
+      - S3_AUTH_MODE_ASSUME_ROLE
+    textql.rpc.public.audit_log.DeleteOtlpExportConfigRequest:
+      type: object
+      title: DeleteOtlpExportConfigRequest
+      additionalProperties: false
+    google.protobuf.Value:
+      oneOf:
+      - type: 'null'
+      - type: number
+      - type: string
+      - type: boolean
+      - type: array
+      - type: object
+        additionalProperties: true
+      description: "`Value` represents a dynamically typed value which can be either\n null, a number, a string, a boolean, a recursive struct value, or a\n list of values. A producer of value is expected to set one of these\n variants. Absence of any variant indicates an error.\n\n The JSON representation for `Value` is JSON value."
+    textql.rpc.public.audit_log.ConfigureOtlpExportRequest:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          title: enabled
+        otlpEndpoint:
+          type: string
+          title: otlp_endpoint
+        otlpHeaders:
+          type: string
+          title: otlp_headers
+        otlpProtocol:
+          type: string
+          title: otlp_protocol
+        pushIntervalSeconds:
+          type: integer
+          title: push_interval_seconds
+          format: int32
+      title: ConfigureOtlpExportRequest
+      additionalProperties: false
+    textql.rpc.public.audit_log.DeleteS3ExportConfigRequest:
+      type: object
+      title: DeleteS3ExportConfigRequest
+      additionalProperties: false
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+      - 1
+      description: Define the version of the Connect protocol
+      const: 1
+      default: 1
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: tql_api_key

@@ -1,0 +1,964 @@
+openapi: 3.2.0
+info:
+  title: TextQL Sandbox Admin Service API
+  version: 1.0.0
+  description: 'TextQL public API. Generated from protobuf service definitions; internal
+
+    endpoints are excluded via google.api.visibility / file_visibility.'
+servers:
+- url: https://app.textql.com/rpc/public
+security:
+- apiKey: []
+tags:
+- name: SandboxAdminService
+paths:
+  /textql.rpc.public.sandbox_admin.SandboxAdminService/GetSandbox:
+    post:
+      tags:
+      - SandboxAdminService
+      summary: GetSandbox
+      operationId: SandboxAdminService_GetSandbox
+      x-speakeasy-group: sandboxAdmin
+      x-speakeasy-name-override: getSandbox
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.sandbox_admin.GetSandboxRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.sandbox_admin.GetSandboxResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.sandboxAdmin.getSandbox({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.sandbox_admin.get_sandbox()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.sandbox_admin.SandboxAdminService/ListSandboxEgress:
+    post:
+      tags:
+      - SandboxAdminService
+      summary: Outbound HTTP(S) calls a sandbox made (the egress ledger).
+      description: 'Outbound HTTP(S) calls a sandbox made (the egress ledger). Durable — reads
+
+        the recorded table, so it works for stopped sandboxes too.'
+      operationId: SandboxAdminService_ListSandboxEgress
+      x-speakeasy-group: sandboxAdmin
+      x-speakeasy-name-override: listSandboxEgress
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.sandbox_admin.ListSandboxEgressRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.sandbox_admin.ListSandboxEgressResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.sandboxAdmin.listSandboxEgress({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.sandbox_admin.list_sandbox_egress()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.sandbox_admin.SandboxAdminService/ListSandboxExecutions:
+    post:
+      tags:
+      - SandboxAdminService
+      summary: ListSandboxExecutions
+      operationId: SandboxAdminService_ListSandboxExecutions
+      x-speakeasy-group: sandboxAdmin
+      x-speakeasy-name-override: listExecutions
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.sandbox_admin.ListSandboxExecutionsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.sandbox_admin.ListSandboxExecutionsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.sandboxAdmin.listExecutions({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.sandbox_admin.list_executions()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.sandbox_admin.SandboxAdminService/ListSandboxFiles:
+    post:
+      tags:
+      - SandboxAdminService
+      summary: Live filesystem of a running sandbox.
+      description: 'Live filesystem of a running sandbox. Both are NO-OP (read-only) and only
+
+        return data while the worker is alive; available=false otherwise.'
+      operationId: SandboxAdminService_ListSandboxFiles
+      x-speakeasy-group: sandboxAdmin
+      x-speakeasy-name-override: listSandboxFiles
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.sandbox_admin.ListSandboxFilesRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.sandbox_admin.ListSandboxFilesResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.sandboxAdmin.listSandboxFiles({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.sandbox_admin.list_sandbox_files()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.sandbox_admin.SandboxAdminService/ListSandboxSpend:
+    post:
+      tags:
+      - SandboxAdminService
+      summary: Per-lease compute usage for a sandbox, computed from lease durations × the…
+      description: 'Per-lease compute usage for a sandbox, computed from lease durations × the
+
+        compute rate. Durable (reads the lease table), so it works for stopped
+
+        sandboxes. This is usage (ACUs), not the invoiced dollar amount.'
+      operationId: SandboxAdminService_ListSandboxSpend
+      x-speakeasy-group: sandboxAdmin
+      x-speakeasy-name-override: listSandboxSpend
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.sandbox_admin.ListSandboxSpendRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.sandbox_admin.ListSandboxSpendResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.sandboxAdmin.listSandboxSpend({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.sandbox_admin.list_sandbox_spend()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.sandbox_admin.SandboxAdminService/ListSandboxes:
+    post:
+      tags:
+      - SandboxAdminService
+      summary: ListSandboxes
+      operationId: SandboxAdminService_ListSandboxes
+      x-speakeasy-group: sandboxAdmin
+      x-speakeasy-name-override: list
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.sandbox_admin.ListSandboxesRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.sandbox_admin.ListSandboxesResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.sandboxAdmin.list({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.sandbox_admin.list()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.sandbox_admin.SandboxAdminService/ReadSandboxFile:
+    post:
+      tags:
+      - SandboxAdminService
+      summary: ReadSandboxFile
+      operationId: SandboxAdminService_ReadSandboxFile
+      x-speakeasy-group: sandboxAdmin
+      x-speakeasy-name-override: readFile
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.sandbox_admin.ReadSandboxFileRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.sandbox_admin.ReadSandboxFileResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.sandboxAdmin.readFile({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.sandbox_admin.read_file()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.sandbox_admin.SandboxAdminService/RestartSandbox:
+    post:
+      tags:
+      - SandboxAdminService
+      summary: Restart a stopped/reaped sandbox by re-acquiring a worker for the same…
+      description: 'Restart a stopped/reaped sandbox by re-acquiring a worker for the same
+
+        sandbox_id, preserving the original owner. Same scoping as StopSandbox
+
+        (owner, or sandbox:write_private for org-wide).'
+      operationId: SandboxAdminService_RestartSandbox
+      x-speakeasy-group: sandboxAdmin
+      x-speakeasy-name-override: restartSandbox
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.sandbox_admin.RestartSandboxRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.sandbox_admin.RestartSandboxResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.sandboxAdmin.restartSandbox({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.sandbox_admin.restart_sandbox()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.sandbox_admin.SandboxAdminService/StopSandbox:
+    post:
+      tags:
+      - SandboxAdminService
+      summary: StopSandbox
+      operationId: SandboxAdminService_StopSandbox
+      x-speakeasy-group: sandboxAdmin
+      x-speakeasy-name-override: stop
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.sandbox_admin.StopSandboxRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.sandbox_admin.StopSandboxResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.sandboxAdmin.stop({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.sandbox_admin.stop()\n\n    # Handle response\n    print(res)"
+components:
+  schemas:
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
+          type: string
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+          - type: object
+            title: Any
+            additionalProperties: true
+            description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
+    textql.rpc.public.sandbox_admin.RestartSandboxResponse:
+      type: object
+      properties:
+        sandboxId:
+          type: string
+          title: sandbox_id
+        startedAt:
+          title: started_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: RestartSandboxResponse
+      additionalProperties: false
+    textql.rpc.public.sandbox_admin.StopSandboxResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: StopSandboxResponse
+      additionalProperties: false
+    textql.rpc.public.sandbox_admin.SandboxExecution:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        kind:
+          type: string
+          title: kind
+          description: python | bash | sql | tql
+        source:
+          type: string
+          title: source
+          description: platform_api | chat | dashboard | playbook | internal
+        input:
+          type: string
+          title: input
+        outputPreview:
+          type: string
+          title: output_preview
+        error:
+          type: string
+          title: error
+        durationMs:
+          type:
+          - integer
+          - string
+          title: duration_ms
+          format: int64
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: SandboxExecution
+      additionalProperties: false
+      description: "One recorded execution in a sandbox's Activity feed. output_preview is\n truncated (see execlog); input is the caller's code / SQL text / tql_path."
+    textql.rpc.public.sandbox_admin.ListSandboxSpendResponse:
+      type: object
+      properties:
+        intervals:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.sandbox_admin.SandboxSpendInterval'
+          title: intervals
+          description: Newest first.
+        acusPerHour:
+          type: number
+          title: acus_per_hour
+          format: double
+          description: ACUs per instance-hour used to compute the figures above.
+        totalAcus:
+          type: number
+          title: total_acus
+          format: double
+          description: Sum of acus across all returned intervals.
+        acuRatePer1000Usd:
+          type: number
+          title: acu_rate_per_1000_usd
+          format: double
+          description: "Effective ACU->USD rate for this org, in USD per 1000 ACUs (resolved from\n the tenant's pricing tier / active override). 0 means unknown/unpriced."
+      title: ListSandboxSpendResponse
+      additionalProperties: false
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    textql.rpc.public.sandbox_admin.ReadSandboxFileRequest:
+      type: object
+      properties:
+        sandboxId:
+          type: string
+          title: sandbox_id
+        path:
+          type: string
+          title: path
+          description: File to read, relative to the sandbox files root.
+      title: ReadSandboxFileRequest
+      additionalProperties: false
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+          - not_found
+          enum:
+          - canceled
+          - unknown
+          - invalid_argument
+          - deadline_exceeded
+          - not_found
+          - already_exists
+          - permission_denied
+          - resource_exhausted
+          - failed_precondition
+          - aborted
+          - out_of_range
+          - unimplemented
+          - internal
+          - unavailable
+          - data_loss
+          - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    textql.rpc.public.sandbox_admin.RestartSandboxRequest:
+      type: object
+      properties:
+        sandboxId:
+          type: string
+          title: sandbox_id
+      title: RestartSandboxRequest
+      additionalProperties: false
+    textql.rpc.public.sandbox_admin.SandboxSpendInterval:
+      type: object
+      properties:
+        startedAt:
+          title: started_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        endedAt:
+          title: ended_at
+          description: unset while running
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        durationMs:
+          type:
+          - integer
+          - string
+          title: duration_ms
+          format: int64
+        acus:
+          type: number
+          title: acus
+          format: double
+        active:
+          type: boolean
+          title: active
+          description: lease still open (sandbox running)
+      title: SandboxSpendInterval
+      additionalProperties: false
+      description: "One billable lease interval: the worker was held from started_at to ended_at\n (or now, while still running). acus = duration_hours × acus_per_hour. This is\n compute usage derived from lease durations, not the invoiced dollar amount,\n and excludes warm-window idle billing handled by the console ledger."
+    textql.rpc.public.sandbox_admin.SandboxEgressCall:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        method:
+          type: string
+          title: method
+        scheme:
+          type: string
+          title: scheme
+        host:
+          type: string
+          title: host
+        path:
+          type: string
+          title: path
+          description: query string redacted at capture time
+        statusCode:
+          type: integer
+          title: status_code
+          format: int32
+          description: 0 for denials
+        outcome:
+          type: string
+          title: outcome
+          description: ok | denied | error
+        durationMs:
+          type:
+          - integer
+          - string
+          title: duration_ms
+          format: int64
+        requestBytes:
+          type:
+          - integer
+          - string
+          title: request_bytes
+          format: int64
+        responseBytes:
+          type:
+          - integer
+          - string
+          title: response_bytes
+          format: int64
+        cellId:
+          type: string
+          title: cell_id
+          description: chat cell that made the request, empty if unknown
+        occurredAt:
+          title: occurred_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: SandboxEgressCall
+      additionalProperties: false
+      description: "One recorded outbound HTTP(S) call made by a sandbox (the egress ledger).\n Payload bodies/headers are intentionally omitted here (they are encrypted and\n fetched separately on demand)."
+    textql.rpc.public.sandbox_admin.ReadSandboxFileResponse:
+      type: object
+      properties:
+        available:
+          type: boolean
+          title: available
+        name:
+          type: string
+          title: name
+          description: CPU in cores (e.g. 0.12 used of a 1.5 limit). Limit 0 = none configured.
+        sizeBytes:
+          type:
+          - integer
+          - string
+          title: size_bytes
+          format: int64
+        mimeType:
+          type: string
+          title: mime_type
+          description: Percent of the limit in [0, 100]; 0 when no limit is configured.
+        content:
+          type: string
+          title: content
+        binaryContent:
+          type: string
+          title: binary_content
+          format: byte
+        truncated:
+          type: boolean
+          title: truncated
+        isBinary:
+          type: boolean
+          title: is_binary
+      title: ReadSandboxFileResponse
+      additionalProperties: false
+      description: One CPU/memory measurement of a sandbox worker.
+    textql.rpc.public.sandbox_admin.GetSandboxRequest:
+      type: object
+      properties:
+        sandboxId:
+          type: string
+          title: sandbox_id
+      title: GetSandboxRequest
+      additionalProperties: false
+    textql.rpc.public.sandbox_admin.SandboxFileEntry:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+          description: base name
+        path:
+          type: string
+          title: path
+          description: path relative to the sandbox files root
+        isDir:
+          type: boolean
+          title: is_dir
+        sizeBytes:
+          type:
+          - integer
+          - string
+          title: size_bytes
+          format: int64
+          description: 0 for directories
+        modifiedAt:
+          title: modified_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: SandboxFileEntry
+      additionalProperties: false
+      description: One entry in a sandbox directory listing.
+    textql.rpc.public.sandbox_admin.ListSandboxExecutionsResponse:
+      type: object
+      properties:
+        executions:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.sandbox_admin.SandboxExecution'
+          title: executions
+        nextCursor:
+          type: string
+          title: next_cursor
+      title: ListSandboxExecutionsResponse
+      additionalProperties: false
+    textql.rpc.public.sandbox_admin.ListSandboxesRequest:
+      type: object
+      properties:
+        status:
+          type: string
+          title: status
+          description: 'One of: running | stopped | all. Defaults to running.'
+        limit:
+          type: integer
+          title: limit
+          format: int32
+        cursor:
+          type: string
+          title: cursor
+      title: ListSandboxesRequest
+      additionalProperties: false
+    textql.rpc.public.sandbox_admin.ListSandboxEgressResponse:
+      type: object
+      properties:
+        calls:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.sandbox_admin.SandboxEgressCall'
+          title: calls
+          description: Newest first.
+      title: ListSandboxEgressResponse
+      additionalProperties: false
+    textql.rpc.public.sandbox_admin.SandboxSummary:
+      type: object
+      properties:
+        sandboxId:
+          type: string
+          title: sandbox_id
+        status:
+          type: string
+          title: status
+          description: "One of: running | stale | stopped | unknown (string, not enum, matching\n how the REST API reports it)."
+        memberId:
+          type: string
+          title: member_id
+          description: May be empty for legacy rows.
+        chatId:
+          type: string
+          title: chat_id
+          description: Empty when the sandbox is not associated with a chat.
+        startedAt:
+          title: started_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        releasedAt:
+          title: released_at
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: SandboxSummary
+      additionalProperties: false
+    textql.rpc.public.sandbox_admin.ListSandboxesResponse:
+      type: object
+      properties:
+        sandboxes:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.sandbox_admin.SandboxSummary'
+          title: sandboxes
+        nextCursor:
+          type: string
+          title: next_cursor
+      title: ListSandboxesResponse
+      additionalProperties: false
+    google.protobuf.Timestamp:
+      type: string
+      examples:
+      - '2023-01-15T01:30:15.01Z'
+      - '2024-12-25T12:00:00Z'
+      format: date-time
+      description: "A Timestamp represents a point in time independent of any time zone or local\n calendar, encoded as a count of seconds and fractions of seconds at\n nanosecond resolution. The count is relative to an epoch at UTC midnight on\n January 1, 1970, in the proleptic Gregorian calendar which extends the\n Gregorian calendar backwards to year one.\n\n All minutes are 60 seconds long. Leap seconds are \"smeared\" so that no leap\n second table is needed for interpretation, using a [24-hour linear\n smear](https://developers.google.com/time/smear).\n\n The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By\n restricting to that range, we ensure that we can convert to and from [RFC\n 3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.\n\n # Examples\n\n Example 1: Compute Timestamp from POSIX `time()`.\n\n     Timestamp timestamp;\n     timestamp.set_seconds(time(NULL));\n     timestamp.set_nanos(0);\n\n Example 2: Compute Timestamp from POSIX `gettimeofday()`.\n\n     struct timeval tv;\n     gettimeofday(&tv, NULL);\n\n     Timestamp timestamp;\n     timestamp.set_seconds(tv.tv_sec);\n     timestamp.set_nanos(tv.tv_usec * 1000);\n\n Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.\n\n     FILETIME ft;\n     GetSystemTimeAsFileTime(&ft);\n     UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;\n\n     // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z\n     // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.\n     Timestamp timestamp;\n     timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));\n     timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));\n\n Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.\n\n     long millis = System.currentTimeMillis();\n\n     Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)\n         .setNanos((int) ((millis % 1000) * 1000000)).build();\n\n Example 5: Compute Timestamp from Java `Instant.now()`.\n\n     Instant now = Instant.now();\n\n     Timestamp timestamp =\n         Timestamp.newBuilder().setSeconds(now.getEpochSecond())\n             .setNanos(now.getNano()).build();\n\n Example 6: Compute Timestamp from current time in Python.\n\n     timestamp = Timestamp()\n     timestamp.GetCurrentTime()\n\n # JSON Mapping\n\n In JSON format, the Timestamp type is encoded as a string in the\n [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the\n format is \"{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z\"\n where {year} is always expressed using four digits while {month}, {day},\n {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional\n seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),\n are optional. The \"Z\" suffix indicates the timezone (\"UTC\"); the timezone\n is required. A proto3 JSON serializer should always use UTC (as indicated by\n \"Z\") when printing the Timestamp type and a proto3 JSON parser should be\n able to accept both UTC and other timezones (as indicated by an offset).\n\n For example, \"2017-01-15T01:30:15.01Z\" encodes 15.01 seconds past\n 01:30 UTC on January 15, 2017.\n\n In JavaScript, one can convert a Date object to this format using the\n standard\n [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)\n method. In Python, a standard `datetime.datetime` object can be converted\n to this format using\n [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with\n the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use\n the Joda Time's [`ISODateTimeFormat.dateTime()`](\n http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()\n ) to obtain a formatter capable of generating timestamps in this format."
+    textql.rpc.public.sandbox_admin.SandboxDataframe:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+        numRows:
+          type:
+          - integer
+          - string
+          title: num_rows
+          format: int64
+        numCols:
+          type:
+          - integer
+          - string
+          title: num_cols
+          format: int64
+        memoryUsageBytes:
+          type:
+          - integer
+          - string
+          title: memory_usage_bytes
+          format: int64
+      title: SandboxDataframe
+      additionalProperties: false
+      description: "Note: spelled \"Dataframe\" (not \"DataFrame\") to avoid a Go type collision\n with dataset.proto's SandboxDataFrame — both files generate into the same\n Go package (compute/pkg/rpc/server/public)."
+    textql.rpc.public.sandbox_admin.ListSandboxFilesRequest:
+      type: object
+      properties:
+        sandboxId:
+          type: string
+          title: sandbox_id
+        path:
+          type: string
+          title: path
+          description: Directory to list, relative to the sandbox files root ("" = root).
+      title: ListSandboxFilesRequest
+      additionalProperties: false
+    textql.rpc.public.sandbox_admin.ListSandboxEgressRequest:
+      type: object
+      properties:
+        sandboxId:
+          type: string
+          title: sandbox_id
+        limit:
+          type: integer
+          title: limit
+          format: int32
+          description: Max calls to return (newest first). Server clamps to a sane default/cap.
+      title: ListSandboxEgressRequest
+      additionalProperties: false
+    textql.rpc.public.sandbox_admin.StopSandboxRequest:
+      type: object
+      properties:
+        sandboxId:
+          type: string
+          title: sandbox_id
+      title: StopSandboxRequest
+      additionalProperties: false
+    textql.rpc.public.sandbox_admin.GetSandboxResponse:
+      type: object
+      properties:
+        sandbox:
+          title: sandbox
+          $ref: '#/components/schemas/textql.rpc.public.sandbox_admin.SandboxSummary'
+        liveAvailable:
+          type: boolean
+          title: live_available
+        memoryUsageBytes:
+          type:
+          - integer
+          - string
+          title: memory_usage_bytes
+          format: int64
+        dataframes:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.sandbox_admin.SandboxDataframe'
+          title: dataframes
+      title: GetSandboxResponse
+      additionalProperties: false
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+      - 1
+      description: Define the version of the Connect protocol
+      const: 1
+      default: 1
+    textql.rpc.public.sandbox_admin.ListSandboxSpendRequest:
+      type: object
+      properties:
+        sandboxId:
+          type: string
+          title: sandbox_id
+      title: ListSandboxSpendRequest
+      additionalProperties: false
+    textql.rpc.public.sandbox_admin.ListSandboxExecutionsRequest:
+      type: object
+      properties:
+        sandboxId:
+          type: string
+          title: sandbox_id
+        limit:
+          type: integer
+          title: limit
+          format: int32
+        cursor:
+          type: string
+          title: cursor
+      title: ListSandboxExecutionsRequest
+      additionalProperties: false
+    textql.rpc.public.sandbox_admin.ListSandboxFilesResponse:
+      type: object
+      properties:
+        available:
+          type: boolean
+          title: available
+          description: False when the sandbox is not running (no live filesystem); entries empty.
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.sandbox_admin.SandboxFileEntry'
+          title: entries
+      title: ListSandboxFilesResponse
+      additionalProperties: false
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: tql_api_key

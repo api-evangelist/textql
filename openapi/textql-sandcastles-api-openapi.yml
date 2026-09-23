@@ -1,0 +1,1230 @@
+openapi: 3.2.0
+info:
+  title: TextQL v2 Sandcastles API
+  version: '2.0'
+  description: REST API for TextQL platform operations. All endpoints require Bearer token authentication.
+servers:
+- url: https://app.textql.com
+security:
+- bearerAuth: []
+tags:
+- name: Sandcastles
+  description: Manage Python sandbox environments for code execution
+paths:
+  /v2/sandcastles:
+    get:
+      tags:
+      - Sandcastles
+      summary: List Sandcastles
+      description: 'List sandboxes for the authenticated organization with cursor-based
+
+        pagination.
+
+
+        Each item reports a `status`:
+
+        - `running` — a live worker record was seen recently. Liveness is
+
+        eventually consistent: a sandbox that died abruptly may continue to
+
+        report `running` for a short window (up to ~1 hour).
+
+        - `stale` — the lease is open but no live worker record exists; the
+
+        worker is likely gone. Call `DELETE /v2/sandcastles/{id}` (Stop Sandbox)
+
+        to clear it.
+
+        - `unknown` — liveness could not be determined (cache unavailable); the
+
+        lease is open.
+
+        - `stopped` — the sandbox has been released.
+
+
+        `GET /v2/sandcastles/{id}` is the authoritative live check for a single
+
+        sandbox.'
+      operationId: v2.listSandboxes
+      parameters:
+      - name: status
+        in: query
+        schema:
+          type: string
+          enum:
+          - running
+          - stopped
+          - all
+          default: running
+        description: 'Filter by lease state. `running` (default) returns sandboxes with an
+
+          open lease — individual items may report `running`, `stale`, or
+
+          `unknown`. `stopped` returns released sandboxes. `all` returns both.
+
+          '
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 200
+          default: 50
+        description: Maximum number of sandboxes to return (default 50, max 200)
+      - name: cursor
+        in: query
+        schema:
+          type: string
+        description: 'Opaque pagination cursor from a previous response''s `next_cursor`.
+
+          Omit to start from the first page.
+
+          '
+      responses:
+        '200':
+          description: Paginated list of sandboxes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListSandboxesResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    post:
+      tags:
+      - Sandcastles
+      summary: Start Sandcastle
+      description: Start a Python sandcastle for code execution. Omit the body to create a new sandcastle, or pass back a sandbox_id from create/list to restart that one.
+      operationId: v2.startSandbox
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sandbox_id:
+                  type: string
+                  description: Restart an existing sandcastle by passing back the sandbox_id returned by create or list; omit to create a new sandcastle. You can only restart your own sandcastles.
+      responses:
+        '201':
+          description: Started sandbox
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sandbox_id:
+                    type: string
+                    description: Unique sandbox identifier
+                  created_at:
+                    type: string
+                    format: date-time
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: The sandbox_id to restart is malformed or does not belong to your organization
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /v2/sandcastles/{id}:
+    get:
+      tags:
+      - Sandcastles
+      summary: Get Sandcastle Status
+      description: Get the current status of a sandbox, including memory usage and loaded dataframes.
+      operationId: v2.getSandboxStatus
+      parameters:
+      - $ref: '#/components/parameters/SandboxId'
+      responses:
+        '200':
+          description: Sandbox status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SandboxStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    delete:
+      tags:
+      - Sandcastles
+      summary: Stop Sandcastle
+      description: Stop and destroy a running sandbox.
+      operationId: v2.stopSandbox
+      parameters:
+      - $ref: '#/components/parameters/SandboxId'
+      responses:
+        '200':
+          description: Stop confirmation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /v2/sandcastles/{id}/executions:
+    get:
+      tags:
+      - Sandcastles
+      summary: List Executions
+      description: 'List a sandbox''s recorded executions (Python, bash, SQL, TQL),
+
+        newest first, with cursor-based pagination.
+
+
+        Every execution run in a sandbox — via Execute Code, Load Connector
+
+        Data, or chat — is recorded here. Readable even after the sandbox is
+
+        stopped, so it doubles as a post-mortem audit trail.
+
+
+        Retention: records are kept for **30 days**, then purged. `input` is
+
+        stored in full; `output_preview` is truncated (large output ends with
+
+        a `…[truncated]` marker) and never includes generated files or
+
+        dataframes.'
+      operationId: v2.listSandboxExecutions
+      parameters:
+      - $ref: '#/components/parameters/SandboxId'
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 200
+          default: 50
+        description: Maximum number of executions to return (default 50, max 200)
+      - name: cursor
+        in: query
+        schema:
+          type: string
+        description: 'Opaque pagination cursor from a previous response''s `next_cursor`.
+
+          Omit to start from the first (newest) page.
+
+          '
+      responses:
+        '200':
+          description: Paginated list of executions, newest first
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListSandboxExecutionsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /v2/sandcastles/{id}/execute:
+    post:
+      tags:
+      - Sandcastles
+      summary: Execute Code
+      description: 'Execute Python code in a sandbox. Returns stdout/stderr output,
+
+        generated files, and dataframe info.
+
+
+        Executions are recorded — see
+
+        GET /v2/sandcastles/{id}/executions.'
+      operationId: v2.executeCode
+      parameters:
+      - $ref: '#/components/parameters/SandboxId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - code
+              properties:
+                code:
+                  type: string
+                  description: Python code to execute
+      responses:
+        '200':
+          description: Execution result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExecuteCodeResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /v2/sandcastles/{id}/query:
+    post:
+      tags:
+      - Sandcastles
+      summary: Load Connector Data
+      description: 'Load data from a connector into a sandbox dataframe. Provide **exactly
+
+        one** of `query` (an inline SQL query) or `tql_path` (the Ontology
+
+        path of a saved `.tql` file) — sending both or neither returns
+
+        `400 invalid_request`.
+
+
+        `tql_path` runs **saved Ontology `.tql` files** that the
+
+        caller''s roles can already see — it does not compile caller-authored
+
+        TQL. A path that is not visible to the member''s roles returns
+
+        `404 not_found`, indistinguishable from a path that does not exist. A
+
+        path that does not end in `.tql`, or a file that fails to render,
+
+        returns `400` with the renderer''s message included.
+
+
+        The response shape is the same for both branches.
+
+
+        Executions are recorded — see
+
+        GET /v2/sandcastles/{id}/executions.'
+      operationId: v2.loadConnectorData
+      parameters:
+      - $ref: '#/components/parameters/SandboxId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoadConnectorDataRequest'
+      responses:
+        '200':
+          description: Query result loaded into dataframe
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoadConnectorDataResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /v2/sandcastles/{id}/files:
+    get:
+      tags:
+      - Sandcastles
+      summary: List Files
+      description: 'List files in the sandbox working directory (non-recursive). Pass
+
+        `?path=` to list a subdirectory. Hidden dotfiles (including internal
+
+        sandbox state) are omitted. The `library/` subtree is the mounted
+
+        Ontology: it lists the sandbox''s own copy when that has
+
+        content, otherwise the org library pruned to the caller''s role
+
+        permissions.'
+      operationId: v2.listFiles
+      parameters:
+      - $ref: '#/components/parameters/SandboxId'
+      - name: path
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Relative subdirectory to list; defaults to the working directory root.
+      responses:
+        '200':
+          description: Directory listing
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  files:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        size_bytes:
+                          type: integer
+                        is_dir:
+                          type: boolean
+                        modified_at:
+                          type: string
+                          format: date-time
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    post:
+      tags:
+      - Sandcastles
+      summary: Upload File
+      description: Upload a file to a sandbox environment.
+      operationId: v2.uploadFile
+      parameters:
+      - $ref: '#/components/parameters/SandboxId'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - file
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: File to upload
+      responses:
+        '200':
+          description: Upload confirmation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  filename:
+                    type: string
+                    description: Basename of the uploaded file
+                  size_bytes:
+                    type: integer
+                    description: Size of the uploaded file in bytes
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /v2/sandcastles/{id}/files/{path}:
+    get:
+      tags:
+      - Sandcastles
+      summary: Download File
+      description: 'Stream the bytes of a single file from the sandbox working directory.
+
+        `path` is the file''s path within the sandbox (subdirectories allowed,
+
+        slashes permitted). Traversal outside the working directory and hidden
+
+        dotfiles are rejected. `library/…` paths serve the sandbox''s own copy
+
+        when present, otherwise the org library pruned to the caller''s role
+
+        permissions (OWNERS files are never served).'
+      operationId: v2.downloadFile
+      parameters:
+      - $ref: '#/components/parameters/SandboxId'
+      - $ref: '#/components/parameters/SandboxFilePath'
+      responses:
+        '200':
+          description: File contents
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    delete:
+      tags:
+      - Sandcastles
+      summary: Delete File
+      description: 'Remove a single file from the sandbox working directory. `path` is the
+
+        file''s path within the sandbox. Directories are rejected; the S3 copy
+
+        (if any) is not affected.'
+      operationId: v2.deleteFile
+      parameters:
+      - $ref: '#/components/parameters/SandboxId'
+      - $ref: '#/components/parameters/SandboxFilePath'
+      responses:
+        '200':
+          description: Delete confirmation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /v2/sandcastles/{id}/exec:
+    post:
+      tags:
+      - Sandcastles
+      summary: Exec Command
+      description: 'Run a one-shot command in the sandbox as a fresh process (via the
+
+        worker shell). Unlike Execute Code,
+
+        which feeds Python into a persistent kernel, `/exec` shares no
+
+        interpreter state between calls — state carries only via the
+
+        filesystem — and returns raw stdout/stderr plus the exit code.
+
+
+        `kind` selects the interpreter: `bash` (default) runs the command in a
+
+        shell; `python` runs it as a one-shot Python program (no kernel state,
+
+        no dataframe/plot capture). A non-zero exit code is returned in the
+
+        body, not as an HTTP error.
+
+
+        Executions are recorded — see
+
+        GET /v2/sandcastles/{id}/executions.'
+      operationId: v2.exec
+      parameters:
+      - $ref: '#/components/parameters/SandboxId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - command
+              properties:
+                command:
+                  type: string
+                  description: The command (bash) or program source (python) to run.
+                kind:
+                  type: string
+                  enum:
+                  - bash
+                  - python
+                  default: bash
+                  description: Interpreter to run the command with.
+                env:
+                  type: object
+                  additionalProperties:
+                    type: string
+                  description: Extra environment variables for the process.
+      responses:
+        '200':
+          description: Command result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  stdout:
+                    type: string
+                  stderr:
+                    type: string
+                  exit_code:
+                    type: integer
+                  error:
+                    type: string
+                    description: Worker-level error (e.g. timeout); empty on normal completion.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /v2/sandcastles/{id}/ontology/diff:
+    get:
+      tags:
+      - Sandcastles
+      summary: Diff Ontology (dry run)
+      description: 'Report the pending changes in the sandbox''s Ontology mount
+
+        (`/sandbox/files/library`) relative to its baseline snapshot —
+
+        **without** authoring a change. Use this to decide whether there is
+
+        anything to write back before calling
+
+        Create Ontology Change.
+
+
+        The diff is scoped to the caller''s `OWNERS` permissions: the mount the
+
+        session sees was pruned at materialization, so only permitted paths can
+
+        appear here.'
+      operationId: v2.ontologyDiff
+      parameters:
+      - $ref: '#/components/parameters/SandboxId'
+      responses:
+        '200':
+          description: Pending library changes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  has_changes:
+                    type: boolean
+                    description: True when the library differs from its baseline snapshot.
+                  diffs:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/LibraryChangeDiff'
+                  raw_diff:
+                    type: string
+                    description: The unified git diff, normalized to library-relative paths.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /v2/sandcastles/{id}/ontology/changes:
+    post:
+      tags:
+      - Sandcastles
+      summary: Create Ontology Change (writeback)
+      description: 'Persist the sandbox''s edits to `/sandbox/files/library` back to the
+
+        organization''s **Ontology** by authoring a reviewable change. This
+
+        is the API equivalent of the in-product writeback tool: it diffs the
+
+        session library against its baseline snapshot, commits the delta to a
+
+        change ref, detects merge conflicts, and submits the change for review.
+
+
+        **Stage first.** A change can only be created from real file changes —
+
+        edit files under `/sandbox/files/library` (via
+
+        Exec or
+
+        Upload) **before** calling this.
+
+        Creating a new change with no changes returns `400`.
+
+
+        **Review & permissions.** The change is submitted `OPEN` for admin review
+
+        (or `DRAFT` when `draft` is true). Every changed path is revalidated
+
+        against the caller''s `OWNERS` permissions at merge — a change cannot widen
+
+        access. If an auto-approve rule matches, the response status is
+
+        `APPROVED` and the change is already live.
+
+
+        **Updates & conflicts.** Pass `change_number` to file a new revision of an
+
+        existing open/draft change (title/description optional — inherited if
+
+        omitted). If the library has drifted, the response has
+
+        `has_conflicts: true`, the session''s `library/` is re-materialized with
+
+        `.rej` markers, and the change stays `RESERVED` until you resolve the
+
+        conflicts and re-submit with the same `change_number`.'
+      operationId: v2.createOntologyChange
+      parameters:
+      - $ref: '#/components/parameters/SandboxId'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  maxLength: 50
+                  description: Short summary (≤50 chars). Required for a new change.
+                description:
+                  type: string
+                  description: Markdown explanation of the changes. Required for a new change.
+                draft:
+                  type: boolean
+                  default: false
+                  description: File as DRAFT instead of OPEN (not yet ready for review).
+                change_number:
+                  type: integer
+                  format: int32
+                  description: Set to revise an existing change (creates a new changeset).
+      responses:
+        '201':
+          description: Change created or updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  change_id:
+                    type: string
+                  change_number:
+                    type: integer
+                    format: int32
+                  status:
+                    type: string
+                    enum:
+                    - open
+                    - draft
+                    - approved
+                    - reserved
+                    description: Change lifecycle state after submission.
+                  git_ref:
+                    type: string
+                  has_conflicts:
+                    type: boolean
+                  conflicts:
+                    type: string
+                    description: Human-readable conflict view (present when has_conflicts).
+                  auto_approved:
+                    type: boolean
+                  diffs:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/LibraryChangeDiff'
+                  raw_diff:
+                    type: string
+        '400':
+          description: No changes to write back, or invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Referenced change is approved/denied and cannot be updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  schemas:
+    SandboxStatus:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Point-in-time liveness for this sandbox. `stale` and `unknown` are list-only states (see SandboxSummary); this endpoint reports only `running` or `stopped`.
+          enum:
+          - running
+          - stopped
+        memory_usage:
+          type: string
+          description: Human-readable memory usage (only when running)
+        dataframes:
+          type: array
+          description: Loaded dataframes (only when running)
+          items:
+            $ref: '#/components/schemas/DataframeInfo'
+    LoadConnectorDataRequest:
+      type: object
+      required:
+      - connector_id
+      properties:
+        connector_id:
+          type: integer
+          format: int32
+          description: Connector to query
+        query:
+          type: string
+          description: 'Inline SQL query to execute. Mutually exclusive with `tql_path` —
+
+            provide exactly one of the two (`400 invalid_request` otherwise).
+
+            '
+        tql_path:
+          type: string
+          description: 'Ontology path of a saved `.tql` file to run (must end in
+
+            `.tql`). Only files already visible to the member''s roles can be
+
+            run — a path that is not visible returns `404 not_found`,
+
+            indistinguishable from a path that does not exist. Mutually
+
+            exclusive with `query` — provide exactly one of the two
+
+            (`400 invalid_request` otherwise).
+
+            '
+        params:
+          type: object
+          description: 'Parameter values passed to the saved `.tql` file when it is
+
+            rendered. Only used with `tql_path`. If rendering fails, the
+
+            request returns `400` with the renderer''s message included.
+
+            '
+        max_rows:
+          type: integer
+          format: int64
+          description: 'Maximum number of rows to load. Only applies to the `tql_path`
+
+            branch; clamped to the range 1–2,000,000 (default 2,000,000).
+
+            '
+        dataframe_name:
+          type: string
+          description: 'Name for the resulting dataframe. Defaults to `connector_{id}` for
+
+            `query`, or to the `.tql` filename stem (e.g. `revenue` for
+
+            `reports/revenue.tql`) for `tql_path`.
+
+            '
+    LibraryChangeDiff:
+      type: object
+      description: One changed file in an Ontology change.
+      properties:
+        name:
+          type: string
+          description: Display name for the change.
+        old_path:
+          type: string
+        new_path:
+          type: string
+        additions:
+          type: integer
+          format: int64
+        deletions:
+          type: integer
+          format: int64
+        is_new:
+          type: boolean
+        is_delete:
+          type: boolean
+        is_rename:
+          type: boolean
+        is_binary:
+          type: boolean
+    LoadConnectorDataResponse:
+      type: object
+      properties:
+        preview:
+          type: string
+          description: 'Text summary of the loaded data. Format varies by size: for smaller results,
+
+            a dataframe preview string from the sandbox; for larger results (2048+ rows),
+
+            a markdown table of the first 100 rows.
+
+            '
+        dataframe_name:
+          type: string
+        num_rows:
+          type: integer
+          format: int64
+        num_cols:
+          type: integer
+          format: int64
+    SandboxExecution:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique execution identifier
+        kind:
+          type: string
+          enum:
+          - python
+          - bash
+          - sql
+          - tql
+          description: Execution type
+        source:
+          type: string
+          enum:
+          - platform_api
+          - chat
+          - dashboard
+          - playbook
+          - internal
+          description: Product surface that triggered the execution
+        input:
+          type: string
+          description: 'The executed input — code (python/bash), SQL text (sql), or the
+
+            library path (tql).
+
+            '
+        output_preview:
+          type: string
+          description: 'Truncated output preview (up to 16 KB; longer output ends with a
+
+            `…[truncated]` marker). Does not include generated files or
+
+            dataframes.
+
+            '
+        error:
+          type: string
+          description: Error message when the execution failed; empty otherwise.
+        duration_ms:
+          type: integer
+          format: int64
+          description: Execution duration in milliseconds
+        created_at:
+          type: string
+          format: date-time
+          description: When the execution ran
+    ListSandboxExecutionsResponse:
+      type: object
+      required:
+      - executions
+      properties:
+        executions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SandboxExecution'
+        next_cursor:
+          type: string
+          description: 'Opaque cursor to pass as `cursor` on the next request. Omitted when
+
+            there are no more results.
+
+            '
+    ListSandboxesResponse:
+      type: object
+      required:
+      - sandboxes
+      properties:
+        sandboxes:
+          type: array
+          items:
+            $ref: '#/components/schemas/SandboxSummary'
+        next_cursor:
+          type: string
+          nullable: true
+          description: 'Opaque cursor to pass as `cursor` on the next request. Omitted when
+
+            there are no more results.
+
+            '
+    ExecuteCodeResponse:
+      type: object
+      properties:
+        output:
+          type: array
+          nullable: true
+          items:
+            type: string
+          description: 'Stdout/stderr output as an array of strings, one element per print call.
+
+            Null when execution fails with an error.
+
+            '
+        error:
+          type: string
+          description: 'Execution error message, including the Python exception type and message
+
+            (e.g. "executing Python code: ZeroDivisionError(''division by zero'')").
+
+            Only present when execution fails. When set, output is null.
+
+            '
+        execution_time_ms:
+          type: integer
+          format: int64
+          description: Execution duration in milliseconds
+        files:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              url:
+                type: string
+              mime_type:
+                type: string
+        dataframes:
+          type: array
+          description: 'Dataframes created or modified during execution. May be empty even if
+
+            code creates dataframes — use GET /v2/sandcastles/{id} for the authoritative
+
+            list of loaded dataframes.
+
+            '
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              num_rows:
+                type: integer
+                format: int64
+              num_cols:
+                type: integer
+                format: int64
+    DataframeInfo:
+      type: object
+      properties:
+        name:
+          type: string
+        num_rows:
+          type: integer
+          format: int32
+        num_cols:
+          type: integer
+          format: int32
+        memory_usage_bytes:
+          type: integer
+          format: int64
+    SandboxSummary:
+      type: object
+      properties:
+        sandbox_id:
+          type: string
+          description: Unique sandbox identifier
+        status:
+          type: string
+          enum:
+          - running
+          - stale
+          - unknown
+          - stopped
+          description: "Sandbox state:\n- `running` — a live worker record was seen recently. Liveness is\n  eventually consistent; a sandbox that died abruptly may report\n  `running` for a short window (up to ~1 hour).\n- `stale` — the lease is open but no live worker record exists; the\n  worker is likely gone. Call `DELETE /v2/sandcastles/{id}` to clear it.\n- `unknown` — liveness could not be determined (cache unavailable);\n  the lease is open.\n- `stopped` — the sandbox has been released.\n\nUse `GET /v2/sandcastles/{id}` for the authoritative live check of a\nsingle sandbox.\n"
+        member_id:
+          type: string
+          nullable: true
+          description: Member that started the sandbox. Null for legacy/open-lease rows.
+        chat_id:
+          type: string
+          nullable: true
+          description: Chat the sandbox is attached to. Null when not attached to a chat.
+        started_at:
+          type: string
+          format: date-time
+          description: When the sandbox was started
+        released_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: When the sandbox was released. Null while the lease is open.
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code
+              enum:
+              - invalid_request
+              - unauthenticated
+              - permission_denied
+              - not_found
+              - conflict
+              - rate_limit_exceeded
+              - internal
+              - timeout
+              - cancelled
+              - execution_failed
+              - no_report
+            message:
+              type: string
+              description: Human-readable error message
+  parameters:
+    SandboxFilePath:
+      name: path
+      in: path
+      required: true
+      schema:
+        type: string
+      description: File path within the sandbox working directory (slashes allowed).
+    SandboxId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Sandbox ID
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: not_found
+              message: Resource not found
+    RateLimited:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: rate_limit_exceeded
+              message: Rate limit exceeded
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: internal
+              message: Internal server error
+    Forbidden:
+      description: Insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: permission_denied
+              message: Insufficient permissions
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: invalid_request
+              message: Invalid request body
+    Unauthorized:
+      description: Missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: unauthenticated
+              message: Authentication required
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: API key or JWT token

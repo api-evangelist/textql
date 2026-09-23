@@ -1,0 +1,396 @@
+openapi: 3.2.0
+info:
+  title: TextQL v2 API Keys API
+  version: '2.0'
+  description: REST API for TextQL platform operations. All endpoints require Bearer token authentication.
+servers:
+- url: https://app.textql.com
+security:
+- bearerAuth: []
+tags:
+- name: API Keys
+  description: Mint and revoke scoped platform API keys
+paths:
+  /v2/api-keys:
+    post:
+      tags:
+      - API Keys
+      summary: Create API Key
+      description: 'Mint a platform API key. Every key must be role-scoped: provide either
+
+        `assumedRoles` (role UUIDs the key is limited to) or set
+
+        `inheritAllRoles` to `true`; a request with neither is rejected so a
+
+        key cannot be over-privileged by accident. Non-admin callers may only
+
+        scope keys to roles they already hold, and a key minted by another API
+
+        key may only narrow — never widen — the parent key''s role scope.
+
+
+        `clientId` attaches client metadata to the key. Prefer a JSON object
+
+        string: TQL row-level security exposes it to saved queries as
+
+        `_tql.client_attributes_json.`, which is how one key per
+
+        tenant/end-user enforces scoped data access.
+
+
+        The bearer secret is returned once, in `key`, and cannot be retrieved
+
+        again.'
+      operationId: v2.createApiKey
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateApiKeyRequest'
+      responses:
+        '201':
+          description: The created key. `key` is the bearer secret, shown only once.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateApiKeyResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    get:
+      tags:
+      - API Keys
+      summary: List API Keys
+      description: 'List platform API keys. The bearer secret is never returned. Scope
+
+        defaults to the widest the caller may see — all org keys with the
+
+        `organization:read` permission, otherwise the caller''s own keys.'
+      operationId: v2.listApiKeys
+      parameters:
+      - name: scope
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - personal
+          - all
+          - service_accounts
+        description: Narrow the listing. `all` and `service_accounts` require `organization:read`.
+      - name: include_revoked
+        in: query
+        required: false
+        schema:
+          type: boolean
+        description: Set to true to include revoked keys.
+      - name: page_size
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: Page size for pagination.
+      - name: page_token
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Opaque token from a previous page's `next_page_token`.
+      responses:
+        '200':
+          description: The API keys visible to the caller
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListApiKeysResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /v2/api-keys/{id}/rotate:
+    post:
+      tags:
+      - API Keys
+      summary: Rotate API Key
+      description: 'Revoke the given key and mint a replacement with the same name, role
+
+        scope, and client metadata. The new bearer secret is returned once, in
+
+        `key`. Callers may always rotate their own keys; rotating another
+
+        member''s key requires the `organization:write` permission.'
+      operationId: v2.rotateApiKey
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The API key id (not the bearer secret)
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The replacement key. `key` is the bearer secret, shown only once.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RotateApiKeyResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /v2/api-keys/{id}:
+    delete:
+      tags:
+      - API Keys
+      summary: Revoke API Key
+      description: 'Revoke a platform API key by id. Callers may always revoke their own
+
+        keys; revoking another member''s key requires the `organization:write`
+
+        permission. Revoking an already-revoked key returns `400`.'
+      operationId: v2.revokeApiKey
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The API key id (not the bearer secret)
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Revocation result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  schemas:
+    RotateApiKeyResponse:
+      type: object
+      properties:
+        key:
+          type: string
+          description: The replacement key's full bearer credential. Shown exactly once; store it securely.
+          example: BEARER_SECRET_SHOWN_ONCE
+        api_key:
+          $ref: '#/components/schemas/PlatformApiKey'
+        revoked_api_key_id:
+          type: string
+          description: The id of the key that was revoked by this rotation.
+    CreateApiKeyRequest:
+      type: object
+      properties:
+        expirySeconds:
+          type: integer
+          description: Optional TTL in seconds. Omit for a non-expiring key; short-lived keys are recommended for per-session embedding flows.
+          example: 3600
+        assumedRoles:
+          type: array
+          items:
+            type: string
+          description: Role UUIDs to scope the key to. Callers may only specify roles they hold; API-key callers may only specify a subset of their own assumed roles.
+          example:
+          - 80de0196-496f-44fe-9d4c-8013b3b44082
+        inheritAllRoles:
+          type: boolean
+          description: Set to true to inherit all of the creating member's roles. Required when assumedRoles is empty.
+        name:
+          type: string
+          description: Optional display name for the key.
+          example: acme-session-key
+        targetMemberId:
+          type: string
+          description: Mint the key for this member instead of the caller. Requires organization:write and a service-account target.
+        clientId:
+          type: string
+          description: Optional client metadata stored on the key. Prefer a JSON object string (a JSON-encoded string, not a nested object); TQL row-level security reads its fields as `_tql.client_attributes_json.<field>`.
+          example: '{"tenant_id": "acme", "user_email": "jane@acme.example"}'
+        fullMemberAccess:
+          type: boolean
+          description: When true, the key retains the target member's direct object grants alongside its assumed-role grants. API-key callers may enable this only when their own key already has full member access.
+    PlatformApiKey:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The key id — use this for revocation, not the bearer secret
+          example: 4f0c39a1-7c9e-4a34-9d20-6a1f6f6f2b71
+        member_id:
+          type: string
+          example: 9b2f7a64-11d0-4c1b-8f3e-2f9c5b7f6e10
+        name:
+          type: string
+          example: acme-session-key
+        client_id:
+          type: string
+          example: '{"tenant_id": "acme", "user_email": "jane@acme.example"}'
+        assumed_roles:
+          type: array
+          items:
+            type: string
+          example:
+          - 80de0196-496f-44fe-9d4c-8013b3b44082
+        status:
+          type: string
+          enum:
+          - active
+          - expired
+          - revoked
+          - unspecified
+          example: active
+        created_at:
+          type: string
+          description: RFC 3339 timestamp
+          example: '2026-07-06T19:30:00Z'
+        expires_at:
+          type: string
+          description: RFC 3339 timestamp; absent for non-expiring keys
+          example: '2026-07-06T20:30:00Z'
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code
+              enum:
+              - invalid_request
+              - unauthenticated
+              - permission_denied
+              - not_found
+              - conflict
+              - rate_limit_exceeded
+              - internal
+              - timeout
+              - cancelled
+              - execution_failed
+              - no_report
+            message:
+              type: string
+              description: Human-readable error message
+    ListApiKeysResponse:
+      type: object
+      properties:
+        api_keys:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlatformApiKey'
+        next_page_token:
+          type: string
+          description: Present when more pages exist; pass back as `page_token`.
+    CreateApiKeyResponse:
+      type: object
+      properties:
+        key:
+          type: string
+          description: 'The full bearer credential. Shown exactly once; store it securely. Use as `Authorization: Bearer <key>`.'
+          example: BEARER_SECRET_SHOWN_ONCE
+        api_key:
+          $ref: '#/components/schemas/PlatformApiKey'
+  responses:
+    RateLimited:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: rate_limit_exceeded
+              message: Rate limit exceeded
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: internal
+              message: Internal server error
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: invalid_request
+              message: Invalid request body
+    Forbidden:
+      description: Insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: permission_denied
+              message: Insufficient permissions
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: not_found
+              message: Resource not found
+    Unauthorized:
+      description: Missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: unauthenticated
+              message: Authentication required
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: API key or JWT token

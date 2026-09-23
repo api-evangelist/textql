@@ -1,0 +1,408 @@
+openapi: 3.2.0
+info:
+  title: TextQL v2 Members API
+  version: '2.0'
+  description: REST API for TextQL platform operations. All endpoints require Bearer token authentication.
+servers:
+- url: https://app.textql.com
+security:
+- bearerAuth: []
+tags:
+- name: Members
+paths:
+  /v2/members:
+    get:
+      tags:
+      - Members
+      summary: List Members
+      description: 'List the human members of the caller''s organization, including each
+
+        member''s assigned role names. Requires the `member:read` permission.'
+      operationId: v2.listMembers
+      responses:
+        '200':
+          description: The organization's members
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListMembersResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /v2/members/invite:
+    post:
+      tags:
+      - Members
+      summary: Invite Member
+      description: 'Invite a new member to the caller''s organization by email. The member
+
+        is created immediately and receives a branded invitation email.
+
+        Requires the `member:write` permission.'
+      operationId: v2.inviteMember
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InviteMemberRequest'
+      responses:
+        '200':
+          description: Invitation result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /v2/members/{id}:
+    delete:
+      tags:
+      - Members
+      summary: Remove Member
+      description: 'Remove a member from the caller''s organization. Soft delete by
+
+        default; pass `hard_delete=true` to purge. Requires the `member:write`
+
+        permission.'
+      operationId: v2.deleteMember
+      parameters:
+      - $ref: '#/components/parameters/MemberId'
+      - name: hard_delete
+        in: query
+        required: false
+        schema:
+          type: boolean
+        description: Set to true to permanently delete instead of soft delete.
+      responses:
+        '200':
+          description: Removal result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /v2/members/{id}/roles:
+    get:
+      tags:
+      - Members
+      summary: Get Member Roles
+      description: 'List the RBAC roles assigned to a member. Requires the `role:read`
+
+        permission.'
+      operationId: v2.getMemberRoles
+      parameters:
+      - $ref: '#/components/parameters/MemberId'
+      responses:
+        '200':
+          description: The member's roles
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MemberRolesResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    post:
+      tags:
+      - Members
+      summary: Assign Role to Member
+      description: 'Assign an RBAC role to a member. Requires the `role:write` permission.
+
+        Service-account roles are immutable and cannot be changed this way.'
+      operationId: v2.assignMemberRole
+      parameters:
+      - $ref: '#/components/parameters/MemberId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssignMemberRoleRequest'
+      responses:
+        '200':
+          description: Assignment result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  member_id:
+                    type: string
+                  role_id:
+                    type: string
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /v2/members/{id}/roles/{roleId}:
+    delete:
+      tags:
+      - Members
+      summary: Remove Role from Member
+      description: 'Remove an RBAC role from a member. Requires the `role:write`
+
+        permission.'
+      operationId: v2.removeMemberRole
+      parameters:
+      - $ref: '#/components/parameters/MemberId'
+      - $ref: '#/components/parameters/RoleId'
+      responses:
+        '200':
+          description: Removal result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  member_id:
+                    type: string
+                  role_id:
+                    type: string
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  responses:
+    RateLimited:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: rate_limit_exceeded
+              message: Rate limit exceeded
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: internal
+              message: Internal server error
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: invalid_request
+              message: Invalid request body
+    Forbidden:
+      description: Insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: permission_denied
+              message: Insufficient permissions
+    Unauthorized:
+      description: Missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: unauthenticated
+              message: Authentication required
+  schemas:
+    MemberRolesResponse:
+      type: object
+      properties:
+        member_id:
+          type: string
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
+    Member:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 9b2f7a64-11d0-4c1b-8f3e-2f9c5b7f6e10
+        email:
+          type: string
+          example: jane@acme.example
+        name:
+          type: string
+          example: Jane Doe
+        roles:
+          type: array
+          items:
+            type: string
+          description: Names of the roles assigned to the member. Role ids are not included; resolve them via `GET /v2/members/{id}/roles` or `GET /v2/roles` before assigning or removing roles.
+          example:
+          - admin
+        is_admin:
+          type: boolean
+        is_service_account:
+          type: boolean
+        is_scim_managed:
+          type: boolean
+        created_at:
+          type: string
+          description: RFC 3339 timestamp
+          example: '2026-07-06T19:30:00Z'
+    Role:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 80de0196-496f-44fe-9d4c-8013b3b44082
+        name:
+          type: string
+          example: analyst
+        description:
+          type: string
+        is_system:
+          type: boolean
+          description: True for the built-in roles (for example `admin` and `member`).
+        is_scim_managed:
+          type: boolean
+        created_at:
+          type: string
+          description: RFC 3339 timestamp
+          example: '2026-07-06T19:30:00Z'
+        updated_at:
+          type: string
+          description: RFC 3339 timestamp
+          example: '2026-07-06T19:30:00Z'
+    InviteMemberRequest:
+      type: object
+      required:
+      - email
+      properties:
+        email:
+          type: string
+          description: Email address to invite.
+          example: jane@acme.example
+        role:
+          type: string
+          description: System role name for the new member (`member` or `admin`). Defaults to `member`. Distinct from the RBAC Role entities managed via `/v2/roles` and `/v2/members/{id}/roles`.
+          example: member
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code
+              enum:
+              - invalid_request
+              - unauthenticated
+              - permission_denied
+              - not_found
+              - conflict
+              - rate_limit_exceeded
+              - internal
+              - timeout
+              - cancelled
+              - execution_failed
+              - no_report
+            message:
+              type: string
+              description: Human-readable error message
+    AssignMemberRoleRequest:
+      type: object
+      required:
+      - roleId
+      properties:
+        roleId:
+          type: string
+          description: Role UUID to assign.
+          example: 80de0196-496f-44fe-9d4c-8013b3b44082
+    ListMembersResponse:
+      type: object
+      properties:
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/Member'
+  parameters:
+    RoleId:
+      name: roleId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Role ID
+    MemberId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Member ID
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: API key or JWT token

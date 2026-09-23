@@ -1,0 +1,1786 @@
+openapi: 3.2.0
+info:
+  title: TextQL Dataset Service API
+  version: 1.0.0
+  description: 'TextQL public API. Generated from protobuf service definitions; internal
+
+    endpoints are excluded via google.api.visibility / file_visibility.'
+servers:
+- url: https://app.textql.com/rpc/public
+security:
+- apiKey: []
+tags:
+- name: DatasetService
+paths:
+  /textql.rpc.public.dataset.DatasetService/CreateFolder:
+    post:
+      tags:
+      - DatasetService
+      summary: CreateFolder
+      operationId: DatasetService_CreateFolder
+      x-speakeasy-group: datasets
+      x-speakeasy-name-override: createFolder
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dataset.CreateFolderRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dataset.CreateFolderResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.datasets.createFolder({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.datasets.create_folder()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dataset.DatasetService/CreatePowerBIDataset:
+    post:
+      tags:
+      - DatasetService
+      summary: CreatePowerBIDataset
+      operationId: DatasetService_CreatePowerBIDataset
+      x-speakeasy-group: datasets
+      x-speakeasy-name-override: createPowerBIDataset
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dataset.CreatePowerBIDatasetRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dataset.CreatePowerBIDatasetResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.datasets.createPowerBIDataset({\n    body: {\n      reports: [\n        {\n          createdDate: new Date(\"2023-01-15T01:30:15.01Z\"),\n        },\n      ],\n      datasets: [\n        {\n          createdDate: new Date(\"2023-01-15T01:30:15.01Z\"),\n        },\n      ],\n    },\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\nfrom textql_sdk.utils import parse_datetime\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.datasets.create_power_bi_dataset(reports=[\n        {\n            \"created_date\": parse_datetime(\"2023-01-15T01:30:15.01Z\"),\n        },\n    ], datasets=[\n        {\n            \"created_date\": parse_datetime(\"2023-01-15T01:30:15.01Z\"),\n        },\n    ])\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dataset.DatasetService/CreateTableauDataset:
+    post:
+      tags:
+      - DatasetService
+      summary: Create Tableau dataset from views/datasources
+      operationId: DatasetService_CreateTableauDataset
+      x-speakeasy-group: datasets
+      x-speakeasy-name-override: createTableauDataset
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dataset.CreateTableauDatasetRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dataset.CreateTableauDatasetResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.datasets.createTableauDataset({\n    body: {\n      views: [\n        {\n          createdAt: new Date(\"2023-01-15T01:30:15.01Z\"),\n          updatedAt: new Date(\"2023-01-15T01:30:15.01Z\"),\n        },\n      ],\n      datasources: [\n        {\n          createdAt: new Date(\"2023-01-15T01:30:15.01Z\"),\n          updatedAt: new Date(\"2023-01-15T01:30:15.01Z\"),\n        },\n      ],\n    },\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\nfrom textql_sdk.utils import parse_datetime\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.datasets.create_tableau_dataset(views=[\n        {\n            \"created_at\": parse_datetime(\"2023-01-15T01:30:15.01Z\"),\n            \"updated_at\": parse_datetime(\"2023-01-15T01:30:15.01Z\"),\n        },\n    ], datasources=[\n        {\n            \"created_at\": parse_datetime(\"2023-01-15T01:30:15.01Z\"),\n            \"updated_at\": parse_datetime(\"2023-01-15T01:30:15.01Z\"),\n        },\n    ])\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dataset.DatasetService/CreateUploadPresignUrl:
+    post:
+      tags:
+      - DatasetService
+      summary: uploads
+      operationId: DatasetService_CreateUploadPresignUrl
+      x-speakeasy-group: datasets
+      x-speakeasy-name-override: createUploadPresignUrl
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dataset.CreateUploadPresignUrlRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dataset.CreateUploadPresignUrlResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.datasets.createUploadPresignUrl({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.datasets.create_upload_presign_url()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dataset.DatasetService/DeleteDataset:
+    post:
+      tags:
+      - DatasetService
+      summary: Delete a dataset (soft delete)
+      operationId: DatasetService_DeleteDataset
+      x-speakeasy-group: datasets
+      x-speakeasy-name-override: delete
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dataset.DeleteDatasetRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dataset.DeleteDatasetResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.datasets.delete({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.datasets.delete()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dataset.DatasetService/ExportDataset:
+    post:
+      tags:
+      - DatasetService
+      summary: export dataset in "raw" format – original if dataset is uploaded, converted…
+      description: export dataset in "raw" format – original if dataset is uploaded, converted format otherwise (defaults to CSV)
+      operationId: DatasetService_ExportDataset
+      x-speakeasy-group: datasets
+      x-speakeasy-name-override: export
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dataset.ExportDatasetRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dataset.ExportDatasetResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.datasets.export({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.datasets.export()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dataset.DatasetService/GetDataset:
+    post:
+      tags:
+      - DatasetService
+      summary: GetDataset, GetDatasets only return metadata
+      operationId: DatasetService_GetDataset
+      x-speakeasy-group: datasets
+      x-speakeasy-name-override: fetch
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dataset.GetDatasetRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dataset.GetDatasetResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.datasets.fetch({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.datasets.fetch()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dataset.DatasetService/GetDatasetStats:
+    post:
+      tags:
+      - DatasetService
+      summary: GetDatasetStats
+      operationId: DatasetService_GetDatasetStats
+      x-speakeasy-group: datasets
+      x-speakeasy-name-override: getStats
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dataset.GetDatasetStatsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dataset.GetDatasetStatsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.datasets.getStats({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.datasets.get_stats()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dataset.DatasetService/GetDatasetValues:
+    post:
+      tags:
+      - DatasetService
+      summary: GetDatasetValues
+      operationId: DatasetService_GetDatasetValues
+      x-speakeasy-group: datasets
+      x-speakeasy-name-override: getDatasetValues
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dataset.GetDatasetValuesRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dataset.GetDatasetValuesResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.datasets.getDatasetValues({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.datasets.get_dataset_values()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dataset.DatasetService/GetDatasets:
+    post:
+      tags:
+      - DatasetService
+      summary: GetDatasets
+      operationId: DatasetService_GetDatasets
+      x-speakeasy-group: datasets
+      x-speakeasy-name-override: get
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dataset.GetDatasetsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dataset.GetDatasetsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.datasets.get({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.datasets.get()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dataset.DatasetService/GetDatasetsByIds:
+    post:
+      tags:
+      - DatasetService
+      summary: GetDatasetsByIds
+      operationId: DatasetService_GetDatasetsByIds
+      x-speakeasy-group: datasets
+      x-speakeasy-name-override: getByIds
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dataset.GetDatasetsByIdsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dataset.GetDatasetsByIdsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.datasets.getByIds({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.datasets.get_by_ids()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dataset.DatasetService/GetFolders:
+    post:
+      tags:
+      - DatasetService
+      summary: 'for AR: CreateFolderACL, UpdateFolderACL, DeleteFolderACL'
+      operationId: DatasetService_GetFolders
+      x-speakeasy-group: datasets
+      x-speakeasy-name-override: getFolders
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dataset.GetFoldersRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dataset.GetFoldersResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.datasets.getFolders({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.datasets.get_folders()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dataset.DatasetService/ProcessUploadPresignUrl:
+    post:
+      tags:
+      - DatasetService
+      summary: ProcessUploadPresignUrl
+      description: 'for AR: CreateDatasetACL, UpdateDatasetACL, DeleteDatasetACL'
+      operationId: DatasetService_ProcessUploadPresignUrl
+      x-speakeasy-group: datasets
+      x-speakeasy-name-override: processUploadPresignUrl
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dataset.ProcessUploadPresignUrlRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dataset.ProcessUploadPresignUrlResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.datasets.processUploadPresignUrl({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.datasets.process_upload_presign_url()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dataset.DatasetService/UpdateDataset:
+    post:
+      tags:
+      - DatasetService
+      summary: Update dataset metadata
+      operationId: DatasetService_UpdateDataset
+      x-speakeasy-group: datasets
+      x-speakeasy-name-override: updateDataset
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dataset.UpdateDatasetRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dataset.UpdateDatasetResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.datasets.updateDataset({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.datasets.update_dataset()\n\n    # Handle response\n    print(res)"
+components:
+  schemas:
+    textql.rpc.public.dataset.GetDatasetsByIdsRequest:
+      type: object
+      properties:
+        datasetIds:
+          type: array
+          items:
+            type: string
+          title: dataset_ids
+      title: GetDatasetsByIdsRequest
+      additionalProperties: false
+    textql.rpc.public.dataset.GetDatasetStatsRequest:
+      type: object
+      properties:
+        datasetId:
+          type: string
+          title: dataset_id
+        versionId:
+          type: integer
+          title: version_id
+          format: int32
+          nullable: true
+      title: GetDatasetStatsRequest
+      additionalProperties: false
+    textql.rpc.public.dataset.ProcessUploadPresignUrlResponse:
+      type: object
+      properties:
+        dataset:
+          title: dataset
+          $ref: '#/components/schemas/textql.rpc.public.dataset.Dataset'
+      title: ProcessUploadPresignUrlResponse
+      additionalProperties: false
+    textql.rpc.public.dataset.TabularFileCategory:
+      type: string
+      title: TabularFileCategory
+      enum:
+      - CATEGORY_UNKNOWN
+      - CATEGORY_CSV
+      - CATEGORY_TSV
+      - CATEGORY_XLSX
+      - CATEGORY_XLS
+      - CATEGORY_PARQUET
+      - CATEGORY_ODS
+      description: never change the names or numbers of existing tabular file categories!
+    textql.rpc.public.dataset.GetDatasetValuesResponse:
+      type: object
+      properties:
+        df:
+          title: df
+          $ref: '#/components/schemas/textql.rpc.public.dataframe.DataFrame'
+        numCols:
+          type:
+          - integer
+          - string
+          title: num_cols
+          format: int64
+        numRows:
+          type:
+          - integer
+          - string
+          title: num_rows
+          format: int64
+      title: GetDatasetValuesResponse
+      additionalProperties: false
+    textql.rpc.public.dataframe.Uint64Values:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            type:
+            - integer
+            - string
+            format: int64
+          title: values
+      title: Uint64Values
+      additionalProperties: false
+    textql.rpc.public.dataset.TableauData:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        projectId:
+          type: string
+          title: project_id
+        projectName:
+          type: string
+          title: project_name
+        views:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.tableau.TableauView'
+          title: views
+        datasources:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.tableau.TableauDatasource'
+          title: datasources
+      title: TableauData
+      additionalProperties: false
+    textql.rpc.public.dataframe.DataFrameInfo:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+        external:
+          type: boolean
+          title: external
+        numRows:
+          type:
+          - integer
+          - string
+          title: num_rows
+          format: int64
+        numCols:
+          type:
+          - integer
+          - string
+          title: num_cols
+          format: int64
+        memoryUsage:
+          type:
+          - integer
+          - string
+          title: memory_usage
+          format: int64
+          description: in bytes
+      title: DataFrameInfo
+      additionalProperties: false
+    textql.rpc.public.dataframe.BoolValues:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            type: boolean
+          title: values
+      title: BoolValues
+      additionalProperties: false
+    textql.rpc.public.dataset.GetFoldersRequest:
+      type: object
+      properties:
+        path:
+          type: string
+          title: path
+      title: GetFoldersRequest
+      additionalProperties: false
+    textql.rpc.public.dataset.GetDatasetsByIdsResponse:
+      type: object
+      properties:
+        datasets:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dataset.Dataset'
+          title: datasets
+      title: GetDatasetsByIdsResponse
+      additionalProperties: false
+    textql.rpc.public.dataset.ProcessUploadPresignUrlRequest:
+      type: object
+      properties:
+        datasetId:
+          type: string
+          title: dataset_id
+        datasetVersion:
+          type: integer
+          title: dataset_version
+          format: int32
+      title: ProcessUploadPresignUrlRequest
+      additionalProperties: false
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
+          type: string
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+          - type: object
+            title: Any
+            additionalProperties: true
+            description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
+    textql.rpc.public.powerbi.PowerBIReport:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        name:
+          type: string
+          title: name
+        webUrl:
+          type: string
+          title: web_url
+        embedUrl:
+          type: string
+          title: embed_url
+        datasetId:
+          type: string
+          title: dataset_id
+        createdBy:
+          type: string
+          title: created_by
+        createdDate:
+          title: created_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: PowerBIReport
+      additionalProperties: false
+    textql.rpc.public.dataframe.Uint32Values:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            type: integer
+          title: values
+      title: Uint32Values
+      additionalProperties: false
+    textql.rpc.public.dataset.DatasetsSort:
+      type: string
+      title: DatasetsSort
+      enum:
+      - SORT_UNKNOWN
+      - SORT_LATEST
+      - SORT_OLDEST
+      - SORT_RELEVANT
+    textql.rpc.public.dataset.DeleteDatasetResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: DeleteDatasetResponse
+      additionalProperties: false
+    textql.rpc.public.dataset.Dataset:
+      type: object
+      allOf:
+      - type: object
+        properties:
+          id:
+            type: string
+            title: id
+          type:
+            title: type
+            $ref: '#/components/schemas/textql.rpc.public.dataset.DatasetType'
+          name:
+            type: string
+            title: name
+          version:
+            type: integer
+            title: version
+            format: int32
+          path:
+            type: string
+            title: path
+            description: folder structure to reach this file
+          owner:
+            title: owner
+            $ref: '#/components/schemas/textql.rpc.identity.MemberPreview'
+          userPermissions:
+            title: user_permissions
+            description: for logged in user
+            $ref: '#/components/schemas/textql.rpc.public.dataset.DatasetPermission'
+          createdAt:
+            title: created_at
+            $ref: '#/components/schemas/google.protobuf.Timestamp'
+          updatedAt:
+            title: updated_at
+            $ref: '#/components/schemas/google.protobuf.Timestamp'
+          expiresAt:
+            title: expires_at
+            nullable: true
+            $ref: '#/components/schemas/google.protobuf.Timestamp'
+          ephemeral:
+            type: boolean
+            title: ephemeral
+      - oneOf:
+        - type: object
+          properties:
+            dataframe:
+              title: dataframe
+              $ref: '#/components/schemas/textql.rpc.public.dataset.SandboxDataFrame'
+          title: dataframe
+          required:
+          - dataframe
+        - type: object
+          properties:
+            document:
+              title: document
+              $ref: '#/components/schemas/textql.rpc.public.dataset.Document'
+          title: document
+          required:
+          - document
+        - type: object
+          properties:
+            powerbiData:
+              title: powerbi_data
+              $ref: '#/components/schemas/textql.rpc.public.dataset.PowerBIData'
+          title: powerbi_data
+          required:
+          - powerbiData
+        - type: object
+          properties:
+            tableauData:
+              title: tableau_data
+              $ref: '#/components/schemas/textql.rpc.public.dataset.TableauData'
+          title: tableau_data
+          required:
+          - tableauData
+        - type: object
+          properties:
+            tabularFile:
+              title: tabular_file
+              $ref: '#/components/schemas/textql.rpc.public.dataset.TabularFile'
+          title: tabular_file
+          required:
+          - tabularFile
+      title: Dataset
+      additionalProperties: false
+    textql.rpc.public.dataset.PowerBIData:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        reportIds:
+          type: array
+          items:
+            type: string
+          title: report_ids
+        datasetIds:
+          type: array
+          items:
+            type: string
+          title: dataset_ids
+        reportNames:
+          type: array
+          items:
+            type: string
+          title: report_names
+        datasetNames:
+          type: array
+          items:
+            type: string
+          title: dataset_names
+        workspaceId:
+          type: string
+          title: workspace_id
+        workspaceName:
+          type: string
+          title: workspace_name
+      title: PowerBIData
+      additionalProperties: false
+    textql.rpc.public.powerbi.PowerBIDataset:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        name:
+          type: string
+          title: name
+        addRowsApiEnabled:
+          type: boolean
+          title: add_rows_api_enabled
+        configuredBy:
+          type: string
+          title: configured_by
+        isRefreshable:
+          type: boolean
+          title: is_refreshable
+        isEffectiveIdentityRequired:
+          type: boolean
+          title: is_effective_identity_required
+        isEffectiveIdentityRolesRequired:
+          type: boolean
+          title: is_effective_identity_roles_required
+        isOnPremGatewayRequired:
+          type: boolean
+          title: is_on_prem_gateway_required
+        createdDate:
+          title: created_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        tableNames:
+          type: array
+          items:
+            type: string
+          title: table_names
+      title: PowerBIDataset
+      additionalProperties: false
+    textql.rpc.public.dataset.CreateFolderResponse:
+      type: object
+      properties:
+        path:
+          type: array
+          items:
+            type: string
+          title: path
+          description: path to new folder
+      title: CreateFolderResponse
+      additionalProperties: false
+    textql.rpc.public.dataframe.DataFrame:
+      type: object
+      properties:
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dataframe.DataFrameField'
+          title: schema
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dataframe.DataFrameRecord'
+          title: records
+      title: DataFrame
+      additionalProperties: false
+    textql.rpc.public.dataset.ExportDatasetResponse:
+      type: object
+      properties:
+        presignedUrl:
+          type: string
+          title: presigned_url
+      title: ExportDatasetResponse
+      additionalProperties: false
+    textql.rpc.public.dataset.UpdateDatasetRequest:
+      type: object
+      properties:
+        datasetId:
+          type: string
+          title: dataset_id
+        name:
+          type: string
+          title: name
+          description: Add other updatable fields as needed
+          nullable: true
+      title: UpdateDatasetRequest
+      additionalProperties: false
+    textql.rpc.public.dataset.CreatePowerBIDatasetResponse:
+      type: object
+      properties:
+        dataset:
+          title: dataset
+          $ref: '#/components/schemas/textql.rpc.public.dataset.Dataset'
+      title: CreatePowerBIDatasetResponse
+      additionalProperties: false
+    textql.rpc.public.dataframe.DoubleValues:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            type: number
+            format: double
+          title: values
+      title: DoubleValues
+      additionalProperties: false
+    textql.rpc.public.dataset.GetDatasetValuesRequest:
+      type: object
+      properties:
+        datasetId:
+          type: string
+          title: dataset_id
+        versionId:
+          type: integer
+          title: version_id
+          format: int32
+          description: default to latest version
+          nullable: true
+        limit:
+          type: integer
+          title: limit
+          format: int32
+          description: defaults to 10,000
+          nullable: true
+        page:
+          type: integer
+          title: page
+          format: int32
+          nullable: true
+        sheet:
+          type: integer
+          title: sheet
+          format: int32
+          description: for multi-sheet excels
+          nullable: true
+      title: GetDatasetValuesRequest
+      additionalProperties: false
+    textql.rpc.public.dataframe.FloatValues:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            type: number
+            format: float
+          title: values
+      title: FloatValues
+      additionalProperties: false
+    textql.rpc.identity.MemberPreview:
+      type: object
+      properties:
+        memberId:
+          type: string
+          title: member_id
+        memberEmail:
+          type: string
+          title: member_email
+          description: "the fields are optionally populated, depending on the context\n may require RPC fields such as `include_owner` to be set to true"
+          nullable: true
+        memberName:
+          type: string
+          title: member_name
+          nullable: true
+        memberPictureUrl:
+          type: string
+          title: member_picture_url
+          nullable: true
+      title: MemberPreview
+      additionalProperties: false
+    textql.rpc.public.dataframe.ByteValues:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            type: string
+            format: byte
+          title: values
+      title: ByteValues
+      additionalProperties: false
+    textql.rpc.public.dataset.ExportDatasetRequest:
+      type: object
+      properties:
+        datasetId:
+          type: string
+          title: dataset_id
+        preferredFormat:
+          title: preferred_format
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.dataset.ExportFormat'
+        versionId:
+          type: integer
+          title: version_id
+          format: int32
+          description: default to latest version
+          nullable: true
+      title: ExportDatasetRequest
+      additionalProperties: false
+    textql.rpc.public.dataframe.DataFrameField:
+      type: object
+      properties:
+        columnName:
+          type: string
+          title: column_name
+        columnType:
+          type: string
+          title: column_type
+        columnIndex:
+          type: integer
+          title: column_index
+          format: int32
+      title: DataFrameField
+      additionalProperties: false
+    textql.rpc.public.dataset.GetDatasetsRequest:
+      type: object
+      properties:
+        types:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dataset.DatasetType'
+          title: types
+        ownerOnly:
+          type: boolean
+          title: owner_only
+          description: only include datasets where the user is the owner
+        includeSubfolders:
+          type: boolean
+          title: include_subfolders
+        path:
+          type: string
+          title: path
+          description: defaults to path /
+          nullable: true
+        searchParam:
+          type: string
+          title: search_param
+          nullable: true
+        sort:
+          title: sort
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.dataset.DatasetsSort'
+        limit:
+          type: integer
+          title: limit
+          format: int32
+          nullable: true
+        cursor:
+          type: string
+          title: cursor
+          description: cursor-based pagination. cursor is the id of the last record returned
+          nullable: true
+      title: GetDatasetsRequest
+      additionalProperties: false
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+          - not_found
+          enum:
+          - canceled
+          - unknown
+          - invalid_argument
+          - deadline_exceeded
+          - not_found
+          - already_exists
+          - permission_denied
+          - resource_exhausted
+          - failed_precondition
+          - aborted
+          - out_of_range
+          - unimplemented
+          - internal
+          - unavailable
+          - data_loss
+          - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    textql.rpc.public.dataframe.DataFrameColumn:
+      type: object
+      allOf:
+      - type: object
+        properties:
+          columnIndex:
+            type: integer
+            title: column_index
+            format: int32
+      - oneOf:
+        - type: object
+          properties:
+            bools:
+              title: bools
+              $ref: '#/components/schemas/textql.rpc.public.dataframe.BoolValues'
+          title: bools
+          required:
+          - bools
+        - type: object
+          properties:
+            bytes:
+              title: bytes
+              $ref: '#/components/schemas/textql.rpc.public.dataframe.ByteValues'
+          title: bytes
+          required:
+          - bytes
+        - type: object
+          properties:
+            doubles:
+              title: doubles
+              $ref: '#/components/schemas/textql.rpc.public.dataframe.DoubleValues'
+          title: doubles
+          required:
+          - doubles
+        - type: object
+          properties:
+            floats:
+              title: floats
+              $ref: '#/components/schemas/textql.rpc.public.dataframe.FloatValues'
+          title: floats
+          required:
+          - floats
+        - type: object
+          properties:
+            int32:
+              title: int32
+              $ref: '#/components/schemas/textql.rpc.public.dataframe.Int32Values'
+          title: int32
+          required:
+          - int32
+        - type: object
+          properties:
+            int64:
+              title: int64
+              $ref: '#/components/schemas/textql.rpc.public.dataframe.Int64Values'
+          title: int64
+          required:
+          - int64
+        - type: object
+          properties:
+            strings:
+              title: strings
+              $ref: '#/components/schemas/textql.rpc.public.dataframe.StringValues'
+          title: strings
+          required:
+          - strings
+        - type: object
+          properties:
+            timestamps:
+              title: timestamps
+              $ref: '#/components/schemas/textql.rpc.public.dataframe.TimestampValues'
+          title: timestamps
+          required:
+          - timestamps
+        - type: object
+          properties:
+            uint32:
+              title: uint32
+              $ref: '#/components/schemas/textql.rpc.public.dataframe.Uint32Values'
+          title: uint32
+          required:
+          - uint32
+        - type: object
+          properties:
+            uint64:
+              title: uint64
+              $ref: '#/components/schemas/textql.rpc.public.dataframe.Uint64Values'
+          title: uint64
+          required:
+          - uint64
+      title: DataFrameColumn
+      additionalProperties: false
+    textql.rpc.public.dataset.CreateUploadPresignUrlResponse:
+      type: object
+      properties:
+        datasetId:
+          type: string
+          title: dataset_id
+        datasetVersion:
+          type: integer
+          title: dataset_version
+          format: int32
+        presignUrl:
+          type: string
+          title: presign_url
+      title: CreateUploadPresignUrlResponse
+      additionalProperties: false
+    textql.rpc.public.dataset.DatasetFolder:
+      type: object
+      properties:
+        path:
+          type: string
+          title: path
+        owner:
+          title: owner
+          $ref: '#/components/schemas/textql.rpc.identity.MemberPreview'
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: DatasetFolder
+      additionalProperties: false
+    textql.rpc.public.dataset.TabularFile:
+      type: object
+      properties:
+        category:
+          title: category
+          $ref: '#/components/schemas/textql.rpc.public.dataset.TabularFileCategory'
+        rowCount:
+          type:
+          - integer
+          - string
+          title: row_count
+          format: int64
+        columnCount:
+          type:
+          - integer
+          - string
+          title: column_count
+          format: int64
+        sheetCount:
+          type: integer
+          title: sheet_count
+          format: int32
+      title: TabularFile
+      additionalProperties: false
+    textql.rpc.public.tableau.TableauView:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        name:
+          type: string
+          title: name
+        contentUrl:
+          type: string
+          title: content_url
+        workbookId:
+          type: string
+          title: workbook_id
+        workbookName:
+          type: string
+          title: workbook_name
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        embedUrl:
+          type: string
+          title: embed_url
+      title: TableauView
+      additionalProperties: false
+    textql.rpc.public.dataset.GetDatasetRequest:
+      type: object
+      properties:
+        datasetId:
+          type: string
+          title: dataset_id
+      title: GetDatasetRequest
+      additionalProperties: false
+    textql.rpc.public.dataframe.TimestampValues:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/google.protobuf.Timestamp'
+          title: values
+      title: TimestampValues
+      additionalProperties: false
+    textql.rpc.public.tableau.TableauDatasource:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        name:
+          type: string
+          title: name
+        type:
+          type: string
+          title: type
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        isPublished:
+          type: boolean
+          title: is_published
+        projectId:
+          type: string
+          title: project_id
+        projectName:
+          type: string
+          title: project_name
+      title: TableauDatasource
+      additionalProperties: false
+      description: 'TODO: Add datasources support'
+    textql.rpc.public.dataset.Document:
+      type: object
+      properties:
+        previewUrl:
+          type: string
+          title: preview_url
+        pageCount:
+          type: integer
+          title: page_count
+          format: int32
+      title: Document
+      additionalProperties: false
+    textql.rpc.public.dataset.GetFoldersResponse:
+      type: object
+      properties:
+        folders:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dataset.DatasetFolder'
+          title: folders
+      title: GetFoldersResponse
+      additionalProperties: false
+    textql.rpc.public.dataframe.Int32Values:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            type: integer
+            format: int32
+          title: values
+      title: Int32Values
+      additionalProperties: false
+    textql.rpc.public.dataset.DatasetType:
+      type: string
+      title: DatasetType
+      enum:
+      - TYPE_UNKNOWN
+      - TYPE_TABULAR
+      - TYPE_DATAFRAME
+      - TYPE_DOCUMENT
+      - TYPE_TABLEAU
+      - TYPE_IMAGE
+      - TYPE_TEXT
+      - TYPE_POWERBI
+      description: never change the names or numbers of existing dataset types!
+    textql.rpc.public.dataset.ExportFormat:
+      type: string
+      title: ExportFormat
+      enum:
+      - FORMAT_UNKNOWN
+      - FORMAT_CSV
+      - FORMAT_EXCEL
+      - FORMAT_PARQUET
+    textql.rpc.public.dataframe.DataFrameRecord:
+      type: object
+      properties:
+        columns:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dataframe.DataFrameColumn'
+          title: columns
+      title: DataFrameRecord
+      additionalProperties: false
+    textql.rpc.public.dataset.CreateUploadPresignUrlRequest:
+      type: object
+      properties:
+        type:
+          title: type
+          $ref: '#/components/schemas/textql.rpc.public.dataset.DatasetType'
+        fileName:
+          type: string
+          title: file_name
+        folderPath:
+          type: array
+          items:
+            type: string
+          title: folder_path
+          description: if this dataset lives in a folder
+        ephemeral:
+          type: boolean
+          title: ephemeral
+        expiresInDays:
+          type: integer
+          title: expires_in_days
+          nullable: true
+      title: CreateUploadPresignUrlRequest
+      additionalProperties: false
+    textql.rpc.public.dataset.CreatePowerBIDatasetRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        name:
+          type: string
+          title: name
+        folderPath:
+          type: array
+          items:
+            type: string
+          title: folder_path
+        workspaceId:
+          type: string
+          title: workspace_id
+        workspaceName:
+          type: string
+          title: workspace_name
+        reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.powerbi.PowerBIReport'
+          title: reports
+        datasets:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.powerbi.PowerBIDataset'
+          title: datasets
+      title: CreatePowerBIDatasetRequest
+      additionalProperties: false
+    textql.rpc.public.dataset.GetDatasetResponse:
+      type: object
+      properties:
+        dataset:
+          title: dataset
+          $ref: '#/components/schemas/textql.rpc.public.dataset.Dataset'
+      title: GetDatasetResponse
+      additionalProperties: false
+    google.protobuf.Timestamp:
+      type: string
+      examples:
+      - '2023-01-15T01:30:15.01Z'
+      - '2024-12-25T12:00:00Z'
+      format: date-time
+      description: "A Timestamp represents a point in time independent of any time zone or local\n calendar, encoded as a count of seconds and fractions of seconds at\n nanosecond resolution. The count is relative to an epoch at UTC midnight on\n January 1, 1970, in the proleptic Gregorian calendar which extends the\n Gregorian calendar backwards to year one.\n\n All minutes are 60 seconds long. Leap seconds are \"smeared\" so that no leap\n second table is needed for interpretation, using a [24-hour linear\n smear](https://developers.google.com/time/smear).\n\n The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By\n restricting to that range, we ensure that we can convert to and from [RFC\n 3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.\n\n # Examples\n\n Example 1: Compute Timestamp from POSIX `time()`.\n\n     Timestamp timestamp;\n     timestamp.set_seconds(time(NULL));\n     timestamp.set_nanos(0);\n\n Example 2: Compute Timestamp from POSIX `gettimeofday()`.\n\n     struct timeval tv;\n     gettimeofday(&tv, NULL);\n\n     Timestamp timestamp;\n     timestamp.set_seconds(tv.tv_sec);\n     timestamp.set_nanos(tv.tv_usec * 1000);\n\n Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.\n\n     FILETIME ft;\n     GetSystemTimeAsFileTime(&ft);\n     UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;\n\n     // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z\n     // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.\n     Timestamp timestamp;\n     timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));\n     timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));\n\n Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.\n\n     long millis = System.currentTimeMillis();\n\n     Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)\n         .setNanos((int) ((millis % 1000) * 1000000)).build();\n\n Example 5: Compute Timestamp from Java `Instant.now()`.\n\n     Instant now = Instant.now();\n\n     Timestamp timestamp =\n         Timestamp.newBuilder().setSeconds(now.getEpochSecond())\n             .setNanos(now.getNano()).build();\n\n Example 6: Compute Timestamp from current time in Python.\n\n     timestamp = Timestamp()\n     timestamp.GetCurrentTime()\n\n # JSON Mapping\n\n In JSON format, the Timestamp type is encoded as a string in the\n [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the\n format is \"{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z\"\n where {year} is always expressed using four digits while {month}, {day},\n {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional\n seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),\n are optional. The \"Z\" suffix indicates the timezone (\"UTC\"); the timezone\n is required. A proto3 JSON serializer should always use UTC (as indicated by\n \"Z\") when printing the Timestamp type and a proto3 JSON parser should be\n able to accept both UTC and other timezones (as indicated by an offset).\n\n For example, \"2017-01-15T01:30:15.01Z\" encodes 15.01 seconds past\n 01:30 UTC on January 15, 2017.\n\n In JavaScript, one can convert a Date object to this format using the\n standard\n [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)\n method. In Python, a standard `datetime.datetime` object can be converted\n to this format using\n [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with\n the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use\n the Joda Time's [`ISODateTimeFormat.dateTime()`](\n http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()\n ) to obtain a formatter capable of generating timestamps in this format."
+    textql.rpc.public.dataset.SandboxDataFrame:
+      type: object
+      properties:
+        info:
+          title: info
+          $ref: '#/components/schemas/textql.rpc.public.dataframe.DataFrameInfo'
+      title: SandboxDataFrame
+      additionalProperties: false
+    textql.rpc.public.dataset.CreateFolderRequest:
+      type: object
+      properties:
+        parentPath:
+          type: array
+          items:
+            type: string
+          title: parent_path
+          description: parent folders must already exist
+        name:
+          type: string
+          title: name
+      title: CreateFolderRequest
+      additionalProperties: false
+    textql.rpc.public.dataset.GetDatasetStatsResponse:
+      type: object
+      title: GetDatasetStatsResponse
+      additionalProperties: false
+      description: unimplemented for now
+    textql.rpc.public.dataset.DeleteDatasetRequest:
+      type: object
+      properties:
+        datasetId:
+          type: string
+          title: dataset_id
+      title: DeleteDatasetRequest
+      additionalProperties: false
+    textql.rpc.public.dataset.CreateTableauDatasetRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        name:
+          type: string
+          title: name
+        folderPath:
+          type: array
+          items:
+            type: string
+          title: folder_path
+        projectId:
+          type: string
+          title: project_id
+        projectName:
+          type: string
+          title: project_name
+        views:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.tableau.TableauView'
+          title: views
+        datasources:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.tableau.TableauDatasource'
+          title: datasources
+      title: CreateTableauDatasetRequest
+      additionalProperties: false
+    textql.rpc.public.dataframe.StringValues:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            type: string
+          title: values
+      title: StringValues
+      additionalProperties: false
+    textql.rpc.public.dataset.UpdateDatasetResponse:
+      type: object
+      properties:
+        dataset:
+          title: dataset
+          $ref: '#/components/schemas/textql.rpc.public.dataset.Dataset'
+      title: UpdateDatasetResponse
+      additionalProperties: false
+    textql.rpc.public.dataframe.Int64Values:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            type:
+            - integer
+            - string
+            format: int64
+          title: values
+      title: Int64Values
+      additionalProperties: false
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+      - 1
+      description: Define the version of the Connect protocol
+      const: 1
+      default: 1
+    textql.rpc.public.dataset.GetDatasetsResponse:
+      type: object
+      properties:
+        datasets:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dataset.Dataset'
+          title: datasets
+          description: returns only the latest dataset versions
+      title: GetDatasetsResponse
+      additionalProperties: false
+    textql.rpc.public.dataset.DatasetPermission:
+      type: string
+      title: DatasetPermission
+      enum:
+      - PERMISSION_UNKNOWN
+      - PERMISSION_READ
+      - PERMISSION_EDIT
+      - PERMISSION_ADMIN
+    textql.rpc.public.dataset.CreateTableauDatasetResponse:
+      type: object
+      properties:
+        dataset:
+          title: dataset
+          $ref: '#/components/schemas/textql.rpc.public.dataset.Dataset'
+      title: CreateTableauDatasetResponse
+      additionalProperties: false
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: tql_api_key

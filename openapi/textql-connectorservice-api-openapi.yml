@@ -1,0 +1,3408 @@
+openapi: 3.2.0
+info:
+  title: TextQL Connector Service API
+  version: 1.0.0
+  description: 'TextQL public API. Generated from protobuf service definitions; internal
+
+    endpoints are excluded via google.api.visibility / file_visibility.'
+servers:
+- url: https://app.textql.com/rpc/public
+security:
+- apiKey: []
+tags:
+- name: ConnectorService
+paths:
+  /textql.rpc.public.connector.ConnectorService/CreateConnector:
+    post:
+      tags:
+      - ConnectorService
+      summary: CreateConnector
+      operationId: ConnectorService_CreateConnector
+      x-speakeasy-group: connectors
+      x-speakeasy-name-override: create
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.connector.CreateConnectorRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.connector.CreateConnectorResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.connectors.create({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.connectors.create()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.connector.ConnectorService/DeleteConnector:
+    post:
+      tags:
+      - ConnectorService
+      summary: DeleteConnector
+      operationId: ConnectorService_DeleteConnector
+      x-speakeasy-group: connectors
+      x-speakeasy-name-override: delete
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.connector.DeleteConnectorRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.connector.DeleteConnectorResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.connectors.delete({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.connectors.delete()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.connector.ConnectorService/DuplicateConnector:
+    post:
+      tags:
+      - ConnectorService
+      summary: DuplicateConnector
+      operationId: ConnectorService_DuplicateConnector
+      x-speakeasy-group: connectors
+      x-speakeasy-name-override: duplicateConnector
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.connector.DuplicateConnectorRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.connector.DuplicateConnectorResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.connectors.duplicateConnector({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.connectors.duplicate_connector()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.connector.ConnectorService/ExecuteQuery:
+    post:
+      tags:
+      - ConnectorService
+      summary: ExecuteQuery
+      operationId: ConnectorService_ExecuteQuery
+      x-speakeasy-group: connectors
+      x-speakeasy-name-override: executeQuery
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.connector.ExecuteQueryRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.connector.ExecuteQueryResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.connectors.executeQuery({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.connectors.execute_query()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.connector.ConnectorService/GetConnector:
+    post:
+      tags:
+      - ConnectorService
+      summary: GetConnector
+      operationId: ConnectorService_GetConnector
+      x-speakeasy-group: connectors
+      x-speakeasy-name-override: get
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.connector.GetConnectorRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.connector.GetConnectorResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.connectors.get({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.connectors.get()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.connector.ConnectorService/GetConnectorCellDurations:
+    post:
+      tags:
+      - ConnectorService
+      summary: GetConnectorCellDurations
+      operationId: ConnectorService_GetConnectorCellDurations
+      x-speakeasy-group: connectors
+      x-speakeasy-name-override: getConnectorCellDurations
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.connector.GetConnectorCellDurationsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.connector.GetConnectorCellDurationsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.connectors.getConnectorCellDurations({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.connectors.get_connector_cell_durations()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.connector.ConnectorService/GetConnectorChats:
+    post:
+      tags:
+      - ConnectorService
+      summary: GetConnectorChats
+      operationId: ConnectorService_GetConnectorChats
+      x-speakeasy-group: connectors
+      x-speakeasy-name-override: getChats
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.connector.GetConnectorChatsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.connector.GetConnectorChatsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.connectors.getChats({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.connectors.get_chats()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.connector.ConnectorService/GetConnectorDashboards:
+    post:
+      tags:
+      - ConnectorService
+      summary: GetConnectorDashboards
+      operationId: ConnectorService_GetConnectorDashboards
+      x-speakeasy-group: connectors
+      x-speakeasy-name-override: getDashboards
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.connector.GetConnectorDashboardsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.connector.GetConnectorDashboardsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.connectors.getDashboards({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.connectors.get_dashboards()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.connector.ConnectorService/GetConnectorStats:
+    post:
+      tags:
+      - ConnectorService
+      summary: GetConnectorStats
+      operationId: ConnectorService_GetConnectorStats
+      x-speakeasy-group: connectors
+      x-speakeasy-name-override: getConnectorStats
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.connector.GetConnectorStatsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.connector.GetConnectorStatsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.connectors.getConnectorStats({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.connectors.get_connector_stats()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.connector.ConnectorService/GetConnectorUsage:
+    post:
+      tags:
+      - ConnectorService
+      summary: GetConnectorUsage
+      operationId: ConnectorService_GetConnectorUsage
+      x-speakeasy-group: connectors
+      x-speakeasy-name-override: getUsage
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.connector.GetConnectorUsageRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.connector.GetConnectorUsageResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.connectors.getUsage({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.connectors.get_usage()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.connector.ConnectorService/GetConnectors:
+    post:
+      tags:
+      - ConnectorService
+      summary: GetConnectors
+      operationId: ConnectorService_GetConnectors
+      x-speakeasy-group: connectors
+      x-speakeasy-name-override: getConnectors
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.connector.GetConnectorsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.connector.GetConnectorsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.connectors.getConnectors({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.connectors.get_connectors(body={})\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.connector.ConnectorService/GetExampleQueries:
+    post:
+      tags:
+      - ConnectorService
+      summary: GetExampleQueries
+      operationId: ConnectorService_GetExampleQueries
+      x-speakeasy-group: connectors
+      x-speakeasy-name-override: getExampleQueries
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.connector.GetExampleQueriesRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.connector.GetExampleQueriesResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.connectors.getExampleQueries({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.connectors.get_example_queries()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.connector.ConnectorService/GetTablePreview:
+    post:
+      tags:
+      - ConnectorService
+      summary: GetTablePreview
+      operationId: ConnectorService_GetTablePreview
+      x-speakeasy-group: connectors
+      x-speakeasy-name-override: getTablePreview
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.connector.GetTablePreviewRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.connector.GetTablePreviewResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.connectors.getTablePreview({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.connectors.get_table_preview()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.connector.ConnectorService/ListConnectorTables:
+    post:
+      tags:
+      - ConnectorService
+      summary: ListConnectorTables
+      operationId: ConnectorService_ListConnectorTables
+      x-speakeasy-group: connectors
+      x-speakeasy-name-override: listTables
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.connector.ListConnectorTablesRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.connector.ListConnectorTablesResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.connectors.listTables({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.connectors.list_tables()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.connector.ConnectorService/ListQueryTemplates:
+    post:
+      tags:
+      - ConnectorService
+      summary: ListQueryTemplates
+      operationId: ConnectorService_ListQueryTemplates
+      x-speakeasy-group: connectors
+      x-speakeasy-name-override: listQueryTemplates
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.connector.ListQueryTemplatesRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.connector.ListQueryTemplatesResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.connectors.listQueryTemplates({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.connectors.list_query_templates()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.connector.ConnectorService/TestConnector:
+    post:
+      tags:
+      - ConnectorService
+      summary: TestConnector
+      operationId: ConnectorService_TestConnector
+      x-speakeasy-group: connectors
+      x-speakeasy-name-override: test
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.connector.TestConnectorRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.connector.TestConnectorResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.connectors.test({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.connectors.test()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.connector.ConnectorService/UpdateConnector:
+    post:
+      tags:
+      - ConnectorService
+      summary: UpdateConnector
+      operationId: ConnectorService_UpdateConnector
+      x-speakeasy-group: connectors
+      x-speakeasy-name-override: update
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.connector.UpdateConnectorRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.connector.UpdateConnectorResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.connectors.update({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.connectors.update()\n\n    # Handle response\n    print(res)"
+components:
+  schemas:
+    textql.rpc.public.connector.RedshiftMetadata:
+      type: object
+      properties:
+        host:
+          type: string
+          title: host
+        port:
+          type: integer
+          title: port
+          format: int32
+        user:
+          type: string
+          title: user
+        password:
+          type: string
+          title: password
+        database:
+          type: string
+          title: database
+        schemas:
+          type: array
+          items:
+            type: string
+          title: schemas
+        dialect:
+          type: string
+          title: dialect
+        sslMode:
+          type: boolean
+          title: ssl_mode
+        authType:
+          type: string
+          title: auth_type
+        roleArn:
+          type: string
+          title: role_arn
+        region:
+          type: string
+          title: region
+        clusterId:
+          type: string
+          title: cluster_id
+        groupFederation:
+          type: boolean
+          title: group_federation
+        awsAccessKeyId:
+          type: string
+          title: aws_access_key_id
+        awsSecretAccessKey:
+          type: string
+          title: aws_secret_access_key
+      title: RedshiftMetadata
+      additionalProperties: false
+    textql.rpc.public.connector.CreateConnectorResponse:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        name:
+          type: string
+          title: name
+        connectorType:
+          title: connector_type
+          $ref: '#/components/schemas/textql.rpc.public.connector.ConnectorType'
+      title: CreateConnectorResponse
+      additionalProperties: false
+    textql.rpc.public.connector.AthenaMetadata.AthenaAuth:
+      type: object
+      oneOf:
+      - type: object
+        properties:
+          accessKey:
+            title: access_key
+            $ref: '#/components/schemas/textql.rpc.public.connector.AthenaMetadata.AthenaAuth.AccessKeyCredentials'
+        title: access_key
+        required:
+        - accessKey
+      - type: object
+        properties:
+          iamRole:
+            title: iam_role
+            $ref: '#/components/schemas/textql.rpc.public.connector.AthenaMetadata.AthenaAuth.IAMRoleCredentials'
+        title: iam_role
+        required:
+        - iamRole
+      title: AthenaAuth
+      additionalProperties: false
+    textql.rpc.public.connector.KdbMetadata:
+      type: object
+      properties:
+        host:
+          type: string
+          title: host
+        port:
+          type: integer
+          title: port
+          format: int32
+        user:
+          type: string
+          title: user
+        password:
+          type: string
+          title: password
+        tls:
+          type: boolean
+          title: tls
+        sshTunnelEnabled:
+          type: boolean
+          title: ssh_tunnel_enabled
+        sshHost:
+          type: string
+          title: ssh_host
+        sshPort:
+          type: integer
+          title: ssh_port
+          format: int32
+        sshUser:
+          type: string
+          title: ssh_user
+          description: PASSWORD, IAM_ROLE
+        sshPrivateKey:
+          type: string
+          title: ssh_private_key
+        sshHostPublicKey:
+          type: string
+          title: ssh_host_public_key
+      title: KdbMetadata
+      additionalProperties: false
+    textql.rpc.public.connector.Connector:
+      type: object
+      allOf:
+      - type: object
+        properties:
+          id:
+            type: integer
+            title: id
+            format: int32
+          name:
+            type: string
+            title: name
+          connectorType:
+            title: connector_type
+            $ref: '#/components/schemas/textql.rpc.public.connector.ConnectorType'
+          memberId:
+            type: string
+            title: member_id
+          createdAt:
+            title: created_at
+            $ref: '#/components/schemas/google.protobuf.Timestamp'
+          isExample:
+            type: boolean
+            title: is_example
+          allowSqlWriteOperations:
+            type: boolean
+            title: allow_sql_write_operations
+          authStrategy:
+            type: string
+            title: auth_strategy
+          authenticatedByMemberId:
+            type: string
+            title: authenticated_by_member_id
+          memberAuthenticated:
+            type: boolean
+            title: member_authenticated
+            nullable: true
+          memberAuthUsername:
+            type: string
+            title: member_auth_username
+            nullable: true
+          includeDbSessionMetadata:
+            type: boolean
+            title: include_db_session_metadata
+          isPublic:
+            type: boolean
+            title: is_public
+      - oneOf:
+        - type: object
+          properties:
+            athenaMetadata:
+              title: athena_metadata
+              $ref: '#/components/schemas/textql.rpc.public.connector.AthenaMetadata'
+          title: athena_metadata
+          required:
+          - athenaMetadata
+        - type: object
+          properties:
+            auroraMetadata:
+              title: aurora_metadata
+              $ref: '#/components/schemas/textql.rpc.public.connector.AuroraMetadata'
+          title: aurora_metadata
+          required:
+          - auroraMetadata
+        - type: object
+          properties:
+            azureSynapseMetadata:
+              title: azure_synapse_metadata
+              $ref: '#/components/schemas/textql.rpc.public.connector.AzureSynapseMetadata'
+          title: azure_synapse_metadata
+          required:
+          - azureSynapseMetadata
+        - type: object
+          properties:
+            bigqueryMetadata:
+              title: bigquery_metadata
+              $ref: '#/components/schemas/textql.rpc.public.connector.BigQueryMetadata'
+          title: bigquery_metadata
+          required:
+          - bigqueryMetadata
+        - type: object
+          properties:
+            clickhouseMetadata:
+              title: clickhouse_metadata
+              $ref: '#/components/schemas/textql.rpc.public.connector.ClickHouseMetadata'
+          title: clickhouse_metadata
+          required:
+          - clickhouseMetadata
+        - type: object
+          properties:
+            databricksMetadata:
+              title: databricks_metadata
+              $ref: '#/components/schemas/textql.rpc.public.connector.DatabricksMetadata'
+          title: databricks_metadata
+          required:
+          - databricksMetadata
+        - type: object
+          properties:
+            dremioMetadata:
+              title: dremio_metadata
+              $ref: '#/components/schemas/textql.rpc.public.connector.DremioMetadata'
+          title: dremio_metadata
+          required:
+          - dremioMetadata
+        - type: object
+          properties:
+            exasolMetadata:
+              title: exasol_metadata
+              $ref: '#/components/schemas/textql.rpc.public.connector.ExasolMetadata'
+          title: exasol_metadata
+          required:
+          - exasolMetadata
+        - type: object
+          properties:
+            fireboltMetadata:
+              title: firebolt_metadata
+              $ref: '#/components/schemas/textql.rpc.public.connector.FireboltMetadata'
+          title: firebolt_metadata
+          required:
+          - fireboltMetadata
+        - type: object
+          properties:
+            gmailMetadata:
+              title: gmail_metadata
+              $ref: '#/components/schemas/textql.rpc.public.connector.GmailMetadata'
+          title: gmail_metadata
+          required:
+          - gmailMetadata
+        - type: object
+          properties:
+            googleCalendarMetadata:
+              title: google_calendar_metadata
+              $ref: '#/components/schemas/textql.rpc.public.connector.GoogleCalendarMetadata'
+          title: google_calendar_metadata
+          required:
+          - googleCalendarMetadata
+        - type: object
+          properties:
+            googleDriveMetadata:
+              title: google_drive_metadata
+              $ref: '#/components/schemas/textql.rpc.public.connector.GoogleDriveMetadata'
+          title: google_drive_metadata
+          required:
+          - googleDriveMetadata
+        - type: object
+          properties:
+            googleMetadata:
+              title: google_metadata
+              $ref: '#/components/schemas/textql.rpc.public.connector.GoogleMetadata'
+          title: google_metadata
+          required:
+          - googleMetadata
+        - type: object
+          properties:
+            kdbMetadata:
+              title: kdb_metadata
+              $ref: '#/components/schemas/textql.rpc.public.connector.KdbMetadata'
+          title: kdb_metadata
+          required:
+          - kdbMetadata
+        - type: object
+          properties:
+            microsoft365Metadata:
+              title: microsoft_365_metadata
+              $ref: '#/components/schemas/textql.rpc.public.connector.Microsoft365Metadata'
+          title: microsoft_365_metadata
+          required:
+          - microsoft365Metadata
+        - type: object
+          properties:
+            mongodbMetadata:
+              title: mongodb_metadata
+              $ref: '#/components/schemas/textql.rpc.public.connector.MongoDBMetadata'
+          title: mongodb_metadata
+          required:
+          - mongodbMetadata
+        - type: object
+          properties:
+            motherduckMetadata:
+              title: motherduck_metadata
+              $ref: '#/components/schemas/textql.rpc.public.connector.MotherduckMetadata'
+          title: motherduck_metadata
+          required:
+          - motherduckMetadata
+        - type: object
+          properties:
+            mysqlMetadata:
+              title: mysql_metadata
+              $ref: '#/components/schemas/textql.rpc.public.connector.MYSQLMetadata'
+          title: mysql_metadata
+          required:
+          - mysqlMetadata
+        - type: object
+          properties:
+            oracleMetadata:
+              title: oracle_metadata
+              $ref: '#/components/schemas/textql.rpc.public.connector.OracleMetadata'
+          title: oracle_metadata
+          required:
+          - oracleMetadata
+        - type: object
+          properties:
+            postgresMetadata:
+              title: postgres_metadata
+              $ref: '#/components/schemas/textql.rpc.public.connector.PostgresMetadata'
+          title: postgres_metadata
+          required:
+          - postgresMetadata
+        - type: object
+          properties:
+            powerbiMetadata:
+              title: powerbi_metadata
+              $ref: '#/components/schemas/textql.rpc.public.connector.PowerBIMetadata'
+          title: powerbi_metadata
+          required:
+          - powerbiMetadata
+        - type: object
+          properties:
+            redshiftMetadata:
+              title: redshift_metadata
+              $ref: '#/components/schemas/textql.rpc.public.connector.RedshiftMetadata'
+          title: redshift_metadata
+          required:
+          - redshiftMetadata
+        - type: object
+          properties:
+            sapHanaMetadata:
+              title: sap_hana_metadata
+              $ref: '#/components/schemas/textql.rpc.public.connector.SAPHanaMetadata'
+          title: sap_hana_metadata
+          required:
+          - sapHanaMetadata
+        - type: object
+          properties:
+            snowflakeMetadata:
+              title: snowflake_metadata
+              $ref: '#/components/schemas/textql.rpc.public.connector.SnowflakeMetadata'
+          title: snowflake_metadata
+          required:
+          - snowflakeMetadata
+        - type: object
+          properties:
+            sqlServerMetadata:
+              title: sql_server_metadata
+              $ref: '#/components/schemas/textql.rpc.public.connector.SQLServerMetadata'
+          title: sql_server_metadata
+          required:
+          - sqlServerMetadata
+        - type: object
+          properties:
+            supabaseMetadata:
+              title: supabase_metadata
+              $ref: '#/components/schemas/textql.rpc.public.connector.SupabaseMetadata'
+          title: supabase_metadata
+          required:
+          - supabaseMetadata
+        - type: object
+          properties:
+            tableauMetadata:
+              title: tableau_metadata
+              $ref: '#/components/schemas/textql.rpc.public.connector.TableauMetadata'
+          title: tableau_metadata
+          required:
+          - tableauMetadata
+        - type: object
+          properties:
+            trinoMetadata:
+              title: trino_metadata
+              $ref: '#/components/schemas/textql.rpc.public.connector.TrinoMetadata'
+          title: trino_metadata
+          required:
+          - trinoMetadata
+      title: Connector
+      additionalProperties: false
+    textql.rpc.public.connector.Microsoft365Metadata:
+      type: object
+      properties:
+        tenantId:
+          type: string
+          title: tenant_id
+        clientId:
+          type: string
+          title: client_id
+        clientSecret:
+          type: string
+          title: client_secret
+        accessToken:
+          type: string
+          title: access_token
+        refreshToken:
+          type: string
+          title: refresh_token
+        memberId:
+          type: string
+          title: member_id
+        tokenExpiry:
+          type: string
+          title: token_expiry
+        metadataOnly:
+          type: boolean
+          title: metadata_only
+        scopes:
+          type: array
+          items:
+            type: string
+          title: scopes
+      title: Microsoft365Metadata
+      additionalProperties: false
+    textql.rpc.public.connector.ConnectorDashboard:
+      type: object
+      properties:
+        dashboardId:
+          type: string
+          title: dashboard_id
+        name:
+          type: string
+          title: name
+        memberId:
+          type: string
+          title: member_id
+        displayName:
+          type: string
+          title: display_name
+        email:
+          type: string
+          title: email
+        queryCount:
+          type:
+          - integer
+          - string
+          title: query_count
+          format: int64
+        lastActivity:
+          title: last_activity
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        tables:
+          type: array
+          items:
+            type: string
+          title: tables
+        pictureUrl:
+          type: string
+          title: picture_url
+      title: ConnectorDashboard
+      additionalProperties: false
+    textql.rpc.public.connector.ConnectorAccessConfig:
+      type: object
+      properties:
+        isPublic:
+          type: boolean
+          title: is_public
+        grants:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.connector.ConnectorAccessGrant'
+          title: grants
+      title: ConnectorAccessConfig
+      additionalProperties: false
+    textql.rpc.public.connector.ConnectorChatStats:
+      type: object
+      properties:
+        chatsThisWeek:
+          type:
+          - integer
+          - string
+          title: chats_this_week
+          format: int64
+        chatsLastWeek:
+          type:
+          - integer
+          - string
+          title: chats_last_week
+          format: int64
+        activeUsers:
+          type:
+          - integer
+          - string
+          title: active_users
+          format: int64
+        activeUsersLastWeek:
+          type:
+          - integer
+          - string
+          title: active_users_last_week
+          format: int64
+        avgQueriesPerChat:
+          type: number
+          title: avg_queries_per_chat
+          format: double
+        totalChats:
+          type:
+          - integer
+          - string
+          title: total_chats
+          format: int64
+      title: ConnectorChatStats
+      additionalProperties: false
+    textql.rpc.public.connector.ConnectorContext:
+      type: object
+      allOf:
+      - type: object
+        properties:
+          connectorId:
+            type: integer
+            title: connector_id
+            format: int32
+      - oneOf:
+        - type: object
+          properties:
+            powerbi:
+              title: powerbi
+              $ref: '#/components/schemas/textql.rpc.public.connector.PowerBIConnectorContext'
+          title: powerbi
+          required:
+          - powerbi
+        - type: object
+          properties:
+            tableau:
+              title: tableau
+              $ref: '#/components/schemas/textql.rpc.public.connector.TableauConnectorContext'
+          title: tableau
+          required:
+          - tableau
+      title: ConnectorContext
+      additionalProperties: false
+    textql.rpc.public.connector.MotherduckMetadata:
+      type: object
+      properties:
+        token:
+          type: string
+          title: token
+      title: MotherduckMetadata
+      additionalProperties: false
+    textql.rpc.public.connector.GetTablePreviewRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        tableDatabase:
+          type: string
+          title: table_database
+        tableSchema:
+          type: string
+          title: table_schema
+        tableName:
+          type: string
+          title: table_name
+        limit:
+          type: integer
+          title: limit
+          format: int32
+      title: GetTablePreviewRequest
+      additionalProperties: false
+    textql.rpc.public.connector.GetConnectorDashboardsResponse:
+      type: object
+      properties:
+        stats:
+          title: stats
+          $ref: '#/components/schemas/textql.rpc.public.connector.ConnectorDashboardStats'
+        dashboards:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.connector.ConnectorDashboard'
+          title: dashboards
+      title: GetConnectorDashboardsResponse
+      additionalProperties: false
+    textql.rpc.public.connector.FeatureType:
+      type: string
+      title: FeatureType
+      enum:
+      - FEATURE_TYPE_UNSPECIFIED
+      - FEATURE_TYPE_REPORT
+      - FEATURE_TYPE_PLAYBOOK
+      - FEATURE_TYPE_DASHBOARD
+      - FEATURE_TYPE_DATA_APP
+      - FEATURE_TYPE_AGENT
+      description: Feature types for nudge queries - identifies which feature a query promotes
+    textql.rpc.public.connector.GoogleMetadata:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          title: access_token
+        refreshToken:
+          type: string
+          title: refresh_token
+        memberId:
+          type: string
+          title: member_id
+        gmailEnabled:
+          type: boolean
+          title: gmail_enabled
+        calendarEnabled:
+          type: boolean
+          title: calendar_enabled
+        metadataOnly:
+          type: boolean
+          title: metadata_only
+        driveEnabled:
+          type: boolean
+          title: drive_enabled
+        tokenExpiry:
+          type: string
+          title: token_expiry
+      title: GoogleMetadata
+      additionalProperties: false
+    textql.rpc.public.connector.DatabricksMetadata.DatabricksAuth.ClientCredentials:
+      type: object
+      properties:
+        clientId:
+          type: string
+          title: client_id
+        clientSecret:
+          type: string
+          title: client_secret
+      title: ClientCredentials
+      additionalProperties: false
+    textql.rpc.public.connector.ListConnectorTablesResponse:
+      type: object
+      properties:
+        tables:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.connector.ConnectorTable'
+          title: tables
+        error:
+          type: string
+          title: error
+      title: ListConnectorTablesResponse
+      additionalProperties: false
+    textql.rpc.public.connector.GoogleDriveMetadata:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          title: access_token
+        refreshToken:
+          type: string
+          title: refresh_token
+        memberId:
+          type: string
+          title: member_id
+      title: GoogleDriveMetadata
+      additionalProperties: false
+    textql.rpc.public.connector.PostgresMetadata:
+      type: object
+      properties:
+        host:
+          type: string
+          title: host
+        port:
+          type: integer
+          title: port
+          format: int32
+        user:
+          type: string
+          title: user
+        password:
+          type: string
+          title: password
+        database:
+          type: string
+          title: database
+        schemas:
+          type: array
+          items:
+            type: string
+          title: schemas
+        dialect:
+          type: string
+          title: dialect
+        sslMode:
+          type: boolean
+          title: ssl_mode
+        sshTunnelEnabled:
+          type: boolean
+          title: ssh_tunnel_enabled
+        sshHost:
+          type: string
+          title: ssh_host
+        sshPort:
+          type: integer
+          title: ssh_port
+          format: int32
+        sshUser:
+          type: string
+          title: ssh_user
+        sshPrivateKey:
+          type: string
+          title: ssh_private_key
+        sshHostPublicKey:
+          type: string
+          title: ssh_host_public_key
+        secretsManagerSecretArn:
+          type: string
+          title: secrets_manager_secret_arn
+        secretsManagerRoleArn:
+          type: string
+          title: secrets_manager_role_arn
+        secretsManagerExternalId:
+          type: string
+          title: secrets_manager_external_id
+      title: PostgresMetadata
+      additionalProperties: false
+    textql.rpc.public.connector.ConnectorTable:
+      type: object
+      properties:
+        tableDatabase:
+          type: string
+          title: table_database
+        tableSchema:
+          type: string
+          title: table_schema
+        tableName:
+          type: string
+          title: table_name
+        preview:
+          title: preview
+          $ref: '#/components/schemas/textql.rpc.public.connector.QueryResult'
+        primaryKeys:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.connector.PrimaryKeyMetadata'
+          title: primary_keys
+        tableType:
+          type: string
+          title: table_type
+      title: ConnectorTable
+      additionalProperties: false
+    textql.rpc.public.connector.GoogleCalendarMetadata:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          title: access_token
+        refreshToken:
+          type: string
+          title: refresh_token
+        memberId:
+          type: string
+          title: member_id
+        metadataOnly:
+          type: boolean
+          title: metadata_only
+      title: GoogleCalendarMetadata
+      additionalProperties: false
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+      - 1
+      description: Define the version of the Connect protocol
+      const: 1
+      default: 1
+    textql.rpc.public.connector.PrimaryKeyMetadata:
+      type: object
+      properties:
+        columns:
+          type: array
+          items:
+            type: string
+          title: columns
+        descriptions:
+          type: array
+          items:
+            type: string
+          title: descriptions
+      title: PrimaryKeyMetadata
+      additionalProperties: false
+    textql.rpc.public.connector.TestConnectorRequest:
+      type: object
+      properties:
+        config:
+          title: config
+          $ref: '#/components/schemas/textql.rpc.public.connector.ConnectorConfig'
+        connectorId:
+          type: string
+          title: connector_id
+          nullable: true
+      title: TestConnectorRequest
+      additionalProperties: false
+    textql.rpc.public.connector.SnowflakeMetadata:
+      type: object
+      properties:
+        username:
+          type: string
+          title: username
+        password:
+          type: string
+          title: password
+        privateKey:
+          type: string
+          title: private_key
+        privateKeyPassphrase:
+          type: string
+          title: private_key_passphrase
+        role:
+          type: string
+          title: role
+          description: default database to query
+        schema:
+          type: string
+          title: schema
+          description: authSource (e.g. "admin"); defaults to database when empty
+        locator:
+          type: string
+          title: locator
+        database:
+          type: string
+          title: database
+          description: mongodb+srv connection (Atlas) — host is the cluster DNS name
+        warehouse:
+          type: string
+          title: warehouse
+        oauthAccessToken:
+          type: string
+          title: oauth_access_token
+        oauthRefreshToken:
+          type: string
+          title: oauth_refresh_token
+        oauthClientId:
+          type: string
+          title: oauth_client_id
+        oauthClientSecret:
+          type: string
+          title: oauth_client_secret
+        enableSsoAuth:
+          type: boolean
+          title: enable_sso_auth
+        tokenExchangeEndpoint:
+          type: string
+          title: token_exchange_endpoint
+        tokenExchangeAudience:
+          type: string
+          title: token_exchange_audience
+        tokenExchangeScope:
+          type: string
+          title: token_exchange_scope
+      title: SnowflakeMetadata
+      additionalProperties: false
+    textql.rpc.public.connector.GetTablePreviewResponse:
+      type: object
+      properties:
+        arrowData:
+          type: string
+          title: arrow_data
+          format: byte
+        success:
+          type: boolean
+          title: success
+        errorMessage:
+          type: string
+          title: error_message
+      title: GetTablePreviewResponse
+      additionalProperties: false
+    textql.rpc.public.connector.ListQueryTemplatesResponse:
+      type: object
+      properties:
+        templates:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.connector.QueryTemplate'
+          title: templates
+          description: 0 = all-time
+        totalCount:
+          type: integer
+          title: total_count
+          format: int32
+      title: ListQueryTemplatesResponse
+      additionalProperties: false
+    textql.rpc.public.connector.UpdateConnectorResponse:
+      type: object
+      properties:
+        connector:
+          title: connector
+          $ref: '#/components/schemas/textql.rpc.public.connector.Connector'
+      title: UpdateConnectorResponse
+      additionalProperties: false
+    textql.rpc.public.connector.DeleteConnectorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: DeleteConnectorResponse
+      additionalProperties: false
+    textql.rpc.public.connector.GetConnectorDashboardsRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+      title: GetConnectorDashboardsRequest
+      additionalProperties: false
+    textql.rpc.public.connector.GetConnectorRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+      title: GetConnectorRequest
+      additionalProperties: false
+    textql.rpc.public.connector.ExecuteQueryRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        query:
+          type: string
+          title: query
+        limit:
+          type: integer
+          title: limit
+          format: int32
+          nullable: true
+      title: ExecuteQueryRequest
+      additionalProperties: false
+    textql.rpc.public.connector.GetConnectorsResponse:
+      type: object
+      properties:
+        connectors:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.connector.Connector'
+          title: connectors
+      title: GetConnectorsResponse
+      additionalProperties: false
+    textql.rpc.public.connector.BigQueryMetadata:
+      type: object
+      properties:
+        projectId:
+          type: string
+          title: project_id
+        datasetId:
+          type: string
+          title: dataset_id
+        serviceAccountKey:
+          type: string
+          title: service_account_key
+        regionQualifier:
+          type: string
+          title: region_qualifier
+      title: BigQueryMetadata
+      additionalProperties: false
+    textql.rpc.public.connector.DuplicateConnectorRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+      title: DuplicateConnectorRequest
+      additionalProperties: false
+    textql.rpc.public.connector.GetConnectorUsageRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        days:
+          type: integer
+          title: days
+          format: int32
+      title: GetConnectorUsageRequest
+      additionalProperties: false
+    textql.rpc.public.connector.QueryResult:
+      type: object
+      properties:
+        arrowData:
+          type: string
+          title: arrow_data
+          format: byte
+        totalRows:
+          type:
+          - integer
+          - string
+          title: total_rows
+          format: int64
+      title: QueryResult
+      additionalProperties: false
+    textql.rpc.public.connector.DatabricksMetadata:
+      type: object
+      properties:
+        host:
+          type: string
+          title: host
+        httpPath:
+          type: string
+          title: http_path
+        port:
+          type: integer
+          title: port
+          format: int32
+        databricksAuth:
+          title: databricks_auth
+          $ref: '#/components/schemas/textql.rpc.public.connector.DatabricksMetadata.DatabricksAuth'
+        catalog:
+          type: string
+          title: catalog
+        schema:
+          type: string
+          title: schema
+        enableTokenExchange:
+          type: boolean
+          title: enable_token_exchange
+      title: DatabricksMetadata
+      additionalProperties: false
+    textql.rpc.public.connector.PowerBIMetadata:
+      type: object
+      properties:
+        tenantId:
+          type: string
+          title: tenant_id
+        clientId:
+          type: string
+          title: client_id
+        clientSecret:
+          type: string
+          title: client_secret
+        objectId:
+          type: string
+          title: object_id
+          nullable: true
+        roles:
+          type: string
+          title: roles
+          nullable: true
+      title: PowerBIMetadata
+      additionalProperties: false
+    textql.rpc.public.connector.QueryJoinInfo:
+      type: object
+      properties:
+        tables:
+          type: array
+          items:
+            type: string
+          title: tables
+        joinType:
+          type: string
+          title: join_type
+      title: QueryJoinInfo
+      additionalProperties: false
+    textql.rpc.public.connector.GetConnectorCellDurationsResponse:
+      type: object
+      properties:
+        cells:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.connector.ConnectorCellDuration'
+          title: cells
+        totalCount:
+          type:
+          - integer
+          - string
+          title: total_count
+          format: int64
+      title: GetConnectorCellDurationsResponse
+      additionalProperties: false
+    textql.rpc.public.connector.DremioMetadata:
+      type: object
+      properties:
+        host:
+          type: string
+          title: host
+        port:
+          type: integer
+          title: port
+          format: int32
+        user:
+          type: string
+          title: user
+        password:
+          type: string
+          title: password
+        token:
+          type: string
+          title: token
+        projectId:
+          type: string
+          title: project_id
+        spaces:
+          type: array
+          items:
+            type: string
+          title: spaces
+        sslMode:
+          type: boolean
+          title: ssl_mode
+      title: DremioMetadata
+      additionalProperties: false
+    textql.rpc.public.connector.SupabaseMetadata:
+      type: object
+      properties:
+        host:
+          type: string
+          title: host
+        port:
+          type: integer
+          title: port
+          format: int32
+        user:
+          type: string
+          title: user
+        password:
+          type: string
+          title: password
+        database:
+          type: string
+          title: database
+        schemas:
+          type: array
+          items:
+            type: string
+          title: schemas
+          description: SSH tunnel / bastion host fields
+        dialect:
+          type: string
+          title: dialect
+        sslMode:
+          type: boolean
+          title: ssl_mode
+      title: SupabaseMetadata
+      additionalProperties: false
+      description: "KdbMetadata configures a kdb+ (kx/q) connector. kdb+ speaks its own binary IPC\n protocol (not SQL), so queries are qSQL strings; see pkg/connectors/kdbipc."
+    textql.rpc.public.connector.TrinoMetadata:
+      type: object
+      properties:
+        host:
+          type: string
+          title: host
+        port:
+          type: integer
+          title: port
+          format: int32
+        user:
+          type: string
+          title: user
+        password:
+          type: string
+          title: password
+        catalog:
+          type: string
+          title: catalog
+        schema:
+          type: string
+          title: schema
+        sslMode:
+          type: boolean
+          title: ssl_mode
+          description: ISO 8601 timestamp
+        accessToken:
+          type: string
+          title: access_token
+          description: When true, only email metadata is accessible (no body content)
+        skipTlsVerify:
+          type: boolean
+          title: skip_tls_verify
+      title: TrinoMetadata
+      additionalProperties: false
+    textql.rpc.public.connector.ConnectorDashboardStats:
+      type: object
+      properties:
+        dashboardsThisWeek:
+          type:
+          - integer
+          - string
+          title: dashboards_this_week
+          format: int64
+        dashboardsLastWeek:
+          type:
+          - integer
+          - string
+          title: dashboards_last_week
+          format: int64
+        activeUsers:
+          type:
+          - integer
+          - string
+          title: active_users
+          format: int64
+        activeUsersLastWeek:
+          type:
+          - integer
+          - string
+          title: active_users_last_week
+          format: int64
+        avgQueriesPerDashboard:
+          type: number
+          title: avg_queries_per_dashboard
+          format: double
+        totalDashboards:
+          type:
+          - integer
+          - string
+          title: total_dashboards
+          format: int64
+      title: ConnectorDashboardStats
+      additionalProperties: false
+    textql.rpc.public.connector.AthenaMetadata.AthenaAuth.AccessKeyCredentials:
+      type: object
+      properties:
+        accessKeyId:
+          type: string
+          title: access_key_id
+        secretAccessKey:
+          type: string
+          title: secret_access_key
+      title: AccessKeyCredentials
+      additionalProperties: false
+    textql.rpc.public.connector.GmailMetadata:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          title: access_token
+        refreshToken:
+          type: string
+          title: refresh_token
+        memberId:
+          type: string
+          title: member_id
+        metadataOnly:
+          type: boolean
+          title: metadata_only
+      title: GmailMetadata
+      additionalProperties: false
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
+          type: string
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+          - type: object
+            title: Any
+            additionalProperties: true
+            description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
+    textql.rpc.public.connector.DailyDuration:
+      type: object
+      properties:
+        date:
+          type: string
+          title: date
+        totalMs:
+          type:
+          - integer
+          - string
+          title: total_ms
+          format: int64
+      title: DailyDuration
+      additionalProperties: false
+    textql.rpc.public.connector.SQLServerMetadata:
+      type: object
+      properties:
+        host:
+          type: string
+          title: host
+        port:
+          type: integer
+          title: port
+          format: int32
+        user:
+          type: string
+          title: user
+        password:
+          type: string
+          title: password
+        database:
+          type: string
+          title: database
+        schema:
+          type: string
+          title: schema
+        sslMode:
+          type: boolean
+          title: ssl_mode
+        authType:
+          type: string
+          title: auth_type
+        krb5Realm:
+          type: string
+          title: krb5_realm
+        krb5Config:
+          type: string
+          title: krb5_config
+        krb5Keytab:
+          type: string
+          title: krb5_keytab
+        krb5Spn:
+          type: string
+          title: krb5_spn
+        clientCert:
+          type: string
+          title: client_cert
+        clientKey:
+          type: string
+          title: client_key
+        tenantId:
+          type: string
+          title: tenant_id
+        clientId:
+          type: string
+          title: client_id
+        clientSecret:
+          type: string
+          title: client_secret
+      title: SQLServerMetadata
+      additionalProperties: false
+    textql.rpc.public.connector.UpdateConnectorRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        config:
+          title: config
+          $ref: '#/components/schemas/textql.rpc.public.connector.ConnectorConfig'
+        allowSqlWriteOperations:
+          type: boolean
+          title: allow_sql_write_operations
+          nullable: true
+        includeDbSessionMetadata:
+          type: boolean
+          title: include_db_session_metadata
+          nullable: true
+      title: UpdateConnectorRequest
+      additionalProperties: false
+    textql.rpc.public.connector.TableauMetadata:
+      type: object
+      properties:
+        serverUrl:
+          type: string
+          title: server_url
+        siteName:
+          type: string
+          title: site_name
+        patName:
+          type: string
+          title: pat_name
+        patSecret:
+          type: string
+          title: pat_secret
+        connectedAppClientId:
+          type: string
+          title: connected_app_client_id
+          nullable: true
+        connectedAppSecretId:
+          type: string
+          title: connected_app_secret_id
+          nullable: true
+        connectedAppSecretValue:
+          type: string
+          title: connected_app_secret_value
+          nullable: true
+      title: TableauMetadata
+      additionalProperties: false
+    textql.rpc.public.connector.DatabricksMetadata.DatabricksAuth.OAuthU2M:
+      type: object
+      properties:
+        clientId:
+          type: string
+          title: client_id
+        clientSecret:
+          type: string
+          title: client_secret
+      title: OAuthU2M
+      additionalProperties: false
+    textql.rpc.public.connector.ExecuteQueryResponse:
+      type: object
+      properties:
+        arrowData:
+          type: string
+          title: arrow_data
+          format: byte
+        success:
+          type: boolean
+          title: success
+        errorMessage:
+          type: string
+          title: error_message
+      title: ExecuteQueryResponse
+      additionalProperties: false
+    textql.rpc.public.connector.GetConnectorStatsRequest:
+      type: object
+      properties:
+        days:
+          type: integer
+          title: days
+          format: int32
+      title: GetConnectorStatsRequest
+      additionalProperties: false
+    textql.rpc.public.connector.ConnectorAccessGrant:
+      type: object
+      properties:
+        memberId:
+          type: string
+          title: member_id
+        roleId:
+          type: string
+          title: role_id
+        groupId:
+          type: string
+          title: group_id
+        accessType:
+          type: string
+          title: access_type
+      title: ConnectorAccessGrant
+      additionalProperties: false
+    textql.rpc.public.connector.DatabricksMetadata.DatabricksAuth.PersonalAccessToken:
+      type: object
+      properties:
+        token:
+          type: string
+          title: token
+      title: PersonalAccessToken
+      additionalProperties: false
+    textql.rpc.public.connector.TableauConnectorContext:
+      type: object
+      properties:
+        collectionIds:
+          type: array
+          items:
+            type: string
+          title: collection_ids
+      title: TableauConnectorContext
+      additionalProperties: false
+    textql.rpc.public.connector.ConnectorConfig:
+      type: object
+      allOf:
+      - type: object
+        properties:
+          connectorType:
+            title: connector_type
+            $ref: '#/components/schemas/textql.rpc.public.connector.ConnectorType'
+          name:
+            type: string
+            title: name
+          authStrategy:
+            type: string
+            title: auth_strategy
+      - oneOf:
+        - type: object
+          properties:
+            athena:
+              title: athena
+              $ref: '#/components/schemas/textql.rpc.public.connector.AthenaMetadata'
+          title: athena
+          required:
+          - athena
+        - type: object
+          properties:
+            aurora:
+              title: aurora
+              $ref: '#/components/schemas/textql.rpc.public.connector.AuroraMetadata'
+          title: aurora
+          required:
+          - aurora
+        - type: object
+          properties:
+            azureSynapse:
+              title: azure_synapse
+              $ref: '#/components/schemas/textql.rpc.public.connector.AzureSynapseMetadata'
+          title: azure_synapse
+          required:
+          - azureSynapse
+        - type: object
+          properties:
+            bigquery:
+              title: bigquery
+              $ref: '#/components/schemas/textql.rpc.public.connector.BigQueryMetadata'
+          title: bigquery
+          required:
+          - bigquery
+        - type: object
+          properties:
+            clickhouse:
+              title: clickhouse
+              $ref: '#/components/schemas/textql.rpc.public.connector.ClickHouseMetadata'
+          title: clickhouse
+          required:
+          - clickhouse
+        - type: object
+          properties:
+            databricks:
+              title: databricks
+              $ref: '#/components/schemas/textql.rpc.public.connector.DatabricksMetadata'
+          title: databricks
+          required:
+          - databricks
+        - type: object
+          properties:
+            dremio:
+              title: dremio
+              $ref: '#/components/schemas/textql.rpc.public.connector.DremioMetadata'
+          title: dremio
+          required:
+          - dremio
+        - type: object
+          properties:
+            exasol:
+              title: exasol
+              $ref: '#/components/schemas/textql.rpc.public.connector.ExasolMetadata'
+          title: exasol
+          required:
+          - exasol
+        - type: object
+          properties:
+            firebolt:
+              title: firebolt
+              $ref: '#/components/schemas/textql.rpc.public.connector.FireboltMetadata'
+          title: firebolt
+          required:
+          - firebolt
+        - type: object
+          properties:
+            gmail:
+              title: gmail
+              $ref: '#/components/schemas/textql.rpc.public.connector.GmailMetadata'
+          title: gmail
+          required:
+          - gmail
+        - type: object
+          properties:
+            google:
+              title: google
+              $ref: '#/components/schemas/textql.rpc.public.connector.GoogleMetadata'
+          title: google
+          required:
+          - google
+        - type: object
+          properties:
+            googleCalendar:
+              title: google_calendar
+              $ref: '#/components/schemas/textql.rpc.public.connector.GoogleCalendarMetadata'
+          title: google_calendar
+          required:
+          - googleCalendar
+        - type: object
+          properties:
+            googleDrive:
+              title: google_drive
+              $ref: '#/components/schemas/textql.rpc.public.connector.GoogleDriveMetadata'
+          title: google_drive
+          required:
+          - googleDrive
+        - type: object
+          properties:
+            kdb:
+              title: kdb
+              $ref: '#/components/schemas/textql.rpc.public.connector.KdbMetadata'
+          title: kdb
+          required:
+          - kdb
+        - type: object
+          properties:
+            microsoft365:
+              title: microsoft_365
+              $ref: '#/components/schemas/textql.rpc.public.connector.Microsoft365Metadata'
+          title: microsoft_365
+          required:
+          - microsoft365
+        - type: object
+          properties:
+            mongodb:
+              title: mongodb
+              $ref: '#/components/schemas/textql.rpc.public.connector.MongoDBMetadata'
+          title: mongodb
+          required:
+          - mongodb
+        - type: object
+          properties:
+            motherduck:
+              title: motherduck
+              $ref: '#/components/schemas/textql.rpc.public.connector.MotherduckMetadata'
+          title: motherduck
+          required:
+          - motherduck
+        - type: object
+          properties:
+            mysql:
+              title: mysql
+              $ref: '#/components/schemas/textql.rpc.public.connector.MYSQLMetadata'
+          title: mysql
+          required:
+          - mysql
+        - type: object
+          properties:
+            oracle:
+              title: oracle
+              $ref: '#/components/schemas/textql.rpc.public.connector.OracleMetadata'
+          title: oracle
+          required:
+          - oracle
+        - type: object
+          properties:
+            postgres:
+              title: postgres
+              $ref: '#/components/schemas/textql.rpc.public.connector.PostgresMetadata'
+          title: postgres
+          required:
+          - postgres
+        - type: object
+          properties:
+            powerbi:
+              title: powerbi
+              $ref: '#/components/schemas/textql.rpc.public.connector.PowerBIMetadata'
+          title: powerbi
+          required:
+          - powerbi
+        - type: object
+          properties:
+            redshift:
+              title: redshift
+              $ref: '#/components/schemas/textql.rpc.public.connector.RedshiftMetadata'
+          title: redshift
+          required:
+          - redshift
+        - type: object
+          properties:
+            sapHana:
+              title: sap_hana
+              $ref: '#/components/schemas/textql.rpc.public.connector.SAPHanaMetadata'
+          title: sap_hana
+          required:
+          - sapHana
+        - type: object
+          properties:
+            snowflake:
+              title: snowflake
+              $ref: '#/components/schemas/textql.rpc.public.connector.SnowflakeMetadata'
+          title: snowflake
+          required:
+          - snowflake
+        - type: object
+          properties:
+            sqlServer:
+              title: sql_server
+              $ref: '#/components/schemas/textql.rpc.public.connector.SQLServerMetadata'
+          title: sql_server
+          required:
+          - sqlServer
+        - type: object
+          properties:
+            supabase:
+              title: supabase
+              $ref: '#/components/schemas/textql.rpc.public.connector.SupabaseMetadata'
+          title: supabase
+          required:
+          - supabase
+        - type: object
+          properties:
+            tableau:
+              title: tableau
+              $ref: '#/components/schemas/textql.rpc.public.connector.TableauMetadata'
+          title: tableau
+          required:
+          - tableau
+        - type: object
+          properties:
+            trino:
+              title: trino
+              $ref: '#/components/schemas/textql.rpc.public.connector.TrinoMetadata'
+          title: trino
+          required:
+          - trino
+      title: ConnectorConfig
+      additionalProperties: false
+    textql.rpc.public.connector.GetConnectorStatsResponse:
+      type: object
+      properties:
+        stats:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.connector.ConnectorStatEntry'
+          title: stats
+      title: GetConnectorStatsResponse
+      additionalProperties: false
+    textql.rpc.public.connector.AthenaMetadata.AthenaAuth.IAMRoleCredentials:
+      type: object
+      properties:
+        roleArn:
+          type: string
+          title: role_arn
+        sessionName:
+          type: string
+          title: session_name
+      title: IAMRoleCredentials
+      additionalProperties: false
+    textql.rpc.public.connector.GetConnectorChatsRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+      title: GetConnectorChatsRequest
+      additionalProperties: false
+    textql.rpc.public.connector.GetConnectorsRequest:
+      type: object
+      title: GetConnectorsRequest
+      additionalProperties: false
+    textql.rpc.public.connector.GetConnectorCellDurationsRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        days:
+          type: integer
+          title: days
+          format: int32
+        limit:
+          type: integer
+          title: limit
+          format: int32
+        offset:
+          type: integer
+          title: offset
+          format: int32
+      title: GetConnectorCellDurationsRequest
+      additionalProperties: false
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+          - not_found
+          enum:
+          - canceled
+          - unknown
+          - invalid_argument
+          - deadline_exceeded
+          - not_found
+          - already_exists
+          - permission_denied
+          - resource_exhausted
+          - failed_precondition
+          - aborted
+          - out_of_range
+          - unimplemented
+          - internal
+          - unavailable
+          - data_loss
+          - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    textql.rpc.public.connector.AuroraMetadata:
+      type: object
+      properties:
+        host:
+          type: string
+          title: host
+        port:
+          type: integer
+          title: port
+          format: int32
+        user:
+          type: string
+          title: user
+        password:
+          type: string
+          title: password
+        database:
+          type: string
+          title: database
+        schema:
+          type: string
+          title: schema
+        dialect:
+          type: string
+          title: dialect
+        sslMode:
+          type: boolean
+          title: ssl_mode
+        auroraAuth:
+          title: aurora_auth
+          $ref: '#/components/schemas/textql.rpc.public.connector.AuroraMetadata.AuroraAuth'
+      title: AuroraMetadata
+      additionalProperties: false
+    textql.rpc.public.connector.FireboltMetadata:
+      type: object
+      properties:
+        accountName:
+          type: string
+          title: account_name
+        database:
+          type: string
+          title: database
+        engineName:
+          type: string
+          title: engine_name
+        clientId:
+          type: string
+          title: client_id
+        clientSecret:
+          type: string
+          title: client_secret
+        schemas:
+          type: array
+          items:
+            type: string
+          title: schemas
+      title: FireboltMetadata
+      additionalProperties: false
+    textql.rpc.public.connector.DeleteConnectorRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+      title: DeleteConnectorRequest
+      additionalProperties: false
+    textql.rpc.public.connector.QueryTemplateCteRef:
+      type: object
+      properties:
+        templateId:
+          type: string
+          title: template_id
+        cteName:
+          type: string
+          title: cte_name
+      title: QueryTemplateCteRef
+      additionalProperties: false
+    textql.rpc.public.connector.ListQueryTemplatesRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        limit:
+          type: integer
+          title: limit
+          format: int32
+        offset:
+          type: integer
+          title: offset
+          format: int32
+          description: 0.0-1.0
+        days:
+          type: integer
+          title: days
+          format: int32
+          description: milliseconds
+      title: ListQueryTemplatesRequest
+      additionalProperties: false
+    textql.rpc.public.connector.TopUser:
+      type: object
+      properties:
+        memberId:
+          type: string
+          title: member_id
+        displayName:
+          type: string
+          title: display_name
+        email:
+          type: string
+          title: email
+        queryCount:
+          type:
+          - integer
+          - string
+          title: query_count
+          format: int64
+        chatCount:
+          type:
+          - integer
+          - string
+          title: chat_count
+          format: int64
+        pictureUrl:
+          type: string
+          title: picture_url
+      title: TopUser
+      additionalProperties: false
+    textql.rpc.public.connector.AuroraMetadata.AuroraAuth:
+      type: object
+      properties:
+        iamAuth:
+          type: boolean
+          title: iam_auth
+        clusterId:
+          type: string
+          title: cluster_id
+        region:
+          type: string
+          title: region
+      title: AuroraAuth
+      additionalProperties: false
+    textql.rpc.public.connector.GetConnectorResponse:
+      type: object
+      properties:
+        connector:
+          title: connector
+          $ref: '#/components/schemas/textql.rpc.public.connector.Connector'
+      title: GetConnectorResponse
+      additionalProperties: false
+    textql.rpc.public.connector.MYSQLMetadata:
+      type: object
+      properties:
+        host:
+          type: string
+          title: host
+        port:
+          type: integer
+          title: port
+          format: int32
+        user:
+          type: string
+          title: user
+        password:
+          type: string
+          title: password
+        database:
+          type: string
+          title: database
+        schema:
+          type: string
+          title: schema
+        sslMode:
+          type: boolean
+          title: ssl_mode
+      title: MYSQLMetadata
+      additionalProperties: false
+    textql.rpc.public.connector.ClickHouseMetadata:
+      type: object
+      properties:
+        host:
+          type: string
+          title: host
+        port:
+          type: integer
+          title: port
+          format: int32
+        user:
+          type: string
+          title: user
+        password:
+          type: string
+          title: password
+        database:
+          type: string
+          title: database
+        useSsl:
+          type: boolean
+          title: use_ssl
+        protocol:
+          type: string
+          title: protocol
+      title: ClickHouseMetadata
+      additionalProperties: false
+    textql.rpc.public.connector.CreateConnectorRequest:
+      type: object
+      properties:
+        config:
+          title: config
+          $ref: '#/components/schemas/textql.rpc.public.connector.ConnectorConfig'
+        allowSqlWriteOperations:
+          type: boolean
+          title: allow_sql_write_operations
+          nullable: true
+        includeDbSessionMetadata:
+          type: boolean
+          title: include_db_session_metadata
+          nullable: true
+        access:
+          title: access
+          $ref: '#/components/schemas/textql.rpc.public.connector.ConnectorAccessConfig'
+      title: CreateConnectorRequest
+      additionalProperties: false
+    textql.rpc.public.connector.PowerBIConnectorContext:
+      type: object
+      properties:
+        reportIds:
+          type: array
+          items:
+            type: string
+          title: report_ids
+        datasetIds:
+          type: array
+          items:
+            type: string
+          title: dataset_ids
+          description: If set, only return queries with this feature type
+        collectionIds:
+          type: array
+          items:
+            type: string
+          title: collection_ids
+      title: PowerBIConnectorContext
+      additionalProperties: false
+    textql.rpc.public.connector.ConnectorCellDuration:
+      type: object
+      properties:
+        cellId:
+          type: string
+          title: cell_id
+        chatId:
+          type: string
+          title: chat_id
+        durationMs:
+          type:
+          - integer
+          - string
+          title: duration_ms
+          format: int64
+        hasDuration:
+          type: boolean
+          title: has_duration
+        startedAt:
+          title: started_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        executionError:
+          type: string
+          title: execution_error
+        memberId:
+          type: string
+          title: member_id
+      title: ConnectorCellDuration
+      additionalProperties: false
+    textql.rpc.public.connector.GetConnectorUsageResponse:
+      type: object
+      properties:
+        dailyVolume:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.connector.DailyQueryCount'
+          title: daily_volume
+        topUsers:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.connector.TopUser'
+          title: top_users
+        totalQueries:
+          type:
+          - integer
+          - string
+          title: total_queries
+          format: int64
+        dailyExecutionMs:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.connector.DailyDuration'
+          title: daily_execution_ms
+      title: GetConnectorUsageResponse
+      additionalProperties: false
+    textql.rpc.public.connector.AthenaMetadata:
+      type: object
+      properties:
+        region:
+          type: string
+          title: region
+        database:
+          type: string
+          title: database
+        workgroup:
+          type: string
+          title: workgroup
+        s3OutputLocation:
+          type: string
+          title: s3_output_location
+        athenaAuth:
+          title: athena_auth
+          $ref: '#/components/schemas/textql.rpc.public.connector.AthenaMetadata.AthenaAuth'
+        catalog:
+          type: string
+          title: catalog
+      title: AthenaMetadata
+      additionalProperties: false
+    textql.rpc.public.connector.SAPHanaMetadata:
+      type: object
+      properties:
+        host:
+          type: string
+          title: host
+        port:
+          type: integer
+          title: port
+          format: int32
+        user:
+          type: string
+          title: user
+        password:
+          type: string
+          title: password
+        database:
+          type: string
+          title: database
+        schemas:
+          type: array
+          items:
+            type: string
+          title: schemas
+        dialect:
+          type: string
+          title: dialect
+        sslMode:
+          type: boolean
+          title: ssl_mode
+        sapHanaCloud:
+          type: boolean
+          title: sap_hana_cloud
+      title: SAPHanaMetadata
+      additionalProperties: false
+    textql.rpc.public.connector.QueryTemplate:
+      type: object
+      properties:
+        templateId:
+          type: string
+          title: template_id
+        normalizedSql:
+          type: string
+          title: normalized_sql
+        tables:
+          type: array
+          items:
+            type: string
+          title: tables
+        joins:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.connector.QueryJoinInfo'
+          title: joins
+        eventCount:
+          type:
+          - integer
+          - string
+          title: event_count
+          format: int64
+        firstSeen:
+          title: first_seen
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        lastSeen:
+          title: last_seen
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        cteRefs:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.connector.QueryTemplateCteRef'
+          title: cte_refs
+        avgRuntimeMs:
+          type: integer
+          title: avg_runtime_ms
+          format: int32
+      title: QueryTemplate
+      additionalProperties: false
+    textql.rpc.public.connector.ExasolMetadata:
+      type: object
+      properties:
+        host:
+          type: string
+          title: host
+        port:
+          type: integer
+          title: port
+          format: int32
+        user:
+          type: string
+          title: user
+        password:
+          type: string
+          title: password
+        database:
+          type: string
+          title: database
+        schemas:
+          type: array
+          items:
+            type: string
+          title: schemas
+        sslMode:
+          type: boolean
+          title: ssl_mode
+        accessToken:
+          type: string
+          title: access_token
+      title: ExasolMetadata
+      additionalProperties: false
+    textql.rpc.public.connector.MessageSegment:
+      type: object
+      properties:
+        content:
+          type: string
+          title: content
+        featureType:
+          title: feature_type
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.connector.FeatureType'
+      title: MessageSegment
+      additionalProperties: false
+    textql.rpc.public.connector.TestConnectorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+        error:
+          type: string
+          title: error
+      title: TestConnectorResponse
+      additionalProperties: false
+    textql.rpc.public.connector.DailyQueryCount:
+      type: object
+      properties:
+        date:
+          type: string
+          title: date
+        count:
+          type:
+          - integer
+          - string
+          title: count
+          format: int64
+      title: DailyQueryCount
+      additionalProperties: false
+    textql.rpc.public.connector.ConnectorChat:
+      type: object
+      properties:
+        chatId:
+          type: string
+          title: chat_id
+        summary:
+          type: string
+          title: summary
+        memberId:
+          type: string
+          title: member_id
+        displayName:
+          type: string
+          title: display_name
+        email:
+          type: string
+          title: email
+        queryCount:
+          type:
+          - integer
+          - string
+          title: query_count
+          format: int64
+        lastActivity:
+          title: last_activity
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        tables:
+          type: array
+          items:
+            type: string
+          title: tables
+        pictureUrl:
+          type: string
+          title: picture_url
+      title: ConnectorChat
+      additionalProperties: false
+    textql.rpc.public.connector.ConnectorStatEntry:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+          description: The text content of this segment
+        queryCount:
+          type:
+          - integer
+          - string
+          title: query_count
+          format: int64
+          description: If set, this is a feature word to be styled
+        errorRate:
+          type: number
+          title: error_rate
+          format: double
+        avgQueryTimeMs:
+          type:
+          - integer
+          - string
+          title: avg_query_time_ms
+          format: int64
+        uniqueUsers:
+          type: integer
+          title: unique_users
+          format: int32
+        lastQueriedAt:
+          title: last_queried_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        tableCount:
+          type: integer
+          title: table_count
+          format: int32
+      title: ConnectorStatEntry
+      additionalProperties: false
+      description: A segment of an example query message - either plain text or a styled feature word
+    textql.rpc.public.connector.ExampleQuery:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+          description: dataset IDs for selected Tableau collections
+        label:
+          type: string
+          title: label
+        message:
+          type: string
+          title: message
+        isMultiSource:
+          type: boolean
+          title: is_multi_source
+        requiredConnectorIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+          title: required_connector_ids
+        category:
+          type: string
+          title: category
+        segments:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.connector.MessageSegment'
+          title: segments
+        requiredFeatures:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.connector.FeatureType'
+          title: required_features
+        sourceContext:
+          title: source_context
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.connector.ConnectorContext'
+      title: ExampleQuery
+      additionalProperties: false
+    textql.rpc.public.connector.AzureSynapseMetadata:
+      type: object
+      properties:
+        host:
+          type: string
+          title: host
+        port:
+          type: integer
+          title: port
+          format: int32
+        user:
+          type: string
+          title: user
+        password:
+          type: string
+          title: password
+        database:
+          type: string
+          title: database
+        schema:
+          type: string
+          title: schema
+        authType:
+          type: string
+          title: auth_type
+        clientId:
+          type: string
+          title: client_id
+        clientSecret:
+          type: string
+          title: client_secret
+        tenantId:
+          type: string
+          title: tenant_id
+      title: AzureSynapseMetadata
+      additionalProperties: false
+    textql.rpc.public.connector.GetExampleQueriesRequest:
+      type: object
+      properties:
+        connectorContexts:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.connector.ConnectorContext'
+          title: connector_contexts
+        featureFilter:
+          title: feature_filter
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.connector.FeatureType'
+      title: GetExampleQueriesRequest
+      additionalProperties: false
+    textql.rpc.public.connector.GetExampleQueriesResponse:
+      type: object
+      properties:
+        examples:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.connector.ExampleQuery'
+          title: examples
+          description: PowerBI report IDs
+      title: GetExampleQueriesResponse
+      additionalProperties: false
+    textql.rpc.public.connector.ListConnectorTablesRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+          description: Apache Arrow IPC format binary data
+      title: ListConnectorTablesRequest
+      additionalProperties: false
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    textql.rpc.public.connector.MongoDBMetadata:
+      type: object
+      properties:
+        host:
+          type: string
+          title: host
+        port:
+          type: integer
+          title: port
+          format: int32
+        user:
+          type: string
+          title: user
+        password:
+          type: string
+          title: password
+        database:
+          type: string
+          title: database
+        authSource:
+          type: string
+          title: auth_source
+        tls:
+          type: boolean
+          title: tls
+        srv:
+          type: boolean
+          title: srv
+      title: MongoDBMetadata
+      additionalProperties: false
+    textql.rpc.public.connector.GetConnectorChatsResponse:
+      type: object
+      properties:
+        stats:
+          title: stats
+          $ref: '#/components/schemas/textql.rpc.public.connector.ConnectorChatStats'
+        chats:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.connector.ConnectorChat'
+          title: chats
+      title: GetConnectorChatsResponse
+      additionalProperties: false
+    textql.rpc.public.connector.DuplicateConnectorResponse:
+      type: object
+      properties:
+        connector:
+          title: connector
+          $ref: '#/components/schemas/textql.rpc.public.connector.Connector'
+      title: DuplicateConnectorResponse
+      additionalProperties: false
+    google.protobuf.Timestamp:
+      type: string
+      examples:
+      - '2023-01-15T01:30:15.01Z'
+      - '2024-12-25T12:00:00Z'
+      format: date-time
+      description: "A Timestamp represents a point in time independent of any time zone or local\n calendar, encoded as a count of seconds and fractions of seconds at\n nanosecond resolution. The count is relative to an epoch at UTC midnight on\n January 1, 1970, in the proleptic Gregorian calendar which extends the\n Gregorian calendar backwards to year one.\n\n All minutes are 60 seconds long. Leap seconds are \"smeared\" so that no leap\n second table is needed for interpretation, using a [24-hour linear\n smear](https://developers.google.com/time/smear).\n\n The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By\n restricting to that range, we ensure that we can convert to and from [RFC\n 3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.\n\n # Examples\n\n Example 1: Compute Timestamp from POSIX `time()`.\n\n     Timestamp timestamp;\n     timestamp.set_seconds(time(NULL));\n     timestamp.set_nanos(0);\n\n Example 2: Compute Timestamp from POSIX `gettimeofday()`.\n\n     struct timeval tv;\n     gettimeofday(&tv, NULL);\n\n     Timestamp timestamp;\n     timestamp.set_seconds(tv.tv_sec);\n     timestamp.set_nanos(tv.tv_usec * 1000);\n\n Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.\n\n     FILETIME ft;\n     GetSystemTimeAsFileTime(&ft);\n     UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;\n\n     // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z\n     // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.\n     Timestamp timestamp;\n     timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));\n     timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));\n\n Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.\n\n     long millis = System.currentTimeMillis();\n\n     Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)\n         .setNanos((int) ((millis % 1000) * 1000000)).build();\n\n Example 5: Compute Timestamp from Java `Instant.now()`.\n\n     Instant now = Instant.now();\n\n     Timestamp timestamp =\n         Timestamp.newBuilder().setSeconds(now.getEpochSecond())\n             .setNanos(now.getNano()).build();\n\n Example 6: Compute Timestamp from current time in Python.\n\n     timestamp = Timestamp()\n     timestamp.GetCurrentTime()\n\n # JSON Mapping\n\n In JSON format, the Timestamp type is encoded as a string in the\n [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the\n format is \"{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z\"\n where {year} is always expressed using four digits while {month}, {day},\n {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional\n seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),\n are optional. The \"Z\" suffix indicates the timezone (\"UTC\"); the timezone\n is required. A proto3 JSON serializer should always use UTC (as indicated by\n \"Z\") when printing the Timestamp type and a proto3 JSON parser should be\n able to accept both UTC and other timezones (as indicated by an offset).\n\n For example, \"2017-01-15T01:30:15.01Z\" encodes 15.01 seconds past\n 01:30 UTC on January 15, 2017.\n\n In JavaScript, one can convert a Date object to this format using the\n standard\n [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)\n method. In Python, a standard `datetime.datetime` object can be converted\n to this format using\n [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with\n the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use\n the Joda Time's [`ISODateTimeFormat.dateTime()`](\n http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()\n ) to obtain a formatter capable of generating timestamps in this format."
+    textql.rpc.public.connector.DatabricksMetadata.DatabricksAuth:
+      type: object
+      oneOf:
+      - type: object
+        properties:
+          clientCredentials:
+            title: client_credentials
+            $ref: '#/components/schemas/textql.rpc.public.connector.DatabricksMetadata.DatabricksAuth.ClientCredentials'
+        title: client_credentials
+        required:
+        - clientCredentials
+      - type: object
+        properties:
+          oauthU2m:
+            title: oauth_u2m
+            $ref: '#/components/schemas/textql.rpc.public.connector.DatabricksMetadata.DatabricksAuth.OAuthU2M'
+        title: oauth_u2m
+        required:
+        - oauthU2m
+      - type: object
+        properties:
+          pat:
+            title: pat
+            $ref: '#/components/schemas/textql.rpc.public.connector.DatabricksMetadata.DatabricksAuth.PersonalAccessToken'
+        title: pat
+        required:
+        - pat
+      title: DatabricksAuth
+      additionalProperties: false
+    textql.rpc.public.connector.ConnectorType:
+      type: string
+      title: ConnectorType
+      enum:
+      - CONNECTOR_TYPE_UNSPECIFIED
+      - REDSHIFT
+      - SNOWFLAKE
+      - BIGQUERY
+      - AZURE_SYNAPSE
+      - AURORA
+      - TABLEAU
+      - DATABRICKS
+      - SUPABASE
+      - POSTGRES
+      - MOTHERDUCK
+      - CLICKHOUSE
+      - MYSQL
+      - ATHENA
+      - GOOGLE_DRIVE
+      - POWERBI
+      - SQL_SERVER
+      - MICROSOFT_365
+      - SAP_HANA
+      - ORACLE
+      - GMAIL
+      - ANA_INTERNAL
+      - TRINO
+      - GOOGLE_CALENDAR
+      - GOOGLE
+      - DREMIO
+      - EXASOL
+      - FIREBOLT
+      - KDB
+      - MONGODB
+      - ANA_BILLING
+    textql.rpc.public.connector.OracleMetadata:
+      type: object
+      properties:
+        host:
+          type: string
+          title: host
+        port:
+          type: integer
+          title: port
+          format: int32
+        user:
+          type: string
+          title: user
+        password:
+          type: string
+          title: password
+        serviceName:
+          type: string
+          title: service_name
+        dialect:
+          type: string
+          title: dialect
+        sslMode:
+          type: boolean
+          title: ssl_mode
+        connectionType:
+          type: string
+          title: connection_type
+        sid:
+          type: string
+          title: sid
+        connectString:
+          type: string
+          title: connect_string
+        walletZip:
+          type: string
+          title: wallet_zip
+        walletPassword:
+          type: string
+          title: wallet_password
+        tnsAlias:
+          type: string
+          title: tns_alias
+      title: OracleMetadata
+      additionalProperties: false
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: tql_api_key

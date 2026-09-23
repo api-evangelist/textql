@@ -1,0 +1,2454 @@
+openapi: 3.2.0
+info:
+  title: TextQL App Service API
+  version: 1.0.0
+  description: 'TextQL public API. Generated from protobuf service definitions; internal
+
+    endpoints are excluded via google.api.visibility / file_visibility.'
+servers:
+- url: https://app.textql.com/rpc/public
+security:
+- apiKey: []
+tags:
+- name: AppService
+  description: 'AppService manages data apps: the generative app execution primitive.
+
+    An app is agent-authored single-file HTML/JS/CSS executing in a CSP sandbox,
+
+    fed a snapshot of its declared data sources. First-class resource, not a dashboard.'
+paths:
+  /textql.rpc.public.app.AppService/AppHeartbeat:
+    post:
+      tags:
+      - AppService
+      summary: AppHeartbeat
+      operationId: AppService_AppHeartbeat
+      x-speakeasy-group: apps
+      x-speakeasy-name-override: heartbeat
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.app.AppHeartbeatRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/google.protobuf.Empty'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.apps.heartbeat({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.apps.heartbeat()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.app.AppService/CreateApp:
+    post:
+      tags:
+      - AppService
+      summary: CreateApp
+      operationId: AppService_CreateApp
+      x-speakeasy-group: apps
+      x-speakeasy-name-override: createApp
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.app.CreateAppRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.app.CreateAppResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.apps.createApp({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.apps.create_app()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.app.AppService/DeleteApp:
+    post:
+      tags:
+      - AppService
+      summary: DeleteApp
+      operationId: AppService_DeleteApp
+      x-speakeasy-group: apps
+      x-speakeasy-name-override: deleteApp
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.app.DeleteAppRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/google.protobuf.Empty'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.apps.deleteApp({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.apps.delete_app()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.app.AppService/DuplicateApp:
+    post:
+      tags:
+      - AppService
+      summary: Duplicates an app the caller can view into a new app they own, named "Copy of ".
+      description: 'Duplicates an app the caller can view into a new app they own,
+
+        named "Copy of ". Copies code/files/data sources/compute functions/
+
+        schedule; never carries over the source''s data snapshot.'
+      operationId: AppService_DuplicateApp
+      x-speakeasy-group: apps
+      x-speakeasy-name-override: duplicate
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.app.DuplicateAppRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.app.DuplicateAppResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.apps.duplicate({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.apps.duplicate()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.app.AppService/GetApp:
+    post:
+      tags:
+      - AppService
+      summary: GetApp
+      operationId: AppService_GetApp
+      x-speakeasy-group: apps
+      x-speakeasy-name-override: get
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.app.GetAppRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.app.GetAppResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.apps.get({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.apps.get()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.app.AppService/GetAppDBSchema:
+    post:
+      tags:
+      - AppService
+      summary: Replaces the calling member's entire ordering; capped server-side
+      description: Replaces the calling member's entire ordering; capped server-side.
+      operationId: AppService_GetAppDBSchema
+      x-speakeasy-group: apps
+      x-speakeasy-name-override: getDBSchema
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.app.GetAppDBSchemaRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.app.GetAppDBSchemaResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.apps.getDBSchema({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.apps.get_db_schema()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.app.AppService/GetAppDBTablePreview:
+    post:
+      tags:
+      - AppService
+      summary: 'View analytics: reads the engagement views recorded on app page load'
+      description: 'View analytics: reads the engagement views recorded on app page load.'
+      operationId: AppService_GetAppDBTablePreview
+      x-speakeasy-group: apps
+      x-speakeasy-name-override: getDBTablePreview
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.app.GetAppDBTablePreviewRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.app.GetAppDBTablePreviewResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.apps.getDBTablePreview({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.apps.get_db_table_preview()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.app.AppService/GetAppMemberState:
+    post:
+      tags:
+      - AppService
+      summary: Per-member notification subscription to an app ("watch this app")
+      description: Per-member notification subscription to an app ("watch this app").
+      operationId: AppService_GetAppMemberState
+      x-speakeasy-group: apps
+      x-speakeasy-name-override: getMemberState
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.app.GetAppMemberStateRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.app.GetAppMemberStateResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.apps.getMemberState({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.apps.get_member_state()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.app.AppService/GetAppVersion:
+    post:
+      tags:
+      - AppService
+      summary: Overwrites the published tree's pinned _runtime/ana-1.js with the platform's…
+      description: Overwrites the published tree's pinned _runtime/ana-1.js with the platform's current copy so host-driven affordances (comment hit-testing) work on older documents; never touches authored content or data. repinned=false for legacy pre-tree documents.
+      operationId: AppService_GetAppVersion
+      x-speakeasy-group: apps
+      x-speakeasy-name-override: getAppVersion
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.app.GetAppVersionRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.app.GetAppVersionResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.apps.getAppVersion({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.apps.get_app_version()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.app.AppService/GetAppViewStats:
+    post:
+      tags:
+      - AppService
+      summary: Keeps the viewed app's compute worker alive; first view spawns and pre-warms it…
+      description: Keeps the viewed app's compute worker alive; first view spawns and pre-warms it (dashboard viewer-TTL parity).
+      operationId: AppService_GetAppViewStats
+      x-speakeasy-group: apps
+      x-speakeasy-name-override: getAppViewStats
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.app.GetAppViewStatsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.app.GetAppViewStatsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.apps.getAppViewStats({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.apps.get_app_view_stats()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.app.AppService/GetMembersWithApps:
+    post:
+      tags:
+      - AppService
+      summary: GetMembersWithApps
+      operationId: AppService_GetMembersWithApps
+      x-speakeasy-group: apps
+      x-speakeasy-name-override: getMembersWithApps
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.app.GetMembersWithAppsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.app.GetMembersWithAppsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.apps.getMembersWithApps({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.apps.get_members_with_apps(body={})\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.app.AppService/InvokeAppComputeFunction:
+    post:
+      tags:
+      - AppService
+      summary: InvokeAppComputeFunction
+      operationId: AppService_InvokeAppComputeFunction
+      x-speakeasy-group: apps
+      x-speakeasy-name-override: invokeComputeFunction
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.app.InvokeAppComputeFunctionRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.app.InvokeAppComputeFunctionResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.apps.invokeComputeFunction({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.apps.invoke_compute_function()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.app.AppService/ListAppActivitySince:
+    post:
+      tags:
+      - AppService
+      summary: Favorite/unfavorite a library item (app or dashboard) for the calling member.
+      description: 'Favorite/unfavorite a library item (app or dashboard) for the calling member.
+
+        Per-member, per-org; favorited=false hard-deletes the row. Covers both primitives
+
+        since the merged library page pins apps and dashboards through one client.'
+      operationId: AppService_ListAppActivitySince
+      x-speakeasy-group: apps
+      x-speakeasy-name-override: listActivitySince
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.app.ListAppActivitySinceRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.app.ListAppActivitySinceResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.apps.listActivitySince({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.apps.list_activity_since()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.app.AppService/ListAppVersions:
+    post:
+      tags:
+      - AppService
+      summary: Re-fetches data sources, rebuilds the document with a fresh snapshot, re-uploads
+      description: Re-fetches data sources, rebuilds the document with a fresh snapshot, re-uploads.
+      operationId: AppService_ListAppVersions
+      x-speakeasy-group: apps
+      x-speakeasy-name-override: listVersions
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.app.ListAppVersionsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.app.ListAppVersionsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.apps.listVersions({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.apps.list_versions()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.app.AppService/ListApps:
+    post:
+      tags:
+      - AppService
+      summary: ListApps
+      operationId: AppService_ListApps
+      x-speakeasy-group: apps
+      x-speakeasy-name-override: list
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.app.ListAppsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.app.ListAppsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.apps.list({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.apps.list()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.app.AppService/ListMyAppMemberActivity:
+    post:
+      tags:
+      - AppService
+      summary: 'Watcher management: app owners/editors and org admins list the app''s…'
+      description: 'Watcher management: app owners/editors and org admins list the app''s
+
+        subscribers and add/remove members (Upsert/Delete with member_id).'
+      operationId: AppService_ListMyAppMemberActivity
+      x-speakeasy-group: apps
+      x-speakeasy-name-override: listMyMemberActivity
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.app.ListMyAppMemberActivityRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.app.ListMyAppMemberActivityResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.apps.listMyMemberActivity({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.apps.list_my_member_activity()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.app.AppService/MoveAppToFolder:
+    post:
+      tags:
+      - AppService
+      summary: MoveAppToFolder
+      operationId: AppService_MoveAppToFolder
+      x-speakeasy-group: apps
+      x-speakeasy-name-override: moveAppToFolder
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.app.MoveAppToFolderRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.app.MoveAppToFolderResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.apps.moveAppToFolder({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.apps.move_app_to_folder()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.app.AppService/PresenceHeartbeat:
+    post:
+      tags:
+      - AppService
+      summary: 'Ordering overlay for the sidebar Bookmarks section: one position list per…'
+      description: 'Ordering overlay for the sidebar Bookmarks section: one position list per
+
+        member covering favorites and thread bookmarks ('':'' keys).
+
+        Membership truth stays in library_favorite / chat bookmarks; this persists
+
+        only the drag-and-drop order.'
+      operationId: AppService_PresenceHeartbeat
+      x-speakeasy-group: apps
+      x-speakeasy-name-override: presenceHeartbeat
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.app.PresenceHeartbeatRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/google.protobuf.Empty'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.apps.presenceHeartbeat({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.apps.presence_heartbeat()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.app.AppService/RecordAppMemberActivity:
+    post:
+      tags:
+      - AppService
+      summary: RecordAppMemberActivity
+      operationId: AppService_RecordAppMemberActivity
+      x-speakeasy-group: apps
+      x-speakeasy-name-override: recordMemberActivity
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.app.RecordAppMemberActivityRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.app.RecordAppMemberActivityResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.apps.recordMemberActivity({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.apps.record_member_activity()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.app.AppService/RefreshApp:
+    post:
+      tags:
+      - AppService
+      summary: Moves an app into a library folder (or to root when folder_id is empty)
+      description: Moves an app into a library folder (or to root when folder_id is empty).
+      operationId: AppService_RefreshApp
+      x-speakeasy-group: apps
+      x-speakeasy-name-override: refresh
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.app.RefreshAppRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.app.RefreshAppResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.apps.refresh({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.apps.refresh()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.app.AppService/RestoreAppVersion:
+    post:
+      tags:
+      - AppService
+      summary: 'Version history: git-backed, one version per save (plus legacy publish-era…'
+      description: 'Version history: git-backed, one version per save (plus legacy publish-era snapshots); authors can list and restore.'
+      operationId: AppService_RestoreAppVersion
+      x-speakeasy-group: apps
+      x-speakeasy-name-override: restoreAppVersion
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.app.RestoreAppVersionRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.app.RestoreAppVersionResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.apps.restoreAppVersion({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.apps.restore_app_version()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.app.AppService/SetAppMemberState:
+    post:
+      tags:
+      - AppService
+      summary: SetAppMemberState
+      operationId: AppService_SetAppMemberState
+      x-speakeasy-group: apps
+      x-speakeasy-name-override: setMemberState
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.app.SetAppMemberStateRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.app.SetAppMemberStateResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.apps.setMemberState({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.apps.set_member_state()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.app.AppService/SetFavorite:
+    post:
+      tags:
+      - AppService
+      summary: Executes a declared compute function on a pooled sandbox worker; gated…
+      description: Executes a declared compute function on a pooled sandbox worker; gated, org-scoped, rate-limited.
+      operationId: AppService_SetFavorite
+      x-speakeasy-group: apps
+      x-speakeasy-name-override: setFavorite
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.app.SetFavoriteRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.app.SetFavoriteResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.apps.setFavorite({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.apps.set_favorite()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.app.AppService/UpdateApp:
+    post:
+      tags:
+      - AppService
+      summary: UpdateApp
+      operationId: AppService_UpdateApp
+      x-speakeasy-group: apps
+      x-speakeasy-name-override: update
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.app.UpdateAppRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.app.UpdateAppResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.apps.update({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.apps.update()\n\n    # Handle response\n    print(res)"
+components:
+  schemas:
+    textql.rpc.public.dashboard.Grant:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            type: string
+          title: roles
+          description: org role names
+        members:
+          type: array
+          items:
+            type: string
+          title: members
+          description: explicit member ids
+      title: Grant
+      additionalProperties: false
+      description: "Grant is an author allowlist gating a data source or compute function. A viewer whose\n effective role names intersect roles, or whose member id is listed in members, may call it.\n Absent grant = org-visible (today's behavior); an empty grant object is invalid."
+    textql.rpc.public.app.AppDBTable:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+        columns:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.app.AppDBColumn'
+          title: columns
+      title: AppDBTable
+      additionalProperties: false
+    textql.rpc.public.app.ListAppsRequest:
+      type: object
+      properties:
+        searchTerm:
+          type: string
+          title: search_term
+          nullable: true
+        limit:
+          type: integer
+          title: limit
+          format: int32
+        offset:
+          type: integer
+          title: offset
+          format: int32
+        folderId:
+          type: string
+          title: folder_id
+          nullable: true
+        uncategorizedOnly:
+          type: boolean
+          title: uncategorized_only
+          nullable: true
+        sharedWithMe:
+          type: boolean
+          title: shared_with_me
+          nullable: true
+      title: ListAppsRequest
+      additionalProperties: false
+    textql.rpc.public.app.GetAppVersionRequest:
+      type: object
+      properties:
+        appId:
+          type: string
+          title: app_id
+          description: False when the document predates tree publishing and has no runtime to overwrite.
+        versionNumber:
+          type: integer
+          title: version_number
+          format: int32
+        commitId:
+          type: string
+          title: commit_id
+          nullable: true
+      title: GetAppVersionRequest
+      additionalProperties: false
+    textql.rpc.public.app.AppVersion:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        appId:
+          type: string
+          title: app_id
+        versionNumber:
+          type: integer
+          title: version_number
+          format: int32
+        code:
+          type: string
+          title: code
+        dataSources:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dashboard.DataSource'
+          title: data_sources
+        computeFunctions:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.app.ComputeFunction'
+          title: compute_functions
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.app.AppFile'
+          title: files
+        name:
+          type: string
+          title: name
+        description:
+          type: string
+          title: description
+          nullable: true
+        publishedHtmlUrl:
+          type: string
+          title: published_html_url
+          nullable: true
+        stalenessWindowSeconds:
+          type: integer
+          title: staleness_window_seconds
+          format: int32
+          nullable: true
+        publishedBy:
+          type: string
+          title: published_by
+        label:
+          type: string
+          title: label
+          nullable: true
+        publishedAt:
+          title: published_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        publisher:
+          title: publisher
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.identity.MemberPreview'
+        commitId:
+          type: string
+          title: commit_id
+          nullable: true
+      title: AppVersion
+      additionalProperties: false
+    textql.rpc.public.app.GetAppResponse:
+      type: object
+      properties:
+        app:
+          title: app
+          description: '''app'' | ''dashboard'''
+          $ref: '#/components/schemas/textql.rpc.public.app.App'
+        hasWritePermission:
+          type: boolean
+          title: has_write_permission
+      title: GetAppResponse
+      additionalProperties: false
+    textql.rpc.public.app.AppActivityRecord:
+      type: object
+      properties:
+        seq:
+          type:
+          - integer
+          - string
+          title: seq
+          format: int64
+        memberId:
+          type: string
+          title: member_id
+        displayName:
+          type: string
+          title: display_name
+        type:
+          type: string
+          title: type
+        scope:
+          type: string
+          title: scope
+          nullable: true
+        payloadJson:
+          type: string
+          title: payload_json
+          nullable: true
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: AppActivityRecord
+      additionalProperties: false
+      description: "One activity row from any member of the app; display_name resolved server-side.\n Never carries email or raw identity fields (names-not-emails is enforced here)."
+    textql.rpc.public.app.ListAppsResponse:
+      type: object
+      properties:
+        apps:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.app.App'
+          title: apps
+        totalCount:
+          type: integer
+          title: total_count
+          format: int32
+      title: ListAppsResponse
+      additionalProperties: false
+    textql.rpc.public.app.RecordAppMemberActivityResponse:
+      type: object
+      properties:
+        seq:
+          type:
+          - integer
+          - string
+          title: seq
+          format: int64
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: RecordAppMemberActivityResponse
+      additionalProperties: false
+    textql.rpc.public.app.GetAppMemberStateResponse:
+      type: object
+      properties:
+        valueJson:
+          type: string
+          title: value_json
+          description: JSON object; "{}" when the member has no saved state
+      title: GetAppMemberStateResponse
+      additionalProperties: false
+    textql.rpc.public.app.GetAppDBSchemaResponse:
+      type: object
+      properties:
+        tables:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.app.AppDBTable'
+          title: tables
+        changeLogBytes:
+          type:
+          - integer
+          - string
+          title: change_log_bytes
+          format: int64
+          description: 'Routing observability: warm | warm_fallback | tql | sql.'
+      title: GetAppDBSchemaResponse
+      additionalProperties: false
+    textql.rpc.public.app.GetAppRequest:
+      type: object
+      properties:
+        appId:
+          type: string
+          title: app_id
+          description: signed /asset/apptree viewer URL for the published gallery tree
+      title: GetAppRequest
+      additionalProperties: false
+    textql.rpc.public.app.MoveAppToFolderRequest:
+      type: object
+      properties:
+        appId:
+          type: string
+          title: app_id
+        folderId:
+          type: string
+          title: folder_id
+          nullable: true
+      title: MoveAppToFolderRequest
+      additionalProperties: false
+    textql.rpc.public.app.ListAppVersionsRequest:
+      type: object
+      properties:
+        appId:
+          type: string
+          title: app_id
+        limit:
+          type: integer
+          title: limit
+          format: int32
+        offset:
+          type: integer
+          title: offset
+          format: int32
+      title: ListAppVersionsRequest
+      additionalProperties: false
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
+          type: string
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+          - type: object
+            title: Any
+            additionalProperties: true
+            description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
+    textql.rpc.public.app.GetAppVersionResponse:
+      type: object
+      properties:
+        version:
+          title: version
+          $ref: '#/components/schemas/textql.rpc.public.app.AppVersion'
+      title: GetAppVersionResponse
+      additionalProperties: false
+    textql.rpc.public.app.SetAppMemberStateResponse:
+      type: object
+      title: SetAppMemberStateResponse
+      additionalProperties: false
+    textql.rpc.public.app.Capability:
+      type: object
+      properties:
+        type:
+          type: string
+          title: type
+        name:
+          type: string
+          title: name
+          description: whether the caller may edit this app (HasAppWriteAccess)
+          nullable: true
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+          nullable: true
+        statement:
+          type: string
+          title: statement
+          nullable: true
+        scope:
+          type: string
+          title: scope
+          nullable: true
+        subject:
+          type: string
+          title: subject
+          nullable: true
+        body:
+          type: string
+          title: body
+          nullable: true
+        parameters:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.app.CapabilityParam'
+          title: parameters
+        agentId:
+          type: string
+          title: agent_id
+          nullable: true
+        appDb:
+          type: string
+          title: app_db
+          nullable: true
+      title: Capability
+      additionalProperties: false
+    textql.rpc.public.app.AppDBColumn:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+          description: running | stopped | error
+        type:
+          type: string
+          title: type
+          description: import/exec failure of the author module
+        nullable:
+          type: boolean
+          title: nullable
+        primaryKey:
+          type: boolean
+          title: primary_key
+          description: tail of the server process log, redacted
+      title: AppDBColumn
+      additionalProperties: false
+    textql.rpc.public.app.DeleteAppRequest:
+      type: object
+      properties:
+        appId:
+          type: string
+          title: app_id
+          description: full replacement for the calling member
+      title: DeleteAppRequest
+      additionalProperties: false
+    textql.rpc.public.app.RefreshAppResponse:
+      type: object
+      properties:
+        app:
+          title: app
+          $ref: '#/components/schemas/textql.rpc.public.app.App'
+      title: RefreshAppResponse
+      additionalProperties: false
+    textql.rpc.public.app.RecordAppMemberActivityRequest:
+      type: object
+      properties:
+        appId:
+          type: string
+          title: app_id
+        type:
+          type: string
+          title: type
+        scope:
+          type: string
+          title: scope
+          nullable: true
+        payloadJson:
+          type: string
+          title: payload_json
+          description: JSON object, usage payload authored by the app
+          nullable: true
+        idemKey:
+          type: string
+          title: idem_key
+          description: duplicate key returns the existing row, not an error
+          nullable: true
+      title: RecordAppMemberActivityRequest
+      additionalProperties: false
+      description: Per-member activity log
+    textql.rpc.public.app.ListMyAppMemberActivityResponse:
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.app.AppMemberActivityRow'
+          title: rows
+      title: ListMyAppMemberActivityResponse
+      additionalProperties: false
+    textql.rpc.public.app.InvokeAppComputeFunctionRequest:
+      type: object
+      properties:
+        appId:
+          type: string
+          title: app_id
+        functionName:
+          type: string
+          title: function_name
+        paramsJson:
+          type: string
+          title: params_json
+      title: InvokeAppComputeFunctionRequest
+      additionalProperties: false
+    textql.rpc.public.app.MoveAppToFolderResponse:
+      type: object
+      properties:
+        app:
+          title: app
+          $ref: '#/components/schemas/textql.rpc.public.app.App'
+      title: MoveAppToFolderResponse
+      additionalProperties: false
+    textql.rpc.public.dashboard.QueryParameter:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+        type:
+          type: string
+          title: type
+          description: '"string", "int", "float", "date"'
+        default:
+          type: string
+          title: default
+          nullable: true
+      title: QueryParameter
+      additionalProperties: false
+    textql.rpc.public.app.DuplicateAppRequest:
+      type: object
+      properties:
+        appId:
+          type: string
+          title: app_id
+      title: DuplicateAppRequest
+      additionalProperties: false
+    textql.rpc.public.dashboard.DataSource:
+      type: object
+      allOf:
+      - type: object
+        properties:
+          type:
+            type: string
+            title: type
+            description: '"sql_query", "file", "python_code", "ontology_sql", or "library_tql"'
+          name:
+            type: string
+            title: name
+          parameters:
+            type: array
+            items:
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.QueryParameter'
+            title: parameters
+            description: Parameters for live parameterized queries (sql_query type only)
+          grant:
+            title: grant
+            description: "Optional author allowlist gating this source to specific org roles / members.\n Presence forces the source out of the published snapshot (live-only, viewer-enforced)."
+            $ref: '#/components/schemas/textql.rpc.public.dashboard.Grant'
+      - oneOf:
+        - type: object
+          properties:
+            file:
+              title: file
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.FileSource'
+          title: file
+          required:
+          - file
+        - type: object
+          properties:
+            libraryTql:
+              title: library_tql
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.LibraryTQLSource'
+          title: library_tql
+          required:
+          - libraryTql
+        - type: object
+          properties:
+            ontologySql:
+              title: ontology_sql
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.OntologySqlSource'
+          title: ontology_sql
+          required:
+          - ontologySql
+        - type: object
+          properties:
+            pythonCode:
+              title: python_code
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.PythonCodeSource'
+          title: python_code
+          required:
+          - pythonCode
+        - type: object
+          properties:
+            sqlQuery:
+              title: sql_query
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.SqlQuerySource'
+          title: sql_query
+          required:
+          - sqlQuery
+      title: DataSource
+      additionalProperties: false
+      description: Unified data source for dashboards
+    google.protobuf.Empty:
+      type: object
+      description: "A generic empty message that you can re-use to avoid defining duplicated\n empty messages in your APIs. A typical example is to use it as the request\n or the response type of an API method. For instance:\n\n     service Foo {\n       rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);\n     }"
+    textql.rpc.public.app.ListAppVersionsResponse:
+      type: object
+      properties:
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.app.AppVersion'
+          title: versions
+        totalCount:
+          type: integer
+          title: total_count
+          format: int32
+      title: ListAppVersionsResponse
+      additionalProperties: false
+    textql.rpc.public.app.UpdateAppResponse:
+      type: object
+      properties:
+        app:
+          title: app
+          description: '''<kind>:<id>'', first = top of the sidebar'
+          $ref: '#/components/schemas/textql.rpc.public.app.App'
+      title: UpdateAppResponse
+      additionalProperties: false
+    textql.rpc.public.app.RestoreAppVersionResponse:
+      type: object
+      properties:
+        app:
+          title: app
+          $ref: '#/components/schemas/textql.rpc.public.app.App'
+      title: RestoreAppVersionResponse
+      additionalProperties: false
+    textql.rpc.public.app.RefreshAppRequest:
+      type: object
+      properties:
+        appId:
+          type: string
+          title: app_id
+      title: RefreshAppRequest
+      additionalProperties: false
+    textql.rpc.public.app.CapabilityParam:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+        type:
+          type: string
+          title: type
+          nullable: true
+        description:
+          type: string
+          title: description
+          nullable: true
+      title: CapabilityParam
+      additionalProperties: false
+    textql.rpc.public.app.GetAppMemberStateRequest:
+      type: object
+      properties:
+        appId:
+          type: string
+          title: app_id
+      title: GetAppMemberStateRequest
+      additionalProperties: false
+      description: Per-member state
+    textql.rpc.public.app.GetAppDBTablePreviewResponse:
+      type: object
+      properties:
+        arrowData:
+          type: string
+          title: arrow_data
+          format: byte
+      title: GetAppDBTablePreviewResponse
+      additionalProperties: false
+    textql.rpc.public.dashboard.PythonCodeSource:
+      type: object
+      properties:
+        code:
+          type: string
+          title: code
+      title: PythonCodeSource
+      additionalProperties: false
+    textql.rpc.public.app.RestoreAppVersionRequest:
+      type: object
+      properties:
+        appId:
+          type: string
+          title: app_id
+        versionNumber:
+          type: integer
+          title: version_number
+          format: int32
+        commitId:
+          type: string
+          title: commit_id
+          nullable: true
+      title: RestoreAppVersionRequest
+      additionalProperties: false
+    textql.rpc.public.app.ListMyAppMemberActivityRequest:
+      type: object
+      properties:
+        appId:
+          type: string
+          title: app_id
+        type:
+          type: string
+          title: type
+          nullable: true
+        limit:
+          type: integer
+          title: limit
+          format: int32
+          description: server clamps to 200; <=0 means default
+      title: ListMyAppMemberActivityRequest
+      additionalProperties: false
+    textql.rpc.public.app.CreateAppRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+        description:
+          type: string
+          title: description
+          nullable: true
+        code:
+          type: string
+          title: code
+        dataSources:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dashboard.DataSource'
+          title: data_sources
+        computeFunctions:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.app.ComputeFunction'
+          title: compute_functions
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.app.AppFile'
+          title: files
+        capabilities:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.app.Capability'
+          title: capabilities
+        appDbSetup:
+          type: array
+          items:
+            type: string
+          title: app_db_setup
+      title: CreateAppRequest
+      additionalProperties: false
+    textql.rpc.public.app.InvokeAppComputeFunctionResponse:
+      type: object
+      properties:
+        resultJson:
+          type: string
+          title: result_json
+      title: InvokeAppComputeFunctionResponse
+      additionalProperties: false
+    textql.rpc.public.app.ComputeFunction:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+        description:
+          type: string
+          title: description
+        params:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.app.ComputeFunctionParam'
+          title: params
+        returns:
+          type: string
+          title: returns
+          description: Filter by specific folder
+          nullable: true
+        code:
+          type: string
+          title: code
+          description: Only show apps with no folder
+        tqlPath:
+          type: string
+          title: tql_path
+          description: Only apps shared with the caller (not authored by them)
+          nullable: true
+        tql:
+          type: string
+          title: tql
+          nullable: true
+        grant:
+          title: grant
+          $ref: '#/components/schemas/textql.rpc.public.dashboard.Grant'
+      title: ComputeFunction
+      additionalProperties: false
+    textql.rpc.public.dashboard.SqlQuerySource:
+      type: object
+      properties:
+        query:
+          type: string
+          title: query
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        predicate:
+          type: string
+          title: predicate
+          description: Optional viewer row-filter appended server-side at live-query time; binds :viewer_member_id / :viewer_email. Presence forces the source out of the published snapshot.
+      title: SqlQuerySource
+      additionalProperties: false
+    textql.rpc.identity.MemberPreview:
+      type: object
+      properties:
+        memberId:
+          type: string
+          title: member_id
+        memberEmail:
+          type: string
+          title: member_email
+          description: "the fields are optionally populated, depending on the context\n may require RPC fields such as `include_owner` to be set to true"
+          nullable: true
+        memberName:
+          type: string
+          title: member_name
+          nullable: true
+        memberPictureUrl:
+          type: string
+          title: member_picture_url
+          nullable: true
+      title: MemberPreview
+      additionalProperties: false
+    textql.rpc.public.app.SetFavoriteResponse:
+      type: object
+      properties:
+        favorited:
+          type: boolean
+          title: favorited
+      title: SetFavoriteResponse
+      additionalProperties: false
+    textql.rpc.public.app.AppHeartbeatRequest:
+      type: object
+      properties:
+        appId:
+          type: string
+          title: app_id
+          description: the resolved default after the change; unset when cleared
+      title: AppHeartbeatRequest
+      additionalProperties: false
+    textql.rpc.public.dashboard.OntologySqlSource:
+      type: object
+      properties:
+        query:
+          type: string
+          title: query
+        dataset:
+          type: string
+          title: dataset
+        ontologyId:
+          type: integer
+          title: ontology_id
+          format: int32
+      title: OntologySqlSource
+      additionalProperties: false
+    textql.rpc.public.app.ComputeFunctionParam:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+        type:
+          type: string
+          title: type
+        description:
+          type: string
+          title: description
+          nullable: true
+      title: ComputeFunctionParam
+      additionalProperties: false
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    textql.rpc.public.app.UpdateAppRequest:
+      type: object
+      properties:
+        appId:
+          type: string
+          title: app_id
+        name:
+          type: string
+          title: name
+          nullable: true
+        description:
+          type: string
+          title: description
+          nullable: true
+        code:
+          type: string
+          title: code
+          nullable: true
+        dataSources:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dashboard.DataSource'
+          title: data_sources
+        replaceDataSources:
+          type: boolean
+          title: replace_data_sources
+          nullable: true
+        publish:
+          type: boolean
+          title: publish
+          nullable: true
+          deprecated: true
+        stalenessWindowSeconds:
+          type: integer
+          title: staleness_window_seconds
+          format: int32
+          nullable: true
+        computeFunctions:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.app.ComputeFunction'
+          title: compute_functions
+        replaceComputeFunctions:
+          type: boolean
+          title: replace_compute_functions
+          nullable: true
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.app.AppFile'
+          title: files
+        replaceFiles:
+          type: boolean
+          title: replace_files
+          nullable: true
+        scheduleEnabled:
+          type: boolean
+          title: schedule_enabled
+          nullable: true
+        cronString:
+          type: string
+          title: cron_string
+          nullable: true
+        capabilities:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.app.Capability'
+          title: capabilities
+        replaceCapabilities:
+          type: boolean
+          title: replace_capabilities
+          nullable: true
+        appDbSetup:
+          type: array
+          items:
+            type: string
+          title: app_db_setup
+        replaceAppDbSetup:
+          type: boolean
+          title: replace_app_db_setup
+          nullable: true
+      title: UpdateAppRequest
+      additionalProperties: false
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+          - not_found
+          enum:
+          - canceled
+          - unknown
+          - invalid_argument
+          - deadline_exceeded
+          - not_found
+          - already_exists
+          - permission_denied
+          - resource_exhausted
+          - failed_precondition
+          - aborted
+          - out_of_range
+          - unimplemented
+          - internal
+          - unavailable
+          - data_loss
+          - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    textql.rpc.public.app.ListAppActivitySinceResponse:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.app.AppActivityRecord'
+          title: records
+      title: ListAppActivitySinceResponse
+      additionalProperties: false
+    textql.rpc.public.app.GetMembersWithAppsResponse:
+      type: object
+      properties:
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.identity.MemberPreview'
+          title: members
+      title: GetMembersWithAppsResponse
+      additionalProperties: false
+    textql.rpc.public.app.PresenceHeartbeatRequest:
+      type: object
+      properties:
+        appId:
+          type: string
+          title: app_id
+        zone:
+          type: string
+          title: zone
+      title: PresenceHeartbeatRequest
+      additionalProperties: false
+    textql.rpc.public.app.App:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        orgId:
+          type: string
+          title: org_id
+          description: the COMPLETE tree; files omitted here are deleted
+        creatorId:
+          type: string
+          title: creator_id
+        name:
+          type: string
+          title: name
+        description:
+          type: string
+          title: description
+          nullable: true
+        code:
+          type: string
+          title: code
+        dataSources:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dashboard.DataSource'
+          title: data_sources
+        htmlUrl:
+          type: string
+          title: html_url
+          nullable: true
+        screenshotUrl:
+          type: string
+          title: screenshot_url
+          nullable: true
+        consoleErrors:
+          type: array
+          items:
+            type: string
+          title: console_errors
+        chatId:
+          type: string
+          title: chat_id
+          nullable: true
+        publishedHtmlUrl:
+          type: string
+          title: published_html_url
+          nullable: true
+          deprecated: true
+        hasUnpublishedChanges:
+          type: boolean
+          title: has_unpublished_changes
+          deprecated: true
+        stalenessWindowSeconds:
+          type: integer
+          title: staleness_window_seconds
+          format: int32
+          nullable: true
+        computeFunctions:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.app.ComputeFunction'
+          title: compute_functions
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.app.AppFile'
+          title: files
+        scheduleEnabled:
+          type: boolean
+          title: schedule_enabled
+        cronString:
+          type: string
+          title: cron_string
+          nullable: true
+        folderId:
+          type: string
+          title: folder_id
+          nullable: true
+        isFavorited:
+          type: boolean
+          title: is_favorited
+        capabilities:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.app.Capability'
+          title: capabilities
+        appDbSetup:
+          type: array
+          items:
+            type: string
+          title: app_db_setup
+        memberFeaturesEnabled:
+          type: boolean
+          title: member_features_enabled
+        usesMemberFeatures:
+          type: boolean
+          title: uses_member_features
+          deprecated: true
+        viewerGrants:
+          type: array
+          items:
+            type: string
+          title: viewer_grants
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        refreshedAt:
+          title: refreshed_at
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        publishedAt:
+          title: published_at
+          nullable: true
+          deprecated: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: App
+      additionalProperties: false
+    textql.rpc.public.app.AppMemberActivityRow:
+      type: object
+      properties:
+        seq:
+          type:
+          - integer
+          - string
+          title: seq
+          format: int64
+        type:
+          type: string
+          title: type
+        scope:
+          type: string
+          title: scope
+          nullable: true
+        payloadJson:
+          type: string
+          title: payload_json
+          nullable: true
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: AppMemberActivityRow
+      additionalProperties: false
+    textql.rpc.public.app.GetAppDBSchemaRequest:
+      type: object
+      properties:
+        appId:
+          type: string
+          title: app_id
+      title: GetAppDBSchemaRequest
+      additionalProperties: false
+    textql.rpc.public.app.ListAppActivitySinceRequest:
+      type: object
+      properties:
+        appId:
+          type: string
+          title: app_id
+        scope:
+          type: string
+          title: scope
+          nullable: true
+        afterSeq:
+          type:
+          - integer
+          - string
+          title: after_seq
+          format: int64
+        limit:
+          type: integer
+          title: limit
+          format: int32
+          description: server clamps to 200; <=0 means default
+      title: ListAppActivitySinceRequest
+      additionalProperties: false
+    textql.rpc.public.dashboard.LibraryTQLSource:
+      type: object
+      properties:
+        tqlPath:
+          type: string
+          title: tql_path
+          description: path to the .tql file in the Context Library (must end in .tql)
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+          description: SQL connector to execute the rendered query against
+        paramsJson:
+          type: string
+          title: params_json
+          description: JSON object mapping parameter names to values; "" means no params
+      title: LibraryTQLSource
+      additionalProperties: false
+      description: "References a .tql file stored in the Context Library. The file is rendered\n to SQL at fetch time and executed against the provided connector. Template\n parameter values are JSON-encoded in `params_json` (e.g. {\"region\":\"EU\"})."
+    textql.rpc.public.app.GetAppViewStatsResponse:
+      type: object
+      properties:
+        totalViews:
+          type: integer
+          title: total_views
+          format: int32
+        uniqueViewers:
+          type: integer
+          title: unique_viewers
+          format: int32
+        recentViewers:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.app.AppViewerInfo'
+          title: recent_viewers
+      title: GetAppViewStatsResponse
+      additionalProperties: false
+    textql.rpc.public.app.AppViewerInfo:
+      type: object
+      properties:
+        memberId:
+          type: string
+          title: member_id
+        lastViewed:
+          title: last_viewed
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        viewCount:
+          type: integer
+          title: view_count
+          format: int32
+        displayName:
+          type: string
+          title: display_name
+          nullable: true
+        recentViewTimes:
+          type: array
+          items:
+            $ref: '#/components/schemas/google.protobuf.Timestamp'
+          title: recent_view_times
+      title: AppViewerInfo
+      additionalProperties: false
+      description: "AppServer declares whether the app runs an optional persistent server: a\n long-lived python process in the app's dedicated worker. Its handlers serve\n webhook deliveries and server-handled compute functions, and module globals\n persist between requests (until the worker recycles). The server's source is\n not stored here — it lives in the app's file tree under `server/`, with\n `server/main.py` as the entry module (importing sibling `server/*.py` files)."
+    textql.rpc.public.app.DuplicateAppResponse:
+      type: object
+      properties:
+        app:
+          title: app
+          description: optional; empty = current default vendor set
+          $ref: '#/components/schemas/textql.rpc.public.app.App'
+      title: DuplicateAppResponse
+      additionalProperties: false
+    textql.rpc.public.app.GetAppViewStatsRequest:
+      type: object
+      properties:
+        appId:
+          type: string
+          title: app_id
+      title: GetAppViewStatsRequest
+      additionalProperties: false
+      description: "ComputeFunction is a declared server-side function invocable from the app via the bridge.\n Exactly one of code (python, runs on the app's worker), sql (plain SQL on the app's\n private DB), tql (inline TQL source), or tql_path (a Context Library .tql) must be set.\n TQL variants are real TQL (compiled at save time) executed against a connector; sql is\n the app-state path (:name params bound server-side, reserved :_now / :_uuid)."
+    textql.rpc.public.app.GetMembersWithAppsRequest:
+      type: object
+      title: GetMembersWithAppsRequest
+      additionalProperties: false
+    google.protobuf.Timestamp:
+      type: string
+      examples:
+      - '2023-01-15T01:30:15.01Z'
+      - '2024-12-25T12:00:00Z'
+      format: date-time
+      description: "A Timestamp represents a point in time independent of any time zone or local\n calendar, encoded as a count of seconds and fractions of seconds at\n nanosecond resolution. The count is relative to an epoch at UTC midnight on\n January 1, 1970, in the proleptic Gregorian calendar which extends the\n Gregorian calendar backwards to year one.\n\n All minutes are 60 seconds long. Leap seconds are \"smeared\" so that no leap\n second table is needed for interpretation, using a [24-hour linear\n smear](https://developers.google.com/time/smear).\n\n The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By\n restricting to that range, we ensure that we can convert to and from [RFC\n 3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.\n\n # Examples\n\n Example 1: Compute Timestamp from POSIX `time()`.\n\n     Timestamp timestamp;\n     timestamp.set_seconds(time(NULL));\n     timestamp.set_nanos(0);\n\n Example 2: Compute Timestamp from POSIX `gettimeofday()`.\n\n     struct timeval tv;\n     gettimeofday(&tv, NULL);\n\n     Timestamp timestamp;\n     timestamp.set_seconds(tv.tv_sec);\n     timestamp.set_nanos(tv.tv_usec * 1000);\n\n Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.\n\n     FILETIME ft;\n     GetSystemTimeAsFileTime(&ft);\n     UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;\n\n     // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z\n     // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.\n     Timestamp timestamp;\n     timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));\n     timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));\n\n Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.\n\n     long millis = System.currentTimeMillis();\n\n     Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)\n         .setNanos((int) ((millis % 1000) * 1000000)).build();\n\n Example 5: Compute Timestamp from Java `Instant.now()`.\n\n     Instant now = Instant.now();\n\n     Timestamp timestamp =\n         Timestamp.newBuilder().setSeconds(now.getEpochSecond())\n             .setNanos(now.getNano()).build();\n\n Example 6: Compute Timestamp from current time in Python.\n\n     timestamp = Timestamp()\n     timestamp.GetCurrentTime()\n\n # JSON Mapping\n\n In JSON format, the Timestamp type is encoded as a string in the\n [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the\n format is \"{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z\"\n where {year} is always expressed using four digits while {month}, {day},\n {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional\n seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),\n are optional. The \"Z\" suffix indicates the timezone (\"UTC\"); the timezone\n is required. A proto3 JSON serializer should always use UTC (as indicated by\n \"Z\") when printing the Timestamp type and a proto3 JSON parser should be\n able to accept both UTC and other timezones (as indicated by an offset).\n\n For example, \"2017-01-15T01:30:15.01Z\" encodes 15.01 seconds past\n 01:30 UTC on January 15, 2017.\n\n In JavaScript, one can convert a Date object to this format using the\n standard\n [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)\n method. In Python, a standard `datetime.datetime` object can be converted\n to this format using\n [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with\n the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use\n the Joda Time's [`ISODateTimeFormat.dateTime()`](\n http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()\n ) to obtain a formatter capable of generating timestamps in this format."
+    textql.rpc.public.app.GetAppDBTablePreviewRequest:
+      type: object
+      properties:
+        appId:
+          type: string
+          title: app_id
+          description: normalized relative path, forward slashes, no .. or leading /
+        tableName:
+          type: string
+          title: table_name
+        limit:
+          type: integer
+          title: limit
+          format: int32
+      title: GetAppDBTablePreviewRequest
+      additionalProperties: false
+      description: AppFile is one non-entry file of a multi-file app tree; code remains the entry index.html.
+    textql.rpc.public.app.AppFile:
+      type: object
+      properties:
+        path:
+          type: string
+          title: path
+        content:
+          type: string
+          title: content
+      title: AppFile
+      additionalProperties: false
+    textql.rpc.public.app.SetAppMemberStateRequest:
+      type: object
+      properties:
+        appId:
+          type: string
+          title: app_id
+        valueJson:
+          type: string
+          title: value_json
+          description: whole-object JSON, last-write-wins, max 64KB
+      title: SetAppMemberStateRequest
+      additionalProperties: false
+    textql.rpc.public.dashboard.FileSource:
+      type: object
+      properties:
+        datasetId:
+          type: string
+          title: dataset_id
+        fileName:
+          type: string
+          title: file_name
+          description: Original filename for display
+        sheetIndex:
+          type: integer
+          title: sheet_index
+          format: int32
+          description: Zero-based sheet index for multi-sheet files (default 0)
+      title: FileSource
+      additionalProperties: false
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+      - 1
+      description: Define the version of the Connect protocol
+      const: 1
+      default: 1
+    textql.rpc.public.app.CreateAppResponse:
+      type: object
+      properties:
+        app:
+          title: app
+          $ref: '#/components/schemas/textql.rpc.public.app.App'
+      title: CreateAppResponse
+      additionalProperties: false
+    textql.rpc.public.app.SetFavoriteRequest:
+      type: object
+      properties:
+        primitiveType:
+          type: string
+          title: primitive_type
+        primitiveId:
+          type: string
+          title: primitive_id
+        favorited:
+          type: boolean
+          title: favorited
+          description: '"" = brand/default accent'
+      title: SetFavoriteRequest
+      additionalProperties: false
+      description: "A named Data App design system: the file tree is the source of truth, the\n token fields mirror theme.json (\"\" = brand/default). All fields server-owned."
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: tql_api_key

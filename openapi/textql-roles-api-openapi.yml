@@ -1,0 +1,268 @@
+openapi: 3.2.0
+info:
+  title: TextQL v2 Roles API
+  version: '2.0'
+  description: REST API for TextQL platform operations. All endpoints require Bearer token authentication.
+servers:
+- url: https://app.textql.com
+security:
+- bearerAuth: []
+tags:
+- name: Roles
+paths:
+  /v2/roles:
+    get:
+      tags:
+      - Roles
+      summary: List Roles
+      description: 'List all RBAC roles defined in the caller''s organization, including
+
+        the built-in system roles. Requires the `role:read` permission.'
+      operationId: v2.listRoles
+      responses:
+        '200':
+          description: The organization's roles
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListRolesResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    post:
+      tags:
+      - Roles
+      summary: Create Role
+      description: 'Create a custom RBAC role in the caller''s organization. The new role
+
+        starts with no permissions. Requires the `role:write` permission.'
+      operationId: v2.createRole
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRoleRequest'
+      responses:
+        '201':
+          description: The created role
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /v2/roles/{id}:
+    patch:
+      tags:
+      - Roles
+      summary: Update Role
+      description: 'Update a role''s name, description, or model configuration. Fields
+
+        omitted from the request keep their stored values. Requires the
+
+        `role:write` permission.'
+      operationId: v2.updateRole
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: Role UUID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRoleRequest'
+      responses:
+        '200':
+          description: The updated role
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  responses:
+    RateLimited:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: rate_limit_exceeded
+              message: Rate limit exceeded
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: internal
+              message: Internal server error
+    Forbidden:
+      description: Insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: permission_denied
+              message: Insufficient permissions
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: not_found
+              message: Resource not found
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: invalid_request
+              message: Invalid request body
+    Unauthorized:
+      description: Missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: unauthenticated
+              message: Authentication required
+  schemas:
+    UpdateRoleRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: New role name; omit to keep the current name.
+        description:
+          type: string
+          description: New description; omit to keep the current description.
+        default_model_id:
+          type: integer
+          description: Default LLM model id for members of this role; 0 clears it.
+        allowed_model_ids:
+          type: array
+          items:
+            type: integer
+          description: Restrict members of this role to these model ids.
+        allow_model_choice:
+          type: boolean
+          description: Whether members of this role may pick a model per chat.
+        clear_allowed_model_ids:
+          type: boolean
+          description: Set true to reset allowed_model_ids back to all models.
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code
+              enum:
+              - invalid_request
+              - unauthenticated
+              - permission_denied
+              - not_found
+              - conflict
+              - rate_limit_exceeded
+              - internal
+              - timeout
+              - cancelled
+              - execution_failed
+              - no_report
+            message:
+              type: string
+              description: Human-readable error message
+    CreateRoleRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          description: Role name, unique within the organization.
+          example: analyst
+        description:
+          type: string
+    Role:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 80de0196-496f-44fe-9d4c-8013b3b44082
+        name:
+          type: string
+          example: analyst
+        description:
+          type: string
+        is_system:
+          type: boolean
+          description: True for the built-in roles (for example `admin` and `member`).
+        is_scim_managed:
+          type: boolean
+        created_at:
+          type: string
+          description: RFC 3339 timestamp
+          example: '2026-07-06T19:30:00Z'
+        updated_at:
+          type: string
+          description: RFC 3339 timestamp
+          example: '2026-07-06T19:30:00Z'
+    ListRolesResponse:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: API key or JWT token

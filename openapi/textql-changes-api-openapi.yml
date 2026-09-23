@@ -1,0 +1,473 @@
+openapi: 3.2.0
+info:
+  title: TextQL v2 Changes API
+  version: '2.0'
+  description: REST API for TextQL platform operations. All endpoints require Bearer token authentication.
+servers:
+- url: https://app.textql.com
+security:
+- bearerAuth: []
+tags:
+- name: Changes
+  description: Review, approve, and deny Ontology changes
+paths:
+  /v2/changes:
+    get:
+      tags:
+      - Changes
+      summary: List Changes
+      description: 'List the organization''s Ontology changes. Results are scoped to
+
+        the caller''s `OWNERS` read access — changes touching only paths you
+
+        cannot read are omitted. Each `OPEN`/`DRAFT`/`DENIED` change carries a
+
+        `capabilities` object indicating which actions you may take, identical to
+
+        the review UI.'
+      operationId: v2.listChanges
+      parameters:
+      - name: status
+        in: query
+        required: false
+        description: Filter by change status. Repeatable.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - reserved
+            - draft
+            - open
+            - approved
+            - denied
+      - name: page_size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: page_token
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: include_auto_approved
+        in: query
+        required: false
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: A page of changes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  changes:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Change'
+                  next_page_token:
+                    type: string
+                  counts:
+                    type: object
+                    additionalProperties:
+                      type: integer
+                      format: int32
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /v2/changes/{id}:
+    get:
+      tags:
+      - Changes
+      summary: Get Change
+      description: 'Fetch a single change with its file diffs and the caller''s
+
+        `capabilities`. Read access is scoped to the caller''s `OWNERS`
+
+        permissions. The `git_ref` is required as `expected_git_ref` when
+
+        approving, denying, or restoring.'
+      operationId: v2.getChange
+      parameters:
+      - $ref: '#/components/parameters/ChangeId'
+      - name: revision
+        in: query
+        required: false
+        description: Fetch a historical revision (1-based); defaults to latest.
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: The change
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Change'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /v2/changes/{id}/approve:
+    post:
+      tags:
+      - Changes
+      summary: Approve Change
+      description: 'Record the caller''s approval and merge the change to the Ontology
+
+        once the folder''s approval rule is satisfied. The caller must have
+
+        `OWNERS` write authority on every path the change touches. Self-approval
+
+        is rejected when a folder rule requires distinct approvers.'
+      operationId: v2.approveChange
+      parameters:
+      - $ref: '#/components/parameters/ChangeId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExpectedGitRefBody'
+      responses:
+        '200':
+          description: Approval recorded (and merged when the rule is satisfied)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  merged:
+                    type: boolean
+                  approval_count:
+                    type: integer
+                    format: int32
+                  required_approvals:
+                    type: integer
+                    format: int32
+                  already_approved:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Change is not OPEN/DRAFT, or expected_git_ref is stale
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /v2/changes/{id}/deny:
+    post:
+      tags:
+      - Changes
+      summary: Deny Change
+      description: 'Mark a change `DENIED`. The change author may deny their own change;
+
+        otherwise the caller needs `OWNERS` write authority on every changed
+
+        path. The git ref is preserved so the change can be restored later.'
+      operationId: v2.denyChange
+      parameters:
+      - $ref: '#/components/parameters/ChangeId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExpectedGitRefBody'
+      responses:
+        '200':
+          description: Change denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Change is not OPEN/DRAFT, or expected_git_ref is stale
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /v2/changes/{id}/restore:
+    post:
+      tags:
+      - Changes
+      summary: Restore Change
+      description: 'Reopen a `DENIED` change back to `OPEN`. Same authority as deny: the
+
+        author, or a caller with `OWNERS` write authority on every changed path.'
+      operationId: v2.restoreChange
+      parameters:
+      - $ref: '#/components/parameters/ChangeId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExpectedGitRefBody'
+      responses:
+        '200':
+          description: Change restored
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Change is not DENIED, or expected_git_ref is stale
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  responses:
+    RateLimited:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: rate_limit_exceeded
+              message: Rate limit exceeded
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: internal
+              message: Internal server error
+    Forbidden:
+      description: Insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: permission_denied
+              message: Insufficient permissions
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: not_found
+              message: Resource not found
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: invalid_request
+              message: Invalid request body
+    Unauthorized:
+      description: Missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: unauthenticated
+              message: Authentication required
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code
+              enum:
+              - invalid_request
+              - unauthenticated
+              - permission_denied
+              - not_found
+              - conflict
+              - rate_limit_exceeded
+              - internal
+              - timeout
+              - cancelled
+              - execution_failed
+              - no_report
+            message:
+              type: string
+              description: Human-readable error message
+    Change:
+      type: object
+      description: A reviewable Ontology change.
+      properties:
+        id:
+          type: string
+        number:
+          type: integer
+          format: int32
+        author_id:
+          type: string
+        author_email:
+          type: string
+        author_name:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+          enum:
+          - reserved
+          - draft
+          - open
+          - approved
+          - denied
+        git_ref:
+          type: string
+          description: Echo this as expected_git_ref when approving/denying/restoring.
+        revision:
+          type: integer
+          format: int32
+        ai_generated:
+          type: boolean
+        chat_id:
+          type: string
+        approval_count:
+          type: integer
+          format: int32
+        required_approvals:
+          type: integer
+          format: int32
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        diffs:
+          type: array
+          items:
+            $ref: '#/components/schemas/LibraryChangeDiff'
+        capabilities:
+          $ref: '#/components/schemas/ChangeCapabilities'
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+    LibraryChangeDiff:
+      type: object
+      description: One changed file in an Ontology change.
+      properties:
+        name:
+          type: string
+          description: Display name for the change.
+        old_path:
+          type: string
+        new_path:
+          type: string
+        additions:
+          type: integer
+          format: int64
+        deletions:
+          type: integer
+          format: int64
+        is_new:
+          type: boolean
+        is_delete:
+          type: boolean
+        is_rename:
+          type: boolean
+        is_binary:
+          type: boolean
+    ExpectedGitRefBody:
+      type: object
+      required:
+      - expected_git_ref
+      properties:
+        expected_git_ref:
+          type: string
+          description: The change git_ref the caller reviewed; a stale value returns 409.
+    ChangeCapabilities:
+      type: object
+      description: Actions the calling member may take on a change.
+      properties:
+        can_approve:
+          type: boolean
+        can_deny:
+          type: boolean
+        can_restore:
+          type: boolean
+        caller_approved:
+          type: boolean
+  parameters:
+    ChangeId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Change ID
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: API key or JWT token

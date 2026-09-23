@@ -1,0 +1,1827 @@
+openapi: 3.2.0
+info:
+  title: TextQL Agent Service API
+  version: 1.0.0
+  description: 'TextQL public API. Generated from protobuf service definitions; internal
+
+    endpoints are excluded via google.api.visibility / file_visibility.'
+servers:
+- url: https://app.textql.com/rpc/public
+security:
+- apiKey: []
+tags:
+- name: AgentService
+paths:
+  /textql.rpc.public.agent.AgentService/CreateAgent:
+    post:
+      tags:
+      - AgentService
+      summary: CreateAgent
+      operationId: AgentService_CreateAgent
+      x-speakeasy-group: agents
+      x-speakeasy-name-override: create
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.agent.CreateAgentRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.agent.CreateAgentResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.agents.create({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.agents.create()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.agent.AgentService/DeleteAgent:
+    post:
+      tags:
+      - AgentService
+      summary: DeleteAgent
+      operationId: AgentService_DeleteAgent
+      x-speakeasy-group: agents
+      x-speakeasy-name-override: delete
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.agent.DeleteAgentRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/google.protobuf.Empty'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.agents.delete({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.agents.delete()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.agent.AgentService/DuplicateAgent:
+    post:
+      tags:
+      - AgentService
+      summary: DuplicateAgent
+      operationId: AgentService_DuplicateAgent
+      x-speakeasy-group: agents
+      x-speakeasy-name-override: duplicate
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.agent.DuplicateAgentRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.agent.DuplicateAgentResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.agents.duplicate({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.agents.duplicate()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.agent.AgentService/GetAgent:
+    post:
+      tags:
+      - AgentService
+      summary: GetAgent
+      operationId: AgentService_GetAgent
+      x-speakeasy-group: agents
+      x-speakeasy-name-override: getAgent
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.agent.GetAgentRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.agent.GetAgentResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.agents.getAgent({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.agents.get_agent()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.agent.AgentService/GetAgentDBSchema:
+    post:
+      tags:
+      - AgentService
+      summary: GetAgentDBSchema
+      operationId: AgentService_GetAgentDBSchema
+      x-speakeasy-group: agents
+      x-speakeasy-name-override: getDBSchema
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.agent.GetAgentDBSchemaRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.agent.GetAgentDBSchemaResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.agents.getDBSchema({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.agents.get_db_schema()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.agent.AgentService/GetAgentDBTablePreview:
+    post:
+      tags:
+      - AgentService
+      summary: GetAgentDBTablePreview
+      operationId: AgentService_GetAgentDBTablePreview
+      x-speakeasy-group: agents
+      x-speakeasy-name-override: getDBTablePreview
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.agent.GetAgentDBTablePreviewRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.agent.GetAgentDBTablePreviewResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.agents.getDBTablePreview({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.agents.get_db_table_preview()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.agent.AgentService/GetAgentRun:
+    post:
+      tags:
+      - AgentService
+      summary: GetAgentRun
+      operationId: AgentService_GetAgentRun
+      x-speakeasy-group: agents
+      x-speakeasy-name-override: getRun
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.agent.GetAgentRunRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.agent.GetAgentRunResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.agents.getRun({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.agents.get_run()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.agent.AgentService/ListAgentRuns:
+    post:
+      tags:
+      - AgentService
+      summary: ListAgentRuns
+      operationId: AgentService_ListAgentRuns
+      x-speakeasy-group: agents
+      x-speakeasy-name-override: listRuns
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.agent.ListAgentRunsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.agent.ListAgentRunsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.agents.listRuns({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.agents.list_runs()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.agent.AgentService/ListAgents:
+    post:
+      tags:
+      - AgentService
+      summary: ListAgents
+      operationId: AgentService_ListAgents
+      x-speakeasy-group: agents
+      x-speakeasy-name-override: list
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.agent.ListAgentsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.agent.ListAgentsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.agents.list({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.agents.list()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.agent.AgentService/ResetAgentAvatar:
+    post:
+      tags:
+      - AgentService
+      summary: ResetAgentAvatar
+      operationId: AgentService_ResetAgentAvatar
+      x-speakeasy-group: agents
+      x-speakeasy-name-override: resetAgentAvatar
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.agent.ResetAgentAvatarRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.agent.ResetAgentAvatarResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.agents.resetAgentAvatar({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.agents.reset_agent_avatar()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.agent.AgentService/TriggerAgent:
+    post:
+      tags:
+      - AgentService
+      summary: TriggerAgent
+      operationId: AgentService_TriggerAgent
+      x-speakeasy-group: agents
+      x-speakeasy-name-override: triggerAgent
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.agent.TriggerAgentRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.agent.TriggerAgentResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.agents.triggerAgent({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.agents.trigger_agent()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.agent.AgentService/UpdateAgent:
+    post:
+      tags:
+      - AgentService
+      summary: UpdateAgent
+      operationId: AgentService_UpdateAgent
+      x-speakeasy-group: agents
+      x-speakeasy-name-override: update
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.agent.UpdateAgentRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.agent.UpdateAgentResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.agents.update({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.agents.update()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.agent.AgentService/UploadAgentAvatar:
+    post:
+      tags:
+      - AgentService
+      summary: UploadAgentAvatar
+      operationId: AgentService_UploadAgentAvatar
+      x-speakeasy-group: agents
+      x-speakeasy-name-override: uploadAgentAvatar
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.agent.UploadAgentAvatarRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.agent.UploadAgentAvatarResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.agents.uploadAgentAvatar({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.agents.upload_agent_avatar()\n\n    # Handle response\n    print(res)"
+components:
+  schemas:
+    textql.rpc.public.chat.EgressSummary:
+      type: object
+      properties:
+        totalCalls:
+          type: integer
+          title: total_calls
+          format: int32
+        outcomeCounts:
+          type: object
+          title: outcome_counts
+          additionalProperties:
+            type: integer
+            title: value
+            format: int32
+        calls:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.chat.EgressCall'
+          title: calls
+      title: EgressSummary
+      additionalProperties: false
+    textql.rpc.public.agent.AgentRunTriggerGeo:
+      type: object
+      properties:
+        city:
+          type: string
+          title: city
+        region:
+          type: string
+          title: region
+        country:
+          type: string
+          title: country
+        countryCode:
+          type: string
+          title: country_code
+      title: AgentRunTriggerGeo
+      additionalProperties: false
+    textql.rpc.public.agent.UploadAgentAvatarResponse:
+      type: object
+      properties:
+        profileImageUrl:
+          type: string
+          title: profile_image_url
+          description: Signed URL of the newly uploaded avatar.
+      title: UploadAgentAvatarResponse
+      additionalProperties: false
+    textql.rpc.public.agent.CreateAgentRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+        prompt:
+          type: string
+          title: prompt
+        paradigmOptions:
+          title: paradigm_options
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.paradigm.ParadigmOptions'
+        sourceSuggestionId:
+          type: string
+          title: source_suggestion_id
+        slackChannelId:
+          type: string
+          title: slack_channel_id
+          nullable: true
+        slackDmUserIds:
+          type: array
+          items:
+            type: string
+          title: slack_dm_user_ids
+        skipOrgDefaultChannel:
+          type: boolean
+          title: skip_org_default_channel
+        llmModel:
+          title: llm_model
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.chat.LlmModel'
+        fastMode:
+          type: boolean
+          title: fast_mode
+          nullable: true
+        isStateful:
+          type: boolean
+          title: is_stateful
+          nullable: true
+        postingFrequencyCrons:
+          type: array
+          items:
+            type: string
+          title: posting_frequency_crons
+        emailRecipientMemberIds:
+          type: array
+          items:
+            type: string
+          title: email_recipient_member_ids
+        channelIds:
+          type: array
+          items:
+            type: string
+          title: channel_ids
+        teamsChannelId:
+          type: string
+          title: teams_channel_id
+          nullable: true
+        teamsDmUserAadIds:
+          type: array
+          items:
+            type: string
+          title: teams_dm_user_aad_ids
+        slackTrigger:
+          title: slack_trigger
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.agent.SlackAgentTrigger'
+        postingFrequencyCadences:
+          type: array
+          items:
+            type: string
+          title: posting_frequency_cadences
+          description: "Index-aligned with posting_frequency_crons. A non-empty cadence\n (HOURLY/FOUR-HOUR/EIGHT-HOUR/DAILY/WEEKLY) marks a flexible schedule whose\n cron the backend generates; \"\" (or an empty list) means exact."
+        callableAsSubagent:
+          type: boolean
+          title: callable_as_subagent
+          description: "Unset defaults to true: new agents are delegatable unless the caller opts\n out. Mirrors allow_ad_hoc_subagents below."
+          nullable: true
+        subagentInvokerMemberIds:
+          type: array
+          items:
+            type: string
+          title: subagent_invoker_member_ids
+        subagentInvokerRoleIds:
+          type: array
+          items:
+            type: string
+          title: subagent_invoker_role_ids
+        feedEnabled:
+          type: boolean
+          title: feed_enabled
+          nullable: true
+        subagentAgentIds:
+          type: array
+          items:
+            type: string
+          title: subagent_agent_ids
+        allowAdHocSubagents:
+          type: boolean
+          title: allow_ad_hoc_subagents
+          nullable: true
+      title: CreateAgentRequest
+      additionalProperties: false
+    textql.rpc.public.agent.Agent:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        name:
+          type: string
+          title: name
+        prompt:
+          type: string
+          title: prompt
+        isActive:
+          type: boolean
+          title: is_active
+        lastPostAt:
+          title: last_post_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        paradigmOptions:
+          title: paradigm_options
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.paradigm.ParadigmOptions'
+        postCount:
+          type: integer
+          title: post_count
+          format: int32
+        commentCount:
+          type: integer
+          title: comment_count
+          format: int32
+        voteCount:
+          type: integer
+          title: vote_count
+          format: int32
+        memberId:
+          type: string
+          title: member_id
+        memberName:
+          type: string
+          title: member_name
+        lastChatId:
+          type: string
+          title: last_chat_id
+        hasWritePermission:
+          type: boolean
+          title: has_write_permission
+          nullable: true
+        slackChannelId:
+          type: string
+          title: slack_channel_id
+          description: Notification delivery
+          nullable: true
+        slackDmUserIds:
+          type: array
+          items:
+            type: string
+          title: slack_dm_user_ids
+        skipOrgDefaultChannel:
+          type: boolean
+          title: skip_org_default_channel
+        llmModel:
+          title: llm_model
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.chat.LlmModel'
+        fastMode:
+          type: boolean
+          title: fast_mode
+          nullable: true
+        isStateful:
+          type: boolean
+          title: is_stateful
+          description: whether or not we inject past run history
+          nullable: true
+        postingFrequencyCrons:
+          type: array
+          items:
+            type: string
+          title: posting_frequency_crons
+        emailOutputEnabled:
+          type: boolean
+          title: email_output_enabled
+        emailRecipientMemberIds:
+          type: array
+          items:
+            type: string
+          title: email_recipient_member_ids
+        webhookTriggerId:
+          type: string
+          title: webhook_trigger_id
+        channelIds:
+          type: array
+          items:
+            type: string
+          title: channel_ids
+        teamsChannelId:
+          type: string
+          title: teams_channel_id
+          nullable: true
+        teamsDmUserAadIds:
+          type: array
+          items:
+            type: string
+          title: teams_dm_user_aad_ids
+        slackTrigger:
+          title: slack_trigger
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.agent.SlackAgentTrigger'
+        profileImageUrl:
+          type: string
+          title: profile_image_url
+        postingFrequencyCadences:
+          type: array
+          items:
+            type: string
+          title: posting_frequency_cadences
+          description: "Index-aligned with posting_frequency_crons. Each entry is the flexible\n cadence (HOURLY/FOUR-HOUR/EIGHT-HOUR/DAILY/WEEKLY) the schedule came from,\n or \"\" when the schedule is an exact custom cron."
+        callableAsSubagent:
+          type: boolean
+          title: callable_as_subagent
+          description: "Whether this agent participates in the feed (posts/comments/engages, feed\n tools, feed persona prompt). Delivery config (channels, recipients, slack,\n teams) is only meaningful when true."
+        subagentInvokerMemberIds:
+          type: array
+          items:
+            type: string
+          title: subagent_invoker_member_ids
+        subagentInvokerRoleIds:
+          type: array
+          items:
+            type: string
+          title: subagent_invoker_role_ids
+        feedEnabled:
+          type: boolean
+          title: feed_enabled
+        subagentAgentIds:
+          type: array
+          items:
+            type: string
+          title: subagent_agent_ids
+        allowAdHocSubagents:
+          type: boolean
+          title: allow_ad_hoc_subagents
+      title: Agent
+      additionalProperties: false
+    textql.rpc.public.agent.GetAgentRunRequest:
+      type: object
+      properties:
+        runId:
+          type: string
+          title: run_id
+      title: GetAgentRunRequest
+      additionalProperties: false
+    textql.rpc.public.agent.GetAgentRequest:
+      type: object
+      properties:
+        agentId:
+          type: string
+          title: agent_id
+      title: GetAgentRequest
+      additionalProperties: false
+    textql.rpc.public.paradigm.UniversalOptions:
+      type: object
+      properties:
+        connectorIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+          title: connector_ids
+        datasetId:
+          type: string
+          title: dataset_id
+          nullable: true
+        webSearchEnabled:
+          type: boolean
+          title: web_search_enabled
+        sqlEnabled:
+          type: boolean
+          title: sql_enabled
+        ontologyEnabled:
+          type: boolean
+          title: ontology_enabled
+        ontologyEditingEnabled:
+          type: boolean
+          title: ontology_editing_enabled
+        pythonEnabled:
+          type: boolean
+          title: python_enabled
+        autoApproveEnabled:
+          type: boolean
+          title: auto_approve_enabled
+        googleDriveEnabled:
+          type: boolean
+          title: google_drive_enabled
+        powerbiEnabled:
+          type: boolean
+          title: powerbi_enabled
+        contextEditingEnabled:
+          type: boolean
+          title: context_editing_enabled
+        formEditorEnabled:
+          type: boolean
+          title: form_editor_enabled
+        playbookToolsEnabled:
+          type: boolean
+          title: playbook_tools_enabled
+        microsoft365Enabled:
+          type: boolean
+          title: microsoft365_enabled
+        feedExplorerEnabled:
+          type: boolean
+          title: feed_explorer_enabled
+        bashEnabled:
+          type: boolean
+          title: bash_enabled
+        javascriptEnabled:
+          type: boolean
+          title: javascript_enabled
+        feedPostEnabled:
+          type: boolean
+          title: feed_post_enabled
+        feedCommentEnabled:
+          type: boolean
+          title: feed_comment_enabled
+        feedEngageEnabled:
+          type: boolean
+          title: feed_engage_enabled
+        streamlitEnabled:
+          type: boolean
+          title: streamlit_enabled
+        compactionDisabled:
+          type: boolean
+          title: compaction_disabled
+        gmailEnabled:
+          type: boolean
+          title: gmail_enabled
+        chatHistorySearchEnabled:
+          type: boolean
+          title: chat_history_search_enabled
+        googleCalendarEnabled:
+          type: boolean
+          title: google_calendar_enabled
+        emailOutputEnabled:
+          type: boolean
+          title: email_output_enabled
+        powerbiSelections:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.powerbi_selection.PowerBISelection'
+          title: powerbi_selections
+        smsMode:
+          type: boolean
+          title: sms_mode
+        apiAccessKeyIds:
+          type: array
+          items:
+            type: string
+          title: api_access_key_ids
+        feedEnabled:
+          type: boolean
+          title: feed_enabled
+          nullable: true
+        fileGenerationDisabled:
+          type: boolean
+          title: file_generation_disabled
+      title: UniversalOptions
+      additionalProperties: false
+    textql.rpc.public.agent.SlackAgentTrigger:
+      type: object
+      properties:
+        triggerId:
+          type: string
+          title: trigger_id
+        isActive:
+          type: boolean
+          title: is_active
+        teamId:
+          type: string
+          title: team_id
+          nullable: true
+        allowedChannelIds:
+          type: array
+          items:
+            type: string
+          title: allowed_channel_ids
+      title: SlackAgentTrigger
+      additionalProperties: false
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
+          type: string
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+          - type: object
+            title: Any
+            additionalProperties: true
+            description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
+    textql.rpc.public.agent.AgentDBColumn:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+        type:
+          type: string
+          title: type
+          description: DuckDB type name, e.g. "VARCHAR", "BIGINT"
+        nullable:
+          type: boolean
+          title: nullable
+        primaryKey:
+          type: boolean
+          title: primary_key
+      title: AgentDBColumn
+      additionalProperties: false
+    textql.rpc.public.agent.UploadAgentAvatarRequest:
+      type: object
+      properties:
+        agentId:
+          type: string
+          title: agent_id
+        imageData:
+          type: string
+          title: image_data
+          format: byte
+        fileName:
+          type: string
+          title: file_name
+      title: UploadAgentAvatarRequest
+      additionalProperties: false
+    textql.rpc.public.agent.GetAgentDBSchemaRequest:
+      type: object
+      properties:
+        agentId:
+          type: string
+          title: agent_id
+      title: GetAgentDBSchemaRequest
+      additionalProperties: false
+    textql.rpc.public.agent.ResetAgentAvatarRequest:
+      type: object
+      properties:
+        agentId:
+          type: string
+          title: agent_id
+      title: ResetAgentAvatarRequest
+      additionalProperties: false
+    textql.rpc.public.agent.ResetAgentAvatarResponse:
+      type: object
+      properties:
+        profileImageUrl:
+          type: string
+          title: profile_image_url
+          description: Empty after a reset (agent falls back to the default identicon).
+      title: ResetAgentAvatarResponse
+      additionalProperties: false
+    textql.rpc.public.agent.ListAgentRunsResponse:
+      type: object
+      properties:
+        runs:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.agent.AgentRun'
+          title: runs
+      title: ListAgentRunsResponse
+      additionalProperties: false
+    textql.rpc.public.agent.AgentRun:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        agentId:
+          type: string
+          title: agent_id
+        triggerSource:
+          type: string
+          title: trigger_source
+        status:
+          type: string
+          title: status
+        chatId:
+          type: string
+          title: chat_id
+        webhookTriggerId:
+          type: string
+          title: webhook_trigger_id
+        triggeredByMemberId:
+          type: string
+          title: triggered_by_member_id
+        triggeredByAgentId:
+          type: string
+          title: triggered_by_agent_id
+        errorKind:
+          type: string
+          title: error_kind
+        errorMessage:
+          type: string
+          title: error_message
+        attempt:
+          type: integer
+          title: attempt
+          format: int32
+        toolCallsCount:
+          type: integer
+          title: tool_calls_count
+          format: int32
+        lastSummary:
+          type: string
+          title: last_summary
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        startedAt:
+          title: started_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        finishedAt:
+          title: finished_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        triggerMetadata:
+          title: trigger_metadata
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.agent.AgentRunTriggerMetadata'
+        toolsSummary:
+          title: tools_summary
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.agent.AgentRunToolsSummary'
+        delivery:
+          title: delivery
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.agent.AgentRunDelivery'
+        egressSummary:
+          title: egress_summary
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.chat.EgressSummary'
+        connectorIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+          title: connector_ids
+        sandboxMountMs:
+          type:
+          - integer
+          - string
+          title: sandbox_mount_ms
+          format: int64
+      title: AgentRun
+      additionalProperties: false
+    textql.rpc.public.agent.AgentRunToolsSummary:
+      type: object
+      properties:
+        totalCalls:
+          type: integer
+          title: total_calls
+          format: int32
+        toolCounts:
+          type: object
+          title: tool_counts
+          additionalProperties:
+            type: integer
+            title: value
+            format: int32
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.agent.AgentRunToolCall'
+          title: details
+      title: AgentRunToolsSummary
+      additionalProperties: false
+    textql.rpc.public.agent.ListAgentsResponse:
+      type: object
+      properties:
+        agents:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.agent.Agent'
+          title: agents
+      title: ListAgentsResponse
+      additionalProperties: false
+    google.protobuf.Empty:
+      type: object
+      description: "A generic empty message that you can re-use to avoid defining duplicated\n empty messages in your APIs. A typical example is to use it as the request\n or the response type of an API method. For instance:\n\n     service Foo {\n       rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);\n     }"
+    textql.rpc.public.agent.DuplicateAgentRequest:
+      type: object
+      properties:
+        agentId:
+          type: string
+          title: agent_id
+      title: DuplicateAgentRequest
+      additionalProperties: false
+    textql.rpc.public.agent.DeleteAgentRequest:
+      type: object
+      properties:
+        agentId:
+          type: string
+          title: agent_id
+      title: DeleteAgentRequest
+      additionalProperties: false
+    textql.rpc.public.chat.EgressCall:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        method:
+          type: string
+          title: method
+        scheme:
+          type: string
+          title: scheme
+        host:
+          type: string
+          title: host
+        path:
+          type: string
+          title: path
+        statusCode:
+          type: integer
+          title: status_code
+          format: int32
+        outcome:
+          type: string
+          title: outcome
+        durationMs:
+          type:
+          - integer
+          - string
+          title: duration_ms
+          format: int64
+        requestBytes:
+          type:
+          - integer
+          - string
+          title: request_bytes
+          format: int64
+        responseBytes:
+          type:
+          - integer
+          - string
+          title: response_bytes
+          format: int64
+        apiAccessKeyId:
+          type: string
+          title: api_access_key_id
+        occurredAt:
+          title: occurred_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        cellId:
+          type: string
+          title: cell_id
+        interpretation:
+          type: string
+          title: interpretation
+      title: EgressCall
+      additionalProperties: false
+    textql.rpc.public.agent.UpdateAgentResponse:
+      type: object
+      properties:
+        agent:
+          title: agent
+          $ref: '#/components/schemas/textql.rpc.public.agent.Agent'
+        chatId:
+          type: string
+          title: chat_id
+      title: UpdateAgentResponse
+      additionalProperties: false
+    textql.rpc.public.agent.CreateAgentResponse:
+      type: object
+      properties:
+        agent:
+          title: agent
+          $ref: '#/components/schemas/textql.rpc.public.agent.Agent'
+        chatId:
+          type: string
+          title: chat_id
+      title: CreateAgentResponse
+      additionalProperties: false
+    textql.rpc.public.agent.DuplicateAgentResponse:
+      type: object
+      properties:
+        agent:
+          title: agent
+          $ref: '#/components/schemas/textql.rpc.public.agent.Agent'
+      title: DuplicateAgentResponse
+      additionalProperties: false
+    textql.rpc.public.agent.AgentDBTable:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+        columns:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.agent.AgentDBColumn'
+          title: columns
+      title: AgentDBTable
+      additionalProperties: false
+    textql.rpc.public.agent.GetAgentDBTablePreviewResponse:
+      type: object
+      properties:
+        arrowData:
+          type: string
+          title: arrow_data
+          format: byte
+      title: GetAgentDBTablePreviewResponse
+      additionalProperties: false
+    textql.rpc.public.agent.ListAgentRunsRequest:
+      type: object
+      properties:
+        agentId:
+          type: string
+          title: agent_id
+        triggerSource:
+          type: string
+          title: trigger_source
+          nullable: true
+        status:
+          type: string
+          title: status
+          nullable: true
+        limit:
+          type: integer
+          title: limit
+          format: int32
+        offset:
+          type: integer
+          title: offset
+          format: int32
+      title: ListAgentRunsRequest
+      additionalProperties: false
+    textql.rpc.public.agent.AgentRunTriggerMetadata:
+      type: object
+      properties:
+        authMethod:
+          type: string
+          title: auth_method
+        memberId:
+          type: string
+          title: member_id
+        apiKeyId:
+          type: string
+          title: api_key_id
+        clientId:
+          type: string
+          title: client_id
+        userAgent:
+          type: string
+          title: user_agent
+        ip:
+          type: string
+          title: ip
+        geo:
+          title: geo
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.agent.AgentRunTriggerGeo'
+      title: AgentRunTriggerMetadata
+      additionalProperties: false
+    textql.rpc.public.agent.UpdateAgentRequest:
+      type: object
+      properties:
+        agentId:
+          type: string
+          title: agent_id
+        name:
+          type: string
+          title: name
+        prompt:
+          type: string
+          title: prompt
+        isActive:
+          type: boolean
+          title: is_active
+        paradigmOptions:
+          title: paradigm_options
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.paradigm.ParadigmOptions'
+        slackChannelId:
+          type: string
+          title: slack_channel_id
+          nullable: true
+        slackDmUserIds:
+          type: array
+          items:
+            type: string
+          title: slack_dm_user_ids
+        skipOrgDefaultChannel:
+          type: boolean
+          title: skip_org_default_channel
+        llmModel:
+          title: llm_model
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.chat.LlmModel'
+        fastMode:
+          type: boolean
+          title: fast_mode
+          nullable: true
+        isStateful:
+          type: boolean
+          title: is_stateful
+          nullable: true
+        postingFrequencyCrons:
+          type: array
+          items:
+            type: string
+          title: posting_frequency_crons
+        emailRecipientMemberIds:
+          type: array
+          items:
+            type: string
+          title: email_recipient_member_ids
+        updateEmailRecipients:
+          type: boolean
+          title: update_email_recipients
+          nullable: true
+        channelIds:
+          type: array
+          items:
+            type: string
+          title: channel_ids
+        updateChannelIds:
+          type: boolean
+          title: update_channel_ids
+          nullable: true
+        teamsChannelId:
+          type: string
+          title: teams_channel_id
+          nullable: true
+        teamsDmUserAadIds:
+          type: array
+          items:
+            type: string
+          title: teams_dm_user_aad_ids
+        slackTrigger:
+          title: slack_trigger
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.agent.SlackAgentTrigger'
+        postingFrequencyCadences:
+          type: array
+          items:
+            type: string
+          title: posting_frequency_cadences
+          description: "Index-aligned with posting_frequency_crons. A non-empty cadence\n (HOURLY/FOUR-HOUR/EIGHT-HOUR/DAILY/WEEKLY) marks a flexible schedule whose\n cron the backend generates; \"\" (or an empty list) means exact."
+        callableAsSubagent:
+          type: boolean
+          title: callable_as_subagent
+          description: Feed participation; nil = don't touch (mirrors fast_mode/is_stateful).
+          nullable: true
+        subagentInvokerMemberIds:
+          type: array
+          items:
+            type: string
+          title: subagent_invoker_member_ids
+        subagentInvokerRoleIds:
+          type: array
+          items:
+            type: string
+          title: subagent_invoker_role_ids
+        updateSubagentInvokers:
+          type: boolean
+          title: update_subagent_invokers
+          nullable: true
+        feedEnabled:
+          type: boolean
+          title: feed_enabled
+          nullable: true
+        subagentAgentIds:
+          type: array
+          items:
+            type: string
+          title: subagent_agent_ids
+        updateSubagents:
+          type: boolean
+          title: update_subagents
+          nullable: true
+        allowAdHocSubagents:
+          type: boolean
+          title: allow_ad_hoc_subagents
+          nullable: true
+      title: UpdateAgentRequest
+      additionalProperties: false
+    textql.rpc.public.agent.GetAgentDBSchemaResponse:
+      type: object
+      properties:
+        tables:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.agent.AgentDBTable'
+          title: tables
+        changeLogBytes:
+          type:
+          - integer
+          - string
+          title: change_log_bytes
+          format: int64
+          description: durable Postgres change-log size; the .duckdb cache is derived from this
+      title: GetAgentDBSchemaResponse
+      additionalProperties: false
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+          - not_found
+          enum:
+          - canceled
+          - unknown
+          - invalid_argument
+          - deadline_exceeded
+          - not_found
+          - already_exists
+          - permission_denied
+          - resource_exhausted
+          - failed_precondition
+          - aborted
+          - out_of_range
+          - unimplemented
+          - internal
+          - unavailable
+          - data_loss
+          - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    textql.rpc.public.paradigm.ParadigmOptions:
+      type: object
+      oneOf:
+      - type: object
+        properties:
+          universal:
+            title: universal
+            $ref: '#/components/schemas/textql.rpc.public.paradigm.UniversalOptions'
+        title: universal
+        required:
+        - universal
+      title: ParadigmOptions
+      additionalProperties: false
+    textql.rpc.public.agent.ListAgentsRequest:
+      type: object
+      properties:
+        includeInactive:
+          type: boolean
+          title: include_inactive
+        includeAllOrg:
+          type: boolean
+          title: include_all_org
+        days:
+          type: integer
+          title: days
+          format: int32
+      title: ListAgentsRequest
+      additionalProperties: false
+    textql.rpc.public.agent.GetAgentDBTablePreviewRequest:
+      type: object
+      properties:
+        agentId:
+          type: string
+          title: agent_id
+        tableName:
+          type: string
+          title: table_name
+        limit:
+          type: integer
+          title: limit
+          format: int32
+          description: clamped server-side; 0 uses the default
+      title: GetAgentDBTablePreviewRequest
+      additionalProperties: false
+    textql.rpc.public.agent.AgentRunToolCall:
+      type: object
+      properties:
+        tool:
+          type: string
+          title: tool
+        summary:
+          type: string
+          title: summary
+        error:
+          type: string
+          title: error
+        resultJson:
+          type: string
+          title: result_json
+        cellId:
+          type: string
+          title: cell_id
+        durationMs:
+          type:
+          - integer
+          - string
+          title: duration_ms
+          format: int64
+        startedAtMs:
+          type:
+          - integer
+          - string
+          title: started_at_ms
+          format: int64
+      title: AgentRunToolCall
+      additionalProperties: false
+    textql.rpc.public.agent.AgentRunDeliveryChannel:
+      type: object
+      properties:
+        type:
+          type: string
+          title: type
+          description: slack_channel | teams_channel | slack_dm | teams_dm | email | feed_channel
+        id:
+          type: string
+          title: id
+          description: raw identifier (channel id, member id, aad id)
+        label:
+          type: string
+          title: label
+          description: resolved human-readable label (#channel, email address)
+      title: AgentRunDeliveryChannel
+      additionalProperties: false
+    google.protobuf.Timestamp:
+      type: string
+      examples:
+      - '2023-01-15T01:30:15.01Z'
+      - '2024-12-25T12:00:00Z'
+      format: date-time
+      description: "A Timestamp represents a point in time independent of any time zone or local\n calendar, encoded as a count of seconds and fractions of seconds at\n nanosecond resolution. The count is relative to an epoch at UTC midnight on\n January 1, 1970, in the proleptic Gregorian calendar which extends the\n Gregorian calendar backwards to year one.\n\n All minutes are 60 seconds long. Leap seconds are \"smeared\" so that no leap\n second table is needed for interpretation, using a [24-hour linear\n smear](https://developers.google.com/time/smear).\n\n The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By\n restricting to that range, we ensure that we can convert to and from [RFC\n 3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.\n\n # Examples\n\n Example 1: Compute Timestamp from POSIX `time()`.\n\n     Timestamp timestamp;\n     timestamp.set_seconds(time(NULL));\n     timestamp.set_nanos(0);\n\n Example 2: Compute Timestamp from POSIX `gettimeofday()`.\n\n     struct timeval tv;\n     gettimeofday(&tv, NULL);\n\n     Timestamp timestamp;\n     timestamp.set_seconds(tv.tv_sec);\n     timestamp.set_nanos(tv.tv_usec * 1000);\n\n Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.\n\n     FILETIME ft;\n     GetSystemTimeAsFileTime(&ft);\n     UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;\n\n     // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z\n     // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.\n     Timestamp timestamp;\n     timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));\n     timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));\n\n Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.\n\n     long millis = System.currentTimeMillis();\n\n     Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)\n         .setNanos((int) ((millis % 1000) * 1000000)).build();\n\n Example 5: Compute Timestamp from Java `Instant.now()`.\n\n     Instant now = Instant.now();\n\n     Timestamp timestamp =\n         Timestamp.newBuilder().setSeconds(now.getEpochSecond())\n             .setNanos(now.getNano()).build();\n\n Example 6: Compute Timestamp from current time in Python.\n\n     timestamp = Timestamp()\n     timestamp.GetCurrentTime()\n\n # JSON Mapping\n\n In JSON format, the Timestamp type is encoded as a string in the\n [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the\n format is \"{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z\"\n where {year} is always expressed using four digits while {month}, {day},\n {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional\n seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),\n are optional. The \"Z\" suffix indicates the timezone (\"UTC\"); the timezone\n is required. A proto3 JSON serializer should always use UTC (as indicated by\n \"Z\") when printing the Timestamp type and a proto3 JSON parser should be\n able to accept both UTC and other timezones (as indicated by an offset).\n\n For example, \"2017-01-15T01:30:15.01Z\" encodes 15.01 seconds past\n 01:30 UTC on January 15, 2017.\n\n In JavaScript, one can convert a Date object to this format using the\n standard\n [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)\n method. In Python, a standard `datetime.datetime` object can be converted\n to this format using\n [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with\n the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use\n the Joda Time's [`ISODateTimeFormat.dateTime()`](\n http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()\n ) to obtain a formatter capable of generating timestamps in this format."
+    textql.rpc.public.agent.GetAgentResponse:
+      type: object
+      properties:
+        agent:
+          title: agent
+          $ref: '#/components/schemas/textql.rpc.public.agent.Agent'
+      title: GetAgentResponse
+      additionalProperties: false
+    textql.rpc.public.agent.GetAgentRunResponse:
+      type: object
+      properties:
+        run:
+          title: run
+          $ref: '#/components/schemas/textql.rpc.public.agent.AgentRun'
+      title: GetAgentRunResponse
+      additionalProperties: false
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+      - 1
+      description: Define the version of the Connect protocol
+      const: 1
+      default: 1
+    textql.rpc.powerbi_selection.PowerBISelection:
+      type: object
+      properties:
+        workspaceId:
+          type: string
+          title: workspace_id
+        reportIds:
+          type: array
+          items:
+            type: string
+          title: report_ids
+        datasetIds:
+          type: array
+          items:
+            type: string
+          title: dataset_ids
+        workspaceName:
+          type: string
+          title: workspace_name
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+      title: PowerBISelection
+      additionalProperties: false
+      description: "PowerBISelection captures a chosen PowerBI workspace (and optionally the\n specific reports/datasets within it) for attaching to a chat. Field shape\n mirrors textql.rpc.public.paradigm.PowerBISelection; kept in a standalone\n package so it can be shared by paradigm_params without an import cycle\n (public/paradigm.proto already imports paradigm_params.proto)."
+    textql.rpc.public.agent.TriggerAgentRequest:
+      type: object
+      properties:
+        agentId:
+          type: string
+          title: agent_id
+      title: TriggerAgentRequest
+      additionalProperties: false
+    textql.rpc.public.agent.TriggerAgentResponse:
+      type: object
+      properties:
+        chatId:
+          type: string
+          title: chat_id
+      title: TriggerAgentResponse
+      additionalProperties: false
+    textql.rpc.public.agent.AgentRunDelivery:
+      type: object
+      properties:
+        slackChannelId:
+          type: string
+          title: slack_channel_id
+          nullable: true
+        teamsChannelId:
+          type: string
+          title: teams_channel_id
+          nullable: true
+        slackDmUserIds:
+          type: array
+          items:
+            type: string
+          title: slack_dm_user_ids
+        teamsDmUserAadIds:
+          type: array
+          items:
+            type: string
+          title: teams_dm_user_aad_ids
+        emailRecipientMemberIds:
+          type: array
+          items:
+            type: string
+          title: email_recipient_member_ids
+        feedChannelIds:
+          type: array
+          items:
+            type: string
+          title: feed_channel_ids
+        channels:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.agent.AgentRunDeliveryChannel'
+          title: channels
+      title: AgentRunDelivery
+      additionalProperties: false
+    textql.rpc.public.chat.LlmModel:
+      type: string
+      title: LlmModel
+      enum:
+      - MODEL_UNKNOWN
+      - MODEL_DEFAULT
+      - MODEL_DEFAULT_SYSTEM
+      - MODEL_HAIKU_4_5
+      - MODEL_OPUS_4_8
+      - MODEL_FABLE_5
+      - MODEL_SONNET_5
+      - MODEL_OPUS_5
+      - MODEL_GPT_5_6_SOL
+      - MODEL_GEMINI_3_FLASH
+      - MODEL_GEMINI_3_PRO
+      - MODEL_GEMINI_3_1_PRO
+      - MODEL_GEMINI_3_5_FLASH
+      - MODEL_GPT_5_6_TERRA
+      - MODEL_GPT_5_6_LUNA
+      - MODEL_DEEPSEEK_3_2
+      - MODEL_GLM_5
+      - MODEL_VLLM
+      - MODEL_KIMI_K2_6
+      - MODEL_GLM_5_2
+      - MODEL_KIMI_K2_7_CODE
+      - MODEL_QWEN3_7_PLUS
+      - MODEL_KIMI_K3
+      - MODEL_DEEPSEEK_V4_FLASH_0731
+      - MODEL_MUSE_SPARK_1_1
+      - MODEL_MUSE_SPARK_1_2
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: tql_api_key

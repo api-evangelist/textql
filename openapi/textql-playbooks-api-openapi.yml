@@ -1,0 +1,600 @@
+openapi: 3.2.0
+info:
+  title: TextQL v2 Playbooks API
+  version: '2.0'
+  description: REST API for TextQL platform operations. All endpoints require Bearer token authentication.
+servers:
+- url: https://app.textql.com
+security:
+- bearerAuth: []
+tags:
+- name: Playbooks
+  description: Create, configure, and run automated playbooks
+paths:
+  /v2/playbooks:
+    get:
+      tags:
+      - Playbooks
+      summary: List Playbooks
+      description: List playbooks with optional filtering, sorting, and pagination.
+      operationId: v2.listPlaybooks
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          format: int64
+        description: Maximum number of playbooks to return
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          format: int64
+        description: Number of playbooks to skip
+      - name: search_term
+        in: query
+        schema:
+          type: string
+        description: Filter playbooks by name
+      - name: sort_by
+        in: query
+        schema:
+          type: string
+          enum:
+          - name
+          - created_at
+          - updated_at
+        description: Field to sort by
+      - name: sort_direction
+        in: query
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+        description: Sort direction
+      - name: status_filter
+        in: query
+        schema:
+          type: string
+          enum:
+          - draft
+          - deployed
+        description: Filter by playbook status
+      responses:
+        '200':
+          description: Paginated list of playbooks
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListPlaybooksResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    post:
+      tags:
+      - Playbooks
+      summary: Create Playbook
+      description: Create a new empty playbook with default settings.
+      operationId: v2.createPlaybook
+      responses:
+        '201':
+          description: Created playbook
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Playbook'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /v2/playbooks/{id}:
+    get:
+      tags:
+      - Playbooks
+      summary: Get Playbook
+      description: Retrieve a playbook by ID, including its recent reports.
+      operationId: v2.getPlaybook
+      parameters:
+      - $ref: '#/components/parameters/PlaybookId'
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          format: int64
+        description: Maximum number of reports to return
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          format: int64
+        description: Number of reports to skip
+      responses:
+        '200':
+          description: Playbook details with reports
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPlaybookResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    patch:
+      tags:
+      - Playbooks
+      summary: Update Playbook
+      description: 'Update a playbook''s configuration. All fields are optional; only provided
+
+        fields are updated.'
+      operationId: v2.updatePlaybook
+      parameters:
+      - $ref: '#/components/parameters/PlaybookId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePlaybookRequest'
+      responses:
+        '200':
+          description: Updated playbook
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Playbook'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    delete:
+      tags:
+      - Playbooks
+      summary: Delete Playbook
+      description: Delete a playbook by ID.
+      operationId: v2.deletePlaybook
+      parameters:
+      - $ref: '#/components/parameters/PlaybookId'
+      responses:
+        '200':
+          description: Deletion confirmation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  playbook_id:
+                    type: string
+                    format: uuid
+                  deleted_at:
+                    type: string
+                    format: date-time
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /v2/playbooks/{id}/deploy:
+    post:
+      tags:
+      - Playbooks
+      summary: Deploy Playbook
+      description: Deploy a playbook, making it active and ready to run on its schedule.
+      operationId: v2.deployPlaybook
+      parameters:
+      - $ref: '#/components/parameters/PlaybookId'
+      responses:
+        '200':
+          description: Deployment confirmation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  playbook_id:
+                    type: string
+                    format: uuid
+                  deployed_at:
+                    type: string
+                    format: date-time
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /v2/playbooks/{id}/run:
+    post:
+      tags:
+      - Playbooks
+      summary: Run Playbook
+      description: 'Execute a playbook and return the generated report. Use `dry_run: true` to
+
+        validate without executing. Returns 504 if execution times out.'
+      operationId: v2.runPlaybook
+      parameters:
+      - $ref: '#/components/parameters/PlaybookId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                dry_run:
+                  type: boolean
+                  default: false
+                  description: If true, validate without executing
+      responses:
+        '200':
+          description: Playbook execution result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RunPlaybookResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+        '504':
+          description: Execution timed out
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  responses:
+    RateLimited:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: rate_limit_exceeded
+              message: Rate limit exceeded
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: internal
+              message: Internal server error
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: invalid_request
+              message: Invalid request body
+    Forbidden:
+      description: Insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: permission_denied
+              message: Insufficient permissions
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: not_found
+              message: Resource not found
+    Unauthorized:
+      description: Missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: unauthenticated
+              message: Authentication required
+  parameters:
+    PlaybookId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Playbook ID
+  schemas:
+    GetPlaybookResponse:
+      type: object
+      properties:
+        playbook:
+          $ref: '#/components/schemas/Playbook'
+        reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/Report'
+        total_reports_count:
+          type: integer
+          format: int64
+    Playbook:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        prompt:
+          type: string
+        status:
+          type: string
+          enum:
+          - draft
+          - deployed
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        connector_ids:
+          type: array
+          items:
+            type: integer
+            format: int32
+          description: Connector IDs attached to this playbook
+        cron_string:
+          type: string
+          description: Cron schedule expression. Omitted when not set.
+        email_addresses:
+          type: array
+          items:
+            type: string
+          description: Email addresses for report delivery. Omitted when empty.
+        slack_channel_id:
+          type: string
+          description: Slack channel for report delivery. Omitted when not set.
+    UpdatePlaybookRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Playbook name
+        prompt:
+          type: string
+          description: Playbook prompt
+        cron_string:
+          type: string
+          description: Cron schedule expression
+        connector_ids:
+          type: array
+          items:
+            type: integer
+            format: int32
+          description: Connector IDs to use
+        dataset_ids:
+          type: array
+          items:
+            type: string
+          description: Dataset IDs
+        email_addresses:
+          type: array
+          items:
+            type: string
+          description: Email addresses for report delivery
+        slack_channel_id:
+          type: string
+          description: Slack channel for report delivery
+        tagged_slack_user_ids:
+          type: array
+          items:
+            type: string
+          description: Slack user IDs to tag in notifications
+        selected_template_data_ids:
+          type: array
+          items:
+            type: string
+          description: Template data IDs
+    Asset:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Asset name
+        type:
+          type: string
+          description: Asset type (e.g. chart, image, table, pdf, html, text, download)
+        url:
+          type: string
+          description: Asset URL, freshly signed on every fetch
+        content:
+          type: string
+          description: Inline text content, for text assets served without a URL
+        cell_id:
+          type: string
+          format: uuid
+          description: ID of the cell that produced this asset
+        message_cell_id:
+          type: string
+          format: uuid
+          description: cell_id of the assistant message this asset belongs to (Get Chat only)
+        created_at:
+          type: string
+          format: date-time
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code
+              enum:
+              - invalid_request
+              - unauthenticated
+              - permission_denied
+              - not_found
+              - conflict
+              - rate_limit_exceeded
+              - internal
+              - timeout
+              - cancelled
+              - execution_failed
+              - no_report
+            message:
+              type: string
+              description: Human-readable error message
+    Report:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        subject:
+          type: string
+          description: Report subject line
+        summary:
+          type: string
+          description: Brief summary of the report
+        blocks:
+          type: array
+          description: Structured report content blocks
+          items:
+            $ref: '#/components/schemas/ReportBlock'
+        html_preview:
+          type: string
+          description: Pre-rendered HTML preview of the report
+        chat_id:
+          type: string
+          format: uuid
+          description: Chat session that generated this report
+        created_at:
+          type: string
+          format: date-time
+    ListPlaybooksResponse:
+      type: object
+      properties:
+        playbooks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Playbook'
+        total_count:
+          type: integer
+          format: int64
+    RunPlaybookResponse:
+      type: object
+      properties:
+        chat_id:
+          type: string
+          format: uuid
+        report:
+          $ref: '#/components/schemas/Report'
+        assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Asset'
+    ReportBlock:
+      type: object
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - hero
+          - text
+          - image
+          - list
+          - image_text
+          - card
+          - divider
+          - spacer
+          description: Block type
+        heading:
+          type: string
+          description: Block heading (text, list, image_text)
+        content:
+          type: string
+          description: Block body content (text, image_text)
+        image_url:
+          type: string
+          description: Image URL (hero, image, image_text)
+        image_alt:
+          type: string
+          description: Image alt text (hero, image, image_text)
+        variant:
+          type: string
+          enum:
+          - circular
+          - rounded
+          - pill
+          - none
+          description: Image shape variant (image, image_text)
+        items:
+          type: array
+          items:
+            type: string
+          description: List items (list)
+        blocks:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportBlock'
+          description: Nested blocks (card)
+        height:
+          type: integer
+          description: Spacer height in pixels (spacer)
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: API key or JWT token

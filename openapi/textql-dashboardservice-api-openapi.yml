@@ -1,0 +1,2355 @@
+openapi: 3.2.0
+info:
+  title: TextQL Dashboard Service API
+  version: 1.0.0
+  description: 'TextQL public API. Generated from protobuf service definitions; internal
+
+    endpoints are excluded via google.api.visibility / file_visibility.'
+servers:
+- url: https://app.textql.com/rpc/public
+security:
+- apiKey: []
+tags:
+- name: DashboardService
+paths:
+  /textql.rpc.public.dashboard.DashboardService/CheckDashboardHealth:
+    post:
+      tags:
+      - DashboardService
+      summary: CheckDashboardHealth
+      operationId: DashboardService_CheckDashboardHealth
+      x-speakeasy-group: dashboards
+      x-speakeasy-name-override: checkHealth
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.CheckDashboardHealthRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dashboard.CheckDashboardHealthResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.dashboards.checkHealth({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.dashboards.check_health()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dashboard.DashboardService/CreateDashboard:
+    post:
+      tags:
+      - DashboardService
+      summary: CRUD operations
+      operationId: DashboardService_CreateDashboard
+      x-speakeasy-group: dashboards
+      x-speakeasy-name-override: createDashboard
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.CreateDashboardRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dashboard.CreateDashboardResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.dashboards.createDashboard({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.dashboards.create_dashboard()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dashboard.DashboardService/CreateDashboardFolder:
+    post:
+      tags:
+      - DashboardService
+      summary: Folder management
+      operationId: DashboardService_CreateDashboardFolder
+      x-speakeasy-group: dashboards
+      x-speakeasy-name-override: createFolder
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.CreateDashboardFolderRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dashboard.CreateDashboardFolderResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.dashboards.createFolder({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.dashboards.create_folder()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dashboard.DashboardService/DeleteDashboard:
+    post:
+      tags:
+      - DashboardService
+      summary: DeleteDashboard
+      operationId: DashboardService_DeleteDashboard
+      x-speakeasy-group: dashboards
+      x-speakeasy-name-override: delete
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.DeleteDashboardRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/google.protobuf.Empty'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.dashboards.delete({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.dashboards.delete()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dashboard.DashboardService/DeleteDashboardFolder:
+    post:
+      tags:
+      - DashboardService
+      summary: DeleteDashboardFolder
+      operationId: DashboardService_DeleteDashboardFolder
+      x-speakeasy-group: dashboards
+      x-speakeasy-name-override: deleteFolder
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.DeleteDashboardFolderRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/google.protobuf.Empty'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.dashboards.deleteFolder({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.dashboards.delete_folder()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dashboard.DashboardService/DiscardDashboardChanges:
+    post:
+      tags:
+      - DashboardService
+      summary: DiscardDashboardChanges
+      operationId: DashboardService_DiscardDashboardChanges
+      x-speakeasy-group: dashboards
+      x-speakeasy-name-override: discardChanges
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.DiscardDashboardChangesRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dashboard.DiscardDashboardChangesResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.dashboards.discardChanges({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.dashboards.discard_changes()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dashboard.DashboardService/DuplicateDashboard:
+    post:
+      tags:
+      - DashboardService
+      summary: DuplicateDashboard
+      operationId: DashboardService_DuplicateDashboard
+      x-speakeasy-group: dashboards
+      x-speakeasy-name-override: duplicate
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.DuplicateDashboardRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dashboard.DuplicateDashboardResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.dashboards.duplicate({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.dashboards.duplicate()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dashboard.DashboardService/GetDashboard:
+    post:
+      tags:
+      - DashboardService
+      summary: GetDashboard
+      operationId: DashboardService_GetDashboard
+      x-speakeasy-group: dashboards
+      x-speakeasy-name-override: get
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.GetDashboardRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dashboard.GetDashboardResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.dashboards.get({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.dashboards.get()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dashboard.DashboardService/GetDashboardVersion:
+    post:
+      tags:
+      - DashboardService
+      summary: GetDashboardVersion
+      operationId: DashboardService_GetDashboardVersion
+      x-speakeasy-group: dashboards
+      x-speakeasy-name-override: getVersion
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.GetDashboardVersionRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dashboard.GetDashboardVersionResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.dashboards.getVersion({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.dashboards.get_version()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dashboard.DashboardService/GetDashboardViewStats:
+    post:
+      tags:
+      - DashboardService
+      summary: View analytics
+      operationId: DashboardService_GetDashboardViewStats
+      x-speakeasy-group: dashboards
+      x-speakeasy-name-override: getDashboardViewStats
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.GetDashboardViewStatsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dashboard.GetDashboardViewStatsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.dashboards.getDashboardViewStats({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.dashboards.get_dashboard_view_stats()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dashboard.DashboardService/GetMembersWithDashboards:
+    post:
+      tags:
+      - DashboardService
+      summary: Member management
+      operationId: DashboardService_GetMembersWithDashboards
+      x-speakeasy-group: dashboards
+      x-speakeasy-name-override: getMembersWithDashboards
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.GetMembersWithDashboardsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dashboard.GetMembersWithDashboardsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.dashboards.getMembersWithDashboards({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.dashboards.get_members_with_dashboards(body={})\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dashboard.DashboardService/ListDashboardFolders:
+    post:
+      tags:
+      - DashboardService
+      summary: ListDashboardFolders
+      operationId: DashboardService_ListDashboardFolders
+      x-speakeasy-group: dashboards
+      x-speakeasy-name-override: listFolders
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.ListDashboardFoldersRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dashboard.ListDashboardFoldersResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.dashboards.listFolders({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.dashboards.list_folders(body={})\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dashboard.DashboardService/ListDashboardVersions:
+    post:
+      tags:
+      - DashboardService
+      summary: Version history
+      operationId: DashboardService_ListDashboardVersions
+      x-speakeasy-group: dashboards
+      x-speakeasy-name-override: listVersions
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.ListDashboardVersionsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dashboard.ListDashboardVersionsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.dashboards.listVersions({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.dashboards.list_versions()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dashboard.DashboardService/ListDashboards:
+    post:
+      tags:
+      - DashboardService
+      summary: ListDashboards
+      operationId: DashboardService_ListDashboards
+      x-speakeasy-group: dashboards
+      x-speakeasy-name-override: list
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.ListDashboardsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dashboard.ListDashboardsResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.dashboards.list({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.dashboards.list()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dashboard.DashboardService/MoveDashboardToFolder:
+    post:
+      tags:
+      - DashboardService
+      summary: MoveDashboardToFolder
+      operationId: DashboardService_MoveDashboardToFolder
+      x-speakeasy-group: dashboards
+      x-speakeasy-name-override: moveToFolder
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.MoveDashboardToFolderRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dashboard.MoveDashboardToFolderResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.dashboards.moveToFolder({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.dashboards.move_to_folder()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dashboard.DashboardService/PreviewConfigDashboard:
+    post:
+      tags:
+      - DashboardService
+      summary: 'Config-managed dashboards: render a `.dashboard` straight from a patch ref…'
+      description: 'Config-managed dashboards: render a `.dashboard` straight from a patch ref before
+
+        it merges (ADR-0022). Runs as the file''s run_as, gated on the previewer being
+
+        authorized for it; persists nothing.'
+      operationId: DashboardService_PreviewConfigDashboard
+      x-speakeasy-group: dashboards
+      x-speakeasy-name-override: previewConfig
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.PreviewConfigDashboardRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dashboard.PreviewConfigDashboardResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.dashboards.previewConfig({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.dashboards.preview_config()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dashboard.DashboardService/PublishDashboard:
+    post:
+      tags:
+      - DashboardService
+      summary: Publishing workflow
+      operationId: DashboardService_PublishDashboard
+      x-speakeasy-group: dashboards
+      x-speakeasy-name-override: publish
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.PublishDashboardRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dashboard.PublishDashboardResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.dashboards.publish({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.dashboards.publish()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dashboard.DashboardService/RegenerateScreenshot:
+    post:
+      tags:
+      - DashboardService
+      summary: Screenshot management
+      operationId: DashboardService_RegenerateScreenshot
+      x-speakeasy-group: dashboards
+      x-speakeasy-name-override: regenerateScreenshot
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.RegenerateScreenshotRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dashboard.RegenerateScreenshotResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.dashboards.regenerateScreenshot({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.dashboards.regenerate_screenshot()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dashboard.DashboardService/RestoreDashboardVersion:
+    post:
+      tags:
+      - DashboardService
+      summary: RestoreDashboardVersion
+      operationId: DashboardService_RestoreDashboardVersion
+      x-speakeasy-group: dashboards
+      x-speakeasy-name-override: restoreDashboardVersion
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.RestoreDashboardVersionRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dashboard.RestoreDashboardVersionResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.dashboards.restoreDashboardVersion({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.dashboards.restore_dashboard_version()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dashboard.DashboardService/RunScheduledDashboard:
+    post:
+      tags:
+      - DashboardService
+      summary: RunScheduledDashboard
+      operationId: DashboardService_RunScheduledDashboard
+      x-speakeasy-group: dashboards
+      x-speakeasy-name-override: runScheduledDashboard
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.RunScheduledDashboardRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dashboard.RunScheduledDashboardResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.dashboards.runScheduledDashboard({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.dashboards.run_scheduled_dashboard()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dashboard.DashboardService/SpawnDashboard:
+    post:
+      tags:
+      - DashboardService
+      summary: Dashboard execution
+      operationId: DashboardService_SpawnDashboard
+      x-speakeasy-group: dashboards
+      x-speakeasy-name-override: spawn
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.SpawnDashboardRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dashboard.SpawnDashboardResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.dashboards.spawn({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.dashboards.spawn()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dashboard.DashboardService/UpdateDashboard:
+    post:
+      tags:
+      - DashboardService
+      summary: UpdateDashboard
+      operationId: DashboardService_UpdateDashboard
+      x-speakeasy-group: dashboards
+      x-speakeasy-name-override: updateDashboard
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.UpdateDashboardRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dashboard.UpdateDashboardResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.dashboards.updateDashboard({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.dashboards.update_dashboard()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dashboard.DashboardService/UpdateDashboardFolder:
+    post:
+      tags:
+      - DashboardService
+      summary: UpdateDashboardFolder
+      operationId: DashboardService_UpdateDashboardFolder
+      x-speakeasy-group: dashboards
+      x-speakeasy-name-override: updateDashboardFolder
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.UpdateDashboardFolderRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dashboard.UpdateDashboardFolderResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.dashboards.updateDashboardFolder({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.dashboards.update_dashboard_folder()\n\n    # Handle response\n    print(res)"
+  /textql.rpc.public.dashboard.DashboardService/UpdateDashboardSchedule:
+    post:
+      tags:
+      - DashboardService
+      summary: Scheduling
+      operationId: DashboardService_UpdateDashboardSchedule
+      x-speakeasy-group: dashboards
+      x-speakeasy-name-override: updateDashboardSchedule
+      parameters:
+      - name: Connect-Protocol-Version
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/connect-protocol-version'
+      - name: Connect-Timeout-Ms
+        in: header
+        schema:
+          $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.UpdateDashboardScheduleRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textql.rpc.public.dashboard.UpdateDashboardScheduleResponse'
+      x-codeSamples:
+      - lang: typescript
+        label: TypeScript (SDK)
+        source: "import { Textql } from \"@textql/sdk\";\n\nconst textql = new Textql({\n  apiKey: process.env[\"TEXTQL_API_KEY\"] ?? \"\",\n});\n\nasync function run() {\n  const result = await textql.dashboards.updateDashboardSchedule({\n    body: {},\n  });\n\n  console.log(result);\n}\n\nrun();"
+      - lang: python
+        label: Python (SDK)
+        source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.dashboards.update_dashboard_schedule()\n\n    # Handle response\n    print(res)"
+components:
+  schemas:
+    textql.rpc.public.dashboard.Grant:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            type: string
+          title: roles
+          description: org role names
+        members:
+          type: array
+          items:
+            type: string
+          title: members
+          description: explicit member ids
+      title: Grant
+      additionalProperties: false
+      description: "Grant is an author allowlist gating a data source or compute function. A viewer whose\n effective role names intersect roles, or whose member id is listed in members, may call it.\n Absent grant = org-visible (today's behavior); an empty grant object is invalid."
+    textql.rpc.public.common.SortDirection:
+      type: string
+      title: SortDirection
+      enum:
+      - SORT_DIRECTION_UNKNOWN
+      - SORT_DIRECTION_ASC
+      - SORT_DIRECTION_DESC
+      description: Common enum for sort direction used across multiple services
+    textql.rpc.public.dashboard.SpawnDashboardResponse:
+      type: object
+      properties:
+        refreshedAt:
+          title: refreshed_at
+          description: Spawn triggered asynchronously. Use CheckDashboardHealth to monitor status and get URLs. When spawn was triggered
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: SpawnDashboardResponse
+      additionalProperties: false
+    textql.rpc.public.dashboard.DiscardDashboardChangesResponse:
+      type: object
+      properties:
+        dashboard:
+          title: dashboard
+          $ref: '#/components/schemas/textql.rpc.public.dashboard.Dashboard'
+      title: DiscardDashboardChangesResponse
+      additionalProperties: false
+    textql.rpc.public.dashboard.DashboardSortField:
+      type: string
+      title: DashboardSortField
+      enum:
+      - DASHBOARD_SORT_FIELD_UNSPECIFIED
+      - DASHBOARD_SORT_FIELD_NAME
+      - DASHBOARD_SORT_FIELD_CREATED_AT
+      - DASHBOARD_SORT_FIELD_UPDATED_AT
+      - DASHBOARD_SORT_FIELD_REFRESHED_AT
+    textql.rpc.public.dashboard.DashboardFolder:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        orgId:
+          type: string
+          title: org_id
+        parentId:
+          type: string
+          title: parent_id
+          nullable: true
+        name:
+          type: string
+          title: name
+        creatorId:
+          type: string
+          title: creator_id
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        dashboardCount:
+          type: integer
+          title: dashboard_count
+          format: int32
+          description: Direct dashboards in this folder
+        totalDashboardCount:
+          type: integer
+          title: total_dashboard_count
+          format: int32
+          description: Including nested folders
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dashboard.DashboardFolder'
+          title: children
+        appCount:
+          type: integer
+          title: app_count
+          format: int32
+          description: Direct apps in this folder
+        totalAppCount:
+          type: integer
+          title: total_app_count
+          format: int32
+          description: Including nested folders
+        isFavorited:
+          type: boolean
+          title: is_favorited
+          description: per-caller pin state (enriched, not stored on the folder)
+      title: DashboardFolder
+      additionalProperties: false
+      description: Dashboard folder for hierarchical organization
+    textql.rpc.public.dashboard.DashboardVersion:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        dashboardId:
+          type: string
+          title: dashboard_id
+        versionNumber:
+          type: integer
+          title: version_number
+          format: int32
+        code:
+          type: string
+          title: code
+        dataSources:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dashboard.DataSource'
+          title: data_sources
+        name:
+          type: string
+          title: name
+        description:
+          type: string
+          title: description
+          nullable: true
+        type:
+          title: type
+          $ref: '#/components/schemas/textql.rpc.public.dashboard.DashboardType'
+        publishedBy:
+          type: string
+          title: published_by
+        label:
+          type: string
+          title: label
+          nullable: true
+        publishedAt:
+          title: published_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        publisher:
+          title: publisher
+          description: Enriched field
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.dashboard.DashboardCreator'
+      title: DashboardVersion
+      additionalProperties: false
+      description: Version history
+    textql.rpc.public.dashboard.GetDashboardRequest:
+      type: object
+      properties:
+        dashboardId:
+          type: string
+          title: dashboard_id
+      title: GetDashboardRequest
+      additionalProperties: false
+    textql.rpc.public.dashboard.GetDashboardVersionRequest:
+      type: object
+      properties:
+        dashboardId:
+          type: string
+          title: dashboard_id
+        versionNumber:
+          type: integer
+          title: version_number
+          format: int32
+      title: GetDashboardVersionRequest
+      additionalProperties: false
+    textql.rpc.public.dashboard.ListDashboardFoldersResponse:
+      type: object
+      properties:
+        folders:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dashboard.DashboardFolder'
+          title: folders
+          description: Full tree, root-level folders with children populated
+      title: ListDashboardFoldersResponse
+      additionalProperties: false
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
+          type: string
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+          - type: object
+            title: Any
+            additionalProperties: true
+            description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
+    textql.rpc.public.dashboard.CheckDashboardHealthResponse.DashboardHealth:
+      type: object
+      properties:
+        dashboardId:
+          type: string
+          title: dashboard_id
+        status:
+          title: status
+          $ref: '#/components/schemas/textql.rpc.public.dashboard.CheckDashboardHealthResponse.HealthStatus'
+        errorMessage:
+          type: string
+          title: error_message
+          nullable: true
+        streamlitUrl:
+          type: string
+          title: streamlit_url
+          nullable: true
+        embedUrl:
+          type: string
+          title: embed_url
+          nullable: true
+        refreshedAt:
+          title: refreshed_at
+          description: When dashboard was last refreshed
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        code:
+          type: string
+          title: code
+          description: Current dashboard code
+          nullable: true
+        dataSources:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dashboard.DataSource'
+          title: data_sources
+          description: Current data sources
+        dashboardStatus:
+          title: dashboard_status
+          description: Dashboard metadata (workflow and schedule state) Draft vs Published status
+          $ref: '#/components/schemas/textql.rpc.public.dashboard.DashboardStatus'
+        publishedCode:
+          type: string
+          title: published_code
+          description: Code that runs on schedule
+          nullable: true
+        publishedAt:
+          title: published_at
+          description: When dashboard was published
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        scheduleEnabled:
+          type: boolean
+          title: schedule_enabled
+          description: Whether scheduled runs are enabled
+        cronString:
+          type: string
+          title: cron_string
+          description: Schedule expression
+          nullable: true
+        warnings:
+          type: array
+          items:
+            type: string
+          title: warnings
+          description: Non-fatal warnings (e.g. data source truncation)
+      title: DashboardHealth
+      additionalProperties: false
+    textql.rpc.public.dashboard.RestoreDashboardVersionResponse:
+      type: object
+      properties:
+        dashboard:
+          title: dashboard
+          $ref: '#/components/schemas/textql.rpc.public.dashboard.Dashboard'
+      title: RestoreDashboardVersionResponse
+      additionalProperties: false
+    textql.rpc.public.dashboard.DeleteDashboardFolderRequest:
+      type: object
+      properties:
+        folderId:
+          type: string
+          title: folder_id
+      title: DeleteDashboardFolderRequest
+      additionalProperties: false
+    textql.rpc.public.dashboard.UpdateDashboardRequest:
+      type: object
+      properties:
+        dashboardId:
+          type: string
+          title: dashboard_id
+        name:
+          type: string
+          title: name
+          nullable: true
+        description:
+          type: string
+          title: description
+          nullable: true
+        code:
+          type: string
+          title: code
+          nullable: true
+        type:
+          title: type
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.dashboard.DashboardType'
+        htmlUrl:
+          type: string
+          title: html_url
+          nullable: true
+        dataSources:
+          title: data_sources
+          $ref: '#/components/schemas/textql.rpc.public.dashboard.DataSourcesPatch'
+      title: UpdateDashboardRequest
+      additionalProperties: false
+    textql.rpc.public.dashboard.QueryParameter:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+        type:
+          type: string
+          title: type
+          description: '"string", "int", "float", "date"'
+        default:
+          type: string
+          title: default
+          nullable: true
+      title: QueryParameter
+      additionalProperties: false
+    textql.rpc.public.dashboard.CheckDashboardHealthRequest:
+      type: object
+      properties:
+        dashboardIds:
+          type: array
+          items:
+            type: string
+          title: dashboard_ids
+          description: Batch check multiple dashboards
+      title: CheckDashboardHealthRequest
+      additionalProperties: false
+    textql.rpc.public.dashboard.CheckDashboardHealthResponse.HealthStatus:
+      type: string
+      title: HealthStatus
+      enum:
+      - HEALTH_STATUS_NOT_RUNNING
+      - HEALTH_STATUS_HEALTHY
+      - HEALTH_STATUS_STARTING
+      - HEALTH_STATUS_FAILED
+      - HEALTH_STATUS_UPDATING
+    textql.rpc.public.dashboard.DuplicateDashboardRequest:
+      type: object
+      properties:
+        dashboardId:
+          type: string
+          title: dashboard_id
+        name:
+          type: string
+          title: name
+          description: Optional new name for the duplicate (defaults to "Copy of [original name]")
+          nullable: true
+      title: DuplicateDashboardRequest
+      additionalProperties: false
+    textql.rpc.public.dashboard.PreviewConfigDashboardResponse:
+      type: object
+      properties:
+        url:
+          type: string
+          title: url
+          description: serving URL for the ephemeral preview
+        embedUrl:
+          type: string
+          title: embed_url
+          description: embeddable URL for the preview
+      title: PreviewConfigDashboardResponse
+      additionalProperties: false
+    textql.rpc.public.dashboard.GetMembersWithDashboardsRequest:
+      type: object
+      title: GetMembersWithDashboardsRequest
+      additionalProperties: false
+    textql.rpc.public.dashboard.DataSource:
+      type: object
+      allOf:
+      - type: object
+        properties:
+          type:
+            type: string
+            title: type
+            description: '"sql_query", "file", "python_code", "ontology_sql", or "library_tql"'
+          name:
+            type: string
+            title: name
+          parameters:
+            type: array
+            items:
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.QueryParameter'
+            title: parameters
+            description: Parameters for live parameterized queries (sql_query type only)
+          grant:
+            title: grant
+            description: "Optional author allowlist gating this source to specific org roles / members.\n Presence forces the source out of the published snapshot (live-only, viewer-enforced)."
+            $ref: '#/components/schemas/textql.rpc.public.dashboard.Grant'
+      - oneOf:
+        - type: object
+          properties:
+            file:
+              title: file
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.FileSource'
+          title: file
+          required:
+          - file
+        - type: object
+          properties:
+            libraryTql:
+              title: library_tql
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.LibraryTQLSource'
+          title: library_tql
+          required:
+          - libraryTql
+        - type: object
+          properties:
+            ontologySql:
+              title: ontology_sql
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.OntologySqlSource'
+          title: ontology_sql
+          required:
+          - ontologySql
+        - type: object
+          properties:
+            pythonCode:
+              title: python_code
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.PythonCodeSource'
+          title: python_code
+          required:
+          - pythonCode
+        - type: object
+          properties:
+            sqlQuery:
+              title: sql_query
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.SqlQuerySource'
+          title: sql_query
+          required:
+          - sqlQuery
+      title: DataSource
+      additionalProperties: false
+      description: Unified data source for dashboards
+    google.protobuf.Empty:
+      type: object
+      description: "A generic empty message that you can re-use to avoid defining duplicated\n empty messages in your APIs. A typical example is to use it as the request\n or the response type of an API method. For instance:\n\n     service Foo {\n       rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);\n     }"
+    textql.rpc.public.dashboard.GetDashboardResponse:
+      type: object
+      properties:
+        dashboard:
+          title: dashboard
+          $ref: '#/components/schemas/textql.rpc.public.dashboard.Dashboard'
+        hasWritePermission:
+          type: boolean
+          title: has_write_permission
+      title: GetDashboardResponse
+      additionalProperties: false
+    textql.rpc.public.dashboard.DashboardType:
+      type: string
+      title: DashboardType
+      enum:
+      - DASHBOARD_TYPE_UNSPECIFIED
+      - DASHBOARD_TYPE_STREAMLIT
+      - DASHBOARD_TYPE_HTML
+      - DASHBOARD_TYPE_DASH
+    textql.rpc.public.dashboard.ListDashboardVersionsRequest:
+      type: object
+      properties:
+        dashboardId:
+          type: string
+          title: dashboard_id
+        limit:
+          type: integer
+          title: limit
+          format: int32
+        offset:
+          type: integer
+          title: offset
+          format: int32
+      title: ListDashboardVersionsRequest
+      additionalProperties: false
+    textql.rpc.public.dashboard.Dashboard:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        orgId:
+          type: string
+          title: org_id
+        creatorId:
+          type: string
+          title: creator_id
+        name:
+          type: string
+          title: name
+        description:
+          type: string
+          title: description
+          nullable: true
+        code:
+          type: string
+          title: code
+        type:
+          title: type
+          $ref: '#/components/schemas/textql.rpc.public.dashboard.DashboardType'
+        chatId:
+          type: string
+          title: chat_id
+          nullable: true
+        cellId:
+          type: string
+          title: cell_id
+          nullable: true
+        isPublic:
+          type: boolean
+          title: is_public
+        screenshotUrl:
+          type: string
+          title: screenshot_url
+          nullable: true
+        htmlUrl:
+          type: string
+          title: html_url
+          description: URL for serving HTML dashboards
+          nullable: true
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        refreshedAt:
+          title: refreshed_at
+          description: Last time dashboard was executed (manual or scheduled)
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        creator:
+          title: creator
+          description: Enriched fields (not stored in DB)
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.dashboard.DashboardCreator'
+        streamlitUrl:
+          type: string
+          title: streamlit_url
+          description: Active URL if spawned
+          nullable: true
+        status:
+          title: status
+          description: Workflow fields
+          $ref: '#/components/schemas/textql.rpc.public.dashboard.DashboardStatus'
+        publishedCode:
+          type: string
+          title: published_code
+          nullable: true
+        publishedAt:
+          title: published_at
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        hasUnpublishedChanges:
+          type: boolean
+          title: has_unpublished_changes
+          description: 'Computed: code != published_code'
+        dataSources:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dashboard.DataSource'
+          title: data_sources
+          description: Data sources (SQL queries, uploaded files, etc.)
+        scheduleEnabled:
+          type: boolean
+          title: schedule_enabled
+          description: Scheduling
+        cronString:
+          type: string
+          title: cron_string
+          nullable: true
+        latestScheduledRunAt:
+          title: latest_scheduled_run_at
+          description: Last time scheduled run was triggered
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        folderId:
+          type: string
+          title: folder_id
+          description: Folder
+          nullable: true
+        configSource:
+          title: config_source
+          description: "Config-management metadata (ADR-0014/0021). Present ⇒ the dashboard is defined\n by a `.dashboard` Library file: it is read-only in the UI (mutating RPCs are\n rejected) and changed only by editing its file. Clients detect config-management\n by presence, the same way they do for playbooks."
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.config_source.ConfigSource'
+        isFavorited:
+          type: boolean
+          title: is_favorited
+          description: per-caller pin state (enriched, not stored on the dashboard)
+      title: Dashboard
+      additionalProperties: false
+    textql.rpc.public.dashboard.PythonCodeSource:
+      type: object
+      properties:
+        code:
+          type: string
+          title: code
+      title: PythonCodeSource
+      additionalProperties: false
+    textql.rpc.public.dashboard.GetDashboardViewStatsRequest:
+      type: object
+      properties:
+        dashboardId:
+          type: string
+          title: dashboard_id
+      title: GetDashboardViewStatsRequest
+      additionalProperties: false
+      description: View analytics
+    textql.rpc.public.dashboard.UpdateDashboardResponse:
+      type: object
+      properties:
+        dashboard:
+          title: dashboard
+          $ref: '#/components/schemas/textql.rpc.public.dashboard.Dashboard'
+      title: UpdateDashboardResponse
+      additionalProperties: false
+    textql.rpc.public.dashboard.RegenerateScreenshotRequest:
+      type: object
+      properties:
+        dashboardId:
+          type: string
+          title: dashboard_id
+      title: RegenerateScreenshotRequest
+      additionalProperties: false
+    textql.rpc.public.dashboard.SpawnDashboardRequest:
+      type: object
+      properties:
+        dashboardId:
+          type: string
+          title: dashboard_id
+        forceRestart:
+          type: boolean
+          title: force_restart
+          description: Force restart even if already running
+        refreshDataOnly:
+          type: boolean
+          title: refresh_data_only
+          description: Re-fetch data sources and reload without restarting the app
+        refreshSourceNames:
+          type: array
+          items:
+            type: string
+          title: refresh_source_names
+          description: If non-empty with refresh_data_only, only refresh these sources by name
+        refreshCodeOnly:
+          type: boolean
+          title: refresh_code_only
+          description: Update code in-place via Streamlit's runOnSave without restarting the process
+      title: SpawnDashboardRequest
+      additionalProperties: false
+    textql.rpc.public.dashboard.RunScheduledDashboardRequest:
+      type: object
+      properties:
+        dashboardId:
+          type: string
+          title: dashboard_id
+      title: RunScheduledDashboardRequest
+      additionalProperties: false
+    textql.rpc.public.dashboard.SqlQuerySource:
+      type: object
+      properties:
+        query:
+          type: string
+          title: query
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        predicate:
+          type: string
+          title: predicate
+          description: Optional viewer row-filter appended server-side at live-query time; binds :viewer_member_id / :viewer_email. Presence forces the source out of the published snapshot.
+      title: SqlQuerySource
+      additionalProperties: false
+    textql.rpc.identity.MemberPreview:
+      type: object
+      properties:
+        memberId:
+          type: string
+          title: member_id
+        memberEmail:
+          type: string
+          title: member_email
+          description: "the fields are optionally populated, depending on the context\n may require RPC fields such as `include_owner` to be set to true"
+          nullable: true
+        memberName:
+          type: string
+          title: member_name
+          nullable: true
+        memberPictureUrl:
+          type: string
+          title: member_picture_url
+          nullable: true
+      title: MemberPreview
+      additionalProperties: false
+    textql.rpc.public.dashboard.PublishDashboardResponse:
+      type: object
+      properties:
+        dashboard:
+          title: dashboard
+          $ref: '#/components/schemas/textql.rpc.public.dashboard.Dashboard'
+      title: PublishDashboardResponse
+      additionalProperties: false
+    textql.rpc.public.dashboard.CreateDashboardResponse:
+      type: object
+      properties:
+        dashboard:
+          title: dashboard
+          $ref: '#/components/schemas/textql.rpc.public.dashboard.Dashboard'
+      title: CreateDashboardResponse
+      additionalProperties: false
+    textql.rpc.public.dashboard.ListDashboardsRequest:
+      type: object
+      properties:
+        searchTerm:
+          type: string
+          title: search_term
+          nullable: true
+        myDashboardsOnly:
+          type: boolean
+          title: my_dashboards_only
+          nullable: true
+        sortBy:
+          title: sort_by
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.dashboard.DashboardSortField'
+        sortDirection:
+          title: sort_direction
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.common.SortDirection'
+        limit:
+          type: integer
+          title: limit
+          format: int32
+        offset:
+          type: integer
+          title: offset
+          format: int32
+        folderId:
+          type: string
+          title: folder_id
+          description: Filter by specific folder
+          nullable: true
+        uncategorizedOnly:
+          type: boolean
+          title: uncategorized_only
+          description: Only show dashboards with no folder
+          nullable: true
+        creatorMemberId:
+          type: string
+          title: creator_member_id
+          description: Filter by specific creator member ID (single-select; superseded by creator_member_ids when non-empty)
+          nullable: true
+        sharedWithMe:
+          type: boolean
+          title: shared_with_me
+          nullable: true
+        creatorMemberIds:
+          type: array
+          items:
+            type: string
+          title: creator_member_ids
+          description: Multi-select creator filter (union). Supersedes creator_member_id when non-empty.
+        statusFilter:
+          title: status_filter
+          description: Filter by status (Draft / Published). Unset = all statuses.
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.dashboard.DashboardStatus'
+      title: ListDashboardsRequest
+      additionalProperties: false
+    textql.rpc.public.dashboard.OntologySqlSource:
+      type: object
+      properties:
+        query:
+          type: string
+          title: query
+        dataset:
+          type: string
+          title: dataset
+        ontologyId:
+          type: integer
+          title: ontology_id
+          format: int32
+      title: OntologySqlSource
+      additionalProperties: false
+    textql.rpc.public.dashboard.CreateDashboardFolderResponse:
+      type: object
+      properties:
+        folder:
+          title: folder
+          $ref: '#/components/schemas/textql.rpc.public.dashboard.DashboardFolder'
+      title: CreateDashboardFolderResponse
+      additionalProperties: false
+    textql.rpc.public.dashboard.PublishDashboardRequest:
+      type: object
+      properties:
+        dashboardId:
+          type: string
+          title: dashboard_id
+        label:
+          type: string
+          title: label
+          description: Optional version label/description
+          nullable: true
+      title: PublishDashboardRequest
+      additionalProperties: false
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+          - not_found
+          enum:
+          - canceled
+          - unknown
+          - invalid_argument
+          - deadline_exceeded
+          - not_found
+          - already_exists
+          - permission_denied
+          - resource_exhausted
+          - failed_precondition
+          - aborted
+          - out_of_range
+          - unimplemented
+          - internal
+          - unavailable
+          - data_loss
+          - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    textql.rpc.public.dashboard.DataSourcesPatch:
+      type: object
+      properties:
+        sources:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dashboard.DataSource'
+          title: sources
+      title: DataSourcesPatch
+      additionalProperties: false
+    textql.rpc.public.dashboard.GetDashboardViewStatsResponse:
+      type: object
+      properties:
+        totalViews:
+          type: integer
+          title: total_views
+          format: int32
+        uniqueViewers:
+          type: integer
+          title: unique_viewers
+          format: int32
+        recentViewers:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dashboard.DashboardViewerInfo'
+          title: recent_viewers
+      title: GetDashboardViewStatsResponse
+      additionalProperties: false
+    textql.rpc.public.dashboard.CreateDashboardFolderRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+        parentId:
+          type: string
+          title: parent_id
+          nullable: true
+      title: CreateDashboardFolderRequest
+      additionalProperties: false
+      description: Folder management messages
+    textql.rpc.public.dashboard.RestoreDashboardVersionRequest:
+      type: object
+      properties:
+        dashboardId:
+          type: string
+          title: dashboard_id
+        versionNumber:
+          type: integer
+          title: version_number
+          format: int32
+      title: RestoreDashboardVersionRequest
+      additionalProperties: false
+    textql.rpc.public.dashboard.PreviewConfigDashboardRequest:
+      type: object
+      properties:
+        patchRef:
+          type: string
+          title: patch_ref
+          description: git ref of the patch to preview from
+        dashboardPath:
+          type: string
+          title: dashboard_path
+          description: Library path of the .dashboard file
+      title: PreviewConfigDashboardRequest
+      additionalProperties: false
+      description: "PreviewConfigDashboard renders a config-managed dashboard from a patch ref before\n merge (ADR-0022). The previewing member + org come from auth context."
+    textql.rpc.public.dashboard.ListDashboardFoldersRequest:
+      type: object
+      title: ListDashboardFoldersRequest
+      additionalProperties: false
+    textql.rpc.public.dashboard.CheckDashboardHealthResponse:
+      type: object
+      properties:
+        dashboards:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dashboard.CheckDashboardHealthResponse.DashboardHealth'
+          title: dashboards
+      title: CheckDashboardHealthResponse
+      additionalProperties: false
+    textql.rpc.public.dashboard.ListDashboardVersionsResponse:
+      type: object
+      properties:
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dashboard.DashboardVersion'
+          title: versions
+        totalCount:
+          type: integer
+          title: total_count
+          format: int32
+      title: ListDashboardVersionsResponse
+      additionalProperties: false
+    textql.rpc.public.dashboard.GetMembersWithDashboardsResponse:
+      type: object
+      properties:
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.identity.MemberPreview'
+          title: members
+      title: GetMembersWithDashboardsResponse
+      additionalProperties: false
+    textql.rpc.public.dashboard.DuplicateDashboardResponse:
+      type: object
+      properties:
+        dashboard:
+          title: dashboard
+          $ref: '#/components/schemas/textql.rpc.public.dashboard.Dashboard'
+      title: DuplicateDashboardResponse
+      additionalProperties: false
+    textql.rpc.public.dashboard.MoveDashboardToFolderRequest:
+      type: object
+      properties:
+        dashboardId:
+          type: string
+          title: dashboard_id
+        folderId:
+          type: string
+          title: folder_id
+          description: null/empty = move to root (uncategorized)
+          nullable: true
+      title: MoveDashboardToFolderRequest
+      additionalProperties: false
+    textql.rpc.public.dashboard.LibraryTQLSource:
+      type: object
+      properties:
+        tqlPath:
+          type: string
+          title: tql_path
+          description: path to the .tql file in the Context Library (must end in .tql)
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+          description: SQL connector to execute the rendered query against
+        paramsJson:
+          type: string
+          title: params_json
+          description: JSON object mapping parameter names to values; "" means no params
+      title: LibraryTQLSource
+      additionalProperties: false
+      description: "References a .tql file stored in the Context Library. The file is rendered\n to SQL at fetch time and executed against the provided connector. Template\n parameter values are JSON-encoded in `params_json` (e.g. {\"region\":\"EU\"})."
+    textql.rpc.public.dashboard.CreateDashboardRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+        description:
+          type: string
+          title: description
+          nullable: true
+        code:
+          type: string
+          title: code
+        type:
+          title: type
+          $ref: '#/components/schemas/textql.rpc.public.dashboard.DashboardType'
+        htmlUrl:
+          type: string
+          title: html_url
+          nullable: true
+        chatId:
+          type: string
+          title: chat_id
+          nullable: true
+        cellId:
+          type: string
+          title: cell_id
+          nullable: true
+        folderId:
+          type: string
+          title: folder_id
+          nullable: true
+      title: CreateDashboardRequest
+      additionalProperties: false
+    textql.rpc.public.dashboard.DeleteDashboardRequest:
+      type: object
+      properties:
+        dashboardId:
+          type: string
+          title: dashboard_id
+      title: DeleteDashboardRequest
+      additionalProperties: false
+    textql.rpc.public.dashboard.DiscardDashboardChangesRequest:
+      type: object
+      properties:
+        dashboardId:
+          type: string
+          title: dashboard_id
+      title: DiscardDashboardChangesRequest
+      additionalProperties: false
+    textql.rpc.public.dashboard.DashboardCreator:
+      type: object
+      properties:
+        memberId:
+          type: string
+          title: member_id
+        memberEmail:
+          type: string
+          title: member_email
+          nullable: true
+        memberName:
+          type: string
+          title: member_name
+          nullable: true
+      title: DashboardCreator
+      additionalProperties: false
+    textql.rpc.public.dashboard.MoveDashboardToFolderResponse:
+      type: object
+      properties:
+        dashboard:
+          title: dashboard
+          $ref: '#/components/schemas/textql.rpc.public.dashboard.Dashboard'
+      title: MoveDashboardToFolderResponse
+      additionalProperties: false
+    textql.rpc.public.config_source.ConfigSyncStatus:
+      type: string
+      title: ConfigSyncStatus
+      enum:
+      - CONFIG_SYNC_STATUS_UNSPECIFIED
+      - CONFIG_SYNC_STATUS_SYNCING
+      - CONFIG_SYNC_STATUS_SYNCED
+      - CONFIG_SYNC_STATUS_ERROR
+    google.protobuf.Timestamp:
+      type: string
+      examples:
+      - '2023-01-15T01:30:15.01Z'
+      - '2024-12-25T12:00:00Z'
+      format: date-time
+      description: "A Timestamp represents a point in time independent of any time zone or local\n calendar, encoded as a count of seconds and fractions of seconds at\n nanosecond resolution. The count is relative to an epoch at UTC midnight on\n January 1, 1970, in the proleptic Gregorian calendar which extends the\n Gregorian calendar backwards to year one.\n\n All minutes are 60 seconds long. Leap seconds are \"smeared\" so that no leap\n second table is needed for interpretation, using a [24-hour linear\n smear](https://developers.google.com/time/smear).\n\n The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By\n restricting to that range, we ensure that we can convert to and from [RFC\n 3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.\n\n # Examples\n\n Example 1: Compute Timestamp from POSIX `time()`.\n\n     Timestamp timestamp;\n     timestamp.set_seconds(time(NULL));\n     timestamp.set_nanos(0);\n\n Example 2: Compute Timestamp from POSIX `gettimeofday()`.\n\n     struct timeval tv;\n     gettimeofday(&tv, NULL);\n\n     Timestamp timestamp;\n     timestamp.set_seconds(tv.tv_sec);\n     timestamp.set_nanos(tv.tv_usec * 1000);\n\n Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.\n\n     FILETIME ft;\n     GetSystemTimeAsFileTime(&ft);\n     UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;\n\n     // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z\n     // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.\n     Timestamp timestamp;\n     timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));\n     timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));\n\n Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.\n\n     long millis = System.currentTimeMillis();\n\n     Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)\n         .setNanos((int) ((millis % 1000) * 1000000)).build();\n\n Example 5: Compute Timestamp from Java `Instant.now()`.\n\n     Instant now = Instant.now();\n\n     Timestamp timestamp =\n         Timestamp.newBuilder().setSeconds(now.getEpochSecond())\n             .setNanos(now.getNano()).build();\n\n Example 6: Compute Timestamp from current time in Python.\n\n     timestamp = Timestamp()\n     timestamp.GetCurrentTime()\n\n # JSON Mapping\n\n In JSON format, the Timestamp type is encoded as a string in the\n [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the\n format is \"{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z\"\n where {year} is always expressed using four digits while {month}, {day},\n {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional\n seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),\n are optional. The \"Z\" suffix indicates the timezone (\"UTC\"); the timezone\n is required. A proto3 JSON serializer should always use UTC (as indicated by\n \"Z\") when printing the Timestamp type and a proto3 JSON parser should be\n able to accept both UTC and other timezones (as indicated by an offset).\n\n For example, \"2017-01-15T01:30:15.01Z\" encodes 15.01 seconds past\n 01:30 UTC on January 15, 2017.\n\n In JavaScript, one can convert a Date object to this format using the\n standard\n [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)\n method. In Python, a standard `datetime.datetime` object can be converted\n to this format using\n [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with\n the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use\n the Joda Time's [`ISODateTimeFormat.dateTime()`](\n http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()\n ) to obtain a formatter capable of generating timestamps in this format."
+    textql.rpc.public.dashboard.DashboardStatus:
+      type: string
+      title: DashboardStatus
+      enum:
+      - DASHBOARD_STATUS_UNSPECIFIED
+      - DASHBOARD_STATUS_DRAFT
+      - DASHBOARD_STATUS_PUBLISHED
+    textql.rpc.public.dashboard.RegenerateScreenshotResponse:
+      type: object
+      properties:
+        screenshotUrl:
+          type: string
+          title: screenshot_url
+      title: RegenerateScreenshotResponse
+      additionalProperties: false
+    textql.rpc.public.dashboard.ListDashboardsResponse:
+      type: object
+      properties:
+        dashboards:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dashboard.Dashboard'
+          title: dashboards
+        totalCount:
+          type: integer
+          title: total_count
+          format: int32
+      title: ListDashboardsResponse
+      additionalProperties: false
+    textql.rpc.public.dashboard.DashboardViewerInfo:
+      type: object
+      properties:
+        memberId:
+          type: string
+          title: member_id
+        lastViewed:
+          title: last_viewed
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        viewCount:
+          type: integer
+          title: view_count
+          format: int32
+        displayName:
+          type: string
+          title: display_name
+          nullable: true
+        recentViewTimes:
+          type: array
+          items:
+            $ref: '#/components/schemas/google.protobuf.Timestamp'
+          title: recent_view_times
+      title: DashboardViewerInfo
+      additionalProperties: false
+    textql.rpc.public.config_source.ConfigSource:
+      type: object
+      properties:
+        filePath:
+          type: string
+          title: file_path
+          description: Library file that defines the object
+        syncStatus:
+          title: sync_status
+          $ref: '#/components/schemas/textql.rpc.public.config_source.ConfigSyncStatus'
+        syncError:
+          type: string
+          title: sync_error
+          description: set only when sync_status = ERROR
+          nullable: true
+        breakingPatchId:
+          type: string
+          title: breaking_patch_id
+          description: patch that drove it to ERROR (Quick Revert target)
+          nullable: true
+      title: ConfigSource
+      additionalProperties: false
+      description: "Config-management metadata (provenance + reconcile state) for any file-based\n object. Presence on an object ⇒ the object is config-managed."
+    textql.rpc.public.dashboard.UpdateDashboardFolderResponse:
+      type: object
+      properties:
+        folder:
+          title: folder
+          $ref: '#/components/schemas/textql.rpc.public.dashboard.DashboardFolder'
+      title: UpdateDashboardFolderResponse
+      additionalProperties: false
+    textql.rpc.public.dashboard.UpdateDashboardScheduleResponse:
+      type: object
+      properties:
+        dashboard:
+          title: dashboard
+          $ref: '#/components/schemas/textql.rpc.public.dashboard.Dashboard'
+      title: UpdateDashboardScheduleResponse
+      additionalProperties: false
+    textql.rpc.public.dashboard.UpdateDashboardFolderRequest:
+      type: object
+      properties:
+        folderId:
+          type: string
+          title: folder_id
+        name:
+          type: string
+          title: name
+          nullable: true
+        parentId:
+          type: string
+          title: parent_id
+          description: Move folder to different parent (empty string = move to root)
+          nullable: true
+      title: UpdateDashboardFolderRequest
+      additionalProperties: false
+    textql.rpc.public.dashboard.FileSource:
+      type: object
+      properties:
+        datasetId:
+          type: string
+          title: dataset_id
+        fileName:
+          type: string
+          title: file_name
+          description: Original filename for display
+        sheetIndex:
+          type: integer
+          title: sheet_index
+          format: int32
+          description: Zero-based sheet index for multi-sheet files (default 0)
+      title: FileSource
+      additionalProperties: false
+    textql.rpc.public.dashboard.UpdateDashboardScheduleRequest:
+      type: object
+      properties:
+        dashboardId:
+          type: string
+          title: dashboard_id
+        scheduleEnabled:
+          type: boolean
+          title: schedule_enabled
+        cronString:
+          type: string
+          title: cron_string
+          nullable: true
+        dataSources:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dashboard.DataSource'
+          title: data_sources
+      title: UpdateDashboardScheduleRequest
+      additionalProperties: false
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+      - 1
+      description: Define the version of the Connect protocol
+      const: 1
+      default: 1
+    textql.rpc.public.dashboard.GetDashboardVersionResponse:
+      type: object
+      properties:
+        version:
+          title: version
+          $ref: '#/components/schemas/textql.rpc.public.dashboard.DashboardVersion'
+      title: GetDashboardVersionResponse
+      additionalProperties: false
+    textql.rpc.public.dashboard.RunScheduledDashboardResponse:
+      type: object
+      properties:
+        dashboardId:
+          type: string
+          title: dashboard_id
+          description: Dashboard ID of the spawned dashboard
+      title: RunScheduledDashboardResponse
+      additionalProperties: false
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: tql_api_key

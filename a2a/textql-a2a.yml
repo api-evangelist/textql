@@ -1,7 +1,8 @@
 generated: '2026-08-30'
 method: probed
 source: https://docs.textql.com/.well-known/agent-card.json
-card: a2a/textql-agent-card.json
+card:
+  file: a2a/textql-agent-card.json
 discovery:
   path: /.well-known/agent-card.json
   canonical: true
@@ -26,31 +27,19 @@ agent:
   - id: textql
     name: Textql
     url: https://docs.textql.com/.well-known/agent-skills/textql/skill.md
-grade: conformant
-grade_basis: >-
-  Graded against A2A 1.0.0. All three hard checks pass — capabilities is a JSON object, protocolVersion
-  is present, and skills is an array. The optional fields that separate conformant from near-conformant
-  are all present too: preferredTransport (HTTP+JSON), defaultInputModes and defaultOutputModes
-  (both text/plain).
+grade_basis: 'Graded against A2A 1.0.0. All three hard checks pass — capabilities is a JSON object, protocolVersion is present, and skills is an array. The optional fields that separate conformant from near-conformant are all present too: preferredTransport (HTTP+JSON), defaultInputModes and defaultOutputModes (both text/plain).'
 deviations:
 - field: protocolVersion
   observed: '0.3'
-  note: >-
-    Declares A2A 0.3 rather than 1.0.0. The document shape is 1.0.0-conformant, but the version string
-    names the pre-1.0 protocol.
+  note: Declares A2A 0.3 rather than 1.0.0. The document shape is 1.0.0-conformant, but the version string names the pre-1.0 protocol.
 - field: provider.organization
   observed: TextQL Docs
-  note: >-
-    Names the documentation site rather than the company. A card describing the vendor rather than the
-    docs surface would carry "TextQL".
+  note: Names the documentation site rather than the company. A card describing the vendor rather than the docs surface would carry "TextQL".
 - field: skills[].tags
   observed: []
   note: Skill carries an empty tags array, so the card is not discoverable by capability tag.
 - field: scope
   observed: documentation-only
-  note: >-
-    This card describes the documentation agent on docs.textql.com, not TextQL's product agent. The
-    company's real agent surface is the MCP server at https://app.textql.com/mcp (see mcp/), which is
-    NOT referenced from this card. The card is served by the Mintlify docs platform on a host TextQL
-    controls, so it is a genuine provider-served document, but it does not advertise the platform API
-    or the MCP endpoint.
+  note: This card describes the documentation agent on docs.textql.com, not TextQL's product agent. The company's real agent surface is the MCP server at https://app.textql.com/mcp (see mcp/), which is NOT referenced from this card. The card is served by the Mintlify docs platform on a host TextQL controls, so it is a genuine provider-served document, but it does not advertise the platform API or the MCP endpoint.
+conformance:
+  grade: conformant
