@@ -103,14 +103,34 @@ paths:
         source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.sandbox.execute_query(body={\n        \"sql_query\": {},\n    })\n\n    # Handle response\n    print(res)"
 components:
   schemas:
-    textql.rpc.public.sandbox_query.LibraryTQLTemplate:
+    textql.rpc.public.sandbox_query.AppDBTemplate:
       type: object
       properties:
-        tqlPath:
+        query:
           type: string
-          title: tql_path
-          description: library path to a .tql file
-      title: LibraryTQLTemplate
+          title: query
+          description: SQL to run against the app's private DuckDB database
+      title: AppDBTemplate
+      additionalProperties: false
+    textql.rpc.public.sandbox_query.SandboxQueryParam:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+        value:
+          type: string
+          title: value
+      title: SandboxQueryParam
+      additionalProperties: false
+    textql.rpc.public.sandbox_query.SqlQueryTemplate:
+      type: object
+      properties:
+        query:
+          type: string
+          title: query
+          description: SQL with :param placeholders
+      title: SqlQueryTemplate
       additionalProperties: false
     textql.rpc.public.sandbox_query.SandboxExecuteQueryResponse:
       type: object
@@ -134,80 +154,18 @@ components:
           nullable: true
       title: SandboxExecuteQueryResponse
       additionalProperties: false
-    textql.rpc.public.sandbox_query.AppDBTemplate:
-      type: object
-      properties:
-        query:
-          type: string
-          title: query
-          description: SQL to run against the app's private DuckDB database
-      title: AppDBTemplate
-      additionalProperties: false
     connect-timeout-header:
       type: number
       title: Connect-Timeout-Ms
       description: Define the timeout, in ms
-    connect.error:
-      type: object
-      properties:
-        code:
-          type: string
-          examples:
-          - not_found
-          enum:
-          - canceled
-          - unknown
-          - invalid_argument
-          - deadline_exceeded
-          - not_found
-          - already_exists
-          - permission_denied
-          - resource_exhausted
-          - failed_precondition
-          - aborted
-          - out_of_range
-          - unimplemented
-          - internal
-          - unavailable
-          - data_loss
-          - unauthenticated
-          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
-        message:
-          type: string
-          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/connect.error_details.Any'
-          description: A list of messages that carry the error details. There is no limit on the number of messages.
-      title: Connect Error
-      additionalProperties: true
-      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
-    textql.rpc.public.sandbox_query.SandboxExecuteBashResponse:
-      type: object
-      properties:
-        stdout:
-          type: string
-          title: stdout
-          format: byte
-        stderr:
-          type: string
-          title: stderr
-          format: byte
-        exitCode:
-          type: integer
-          title: exit_code
-          format: int32
-        error:
-          type: string
-          title: error
-          description: non-empty on execution-level failure (timeout, spawn error)
-        refreshedToken:
-          type: string
-          title: refreshed_token
-          nullable: true
-      title: SandboxExecuteBashResponse
-      additionalProperties: false
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+      - 1
+      description: Define the version of the Connect protocol
+      const: 1
+      default: 1
     textql.rpc.public.sandbox_query.SandboxExecuteQueryRequest:
       type: object
       allOf:
@@ -258,15 +216,6 @@ components:
           - sqlQuery
       title: SandboxExecuteQueryRequest
       additionalProperties: false
-    textql.rpc.public.sandbox_query.SqlQueryTemplate:
-      type: object
-      properties:
-        query:
-          type: string
-          title: query
-          description: SQL with :param placeholders
-      title: SqlQueryTemplate
-      additionalProperties: false
     textql.rpc.public.sandbox_query.SandboxExecuteBashRequest:
       type: object
       properties:
@@ -281,24 +230,39 @@ components:
             title: value
       title: SandboxExecuteBashRequest
       additionalProperties: false
-    connect-protocol-version:
-      type: number
-      title: Connect-Protocol-Version
-      enum:
-      - 1
-      description: Define the version of the Connect protocol
-      const: 1
-      default: 1
-    textql.rpc.public.sandbox_query.SandboxQueryParam:
+    textql.rpc.public.sandbox_query.LibraryTQLTemplate:
       type: object
       properties:
-        name:
+        tqlPath:
           type: string
-          title: name
-        value:
+          title: tql_path
+          description: library path to a .tql file
+      title: LibraryTQLTemplate
+      additionalProperties: false
+    textql.rpc.public.sandbox_query.SandboxExecuteBashResponse:
+      type: object
+      properties:
+        stdout:
           type: string
-          title: value
-      title: SandboxQueryParam
+          title: stdout
+          format: byte
+        stderr:
+          type: string
+          title: stderr
+          format: byte
+        exitCode:
+          type: integer
+          title: exit_code
+          format: int32
+        error:
+          type: string
+          title: error
+          description: non-empty on execution-level failure (timeout, spawn error)
+        refreshedToken:
+          type: string
+          title: refreshed_token
+          nullable: true
+      title: SandboxExecuteBashResponse
       additionalProperties: false
     connect.error_details.Any:
       type: object
@@ -322,6 +286,42 @@ components:
           description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
       additionalProperties: true
       description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+          - not_found
+          enum:
+          - canceled
+          - unknown
+          - invalid_argument
+          - deadline_exceeded
+          - not_found
+          - already_exists
+          - permission_denied
+          - resource_exhausted
+          - failed_precondition
+          - aborted
+          - out_of_range
+          - unimplemented
+          - internal
+          - unavailable
+          - data_loss
+          - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
   securitySchemes:
     apiKey:
       type: apiKey

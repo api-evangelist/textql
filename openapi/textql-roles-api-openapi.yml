@@ -121,16 +121,6 @@ components:
             error:
               code: rate_limit_exceeded
               message: Rate limit exceeded
-    InternalError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: internal
-              message: Internal server error
     Forbidden:
       description: Insufficient permissions
       content:
@@ -141,16 +131,6 @@ components:
             error:
               code: permission_denied
               message: Insufficient permissions
-    NotFound:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: not_found
-              message: Resource not found
     BadRequest:
       description: Invalid request
       content:
@@ -161,6 +141,26 @@ components:
             error:
               code: invalid_request
               message: Invalid request body
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: not_found
+              message: Resource not found
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: internal
+              message: Internal server error
     Unauthorized:
       description: Missing or invalid authentication
       content:
@@ -172,6 +172,48 @@ components:
               code: unauthenticated
               message: Authentication required
   schemas:
+    ListRolesResponse:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
+    CreateRoleRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          description: Role name, unique within the organization.
+          example: analyst
+        description:
+          type: string
+    Role:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 80de0196-496f-44fe-9d4c-8013b3b44082
+        name:
+          type: string
+          example: analyst
+        description:
+          type: string
+        is_system:
+          type: boolean
+          description: True for the built-in roles (for example `admin` and `member`).
+        is_scim_managed:
+          type: boolean
+        created_at:
+          type: string
+          description: RFC 3339 timestamp
+          example: '2026-07-06T19:30:00Z'
+        updated_at:
+          type: string
+          description: RFC 3339 timestamp
+          example: '2026-07-06T19:30:00Z'
     UpdateRoleRequest:
       type: object
       properties:
@@ -219,48 +261,6 @@ components:
             message:
               type: string
               description: Human-readable error message
-    CreateRoleRequest:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-          description: Role name, unique within the organization.
-          example: analyst
-        description:
-          type: string
-    Role:
-      type: object
-      properties:
-        id:
-          type: string
-          example: 80de0196-496f-44fe-9d4c-8013b3b44082
-        name:
-          type: string
-          example: analyst
-        description:
-          type: string
-        is_system:
-          type: boolean
-          description: True for the built-in roles (for example `admin` and `member`).
-        is_scim_managed:
-          type: boolean
-        created_at:
-          type: string
-          description: RFC 3339 timestamp
-          example: '2026-07-06T19:30:00Z'
-        updated_at:
-          type: string
-          description: RFC 3339 timestamp
-          example: '2026-07-06T19:30:00Z'
-    ListRolesResponse:
-      type: object
-      properties:
-        roles:
-          type: array
-          items:
-            $ref: '#/components/schemas/Role'
   securitySchemes:
     bearerAuth:
       type: http

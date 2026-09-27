@@ -267,6 +267,14 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
+  parameters:
+    ChangeId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Change ID
   responses:
     RateLimited:
       description: Rate limit exceeded
@@ -278,16 +286,6 @@ components:
             error:
               code: rate_limit_exceeded
               message: Rate limit exceeded
-    InternalError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: internal
-              message: Internal server error
     Forbidden:
       description: Insufficient permissions
       content:
@@ -298,16 +296,6 @@ components:
             error:
               code: permission_denied
               message: Insufficient permissions
-    NotFound:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: not_found
-              message: Resource not found
     BadRequest:
       description: Invalid request
       content:
@@ -318,6 +306,26 @@ components:
             error:
               code: invalid_request
               message: Invalid request body
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: not_found
+              message: Resource not found
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: internal
+              message: Internal server error
     Unauthorized:
       description: Missing or invalid authentication
       content:
@@ -329,30 +337,18 @@ components:
               code: unauthenticated
               message: Authentication required
   schemas:
-    ErrorResponse:
+    ChangeCapabilities:
       type: object
+      description: Actions the calling member may take on a change.
       properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-              description: Machine-readable error code
-              enum:
-              - invalid_request
-              - unauthenticated
-              - permission_denied
-              - not_found
-              - conflict
-              - rate_limit_exceeded
-              - internal
-              - timeout
-              - cancelled
-              - execution_failed
-              - no_report
-            message:
-              type: string
-              description: Human-readable error message
+        can_approve:
+          type: boolean
+        can_deny:
+          type: boolean
+        can_restore:
+          type: boolean
+        caller_approved:
+          type: boolean
     Change:
       type: object
       description: A reviewable Ontology change.
@@ -408,11 +404,6 @@ components:
             $ref: '#/components/schemas/LibraryChangeDiff'
         capabilities:
           $ref: '#/components/schemas/ChangeCapabilities'
-    SuccessResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
     LibraryChangeDiff:
       type: object
       description: One changed file in an Ontology change.
@@ -438,6 +429,11 @@ components:
           type: boolean
         is_binary:
           type: boolean
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
     ExpectedGitRefBody:
       type: object
       required:
@@ -446,26 +442,30 @@ components:
         expected_git_ref:
           type: string
           description: The change git_ref the caller reviewed; a stale value returns 409.
-    ChangeCapabilities:
+    ErrorResponse:
       type: object
-      description: Actions the calling member may take on a change.
       properties:
-        can_approve:
-          type: boolean
-        can_deny:
-          type: boolean
-        can_restore:
-          type: boolean
-        caller_approved:
-          type: boolean
-  parameters:
-    ChangeId:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: string
-      description: Change ID
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code
+              enum:
+              - invalid_request
+              - unauthenticated
+              - permission_denied
+              - not_found
+              - conflict
+              - rate_limit_exceeded
+              - internal
+              - timeout
+              - cancelled
+              - execution_failed
+              - no_report
+            message:
+              type: string
+              description: Human-readable error message
   securitySchemes:
     bearerAuth:
       type: http

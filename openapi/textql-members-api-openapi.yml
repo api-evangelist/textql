@@ -217,67 +217,23 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
-  responses:
-    RateLimited:
-      description: Rate limit exceeded
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: rate_limit_exceeded
-              message: Rate limit exceeded
-    InternalError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: internal
-              message: Internal server error
-    BadRequest:
-      description: Invalid request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: invalid_request
-              message: Invalid request body
-    Forbidden:
-      description: Insufficient permissions
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: permission_denied
-              message: Insufficient permissions
-    Unauthorized:
-      description: Missing or invalid authentication
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: unauthenticated
-              message: Authentication required
   schemas:
-    MemberRolesResponse:
+    AssignMemberRoleRequest:
+      type: object
+      required:
+      - roleId
+      properties:
+        roleId:
+          type: string
+          description: Role UUID to assign.
+          example: 80de0196-496f-44fe-9d4c-8013b3b44082
+    ListMembersResponse:
       type: object
       properties:
-        member_id:
-          type: string
-        roles:
+        members:
           type: array
           items:
-            $ref: '#/components/schemas/Role'
+            $ref: '#/components/schemas/Member'
     Member:
       type: object
       properties:
@@ -307,6 +263,15 @@ components:
           type: string
           description: RFC 3339 timestamp
           example: '2026-07-06T19:30:00Z'
+    MemberRolesResponse:
+      type: object
+      properties:
+        member_id:
+          type: string
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
     Role:
       type: object
       properties:
@@ -368,31 +333,58 @@ components:
             message:
               type: string
               description: Human-readable error message
-    AssignMemberRoleRequest:
-      type: object
-      required:
-      - roleId
-      properties:
-        roleId:
-          type: string
-          description: Role UUID to assign.
-          example: 80de0196-496f-44fe-9d4c-8013b3b44082
-    ListMembersResponse:
-      type: object
-      properties:
-        members:
-          type: array
-          items:
-            $ref: '#/components/schemas/Member'
+  responses:
+    RateLimited:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: rate_limit_exceeded
+              message: Rate limit exceeded
+    Forbidden:
+      description: Insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: permission_denied
+              message: Insufficient permissions
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: invalid_request
+              message: Invalid request body
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: internal
+              message: Internal server error
+    Unauthorized:
+      description: Missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: unauthenticated
+              message: Authentication required
   parameters:
-    RoleId:
-      name: roleId
-      in: path
-      required: true
-      schema:
-        type: string
-        format: uuid
-      description: Role ID
     MemberId:
       name: id
       in: path
@@ -401,6 +393,14 @@ components:
         type: string
         format: uuid
       description: Member ID
+    RoleId:
+      name: roleId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Role ID
   securitySchemes:
     bearerAuth:
       type: http

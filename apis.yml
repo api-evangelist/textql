@@ -44,6 +44,7 @@ tags:
 - Text-to-SQL
 - Data Warehouse
 - Enterprise
+- A2A
 tags_raw:
 - Company
 - Artificial Intelligence
@@ -56,6 +57,7 @@ tags_raw:
 - Text To SQL
 - Data Warehouse
 - Enterprise
+- A2A
 apis:
 - aid: textql:textql-ana-mcp-server
   name: Ana MCP Server
@@ -1562,3 +1564,10 @@ x-enrichment:
   status: enriched
   artifacts_added: 43
   pass: local-v1
+x-a2a:
+  verified: true
+  probed: '2026-09-26'
+  url: "https://docs.textql.com/.well-known/agent-card.json"
+  grade: "conformant"
+  protocol_version: "0.3"
+  control: 404

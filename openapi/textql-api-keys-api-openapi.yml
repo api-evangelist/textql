@@ -204,18 +204,6 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   schemas:
-    RotateApiKeyResponse:
-      type: object
-      properties:
-        key:
-          type: string
-          description: The replacement key's full bearer credential. Shown exactly once; store it securely.
-          example: BEARER_SECRET_SHOWN_ONCE
-        api_key:
-          $ref: '#/components/schemas/PlatformApiKey'
-        revoked_api_key_id:
-          type: string
-          description: The id of the key that was revoked by this rotation.
     CreateApiKeyRequest:
       type: object
       properties:
@@ -247,6 +235,61 @@ components:
         fullMemberAccess:
           type: boolean
           description: When true, the key retains the target member's direct object grants alongside its assumed-role grants. API-key callers may enable this only when their own key already has full member access.
+    RotateApiKeyResponse:
+      type: object
+      properties:
+        key:
+          type: string
+          description: The replacement key's full bearer credential. Shown exactly once; store it securely.
+          example: BEARER_SECRET_SHOWN_ONCE
+        api_key:
+          $ref: '#/components/schemas/PlatformApiKey'
+        revoked_api_key_id:
+          type: string
+          description: The id of the key that was revoked by this rotation.
+    CreateApiKeyResponse:
+      type: object
+      properties:
+        key:
+          type: string
+          description: 'The full bearer credential. Shown exactly once; store it securely. Use as `Authorization: Bearer <key>`.'
+          example: BEARER_SECRET_SHOWN_ONCE
+        api_key:
+          $ref: '#/components/schemas/PlatformApiKey'
+    ListApiKeysResponse:
+      type: object
+      properties:
+        api_keys:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlatformApiKey'
+        next_page_token:
+          type: string
+          description: Present when more pages exist; pass back as `page_token`.
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code
+              enum:
+              - invalid_request
+              - unauthenticated
+              - permission_denied
+              - not_found
+              - conflict
+              - rate_limit_exceeded
+              - internal
+              - timeout
+              - cancelled
+              - execution_failed
+              - no_report
+            message:
+              type: string
+              description: Human-readable error message
     PlatformApiKey:
       type: object
       properties:
@@ -285,49 +328,6 @@ components:
           type: string
           description: RFC 3339 timestamp; absent for non-expiring keys
           example: '2026-07-06T20:30:00Z'
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-              description: Machine-readable error code
-              enum:
-              - invalid_request
-              - unauthenticated
-              - permission_denied
-              - not_found
-              - conflict
-              - rate_limit_exceeded
-              - internal
-              - timeout
-              - cancelled
-              - execution_failed
-              - no_report
-            message:
-              type: string
-              description: Human-readable error message
-    ListApiKeysResponse:
-      type: object
-      properties:
-        api_keys:
-          type: array
-          items:
-            $ref: '#/components/schemas/PlatformApiKey'
-        next_page_token:
-          type: string
-          description: Present when more pages exist; pass back as `page_token`.
-    CreateApiKeyResponse:
-      type: object
-      properties:
-        key:
-          type: string
-          description: 'The full bearer credential. Shown exactly once; store it securely. Use as `Authorization: Bearer <key>`.'
-          example: BEARER_SECRET_SHOWN_ONCE
-        api_key:
-          $ref: '#/components/schemas/PlatformApiKey'
   responses:
     RateLimited:
       description: Rate limit exceeded
@@ -339,26 +339,6 @@ components:
             error:
               code: rate_limit_exceeded
               message: Rate limit exceeded
-    InternalError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: internal
-              message: Internal server error
-    BadRequest:
-      description: Invalid request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: invalid_request
-              message: Invalid request body
     Forbidden:
       description: Insufficient permissions
       content:
@@ -369,6 +349,16 @@ components:
             error:
               code: permission_denied
               message: Insufficient permissions
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: invalid_request
+              message: Invalid request body
     NotFound:
       description: Resource not found
       content:
@@ -379,6 +369,16 @@ components:
             error:
               code: not_found
               message: Resource not found
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: internal
+              message: Internal server error
     Unauthorized:
       description: Missing or invalid authentication
       content:

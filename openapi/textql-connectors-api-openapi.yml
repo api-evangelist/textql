@@ -311,30 +311,88 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   schemas:
-    ConnectorAccessGrant:
+    ConnectorTypeInfo:
+      type: object
+      description: A supported connector type and the shape of its config.
+      properties:
+        connector_type:
+          type: string
+          description: Value to set as config.connector_type (e.g. `KDB`).
+        config_key:
+          type: string
+          description: Metadata object key to nest under config (e.g. `kdb`).
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConnectorTypeField'
+    UpdateConnectorRequest:
       type: object
       required:
-      - access_type
-      description: 'One access grant. Set exactly one of `member_id`, `role_id`, or
+      - config
+      properties:
+        config:
+          $ref: '#/components/schemas/ConnectorConfig'
+        allow_sql_write_operations:
+          type: boolean
+          description: Allow the connector to execute write/DDL SQL.
+        include_db_session_metadata:
+          type: boolean
+          description: Attach database session metadata to queries.
+    ConnectorConfig:
+      type: object
+      required:
+      - connector_type
+      - name
+      description: 'A connector''s type, display name, and type-specific connection metadata.
 
-        `group_id`. Resolve ids via `GET /v2/members` and `GET /v2/roles`.
+
+        Set exactly one metadata field matching `connector_type` (e.g.
+
+        `connector_type: POSTGRES` ⇒ set `postgres`). The common database types
+
+        are documented below; every supported type follows the same shape — see
+
+        the proto `ConnectorConfig` for the full list (Snowflake, BigQuery,
+
+        Databricks, Tableau, PowerBI, SQL Server, Trino, etc.).
+
+
+        Confidential fields (passwords, keys, tokens) are write-only: they are
+
+        never returned by read endpoints, and on update they are preserved from
+
+        the stored connector when sent empty.
 
         '
       properties:
-        member_id:
+        connector_type:
           type: string
-          example: 9b2f7a64-11d0-4c1b-8f3e-2f9c5b7f6e10
-        role_id:
+          description: 'Connector type enum name, e.g. `POSTGRES`, `REDSHIFT`, `MYSQL`,
+
+            `SNOWFLAKE`, `BIGQUERY`, `DATABRICKS`, `TABLEAU`, `POWERBI`.
+
+            '
+          example: POSTGRES
+        name:
           type: string
-          example: 80de0196-496f-44fe-9d4c-8013b3b44082
-        group_id:
+          description: Human-readable connector name
+        auth_strategy:
           type: string
-        access_type:
-          type: string
-          enum:
-          - owner
-          - editor
-          - viewer
+          description: 'Authentication strategy. Defaults to `service_role` when omitted;
+
+            other values (`member_oauth`, `per_member_oauth`) are inferred from
+
+            the metadata for OAuth-capable connectors.
+
+            '
+        postgres:
+          $ref: '#/components/schemas/PostgresMetadata'
+        redshift:
+          $ref: '#/components/schemas/RedshiftMetadata'
+        mysql:
+          $ref: '#/components/schemas/MySQLMetadata'
+        snowflake:
+          $ref: '#/components/schemas/SnowflakeMetadata'
     MySQLMetadata:
       type: object
       description: 'Connection metadata for `connector_type: MYSQL`.'
@@ -357,6 +415,39 @@ components:
           description: Write-only. Omit on update to keep the stored value.
         database:
           type: string
+    ListConnectorTypesResponse:
+      type: object
+      required:
+      - types
+      properties:
+        types:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConnectorTypeInfo'
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code
+              enum:
+              - invalid_request
+              - unauthenticated
+              - permission_denied
+              - not_found
+              - conflict
+              - rate_limit_exceeded
+              - internal
+              - timeout
+              - cancelled
+              - execution_failed
+              - no_report
+            message:
+              type: string
+              description: Human-readable error message
     PostgresMetadata:
       type: object
       description: 'Connection metadata for `connector_type: POSTGRES`.'
@@ -385,33 +476,127 @@ components:
             type: string
         ssl_mode:
           type: boolean
-    UpdateConnectorRequest:
+    TestConnectorRequest:
       type: object
       required:
       - config
       properties:
         config:
           $ref: '#/components/schemas/ConnectorConfig'
-        allow_sql_write_operations:
-          type: boolean
-          description: Allow the connector to execute write/DDL SQL.
-        include_db_session_metadata:
-          type: boolean
-          description: Attach database session metadata to queries.
-    ConnectorTypeInfo:
+        connector_id:
+          type: string
+          description: 'Optional. ID of an existing connector whose confidential fields
+
+            should fill in any empty confidential fields in `config` before the
+
+            connection is attempted.
+
+            '
+    TestConnectorResponse:
       type: object
-      description: A supported connector type and the shape of its config.
+      required:
+      - success
       properties:
-        connector_type:
+        success:
+          type: boolean
+          description: Whether the connection succeeded.
+        error:
           type: string
-          description: Value to set as config.connector_type (e.g. `KDB`).
-        config_key:
+          description: Failure detail when `success` is false; empty otherwise.
+    CreateConnectorRequest:
+      type: object
+      required:
+      - config
+      properties:
+        config:
+          $ref: '#/components/schemas/ConnectorConfig'
+        access:
+          allOf:
+          - $ref: '#/components/schemas/UpdateConnectorAccessRequest'
+          description: 'Access configuration applied atomically with creation. Grants are
+
+            validated before the connector is created, so an invalid grant
+
+            never leaves a partially configured connector. When omitted, the
+
+            connector is created org-visible (`is_public: true`). The creating
+
+            member always receives an owner grant.
+
+            '
+    ConnectorTypeField:
+      type: object
+      description: One configurable field of a connector type.
+      properties:
+        name:
           type: string
-          description: Metadata object key to nest under config (e.g. `kdb`).
-        fields:
+        type:
+          type: string
+          description: 'JSON-friendly type: string, number, boolean, array, or object.'
+        confidential:
+          type: boolean
+          description: Write-only field (password/key/token); never returned by read endpoints.
+        optional_on_update:
+          type: boolean
+          description: May be omitted on PATCH to preserve the stored value.
+    RedshiftMetadata:
+      type: object
+      description: 'Connection metadata for `connector_type: REDSHIFT`.'
+      required:
+      - host
+      - database
+      properties:
+        host:
+          type: string
+        port:
+          type: integer
+          format: int32
+          default: 5439
+        user:
+          type: string
+        password:
+          type: string
+          description: Write-only. Omit on update to keep the stored value.
+        database:
+          type: string
+        schemas:
           type: array
           items:
-            $ref: '#/components/schemas/ConnectorTypeField'
+            type: string
+        auth_type:
+          type: string
+          description: '`PASSWORD` (default) or `IAM_ROLE`.'
+    Connector:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+          description: Connector ID
+        name:
+          type: string
+          description: Connector name
+        type:
+          type: string
+          description: Connector type
+    ConnectorAccess:
+      type: object
+      properties:
+        is_public:
+          type: boolean
+        grants:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/ConnectorAccessGrant'
+            - type: object
+              properties:
+                granted_by:
+                  type: string
+                  description: Member id that created the grant.
+                expires_at:
+                  type: string
+                  description: RFC 3339 timestamp; absent for non-expiring grants.
     SnowflakeMetadata:
       type: object
       description: 'Connection metadata for `connector_type: SNOWFLAKE`. Authenticate with
@@ -474,167 +659,6 @@ components:
           type: string
         token_exchange_scope:
           type: string
-    TestConnectorResponse:
-      type: object
-      required:
-      - success
-      properties:
-        success:
-          type: boolean
-          description: Whether the connection succeeded.
-        error:
-          type: string
-          description: Failure detail when `success` is false; empty otherwise.
-    Connector:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int32
-          description: Connector ID
-        name:
-          type: string
-          description: Connector name
-        type:
-          type: string
-          description: Connector type
-    TestConnectorRequest:
-      type: object
-      required:
-      - config
-      properties:
-        config:
-          $ref: '#/components/schemas/ConnectorConfig'
-        connector_id:
-          type: string
-          description: 'Optional. ID of an existing connector whose confidential fields
-
-            should fill in any empty confidential fields in `config` before the
-
-            connection is attempted.
-
-            '
-    ConnectorConfig:
-      type: object
-      required:
-      - connector_type
-      - name
-      description: 'A connector''s type, display name, and type-specific connection metadata.
-
-
-        Set exactly one metadata field matching `connector_type` (e.g.
-
-        `connector_type: POSTGRES` ⇒ set `postgres`). The common database types
-
-        are documented below; every supported type follows the same shape — see
-
-        the proto `ConnectorConfig` for the full list (Snowflake, BigQuery,
-
-        Databricks, Tableau, PowerBI, SQL Server, Trino, etc.).
-
-
-        Confidential fields (passwords, keys, tokens) are write-only: they are
-
-        never returned by read endpoints, and on update they are preserved from
-
-        the stored connector when sent empty.
-
-        '
-      properties:
-        connector_type:
-          type: string
-          description: 'Connector type enum name, e.g. `POSTGRES`, `REDSHIFT`, `MYSQL`,
-
-            `SNOWFLAKE`, `BIGQUERY`, `DATABRICKS`, `TABLEAU`, `POWERBI`.
-
-            '
-          example: POSTGRES
-        name:
-          type: string
-          description: Human-readable connector name
-        auth_strategy:
-          type: string
-          description: 'Authentication strategy. Defaults to `service_role` when omitted;
-
-            other values (`member_oauth`, `per_member_oauth`) are inferred from
-
-            the metadata for OAuth-capable connectors.
-
-            '
-        postgres:
-          $ref: '#/components/schemas/PostgresMetadata'
-        redshift:
-          $ref: '#/components/schemas/RedshiftMetadata'
-        mysql:
-          $ref: '#/components/schemas/MySQLMetadata'
-        snowflake:
-          $ref: '#/components/schemas/SnowflakeMetadata'
-    RedshiftMetadata:
-      type: object
-      description: 'Connection metadata for `connector_type: REDSHIFT`.'
-      required:
-      - host
-      - database
-      properties:
-        host:
-          type: string
-        port:
-          type: integer
-          format: int32
-          default: 5439
-        user:
-          type: string
-        password:
-          type: string
-          description: Write-only. Omit on update to keep the stored value.
-        database:
-          type: string
-        schemas:
-          type: array
-          items:
-            type: string
-        auth_type:
-          type: string
-          description: '`PASSWORD` (default) or `IAM_ROLE`.'
-    ConnectorAccess:
-      type: object
-      properties:
-        is_public:
-          type: boolean
-        grants:
-          type: array
-          items:
-            allOf:
-            - $ref: '#/components/schemas/ConnectorAccessGrant'
-            - type: object
-              properties:
-                granted_by:
-                  type: string
-                  description: Member id that created the grant.
-                expires_at:
-                  type: string
-                  description: RFC 3339 timestamp; absent for non-expiring grants.
-    CreateConnectorRequest:
-      type: object
-      required:
-      - config
-      properties:
-        config:
-          $ref: '#/components/schemas/ConnectorConfig'
-        access:
-          allOf:
-          - $ref: '#/components/schemas/UpdateConnectorAccessRequest'
-          description: 'Access configuration applied atomically with creation. Grants are
-
-            validated before the connector is created, so an invalid grant
-
-            never leaves a partially configured connector. When omitted, the
-
-            connector is created org-visible (`is_public: true`). The creating
-
-            member always receives an owner grant.
-
-            '
     UpdateConnectorAccessRequest:
       type: object
       required:
@@ -647,84 +671,31 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ConnectorAccessGrant'
-    ListConnectorTypesResponse:
+    ConnectorAccessGrant:
       type: object
       required:
-      - types
+      - access_type
+      description: 'One access grant. Set exactly one of `member_id`, `role_id`, or
+
+        `group_id`. Resolve ids via `GET /v2/members` and `GET /v2/roles`.
+
+        '
       properties:
-        types:
-          type: array
-          items:
-            $ref: '#/components/schemas/ConnectorTypeInfo'
-    ConnectorTypeField:
-      type: object
-      description: One configurable field of a connector type.
-      properties:
-        name:
+        member_id:
           type: string
-        type:
+          example: 9b2f7a64-11d0-4c1b-8f3e-2f9c5b7f6e10
+        role_id:
           type: string
-          description: 'JSON-friendly type: string, number, boolean, array, or object.'
-        confidential:
-          type: boolean
-          description: Write-only field (password/key/token); never returned by read endpoints.
-        optional_on_update:
-          type: boolean
-          description: May be omitted on PATCH to preserve the stored value.
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-              description: Machine-readable error code
-              enum:
-              - invalid_request
-              - unauthenticated
-              - permission_denied
-              - not_found
-              - conflict
-              - rate_limit_exceeded
-              - internal
-              - timeout
-              - cancelled
-              - execution_failed
-              - no_report
-            message:
-              type: string
-              description: Human-readable error message
-  parameters:
-    ConnectorId:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: integer
-        format: int32
-      description: Connector ID
+          example: 80de0196-496f-44fe-9d4c-8013b3b44082
+        group_id:
+          type: string
+        access_type:
+          type: string
+          enum:
+          - owner
+          - editor
+          - viewer
   responses:
-    Conflict:
-      description: Resource already exists
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: conflict
-              message: A connector already exists for this account
-    NotFound:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: not_found
-              message: Resource not found
     RateLimited:
       description: Rate limit exceeded
       content:
@@ -735,16 +706,6 @@ components:
             error:
               code: rate_limit_exceeded
               message: Rate limit exceeded
-    InternalError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: internal
-              message: Internal server error
     Forbidden:
       description: Insufficient permissions
       content:
@@ -755,16 +716,26 @@ components:
             error:
               code: permission_denied
               message: Insufficient permissions
-    BadRequest:
-      description: Invalid request
+    NotFound:
+      description: Resource not found
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
           example:
             error:
-              code: invalid_request
-              message: Invalid request body
+              code: not_found
+              message: Resource not found
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: internal
+              message: Internal server error
     Unauthorized:
       description: Missing or invalid authentication
       content:
@@ -775,6 +746,35 @@ components:
             error:
               code: unauthenticated
               message: Authentication required
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: invalid_request
+              message: Invalid request body
+    Conflict:
+      description: Resource already exists
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: conflict
+              message: A connector already exists for this account
+  parameters:
+    ConnectorId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int32
+      description: Connector ID
   securitySchemes:
     bearerAuth:
       type: http

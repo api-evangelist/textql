@@ -586,156 +586,53 @@ paths:
         source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.agents.upload_agent_avatar()\n\n    # Handle response\n    print(res)"
 components:
   schemas:
-    textql.rpc.public.chat.EgressSummary:
+    textql.rpc.public.agent.GetAgentRunRequest:
       type: object
       properties:
-        totalCalls:
-          type: integer
-          title: total_calls
-          format: int32
-        outcomeCounts:
-          type: object
-          title: outcome_counts
-          additionalProperties:
-            type: integer
-            title: value
-            format: int32
-        calls:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.chat.EgressCall'
-          title: calls
-      title: EgressSummary
+        runId:
+          type: string
+          title: run_id
+      title: GetAgentRunRequest
       additionalProperties: false
-    textql.rpc.public.agent.AgentRunTriggerGeo:
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+      - 1
+      description: Define the version of the Connect protocol
+      const: 1
+      default: 1
+    textql.rpc.public.agent.AgentRunToolCall:
       type: object
       properties:
-        city:
+        tool:
           type: string
-          title: city
-        region:
+          title: tool
+        summary:
           type: string
-          title: region
-        country:
+          title: summary
+        error:
           type: string
-          title: country
-        countryCode:
+          title: error
+        resultJson:
           type: string
-          title: country_code
-      title: AgentRunTriggerGeo
-      additionalProperties: false
-    textql.rpc.public.agent.UploadAgentAvatarResponse:
-      type: object
-      properties:
-        profileImageUrl:
+          title: result_json
+        cellId:
           type: string
-          title: profile_image_url
-          description: Signed URL of the newly uploaded avatar.
-      title: UploadAgentAvatarResponse
-      additionalProperties: false
-    textql.rpc.public.agent.CreateAgentRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          title: name
-        prompt:
-          type: string
-          title: prompt
-        paradigmOptions:
-          title: paradigm_options
-          nullable: true
-          $ref: '#/components/schemas/textql.rpc.public.paradigm.ParadigmOptions'
-        sourceSuggestionId:
-          type: string
-          title: source_suggestion_id
-        slackChannelId:
-          type: string
-          title: slack_channel_id
-          nullable: true
-        slackDmUserIds:
-          type: array
-          items:
-            type: string
-          title: slack_dm_user_ids
-        skipOrgDefaultChannel:
-          type: boolean
-          title: skip_org_default_channel
-        llmModel:
-          title: llm_model
-          nullable: true
-          $ref: '#/components/schemas/textql.rpc.public.chat.LlmModel'
-        fastMode:
-          type: boolean
-          title: fast_mode
-          nullable: true
-        isStateful:
-          type: boolean
-          title: is_stateful
-          nullable: true
-        postingFrequencyCrons:
-          type: array
-          items:
-            type: string
-          title: posting_frequency_crons
-        emailRecipientMemberIds:
-          type: array
-          items:
-            type: string
-          title: email_recipient_member_ids
-        channelIds:
-          type: array
-          items:
-            type: string
-          title: channel_ids
-        teamsChannelId:
-          type: string
-          title: teams_channel_id
-          nullable: true
-        teamsDmUserAadIds:
-          type: array
-          items:
-            type: string
-          title: teams_dm_user_aad_ids
-        slackTrigger:
-          title: slack_trigger
-          nullable: true
-          $ref: '#/components/schemas/textql.rpc.public.agent.SlackAgentTrigger'
-        postingFrequencyCadences:
-          type: array
-          items:
-            type: string
-          title: posting_frequency_cadences
-          description: "Index-aligned with posting_frequency_crons. A non-empty cadence\n (HOURLY/FOUR-HOUR/EIGHT-HOUR/DAILY/WEEKLY) marks a flexible schedule whose\n cron the backend generates; \"\" (or an empty list) means exact."
-        callableAsSubagent:
-          type: boolean
-          title: callable_as_subagent
-          description: "Unset defaults to true: new agents are delegatable unless the caller opts\n out. Mirrors allow_ad_hoc_subagents below."
-          nullable: true
-        subagentInvokerMemberIds:
-          type: array
-          items:
-            type: string
-          title: subagent_invoker_member_ids
-        subagentInvokerRoleIds:
-          type: array
-          items:
-            type: string
-          title: subagent_invoker_role_ids
-        feedEnabled:
-          type: boolean
-          title: feed_enabled
-          nullable: true
-        subagentAgentIds:
-          type: array
-          items:
-            type: string
-          title: subagent_agent_ids
-        allowAdHocSubagents:
-          type: boolean
-          title: allow_ad_hoc_subagents
-          nullable: true
-      title: CreateAgentRequest
+          title: cell_id
+        durationMs:
+          type:
+          - integer
+          - string
+          title: duration_ms
+          format: int64
+        startedAtMs:
+          type:
+          - integer
+          - string
+          title: started_at_ms
+          format: int64
+      title: AgentRunToolCall
       additionalProperties: false
     textql.rpc.public.agent.Agent:
       type: object
@@ -880,22 +777,20 @@ components:
           title: allow_ad_hoc_subagents
       title: Agent
       additionalProperties: false
-    textql.rpc.public.agent.GetAgentRunRequest:
+    textql.rpc.public.agent.UpdateAgentResponse:
       type: object
       properties:
-        runId:
+        agent:
+          title: agent
+          $ref: '#/components/schemas/textql.rpc.public.agent.Agent'
+        chatId:
           type: string
-          title: run_id
-      title: GetAgentRunRequest
+          title: chat_id
+      title: UpdateAgentResponse
       additionalProperties: false
-    textql.rpc.public.agent.GetAgentRequest:
+    google.protobuf.Empty:
       type: object
-      properties:
-        agentId:
-          type: string
-          title: agent_id
-      title: GetAgentRequest
-      additionalProperties: false
+      description: "A generic empty message that you can re-use to avoid defining duplicated\n empty messages in your APIs. A typical example is to use it as the request\n or the response type of an API method. For instance:\n\n     service Foo {\n       rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);\n     }"
     textql.rpc.public.paradigm.UniversalOptions:
       type: object
       properties:
@@ -1003,116 +898,154 @@ components:
           title: file_generation_disabled
       title: UniversalOptions
       additionalProperties: false
-    textql.rpc.public.agent.SlackAgentTrigger:
-      type: object
-      properties:
-        triggerId:
-          type: string
-          title: trigger_id
-        isActive:
-          type: boolean
-          title: is_active
-        teamId:
-          type: string
-          title: team_id
-          nullable: true
-        allowedChannelIds:
-          type: array
-          items:
-            type: string
-          title: allowed_channel_ids
-      title: SlackAgentTrigger
-      additionalProperties: false
-    connect.error_details.Any:
-      type: object
-      properties:
-        type:
-          type: string
-          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
-        value:
-          type: string
-          format: binary
-          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
-        debug:
-          oneOf:
-          - type: object
-            title: Any
-            additionalProperties: true
-            description: Detailed error information.
-          discriminator:
-            propertyName: type
-          title: Debug
-          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
-      additionalProperties: true
-      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
-    textql.rpc.public.agent.AgentDBColumn:
+    textql.rpc.public.agent.CreateAgentRequest:
       type: object
       properties:
         name:
           type: string
           title: name
-        type:
+        prompt:
           type: string
-          title: type
-          description: DuckDB type name, e.g. "VARCHAR", "BIGINT"
-        nullable:
-          type: boolean
-          title: nullable
-        primaryKey:
-          type: boolean
-          title: primary_key
-      title: AgentDBColumn
-      additionalProperties: false
-    textql.rpc.public.agent.UploadAgentAvatarRequest:
-      type: object
-      properties:
-        agentId:
+          title: prompt
+        paradigmOptions:
+          title: paradigm_options
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.paradigm.ParadigmOptions'
+        sourceSuggestionId:
           type: string
-          title: agent_id
-        imageData:
+          title: source_suggestion_id
+        slackChannelId:
           type: string
-          title: image_data
-          format: byte
-        fileName:
-          type: string
-          title: file_name
-      title: UploadAgentAvatarRequest
-      additionalProperties: false
-    textql.rpc.public.agent.GetAgentDBSchemaRequest:
-      type: object
-      properties:
-        agentId:
-          type: string
-          title: agent_id
-      title: GetAgentDBSchemaRequest
-      additionalProperties: false
-    textql.rpc.public.agent.ResetAgentAvatarRequest:
-      type: object
-      properties:
-        agentId:
-          type: string
-          title: agent_id
-      title: ResetAgentAvatarRequest
-      additionalProperties: false
-    textql.rpc.public.agent.ResetAgentAvatarResponse:
-      type: object
-      properties:
-        profileImageUrl:
-          type: string
-          title: profile_image_url
-          description: Empty after a reset (agent falls back to the default identicon).
-      title: ResetAgentAvatarResponse
-      additionalProperties: false
-    textql.rpc.public.agent.ListAgentRunsResponse:
-      type: object
-      properties:
-        runs:
+          title: slack_channel_id
+          nullable: true
+        slackDmUserIds:
           type: array
           items:
-            $ref: '#/components/schemas/textql.rpc.public.agent.AgentRun'
-          title: runs
-      title: ListAgentRunsResponse
+            type: string
+          title: slack_dm_user_ids
+        skipOrgDefaultChannel:
+          type: boolean
+          title: skip_org_default_channel
+        llmModel:
+          title: llm_model
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.chat.LlmModel'
+        fastMode:
+          type: boolean
+          title: fast_mode
+          nullable: true
+        isStateful:
+          type: boolean
+          title: is_stateful
+          nullable: true
+        postingFrequencyCrons:
+          type: array
+          items:
+            type: string
+          title: posting_frequency_crons
+        emailRecipientMemberIds:
+          type: array
+          items:
+            type: string
+          title: email_recipient_member_ids
+        channelIds:
+          type: array
+          items:
+            type: string
+          title: channel_ids
+        teamsChannelId:
+          type: string
+          title: teams_channel_id
+          nullable: true
+        teamsDmUserAadIds:
+          type: array
+          items:
+            type: string
+          title: teams_dm_user_aad_ids
+        slackTrigger:
+          title: slack_trigger
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.agent.SlackAgentTrigger'
+        postingFrequencyCadences:
+          type: array
+          items:
+            type: string
+          title: posting_frequency_cadences
+          description: "Index-aligned with posting_frequency_crons. A non-empty cadence\n (HOURLY/FOUR-HOUR/EIGHT-HOUR/DAILY/WEEKLY) marks a flexible schedule whose\n cron the backend generates; \"\" (or an empty list) means exact."
+        callableAsSubagent:
+          type: boolean
+          title: callable_as_subagent
+          description: "Unset defaults to true: new agents are delegatable unless the caller opts\n out. Mirrors allow_ad_hoc_subagents below."
+          nullable: true
+        subagentInvokerMemberIds:
+          type: array
+          items:
+            type: string
+          title: subagent_invoker_member_ids
+        subagentInvokerRoleIds:
+          type: array
+          items:
+            type: string
+          title: subagent_invoker_role_ids
+        feedEnabled:
+          type: boolean
+          title: feed_enabled
+          nullable: true
+        subagentAgentIds:
+          type: array
+          items:
+            type: string
+          title: subagent_agent_ids
+        allowAdHocSubagents:
+          type: boolean
+          title: allow_ad_hoc_subagents
+          nullable: true
+      title: CreateAgentRequest
       additionalProperties: false
+    textql.rpc.public.agent.GetAgentRequest:
+      type: object
+      properties:
+        agentId:
+          type: string
+          title: agent_id
+      title: GetAgentRequest
+      additionalProperties: false
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+          - not_found
+          enum:
+          - canceled
+          - unknown
+          - invalid_argument
+          - deadline_exceeded
+          - not_found
+          - already_exists
+          - permission_denied
+          - resource_exhausted
+          - failed_precondition
+          - aborted
+          - out_of_range
+          - unimplemented
+          - internal
+          - unavailable
+          - data_loss
+          - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
     textql.rpc.public.agent.AgentRun:
       type: object
       properties:
@@ -1196,40 +1129,137 @@ components:
           format: int64
       title: AgentRun
       additionalProperties: false
-    textql.rpc.public.agent.AgentRunToolsSummary:
+    textql.rpc.public.agent.GetAgentRunResponse:
       type: object
       properties:
-        totalCalls:
+        run:
+          title: run
+          $ref: '#/components/schemas/textql.rpc.public.agent.AgentRun'
+      title: GetAgentRunResponse
+      additionalProperties: false
+    textql.rpc.public.agent.GetAgentDBTablePreviewResponse:
+      type: object
+      properties:
+        arrowData:
+          type: string
+          title: arrow_data
+          format: byte
+      title: GetAgentDBTablePreviewResponse
+      additionalProperties: false
+    textql.rpc.public.agent.DuplicateAgentResponse:
+      type: object
+      properties:
+        agent:
+          title: agent
+          $ref: '#/components/schemas/textql.rpc.public.agent.Agent'
+      title: DuplicateAgentResponse
+      additionalProperties: false
+    textql.rpc.public.agent.AgentRunDeliveryChannel:
+      type: object
+      properties:
+        type:
+          type: string
+          title: type
+          description: slack_channel | teams_channel | slack_dm | teams_dm | email | feed_channel
+        id:
+          type: string
+          title: id
+          description: raw identifier (channel id, member id, aad id)
+        label:
+          type: string
+          title: label
+          description: resolved human-readable label (#channel, email address)
+      title: AgentRunDeliveryChannel
+      additionalProperties: false
+    textql.rpc.public.agent.ResetAgentAvatarResponse:
+      type: object
+      properties:
+        profileImageUrl:
+          type: string
+          title: profile_image_url
+          description: Empty after a reset (agent falls back to the default identicon).
+      title: ResetAgentAvatarResponse
+      additionalProperties: false
+    textql.rpc.public.agent.ListAgentsRequest:
+      type: object
+      properties:
+        includeInactive:
+          type: boolean
+          title: include_inactive
+        includeAllOrg:
+          type: boolean
+          title: include_all_org
+        days:
           type: integer
-          title: total_calls
+          title: days
           format: int32
-        toolCounts:
-          type: object
-          title: tool_counts
-          additionalProperties:
-            type: integer
-            title: value
-            format: int32
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.agent.AgentRunToolCall'
-          title: details
-      title: AgentRunToolsSummary
+      title: ListAgentsRequest
       additionalProperties: false
-    textql.rpc.public.agent.ListAgentsResponse:
+    textql.rpc.public.agent.GetAgentDBSchemaRequest:
       type: object
       properties:
-        agents:
+        agentId:
+          type: string
+          title: agent_id
+      title: GetAgentDBSchemaRequest
+      additionalProperties: false
+    textql.rpc.public.agent.GetAgentDBSchemaResponse:
+      type: object
+      properties:
+        tables:
           type: array
           items:
-            $ref: '#/components/schemas/textql.rpc.public.agent.Agent'
-          title: agents
-      title: ListAgentsResponse
+            $ref: '#/components/schemas/textql.rpc.public.agent.AgentDBTable'
+          title: tables
+        changeLogBytes:
+          type:
+          - integer
+          - string
+          title: change_log_bytes
+          format: int64
+          description: durable Postgres change-log size; the .duckdb cache is derived from this
+      title: GetAgentDBSchemaResponse
       additionalProperties: false
-    google.protobuf.Empty:
+    textql.rpc.public.agent.TriggerAgentResponse:
       type: object
-      description: "A generic empty message that you can re-use to avoid defining duplicated\n empty messages in your APIs. A typical example is to use it as the request\n or the response type of an API method. For instance:\n\n     service Foo {\n       rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);\n     }"
+      properties:
+        chatId:
+          type: string
+          title: chat_id
+      title: TriggerAgentResponse
+      additionalProperties: false
+    textql.rpc.public.agent.GetAgentResponse:
+      type: object
+      properties:
+        agent:
+          title: agent
+          $ref: '#/components/schemas/textql.rpc.public.agent.Agent'
+      title: GetAgentResponse
+      additionalProperties: false
+    textql.rpc.public.agent.GetAgentDBTablePreviewRequest:
+      type: object
+      properties:
+        agentId:
+          type: string
+          title: agent_id
+        tableName:
+          type: string
+          title: table_name
+        limit:
+          type: integer
+          title: limit
+          format: int32
+          description: clamped server-side; 0 uses the default
+      title: GetAgentDBTablePreviewRequest
+      additionalProperties: false
+    textql.rpc.public.agent.ResetAgentAvatarRequest:
+      type: object
+      properties:
+        agentId:
+          type: string
+          title: agent_id
+      title: ResetAgentAvatarRequest
+      additionalProperties: false
     textql.rpc.public.agent.DuplicateAgentRequest:
       type: object
       properties:
@@ -1238,14 +1268,148 @@ components:
           title: agent_id
       title: DuplicateAgentRequest
       additionalProperties: false
-    textql.rpc.public.agent.DeleteAgentRequest:
+    textql.rpc.public.agent.AgentRunDelivery:
+      type: object
+      properties:
+        slackChannelId:
+          type: string
+          title: slack_channel_id
+          nullable: true
+        teamsChannelId:
+          type: string
+          title: teams_channel_id
+          nullable: true
+        slackDmUserIds:
+          type: array
+          items:
+            type: string
+          title: slack_dm_user_ids
+        teamsDmUserAadIds:
+          type: array
+          items:
+            type: string
+          title: teams_dm_user_aad_ids
+        emailRecipientMemberIds:
+          type: array
+          items:
+            type: string
+          title: email_recipient_member_ids
+        feedChannelIds:
+          type: array
+          items:
+            type: string
+          title: feed_channel_ids
+        channels:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.agent.AgentRunDeliveryChannel'
+          title: channels
+      title: AgentRunDelivery
+      additionalProperties: false
+    textql.rpc.public.agent.ListAgentRunsRequest:
       type: object
       properties:
         agentId:
           type: string
           title: agent_id
-      title: DeleteAgentRequest
+        triggerSource:
+          type: string
+          title: trigger_source
+          nullable: true
+        status:
+          type: string
+          title: status
+          nullable: true
+        limit:
+          type: integer
+          title: limit
+          format: int32
+        offset:
+          type: integer
+          title: offset
+          format: int32
+      title: ListAgentRunsRequest
       additionalProperties: false
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    textql.rpc.public.agent.AgentDBColumn:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+        type:
+          type: string
+          title: type
+          description: DuckDB type name, e.g. "VARCHAR", "BIGINT"
+        nullable:
+          type: boolean
+          title: nullable
+        primaryKey:
+          type: boolean
+          title: primary_key
+      title: AgentDBColumn
+      additionalProperties: false
+    textql.rpc.public.chat.LlmModel:
+      type: string
+      title: LlmModel
+      enum:
+      - MODEL_UNKNOWN
+      - MODEL_DEFAULT
+      - MODEL_DEFAULT_SYSTEM
+      - MODEL_HAIKU_4_5
+      - MODEL_OPUS_4_8
+      - MODEL_FABLE_5
+      - MODEL_SONNET_5
+      - MODEL_OPUS_5
+      - MODEL_GPT_5_6_SOL
+      - MODEL_GEMINI_3_FLASH
+      - MODEL_GEMINI_3_PRO
+      - MODEL_GEMINI_3_1_PRO
+      - MODEL_GEMINI_3_5_FLASH
+      - MODEL_GPT_5_6_TERRA
+      - MODEL_GPT_5_6_LUNA
+      - MODEL_DEEPSEEK_3_2
+      - MODEL_GLM_5
+      - MODEL_VLLM
+      - MODEL_KIMI_K2_6
+      - MODEL_GLM_5_2
+      - MODEL_KIMI_K2_7_CODE
+      - MODEL_QWEN3_7_PLUS
+      - MODEL_KIMI_K3
+      - MODEL_DEEPSEEK_V4_FLASH_0731
+      - MODEL_MUSE_SPARK_1_1
+      - MODEL_MUSE_SPARK_1_2
+    textql.rpc.public.paradigm.ParadigmOptions:
+      type: object
+      oneOf:
+      - type: object
+        properties:
+          universal:
+            title: universal
+            $ref: '#/components/schemas/textql.rpc.public.paradigm.UniversalOptions'
+        title: universal
+        required:
+        - universal
+      title: ParadigmOptions
+      additionalProperties: false
+    textql.rpc.public.agent.TriggerAgentRequest:
+      type: object
+      properties:
+        agentId:
+          type: string
+          title: agent_id
+      title: TriggerAgentRequest
+      additionalProperties: false
+    google.protobuf.Timestamp:
+      type: string
+      examples:
+      - '2023-01-15T01:30:15.01Z'
+      - '2024-12-25T12:00:00Z'
+      format: date-time
+      description: "A Timestamp represents a point in time independent of any time zone or local\n calendar, encoded as a count of seconds and fractions of seconds at\n nanosecond resolution. The count is relative to an epoch at UTC midnight on\n January 1, 1970, in the proleptic Gregorian calendar which extends the\n Gregorian calendar backwards to year one.\n\n All minutes are 60 seconds long. Leap seconds are \"smeared\" so that no leap\n second table is needed for interpretation, using a [24-hour linear\n smear](https://developers.google.com/time/smear).\n\n The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By\n restricting to that range, we ensure that we can convert to and from [RFC\n 3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.\n\n # Examples\n\n Example 1: Compute Timestamp from POSIX `time()`.\n\n     Timestamp timestamp;\n     timestamp.set_seconds(time(NULL));\n     timestamp.set_nanos(0);\n\n Example 2: Compute Timestamp from POSIX `gettimeofday()`.\n\n     struct timeval tv;\n     gettimeofday(&tv, NULL);\n\n     Timestamp timestamp;\n     timestamp.set_seconds(tv.tv_sec);\n     timestamp.set_nanos(tv.tv_usec * 1000);\n\n Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.\n\n     FILETIME ft;\n     GetSystemTimeAsFileTime(&ft);\n     UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;\n\n     // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z\n     // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.\n     Timestamp timestamp;\n     timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));\n     timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));\n\n Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.\n\n     long millis = System.currentTimeMillis();\n\n     Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)\n         .setNanos((int) ((millis % 1000) * 1000000)).build();\n\n Example 5: Compute Timestamp from Java `Instant.now()`.\n\n     Instant now = Instant.now();\n\n     Timestamp timestamp =\n         Timestamp.newBuilder().setSeconds(now.getEpochSecond())\n             .setNanos(now.getNano()).build();\n\n Example 6: Compute Timestamp from current time in Python.\n\n     timestamp = Timestamp()\n     timestamp.GetCurrentTime()\n\n # JSON Mapping\n\n In JSON format, the Timestamp type is encoded as a string in the\n [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the\n format is \"{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z\"\n where {year} is always expressed using four digits while {month}, {day},\n {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional\n seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),\n are optional. The \"Z\" suffix indicates the timezone (\"UTC\"); the timezone\n is required. A proto3 JSON serializer should always use UTC (as indicated by\n \"Z\") when printing the Timestamp type and a proto3 JSON parser should be\n able to accept both UTC and other timezones (as indicated by an offset).\n\n For example, \"2017-01-15T01:30:15.01Z\" encodes 15.01 seconds past\n 01:30 UTC on January 15, 2017.\n\n In JavaScript, one can convert a Date object to this format using the\n standard\n [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)\n method. In Python, a standard `datetime.datetime` object can be converted\n to this format using\n [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with\n the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use\n the Joda Time's [`ISODateTimeFormat.dateTime()`](\n http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()\n ) to obtain a formatter capable of generating timestamps in this format."
     textql.rpc.public.chat.EgressCall:
       type: object
       properties:
@@ -1302,109 +1466,6 @@ components:
           type: string
           title: interpretation
       title: EgressCall
-      additionalProperties: false
-    textql.rpc.public.agent.UpdateAgentResponse:
-      type: object
-      properties:
-        agent:
-          title: agent
-          $ref: '#/components/schemas/textql.rpc.public.agent.Agent'
-        chatId:
-          type: string
-          title: chat_id
-      title: UpdateAgentResponse
-      additionalProperties: false
-    textql.rpc.public.agent.CreateAgentResponse:
-      type: object
-      properties:
-        agent:
-          title: agent
-          $ref: '#/components/schemas/textql.rpc.public.agent.Agent'
-        chatId:
-          type: string
-          title: chat_id
-      title: CreateAgentResponse
-      additionalProperties: false
-    textql.rpc.public.agent.DuplicateAgentResponse:
-      type: object
-      properties:
-        agent:
-          title: agent
-          $ref: '#/components/schemas/textql.rpc.public.agent.Agent'
-      title: DuplicateAgentResponse
-      additionalProperties: false
-    textql.rpc.public.agent.AgentDBTable:
-      type: object
-      properties:
-        name:
-          type: string
-          title: name
-        columns:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.agent.AgentDBColumn'
-          title: columns
-      title: AgentDBTable
-      additionalProperties: false
-    textql.rpc.public.agent.GetAgentDBTablePreviewResponse:
-      type: object
-      properties:
-        arrowData:
-          type: string
-          title: arrow_data
-          format: byte
-      title: GetAgentDBTablePreviewResponse
-      additionalProperties: false
-    textql.rpc.public.agent.ListAgentRunsRequest:
-      type: object
-      properties:
-        agentId:
-          type: string
-          title: agent_id
-        triggerSource:
-          type: string
-          title: trigger_source
-          nullable: true
-        status:
-          type: string
-          title: status
-          nullable: true
-        limit:
-          type: integer
-          title: limit
-          format: int32
-        offset:
-          type: integer
-          title: offset
-          format: int32
-      title: ListAgentRunsRequest
-      additionalProperties: false
-    textql.rpc.public.agent.AgentRunTriggerMetadata:
-      type: object
-      properties:
-        authMethod:
-          type: string
-          title: auth_method
-        memberId:
-          type: string
-          title: member_id
-        apiKeyId:
-          type: string
-          title: api_key_id
-        clientId:
-          type: string
-          title: client_id
-        userAgent:
-          type: string
-          title: user_agent
-        ip:
-          type: string
-          title: ip
-        geo:
-          title: geo
-          nullable: true
-          $ref: '#/components/schemas/textql.rpc.public.agent.AgentRunTriggerGeo'
-      title: AgentRunTriggerMetadata
       additionalProperties: false
     textql.rpc.public.agent.UpdateAgentRequest:
       type: object
@@ -1529,187 +1590,119 @@ components:
           nullable: true
       title: UpdateAgentRequest
       additionalProperties: false
-    textql.rpc.public.agent.GetAgentDBSchemaResponse:
+    textql.rpc.public.agent.AgentRunToolsSummary:
       type: object
       properties:
-        tables:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.agent.AgentDBTable'
-          title: tables
-        changeLogBytes:
-          type:
-          - integer
-          - string
-          title: change_log_bytes
-          format: int64
-          description: durable Postgres change-log size; the .duckdb cache is derived from this
-      title: GetAgentDBSchemaResponse
-      additionalProperties: false
-    connect-timeout-header:
-      type: number
-      title: Connect-Timeout-Ms
-      description: Define the timeout, in ms
-    connect.error:
-      type: object
-      properties:
-        code:
-          type: string
-          examples:
-          - not_found
-          enum:
-          - canceled
-          - unknown
-          - invalid_argument
-          - deadline_exceeded
-          - not_found
-          - already_exists
-          - permission_denied
-          - resource_exhausted
-          - failed_precondition
-          - aborted
-          - out_of_range
-          - unimplemented
-          - internal
-          - unavailable
-          - data_loss
-          - unauthenticated
-          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
-        message:
-          type: string
-          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        totalCalls:
+          type: integer
+          title: total_calls
+          format: int32
+        toolCounts:
+          type: object
+          title: tool_counts
+          additionalProperties:
+            type: integer
+            title: value
+            format: int32
         details:
           type: array
           items:
-            $ref: '#/components/schemas/connect.error_details.Any'
-          description: A list of messages that carry the error details. There is no limit on the number of messages.
-      title: Connect Error
-      additionalProperties: true
-      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
-    textql.rpc.public.paradigm.ParadigmOptions:
-      type: object
-      oneOf:
-      - type: object
-        properties:
-          universal:
-            title: universal
-            $ref: '#/components/schemas/textql.rpc.public.paradigm.UniversalOptions'
-        title: universal
-        required:
-        - universal
-      title: ParadigmOptions
+            $ref: '#/components/schemas/textql.rpc.public.agent.AgentRunToolCall'
+          title: details
+      title: AgentRunToolsSummary
       additionalProperties: false
-    textql.rpc.public.agent.ListAgentsRequest:
+    textql.rpc.public.agent.AgentDBTable:
       type: object
       properties:
-        includeInactive:
-          type: boolean
-          title: include_inactive
-        includeAllOrg:
-          type: boolean
-          title: include_all_org
-        days:
-          type: integer
-          title: days
-          format: int32
-      title: ListAgentsRequest
+        name:
+          type: string
+          title: name
+        columns:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.agent.AgentDBColumn'
+          title: columns
+      title: AgentDBTable
       additionalProperties: false
-    textql.rpc.public.agent.GetAgentDBTablePreviewRequest:
+    textql.rpc.public.agent.DeleteAgentRequest:
       type: object
       properties:
         agentId:
           type: string
           title: agent_id
-        tableName:
-          type: string
-          title: table_name
-        limit:
+      title: DeleteAgentRequest
+      additionalProperties: false
+    textql.rpc.public.chat.EgressSummary:
+      type: object
+      properties:
+        totalCalls:
           type: integer
-          title: limit
+          title: total_calls
           format: int32
-          description: clamped server-side; 0 uses the default
-      title: GetAgentDBTablePreviewRequest
+        outcomeCounts:
+          type: object
+          title: outcome_counts
+          additionalProperties:
+            type: integer
+            title: value
+            format: int32
+        calls:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.chat.EgressCall'
+          title: calls
+      title: EgressSummary
       additionalProperties: false
-    textql.rpc.public.agent.AgentRunToolCall:
+    textql.rpc.public.agent.ListAgentsResponse:
       type: object
       properties:
-        tool:
-          type: string
-          title: tool
-        summary:
-          type: string
-          title: summary
-        error:
-          type: string
-          title: error
-        resultJson:
-          type: string
-          title: result_json
-        cellId:
-          type: string
-          title: cell_id
-        durationMs:
-          type:
-          - integer
-          - string
-          title: duration_ms
-          format: int64
-        startedAtMs:
-          type:
-          - integer
-          - string
-          title: started_at_ms
-          format: int64
-      title: AgentRunToolCall
+        agents:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.agent.Agent'
+          title: agents
+      title: ListAgentsResponse
       additionalProperties: false
-    textql.rpc.public.agent.AgentRunDeliveryChannel:
+    textql.rpc.public.agent.UploadAgentAvatarResponse:
       type: object
       properties:
-        type:
+        profileImageUrl:
           type: string
-          title: type
-          description: slack_channel | teams_channel | slack_dm | teams_dm | email | feed_channel
-        id:
-          type: string
-          title: id
-          description: raw identifier (channel id, member id, aad id)
-        label:
-          type: string
-          title: label
-          description: resolved human-readable label (#channel, email address)
-      title: AgentRunDeliveryChannel
+          title: profile_image_url
+          description: Signed URL of the newly uploaded avatar.
+      title: UploadAgentAvatarResponse
       additionalProperties: false
-    google.protobuf.Timestamp:
-      type: string
-      examples:
-      - '2023-01-15T01:30:15.01Z'
-      - '2024-12-25T12:00:00Z'
-      format: date-time
-      description: "A Timestamp represents a point in time independent of any time zone or local\n calendar, encoded as a count of seconds and fractions of seconds at\n nanosecond resolution. The count is relative to an epoch at UTC midnight on\n January 1, 1970, in the proleptic Gregorian calendar which extends the\n Gregorian calendar backwards to year one.\n\n All minutes are 60 seconds long. Leap seconds are \"smeared\" so that no leap\n second table is needed for interpretation, using a [24-hour linear\n smear](https://developers.google.com/time/smear).\n\n The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By\n restricting to that range, we ensure that we can convert to and from [RFC\n 3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.\n\n # Examples\n\n Example 1: Compute Timestamp from POSIX `time()`.\n\n     Timestamp timestamp;\n     timestamp.set_seconds(time(NULL));\n     timestamp.set_nanos(0);\n\n Example 2: Compute Timestamp from POSIX `gettimeofday()`.\n\n     struct timeval tv;\n     gettimeofday(&tv, NULL);\n\n     Timestamp timestamp;\n     timestamp.set_seconds(tv.tv_sec);\n     timestamp.set_nanos(tv.tv_usec * 1000);\n\n Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.\n\n     FILETIME ft;\n     GetSystemTimeAsFileTime(&ft);\n     UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;\n\n     // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z\n     // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.\n     Timestamp timestamp;\n     timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));\n     timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));\n\n Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.\n\n     long millis = System.currentTimeMillis();\n\n     Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)\n         .setNanos((int) ((millis % 1000) * 1000000)).build();\n\n Example 5: Compute Timestamp from Java `Instant.now()`.\n\n     Instant now = Instant.now();\n\n     Timestamp timestamp =\n         Timestamp.newBuilder().setSeconds(now.getEpochSecond())\n             .setNanos(now.getNano()).build();\n\n Example 6: Compute Timestamp from current time in Python.\n\n     timestamp = Timestamp()\n     timestamp.GetCurrentTime()\n\n # JSON Mapping\n\n In JSON format, the Timestamp type is encoded as a string in the\n [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the\n format is \"{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z\"\n where {year} is always expressed using four digits while {month}, {day},\n {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional\n seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),\n are optional. The \"Z\" suffix indicates the timezone (\"UTC\"); the timezone\n is required. A proto3 JSON serializer should always use UTC (as indicated by\n \"Z\") when printing the Timestamp type and a proto3 JSON parser should be\n able to accept both UTC and other timezones (as indicated by an offset).\n\n For example, \"2017-01-15T01:30:15.01Z\" encodes 15.01 seconds past\n 01:30 UTC on January 15, 2017.\n\n In JavaScript, one can convert a Date object to this format using the\n standard\n [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)\n method. In Python, a standard `datetime.datetime` object can be converted\n to this format using\n [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with\n the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use\n the Joda Time's [`ISODateTimeFormat.dateTime()`](\n http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()\n ) to obtain a formatter capable of generating timestamps in this format."
-    textql.rpc.public.agent.GetAgentResponse:
+    textql.rpc.public.agent.CreateAgentResponse:
       type: object
       properties:
         agent:
           title: agent
           $ref: '#/components/schemas/textql.rpc.public.agent.Agent'
-      title: GetAgentResponse
+        chatId:
+          type: string
+          title: chat_id
+      title: CreateAgentResponse
       additionalProperties: false
-    textql.rpc.public.agent.GetAgentRunResponse:
+    textql.rpc.public.agent.SlackAgentTrigger:
       type: object
       properties:
-        run:
-          title: run
-          $ref: '#/components/schemas/textql.rpc.public.agent.AgentRun'
-      title: GetAgentRunResponse
+        triggerId:
+          type: string
+          title: trigger_id
+        isActive:
+          type: boolean
+          title: is_active
+        teamId:
+          type: string
+          title: team_id
+          nullable: true
+        allowedChannelIds:
+          type: array
+          items:
+            type: string
+          title: allowed_channel_ids
+      title: SlackAgentTrigger
       additionalProperties: false
-    connect-protocol-version:
-      type: number
-      title: Connect-Protocol-Version
-      enum:
-      - 1
-      description: Define the version of the Connect protocol
-      const: 1
-      default: 1
     textql.rpc.powerbi_selection.PowerBISelection:
       type: object
       properties:
@@ -1736,90 +1729,97 @@ components:
       title: PowerBISelection
       additionalProperties: false
       description: "PowerBISelection captures a chosen PowerBI workspace (and optionally the\n specific reports/datasets within it) for attaching to a chat. Field shape\n mirrors textql.rpc.public.paradigm.PowerBISelection; kept in a standalone\n package so it can be shared by paradigm_params without an import cycle\n (public/paradigm.proto already imports paradigm_params.proto)."
-    textql.rpc.public.agent.TriggerAgentRequest:
+    textql.rpc.public.agent.UploadAgentAvatarRequest:
       type: object
       properties:
         agentId:
           type: string
           title: agent_id
-      title: TriggerAgentRequest
+        imageData:
+          type: string
+          title: image_data
+          format: byte
+        fileName:
+          type: string
+          title: file_name
+      title: UploadAgentAvatarRequest
       additionalProperties: false
-    textql.rpc.public.agent.TriggerAgentResponse:
+    textql.rpc.public.agent.ListAgentRunsResponse:
       type: object
       properties:
-        chatId:
-          type: string
-          title: chat_id
-      title: TriggerAgentResponse
+        runs:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.agent.AgentRun'
+          title: runs
+      title: ListAgentRunsResponse
       additionalProperties: false
-    textql.rpc.public.agent.AgentRunDelivery:
+    connect.error_details.Any:
       type: object
       properties:
-        slackChannelId:
+        type:
           type: string
-          title: slack_channel_id
-          nullable: true
-        teamsChannelId:
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
           type: string
-          title: teams_channel_id
-          nullable: true
-        slackDmUserIds:
-          type: array
-          items:
-            type: string
-          title: slack_dm_user_ids
-        teamsDmUserAadIds:
-          type: array
-          items:
-            type: string
-          title: teams_dm_user_aad_ids
-        emailRecipientMemberIds:
-          type: array
-          items:
-            type: string
-          title: email_recipient_member_ids
-        feedChannelIds:
-          type: array
-          items:
-            type: string
-          title: feed_channel_ids
-        channels:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.agent.AgentRunDeliveryChannel'
-          title: channels
-      title: AgentRunDelivery
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+          - type: object
+            title: Any
+            additionalProperties: true
+            description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
+    textql.rpc.public.agent.AgentRunTriggerGeo:
+      type: object
+      properties:
+        city:
+          type: string
+          title: city
+        region:
+          type: string
+          title: region
+        country:
+          type: string
+          title: country
+        countryCode:
+          type: string
+          title: country_code
+      title: AgentRunTriggerGeo
       additionalProperties: false
-    textql.rpc.public.chat.LlmModel:
-      type: string
-      title: LlmModel
-      enum:
-      - MODEL_UNKNOWN
-      - MODEL_DEFAULT
-      - MODEL_DEFAULT_SYSTEM
-      - MODEL_HAIKU_4_5
-      - MODEL_OPUS_4_8
-      - MODEL_FABLE_5
-      - MODEL_SONNET_5
-      - MODEL_OPUS_5
-      - MODEL_GPT_5_6_SOL
-      - MODEL_GEMINI_3_FLASH
-      - MODEL_GEMINI_3_PRO
-      - MODEL_GEMINI_3_1_PRO
-      - MODEL_GEMINI_3_5_FLASH
-      - MODEL_GPT_5_6_TERRA
-      - MODEL_GPT_5_6_LUNA
-      - MODEL_DEEPSEEK_3_2
-      - MODEL_GLM_5
-      - MODEL_VLLM
-      - MODEL_KIMI_K2_6
-      - MODEL_GLM_5_2
-      - MODEL_KIMI_K2_7_CODE
-      - MODEL_QWEN3_7_PLUS
-      - MODEL_KIMI_K3
-      - MODEL_DEEPSEEK_V4_FLASH_0731
-      - MODEL_MUSE_SPARK_1_1
-      - MODEL_MUSE_SPARK_1_2
+    textql.rpc.public.agent.AgentRunTriggerMetadata:
+      type: object
+      properties:
+        authMethod:
+          type: string
+          title: auth_method
+        memberId:
+          type: string
+          title: member_id
+        apiKeyId:
+          type: string
+          title: api_key_id
+        clientId:
+          type: string
+          title: client_id
+        userAgent:
+          type: string
+          title: user_agent
+        ip:
+          type: string
+          title: ip
+        geo:
+          title: geo
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.agent.AgentRunTriggerGeo'
+      title: AgentRunTriggerMetadata
+      additionalProperties: false
   securitySchemes:
     apiKey:
       type: apiKey

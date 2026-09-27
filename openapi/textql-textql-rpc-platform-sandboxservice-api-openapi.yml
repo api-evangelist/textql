@@ -226,96 +226,25 @@ paths:
                 $ref: '#/components/schemas/textql.rpc.platform.UploadFileResponse'
 components:
   schemas:
-    textql.rpc.platform.ExecuteCodeResponse:
+    textql.rpc.platform.DataFrameInfo:
       type: object
       properties:
-        output:
-          type: array
-          items:
-            type: string
-          title: output
-          description: Lines of stdout output
-        error:
+        name:
           type: string
-          title: error
-          description: Error message if execution failed
-          nullable: true
-        files:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.platform.FileOutput'
-          title: files
-          description: Files generated during execution
-        dataframes:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.platform.DataFrameOutput'
-          title: dataframes
-          description: DataFrames created or modified during execution
-        executionTimeMs:
+          title: name
+        numRows:
           type: integer
-          title: execution_time_ms
-          format: int64
-      title: ExecuteCodeResponse
-      additionalProperties: false
-    textql.rpc.platform.UploadFileResponse:
-      type: object
-      properties:
-        filename:
-          type: string
-          title: filename
-        sizeBytes:
+          title: num_rows
+          format: int32
+        numCols:
           type: integer
-          title: size_bytes
+          title: num_cols
+          format: int32
+        memoryUsageBytes:
+          type: integer
+          title: memory_usage_bytes
           format: int64
-      title: UploadFileResponse
-      additionalProperties: false
-    connect.error_details.Any:
-      type: object
-      properties:
-        type:
-          type: string
-          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
-        value:
-          type: string
-          format: binary
-          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
-        debug:
-          oneOf:
-          - type: object
-            title: Any
-            additionalProperties: true
-            description: Detailed error information.
-          discriminator:
-            propertyName: type
-          title: Debug
-          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
-      additionalProperties: true
-      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
-    textql.rpc.platform.StopSandboxRequest:
-      type: object
-      properties:
-        sandboxId:
-          type: string
-          title: sandbox_id
-      required:
-      - sandboxId
-      title: StopSandboxRequest
-      additionalProperties: false
-    textql.rpc.platform.ExecuteCodeRequest:
-      type: object
-      properties:
-        sandboxId:
-          type: string
-          title: sandbox_id
-        code:
-          type: string
-          title: code
-          description: Python code to execute
-      required:
-      - sandboxId
-      - code
-      title: ExecuteCodeRequest
+      title: DataFrameInfo
       additionalProperties: false
     textql.rpc.platform.GetSandboxStatusRequest:
       type: object
@@ -335,40 +264,27 @@ components:
           title: success
       title: StopSandboxResponse
       additionalProperties: false
-    textql.rpc.platform.StartSandboxRequest:
+    textql.rpc.platform.FileOutput:
       type: object
       properties:
         name:
           type: string
           title: name
-          description: Optional human-readable name for the sandbox
-          nullable: true
-      title: StartSandboxRequest
+        url:
+          type: string
+          title: url
+        mimeType:
+          type: string
+          title: mime_type
+      title: FileOutput
       additionalProperties: false
-    textql.rpc.platform.UploadFileRequest:
-      type: object
-      properties:
-        sandboxId:
-          type: string
-          title: sandbox_id
-        filename:
-          type: string
-          title: filename
-        content:
-          type: string
-          title: content
-          format: byte
-          description: File content, base64-encoded
-      required:
-      - sandboxId
-      - filename
-      - content
-      title: UploadFileRequest
-      additionalProperties: false
-    connect-timeout-header:
+    connect-protocol-version:
       type: number
-      title: Connect-Timeout-Ms
-      description: Define the timeout, in ms
+      title: Connect-Protocol-Version
+      enum:
+      - 1
+      description: Define the version of the Connect protocol
+      const: 1
     connect.error:
       type: object
       properties:
@@ -405,33 +321,6 @@ components:
       title: Connect Error
       additionalProperties: true
       description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
-    textql.rpc.platform.StartSandboxResponse:
-      type: object
-      properties:
-        sandboxId:
-          type: string
-          title: sandbox_id
-        createdAt:
-          title: created_at
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-      title: StartSandboxResponse
-      additionalProperties: false
-    textql.rpc.platform.GetSandboxStatusResponse:
-      type: object
-      properties:
-        status:
-          type: string
-          title: status
-        memoryUsage:
-          type: string
-          title: memory_usage
-        dataframes:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.platform.DataFrameInfo'
-          title: dataframes
-      title: GetSandboxStatusResponse
-      additionalProperties: false
     textql.rpc.platform.LoadConnectorDataResponse:
       type: object
       properties:
@@ -451,43 +340,6 @@ components:
           title: preview
           description: Text preview of the loaded data
       title: LoadConnectorDataResponse
-      additionalProperties: false
-    textql.rpc.platform.FileOutput:
-      type: object
-      properties:
-        name:
-          type: string
-          title: name
-        url:
-          type: string
-          title: url
-        mimeType:
-          type: string
-          title: mime_type
-      title: FileOutput
-      additionalProperties: false
-    google.protobuf.Timestamp:
-      type: string
-      examples:
-      - '2023-01-15T01:30:15.01Z'
-      - '2024-12-25T12:00:00Z'
-      format: date-time
-      description: A Timestamp represents a point in time independent of any time zone or local calendar, encoded as a count of seconds and fractions of seconds at nanosecond resolution. In JSON format, the Timestamp type is encoded as a string in the RFC 3339 format.
-    textql.rpc.platform.DataFrameOutput:
-      type: object
-      properties:
-        name:
-          type: string
-          title: name
-        numRows:
-          type: integer
-          title: num_rows
-          format: int32
-        numCols:
-          type: integer
-          title: num_cols
-          format: int32
-      title: DataFrameOutput
       additionalProperties: false
     textql.rpc.platform.LoadConnectorDataRequest:
       type: object
@@ -514,14 +366,84 @@ components:
       - query
       title: LoadConnectorDataRequest
       additionalProperties: false
-    connect-protocol-version:
+    textql.rpc.platform.UploadFileRequest:
+      type: object
+      properties:
+        sandboxId:
+          type: string
+          title: sandbox_id
+        filename:
+          type: string
+          title: filename
+        content:
+          type: string
+          title: content
+          format: byte
+          description: File content, base64-encoded
+      required:
+      - sandboxId
+      - filename
+      - content
+      title: UploadFileRequest
+      additionalProperties: false
+    textql.rpc.platform.StopSandboxRequest:
+      type: object
+      properties:
+        sandboxId:
+          type: string
+          title: sandbox_id
+      required:
+      - sandboxId
+      title: StopSandboxRequest
+      additionalProperties: false
+    textql.rpc.platform.StartSandboxResponse:
+      type: object
+      properties:
+        sandboxId:
+          type: string
+          title: sandbox_id
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: StartSandboxResponse
+      additionalProperties: false
+    textql.rpc.platform.ExecuteCodeResponse:
+      type: object
+      properties:
+        output:
+          type: array
+          items:
+            type: string
+          title: output
+          description: Lines of stdout output
+        error:
+          type: string
+          title: error
+          description: Error message if execution failed
+          nullable: true
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.platform.FileOutput'
+          title: files
+          description: Files generated during execution
+        dataframes:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.platform.DataFrameOutput'
+          title: dataframes
+          description: DataFrames created or modified during execution
+        executionTimeMs:
+          type: integer
+          title: execution_time_ms
+          format: int64
+      title: ExecuteCodeResponse
+      additionalProperties: false
+    connect-timeout-header:
       type: number
-      title: Connect-Protocol-Version
-      enum:
-      - 1
-      description: Define the version of the Connect protocol
-      const: 1
-    textql.rpc.platform.DataFrameInfo:
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    textql.rpc.platform.DataFrameOutput:
       type: object
       properties:
         name:
@@ -535,9 +457,87 @@ components:
           type: integer
           title: num_cols
           format: int32
-        memoryUsageBytes:
+      title: DataFrameOutput
+      additionalProperties: false
+    google.protobuf.Timestamp:
+      type: string
+      examples:
+      - '2023-01-15T01:30:15.01Z'
+      - '2024-12-25T12:00:00Z'
+      format: date-time
+      description: A Timestamp represents a point in time independent of any time zone or local calendar, encoded as a count of seconds and fractions of seconds at nanosecond resolution. In JSON format, the Timestamp type is encoded as a string in the RFC 3339 format.
+    textql.rpc.platform.GetSandboxStatusResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          title: status
+        memoryUsage:
+          type: string
+          title: memory_usage
+        dataframes:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.platform.DataFrameInfo'
+          title: dataframes
+      title: GetSandboxStatusResponse
+      additionalProperties: false
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
+          type: string
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+          - type: object
+            title: Any
+            additionalProperties: true
+            description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
+    textql.rpc.platform.StartSandboxRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+          description: Optional human-readable name for the sandbox
+          nullable: true
+      title: StartSandboxRequest
+      additionalProperties: false
+    textql.rpc.platform.ExecuteCodeRequest:
+      type: object
+      properties:
+        sandboxId:
+          type: string
+          title: sandbox_id
+        code:
+          type: string
+          title: code
+          description: Python code to execute
+      required:
+      - sandboxId
+      - code
+      title: ExecuteCodeRequest
+      additionalProperties: false
+    textql.rpc.platform.UploadFileResponse:
+      type: object
+      properties:
+        filename:
+          type: string
+          title: filename
+        sizeBytes:
           type: integer
-          title: memory_usage_bytes
+          title: size_bytes
           format: int64
-      title: DataFrameInfo
+      title: UploadFileResponse
       additionalProperties: false
