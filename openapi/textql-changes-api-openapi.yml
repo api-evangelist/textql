@@ -267,55 +267,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
-  parameters:
-    ChangeId:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: string
-      description: Change ID
   responses:
-    RateLimited:
-      description: Rate limit exceeded
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: rate_limit_exceeded
-              message: Rate limit exceeded
-    Forbidden:
-      description: Insufficient permissions
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: permission_denied
-              message: Insufficient permissions
-    BadRequest:
-      description: Invalid request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: invalid_request
-              message: Invalid request body
-    NotFound:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: not_found
-              message: Resource not found
     InternalError:
       description: Internal server error
       content:
@@ -326,6 +278,16 @@ components:
             error:
               code: internal
               message: Internal server error
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: not_found
+              message: Resource not found
     Unauthorized:
       description: Missing or invalid authentication
       content:
@@ -336,19 +298,50 @@ components:
             error:
               code: unauthenticated
               message: Authentication required
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: invalid_request
+              message: Invalid request body
+    Forbidden:
+      description: Insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: permission_denied
+              message: Insufficient permissions
+    RateLimited:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: rate_limit_exceeded
+              message: Rate limit exceeded
   schemas:
-    ChangeCapabilities:
+    SuccessResponse:
       type: object
-      description: Actions the calling member may take on a change.
       properties:
-        can_approve:
+        success:
           type: boolean
-        can_deny:
-          type: boolean
-        can_restore:
-          type: boolean
-        caller_approved:
-          type: boolean
+    ExpectedGitRefBody:
+      type: object
+      required:
+      - expected_git_ref
+      properties:
+        expected_git_ref:
+          type: string
+          description: The change git_ref the caller reviewed; a stale value returns 409.
     Change:
       type: object
       description: A reviewable Ontology change.
@@ -404,6 +397,30 @@ components:
             $ref: '#/components/schemas/LibraryChangeDiff'
         capabilities:
           $ref: '#/components/schemas/ChangeCapabilities'
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code
+              enum:
+              - invalid_request
+              - unauthenticated
+              - permission_denied
+              - not_found
+              - conflict
+              - rate_limit_exceeded
+              - internal
+              - timeout
+              - cancelled
+              - execution_failed
+              - no_report
+            message:
+              type: string
+              description: Human-readable error message
     LibraryChangeDiff:
       type: object
       description: One changed file in an Ontology change.
@@ -429,43 +446,26 @@ components:
           type: boolean
         is_binary:
           type: boolean
-    SuccessResponse:
+    ChangeCapabilities:
       type: object
+      description: Actions the calling member may take on a change.
       properties:
-        success:
+        can_approve:
           type: boolean
-    ExpectedGitRefBody:
-      type: object
-      required:
-      - expected_git_ref
-      properties:
-        expected_git_ref:
-          type: string
-          description: The change git_ref the caller reviewed; a stale value returns 409.
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-              description: Machine-readable error code
-              enum:
-              - invalid_request
-              - unauthenticated
-              - permission_denied
-              - not_found
-              - conflict
-              - rate_limit_exceeded
-              - internal
-              - timeout
-              - cancelled
-              - execution_failed
-              - no_report
-            message:
-              type: string
-              description: Human-readable error message
+        can_deny:
+          type: boolean
+        can_restore:
+          type: boolean
+        caller_approved:
+          type: boolean
+  parameters:
+    ChangeId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Change ID
   securitySchemes:
     bearerAuth:
       type: http

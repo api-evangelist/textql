@@ -1104,21 +1104,36 @@ paths:
         source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.apps.update()\n\n    # Handle response\n    print(res)"
 components:
   schemas:
-    textql.rpc.public.app.GetAppDBSchemaRequest:
+    textql.rpc.public.app.GetMembersWithAppsRequest:
+      type: object
+      title: GetMembersWithAppsRequest
+      additionalProperties: false
+    textql.rpc.public.app.RestoreAppVersionResponse:
+      type: object
+      properties:
+        app:
+          title: app
+          $ref: '#/components/schemas/textql.rpc.public.app.App'
+      title: RestoreAppVersionResponse
+      additionalProperties: false
+    google.protobuf.Timestamp:
+      type: string
+      examples:
+      - '2023-01-15T01:30:15.01Z'
+      - '2024-12-25T12:00:00Z'
+      format: date-time
+      description: "A Timestamp represents a point in time independent of any time zone or local\n calendar, encoded as a count of seconds and fractions of seconds at\n nanosecond resolution. The count is relative to an epoch at UTC midnight on\n January 1, 1970, in the proleptic Gregorian calendar which extends the\n Gregorian calendar backwards to year one.\n\n All minutes are 60 seconds long. Leap seconds are \"smeared\" so that no leap\n second table is needed for interpretation, using a [24-hour linear\n smear](https://developers.google.com/time/smear).\n\n The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By\n restricting to that range, we ensure that we can convert to and from [RFC\n 3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.\n\n # Examples\n\n Example 1: Compute Timestamp from POSIX `time()`.\n\n     Timestamp timestamp;\n     timestamp.set_seconds(time(NULL));\n     timestamp.set_nanos(0);\n\n Example 2: Compute Timestamp from POSIX `gettimeofday()`.\n\n     struct timeval tv;\n     gettimeofday(&tv, NULL);\n\n     Timestamp timestamp;\n     timestamp.set_seconds(tv.tv_sec);\n     timestamp.set_nanos(tv.tv_usec * 1000);\n\n Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.\n\n     FILETIME ft;\n     GetSystemTimeAsFileTime(&ft);\n     UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;\n\n     // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z\n     // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.\n     Timestamp timestamp;\n     timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));\n     timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));\n\n Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.\n\n     long millis = System.currentTimeMillis();\n\n     Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)\n         .setNanos((int) ((millis % 1000) * 1000000)).build();\n\n Example 5: Compute Timestamp from Java `Instant.now()`.\n\n     Instant now = Instant.now();\n\n     Timestamp timestamp =\n         Timestamp.newBuilder().setSeconds(now.getEpochSecond())\n             .setNanos(now.getNano()).build();\n\n Example 6: Compute Timestamp from current time in Python.\n\n     timestamp = Timestamp()\n     timestamp.GetCurrentTime()\n\n # JSON Mapping\n\n In JSON format, the Timestamp type is encoded as a string in the\n [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the\n format is \"{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z\"\n where {year} is always expressed using four digits while {month}, {day},\n {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional\n seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),\n are optional. The \"Z\" suffix indicates the timezone (\"UTC\"); the timezone\n is required. A proto3 JSON serializer should always use UTC (as indicated by\n \"Z\") when printing the Timestamp type and a proto3 JSON parser should be\n able to accept both UTC and other timezones (as indicated by an offset).\n\n For example, \"2017-01-15T01:30:15.01Z\" encodes 15.01 seconds past\n 01:30 UTC on January 15, 2017.\n\n In JavaScript, one can convert a Date object to this format using the\n standard\n [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)\n method. In Python, a standard `datetime.datetime` object can be converted\n to this format using\n [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with\n the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use\n the Joda Time's [`ISODateTimeFormat.dateTime()`](\n http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()\n ) to obtain a formatter capable of generating timestamps in this format."
+    textql.rpc.public.app.SetAppMemberStateRequest:
       type: object
       properties:
         appId:
           type: string
           title: app_id
-      title: GetAppDBSchemaRequest
-      additionalProperties: false
-    textql.rpc.public.dashboard.PythonCodeSource:
-      type: object
-      properties:
-        code:
+        valueJson:
           type: string
-          title: code
-      title: PythonCodeSource
+          title: value_json
+          description: whole-object JSON, last-write-wins, max 64KB
+      title: SetAppMemberStateRequest
       additionalProperties: false
     textql.rpc.public.app.MoveAppToFolderResponse:
       type: object
@@ -1128,44 +1143,310 @@ components:
           $ref: '#/components/schemas/textql.rpc.public.app.App'
       title: MoveAppToFolderResponse
       additionalProperties: false
-    textql.rpc.public.app.GetAppViewStatsRequest:
+    textql.rpc.public.dashboard.OntologySqlSource:
+      type: object
+      properties:
+        query:
+          type: string
+          title: query
+        dataset:
+          type: string
+          title: dataset
+        ontologyId:
+          type: integer
+          title: ontology_id
+          format: int32
+      title: OntologySqlSource
+      additionalProperties: false
+    textql.rpc.public.app.SetFavoriteResponse:
+      type: object
+      properties:
+        favorited:
+          type: boolean
+          title: favorited
+      title: SetFavoriteResponse
+      additionalProperties: false
+    textql.rpc.public.app.DuplicateAppRequest:
       type: object
       properties:
         appId:
           type: string
           title: app_id
-      title: GetAppViewStatsRequest
+      title: DuplicateAppRequest
       additionalProperties: false
-      description: "ComputeFunction is a declared server-side function invocable from the app via the bridge.\n Exactly one of code (python, runs on the app's worker), sql (plain SQL on the app's\n private DB), tql (inline TQL source), or tql_path (a Context Library .tql) must be set.\n TQL variants are real TQL (compiled at save time) executed against a connector; sql is\n the app-state path (:name params bound server-side, reserved :_now / :_uuid)."
-    connect-protocol-version:
-      type: number
-      title: Connect-Protocol-Version
-      enum:
-      - 1
-      description: Define the version of the Connect protocol
-      const: 1
-      default: 1
-    textql.rpc.public.app.GetAppMemberStateRequest:
+    textql.rpc.public.app.AppActivityRecord:
+      type: object
+      properties:
+        seq:
+          type:
+          - integer
+          - string
+          title: seq
+          format: int64
+        memberId:
+          type: string
+          title: member_id
+        displayName:
+          type: string
+          title: display_name
+        type:
+          type: string
+          title: type
+        scope:
+          type: string
+          title: scope
+          nullable: true
+        payloadJson:
+          type: string
+          title: payload_json
+          nullable: true
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: AppActivityRecord
+      additionalProperties: false
+      description: "One activity row from any member of the app; display_name resolved server-side.\n Never carries email or raw identity fields (names-not-emails is enforced here)."
+    textql.rpc.public.app.ComputeFunction:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+        description:
+          type: string
+          title: description
+        params:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.app.ComputeFunctionParam'
+          title: params
+        returns:
+          type: string
+          title: returns
+          description: Filter by specific folder
+          nullable: true
+        code:
+          type: string
+          title: code
+          description: Only show apps with no folder
+        tqlPath:
+          type: string
+          title: tql_path
+          description: Only apps shared with the caller (not authored by them)
+          nullable: true
+        tql:
+          type: string
+          title: tql
+          nullable: true
+        grant:
+          title: grant
+          $ref: '#/components/schemas/textql.rpc.public.dashboard.Grant'
+      title: ComputeFunction
+      additionalProperties: false
+    textql.rpc.public.app.ComputeFunctionParam:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+        type:
+          type: string
+          title: type
+        description:
+          type: string
+          title: description
+          nullable: true
+      title: ComputeFunctionParam
+      additionalProperties: false
+    textql.rpc.public.app.GetAppDBTablePreviewRequest:
       type: object
       properties:
         appId:
           type: string
           title: app_id
-      title: GetAppMemberStateRequest
+          description: normalized relative path, forward slashes, no .. or leading /
+        tableName:
+          type: string
+          title: table_name
+        limit:
+          type: integer
+          title: limit
+          format: int32
+      title: GetAppDBTablePreviewRequest
       additionalProperties: false
-      description: Per-member state
-    google.protobuf.Empty:
-      type: object
-      description: "A generic empty message that you can re-use to avoid defining duplicated\n empty messages in your APIs. A typical example is to use it as the request\n or the response type of an API method. For instance:\n\n     service Foo {\n       rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);\n     }"
-    textql.rpc.public.app.GetMembersWithAppsResponse:
+      description: AppFile is one non-entry file of a multi-file app tree; code remains the entry index.html.
+    textql.rpc.public.app.AppFile:
       type: object
       properties:
+        path:
+          type: string
+          title: path
+        content:
+          type: string
+          title: content
+      title: AppFile
+      additionalProperties: false
+    textql.rpc.public.dashboard.Grant:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            type: string
+          title: roles
+          description: org role names
         members:
           type: array
           items:
-            $ref: '#/components/schemas/textql.rpc.identity.MemberPreview'
+            type: string
           title: members
-      title: GetMembersWithAppsResponse
+          description: explicit member ids
+      title: Grant
+      additionalProperties: false
+      description: "Grant is an author allowlist gating a data source or compute function. A viewer whose\n effective role names intersect roles, or whose member id is listed in members, may call it.\n Absent grant = org-visible (today's behavior); an empty grant object is invalid."
+    textql.rpc.public.app.CreateAppResponse:
+      type: object
+      properties:
+        app:
+          title: app
+          $ref: '#/components/schemas/textql.rpc.public.app.App'
+      title: CreateAppResponse
+      additionalProperties: false
+    textql.rpc.public.app.CapabilityParam:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+        type:
+          type: string
+          title: type
+          nullable: true
+        description:
+          type: string
+          title: description
+          nullable: true
+      title: CapabilityParam
+      additionalProperties: false
+    textql.rpc.public.app.SetFavoriteRequest:
+      type: object
+      properties:
+        primitiveType:
+          type: string
+          title: primitive_type
+        primitiveId:
+          type: string
+          title: primitive_id
+        favorited:
+          type: boolean
+          title: favorited
+          description: '"" = brand/default accent'
+      title: SetFavoriteRequest
+      additionalProperties: false
+      description: "A named Data App design system: the file tree is the source of truth, the\n token fields mirror theme.json (\"\" = brand/default). All fields server-owned."
+    textql.rpc.public.app.ListMyAppMemberActivityResponse:
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.app.AppMemberActivityRow'
+          title: rows
+      title: ListMyAppMemberActivityResponse
+      additionalProperties: false
+    textql.rpc.public.app.UpdateAppRequest:
+      type: object
+      properties:
+        appId:
+          type: string
+          title: app_id
+        name:
+          type: string
+          title: name
+          nullable: true
+        description:
+          type: string
+          title: description
+          nullable: true
+        code:
+          type: string
+          title: code
+          nullable: true
+        dataSources:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dashboard.DataSource'
+          title: data_sources
+        replaceDataSources:
+          type: boolean
+          title: replace_data_sources
+          nullable: true
+        publish:
+          type: boolean
+          title: publish
+          nullable: true
+          deprecated: true
+        stalenessWindowSeconds:
+          type: integer
+          title: staleness_window_seconds
+          format: int32
+          nullable: true
+        computeFunctions:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.app.ComputeFunction'
+          title: compute_functions
+        replaceComputeFunctions:
+          type: boolean
+          title: replace_compute_functions
+          nullable: true
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.app.AppFile'
+          title: files
+        replaceFiles:
+          type: boolean
+          title: replace_files
+          nullable: true
+        scheduleEnabled:
+          type: boolean
+          title: schedule_enabled
+          nullable: true
+        cronString:
+          type: string
+          title: cron_string
+          nullable: true
+        capabilities:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.app.Capability'
+          title: capabilities
+        replaceCapabilities:
+          type: boolean
+          title: replace_capabilities
+          nullable: true
+        appDbSetup:
+          type: array
+          items:
+            type: string
+          title: app_db_setup
+        replaceAppDbSetup:
+          type: boolean
+          title: replace_app_db_setup
+          nullable: true
+      title: UpdateAppRequest
+      additionalProperties: false
+    textql.rpc.public.app.PresenceHeartbeatRequest:
+      type: object
+      properties:
+        appId:
+          type: string
+          title: app_id
+        zone:
+          type: string
+          title: zone
+      title: PresenceHeartbeatRequest
       additionalProperties: false
     textql.rpc.public.app.ListAppsRequest:
       type: object
@@ -1196,30 +1477,53 @@ components:
           nullable: true
       title: ListAppsRequest
       additionalProperties: false
-    textql.rpc.public.app.GetAppRequest:
+    textql.rpc.public.app.GetAppDBSchemaResponse:
       type: object
       properties:
-        appId:
-          type: string
-          title: app_id
-          description: signed /asset/apptree viewer URL for the published gallery tree
-      title: GetAppRequest
+        tables:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.app.AppDBTable'
+          title: tables
+        changeLogBytes:
+          type:
+          - integer
+          - string
+          title: change_log_bytes
+          format: int64
+          description: 'Routing observability: warm | warm_fallback | tql | sql.'
+      title: GetAppDBSchemaResponse
       additionalProperties: false
-    textql.rpc.public.app.RestoreAppVersionRequest:
+    textql.rpc.public.app.RecordAppMemberActivityResponse:
       type: object
       properties:
-        appId:
+        seq:
+          type:
+          - integer
+          - string
+          title: seq
+          format: int64
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: RecordAppMemberActivityResponse
+      additionalProperties: false
+    textql.rpc.public.app.InvokeAppComputeFunctionResponse:
+      type: object
+      properties:
+        resultJson:
           type: string
-          title: app_id
-        versionNumber:
-          type: integer
-          title: version_number
-          format: int32
-        commitId:
-          type: string
-          title: commit_id
-          nullable: true
-      title: RestoreAppVersionRequest
+          title: result_json
+      title: InvokeAppComputeFunctionResponse
+      additionalProperties: false
+    textql.rpc.public.app.UpdateAppResponse:
+      type: object
+      properties:
+        app:
+          title: app
+          description: '''<kind>:<id>'', first = top of the sidebar'
+          $ref: '#/components/schemas/textql.rpc.public.app.App'
+      title: UpdateAppResponse
       additionalProperties: false
     connect.error:
       type: object
@@ -1257,405 +1561,6 @@ components:
       title: Connect Error
       additionalProperties: true
       description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
-    textql.rpc.public.app.ListAppsResponse:
-      type: object
-      properties:
-        apps:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.app.App'
-          title: apps
-        totalCount:
-          type: integer
-          title: total_count
-          format: int32
-      title: ListAppsResponse
-      additionalProperties: false
-    textql.rpc.public.app.GetAppVersionResponse:
-      type: object
-      properties:
-        version:
-          title: version
-          $ref: '#/components/schemas/textql.rpc.public.app.AppVersion'
-      title: GetAppVersionResponse
-      additionalProperties: false
-    textql.rpc.public.app.SetAppMemberStateRequest:
-      type: object
-      properties:
-        appId:
-          type: string
-          title: app_id
-        valueJson:
-          type: string
-          title: value_json
-          description: whole-object JSON, last-write-wins, max 64KB
-      title: SetAppMemberStateRequest
-      additionalProperties: false
-    textql.rpc.public.dashboard.OntologySqlSource:
-      type: object
-      properties:
-        query:
-          type: string
-          title: query
-        dataset:
-          type: string
-          title: dataset
-        ontologyId:
-          type: integer
-          title: ontology_id
-          format: int32
-      title: OntologySqlSource
-      additionalProperties: false
-    textql.rpc.public.app.AppDBTable:
-      type: object
-      properties:
-        name:
-          type: string
-          title: name
-        columns:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.app.AppDBColumn'
-          title: columns
-      title: AppDBTable
-      additionalProperties: false
-    textql.rpc.public.app.ComputeFunctionParam:
-      type: object
-      properties:
-        name:
-          type: string
-          title: name
-        type:
-          type: string
-          title: type
-        description:
-          type: string
-          title: description
-          nullable: true
-      title: ComputeFunctionParam
-      additionalProperties: false
-    textql.rpc.public.app.Capability:
-      type: object
-      properties:
-        type:
-          type: string
-          title: type
-        name:
-          type: string
-          title: name
-          description: whether the caller may edit this app (HasAppWriteAccess)
-          nullable: true
-        connectorId:
-          type: integer
-          title: connector_id
-          format: int32
-          nullable: true
-        statement:
-          type: string
-          title: statement
-          nullable: true
-        scope:
-          type: string
-          title: scope
-          nullable: true
-        subject:
-          type: string
-          title: subject
-          nullable: true
-        body:
-          type: string
-          title: body
-          nullable: true
-        parameters:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.app.CapabilityParam'
-          title: parameters
-        agentId:
-          type: string
-          title: agent_id
-          nullable: true
-        appDb:
-          type: string
-          title: app_db
-          nullable: true
-      title: Capability
-      additionalProperties: false
-    textql.rpc.public.app.GetAppViewStatsResponse:
-      type: object
-      properties:
-        totalViews:
-          type: integer
-          title: total_views
-          format: int32
-        uniqueViewers:
-          type: integer
-          title: unique_viewers
-          format: int32
-        recentViewers:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.app.AppViewerInfo'
-          title: recent_viewers
-      title: GetAppViewStatsResponse
-      additionalProperties: false
-    textql.rpc.public.app.CapabilityParam:
-      type: object
-      properties:
-        name:
-          type: string
-          title: name
-        type:
-          type: string
-          title: type
-          nullable: true
-        description:
-          type: string
-          title: description
-          nullable: true
-      title: CapabilityParam
-      additionalProperties: false
-    textql.rpc.public.app.GetAppVersionRequest:
-      type: object
-      properties:
-        appId:
-          type: string
-          title: app_id
-          description: False when the document predates tree publishing and has no runtime to overwrite.
-        versionNumber:
-          type: integer
-          title: version_number
-          format: int32
-        commitId:
-          type: string
-          title: commit_id
-          nullable: true
-      title: GetAppVersionRequest
-      additionalProperties: false
-    textql.rpc.public.app.InvokeAppComputeFunctionResponse:
-      type: object
-      properties:
-        resultJson:
-          type: string
-          title: result_json
-      title: InvokeAppComputeFunctionResponse
-      additionalProperties: false
-    textql.rpc.public.app.AppMemberActivityRow:
-      type: object
-      properties:
-        seq:
-          type:
-          - integer
-          - string
-          title: seq
-          format: int64
-        type:
-          type: string
-          title: type
-        scope:
-          type: string
-          title: scope
-          nullable: true
-        payloadJson:
-          type: string
-          title: payload_json
-          nullable: true
-        createdAt:
-          title: created_at
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-      title: AppMemberActivityRow
-      additionalProperties: false
-    textql.rpc.public.app.AppFile:
-      type: object
-      properties:
-        path:
-          type: string
-          title: path
-        content:
-          type: string
-          title: content
-      title: AppFile
-      additionalProperties: false
-    textql.rpc.public.app.ListAppVersionsResponse:
-      type: object
-      properties:
-        versions:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.app.AppVersion'
-          title: versions
-        totalCount:
-          type: integer
-          title: total_count
-          format: int32
-      title: ListAppVersionsResponse
-      additionalProperties: false
-    textql.rpc.public.app.GetAppDBTablePreviewResponse:
-      type: object
-      properties:
-        arrowData:
-          type: string
-          title: arrow_data
-          format: byte
-      title: GetAppDBTablePreviewResponse
-      additionalProperties: false
-    textql.rpc.public.dashboard.Grant:
-      type: object
-      properties:
-        roles:
-          type: array
-          items:
-            type: string
-          title: roles
-          description: org role names
-        members:
-          type: array
-          items:
-            type: string
-          title: members
-          description: explicit member ids
-      title: Grant
-      additionalProperties: false
-      description: "Grant is an author allowlist gating a data source or compute function. A viewer whose\n effective role names intersect roles, or whose member id is listed in members, may call it.\n Absent grant = org-visible (today's behavior); an empty grant object is invalid."
-    textql.rpc.public.app.ListAppActivitySinceRequest:
-      type: object
-      properties:
-        appId:
-          type: string
-          title: app_id
-        scope:
-          type: string
-          title: scope
-          nullable: true
-        afterSeq:
-          type:
-          - integer
-          - string
-          title: after_seq
-          format: int64
-        limit:
-          type: integer
-          title: limit
-          format: int32
-          description: server clamps to 200; <=0 means default
-      title: ListAppActivitySinceRequest
-      additionalProperties: false
-    textql.rpc.public.app.RefreshAppResponse:
-      type: object
-      properties:
-        app:
-          title: app
-          $ref: '#/components/schemas/textql.rpc.public.app.App'
-      title: RefreshAppResponse
-      additionalProperties: false
-    textql.rpc.public.app.UpdateAppResponse:
-      type: object
-      properties:
-        app:
-          title: app
-          description: '''<kind>:<id>'', first = top of the sidebar'
-          $ref: '#/components/schemas/textql.rpc.public.app.App'
-      title: UpdateAppResponse
-      additionalProperties: false
-    textql.rpc.public.app.DeleteAppRequest:
-      type: object
-      properties:
-        appId:
-          type: string
-          title: app_id
-          description: full replacement for the calling member
-      title: DeleteAppRequest
-      additionalProperties: false
-    textql.rpc.public.app.CreateAppRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          title: name
-        description:
-          type: string
-          title: description
-          nullable: true
-        code:
-          type: string
-          title: code
-        dataSources:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.dashboard.DataSource'
-          title: data_sources
-        computeFunctions:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.app.ComputeFunction'
-          title: compute_functions
-        files:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.app.AppFile'
-          title: files
-        capabilities:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.app.Capability'
-          title: capabilities
-        appDbSetup:
-          type: array
-          items:
-            type: string
-          title: app_db_setup
-      title: CreateAppRequest
-      additionalProperties: false
-    connect-timeout-header:
-      type: number
-      title: Connect-Timeout-Ms
-      description: Define the timeout, in ms
-    textql.rpc.public.app.AppDBColumn:
-      type: object
-      properties:
-        name:
-          type: string
-          title: name
-          description: running | stopped | error
-        type:
-          type: string
-          title: type
-          description: import/exec failure of the author module
-        nullable:
-          type: boolean
-          title: nullable
-        primaryKey:
-          type: boolean
-          title: primary_key
-          description: tail of the server process log, redacted
-      title: AppDBColumn
-      additionalProperties: false
-    textql.rpc.public.app.DuplicateAppRequest:
-      type: object
-      properties:
-        appId:
-          type: string
-          title: app_id
-      title: DuplicateAppRequest
-      additionalProperties: false
-    textql.rpc.public.app.SetAppMemberStateResponse:
-      type: object
-      title: SetAppMemberStateResponse
-      additionalProperties: false
-    textql.rpc.public.app.InvokeAppComputeFunctionRequest:
-      type: object
-      properties:
-        appId:
-          type: string
-          title: app_id
-        functionName:
-          type: string
-          title: function_name
-        paramsJson:
-          type: string
-          title: params_json
-      title: InvokeAppComputeFunctionRequest
-      additionalProperties: false
     textql.rpc.public.app.AppVersion:
       type: object
       properties:
@@ -1723,177 +1628,107 @@ components:
           nullable: true
       title: AppVersion
       additionalProperties: false
-    textql.rpc.public.dashboard.LibraryTQLSource:
+    textql.rpc.public.app.Capability:
       type: object
       properties:
-        tqlPath:
+        type:
           type: string
-          title: tql_path
-          description: path to the .tql file in the Context Library (must end in .tql)
+          title: type
+        name:
+          type: string
+          title: name
+          description: whether the caller may edit this app (HasAppWriteAccess)
+          nullable: true
         connectorId:
           type: integer
           title: connector_id
           format: int32
-          description: SQL connector to execute the rendered query against
-        paramsJson:
+          nullable: true
+        statement:
           type: string
-          title: params_json
-          description: JSON object mapping parameter names to values; "" means no params
-      title: LibraryTQLSource
+          title: statement
+          nullable: true
+        scope:
+          type: string
+          title: scope
+          nullable: true
+        subject:
+          type: string
+          title: subject
+          nullable: true
+        body:
+          type: string
+          title: body
+          nullable: true
+        parameters:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.app.CapabilityParam'
+          title: parameters
+        agentId:
+          type: string
+          title: agent_id
+          nullable: true
+        appDb:
+          type: string
+          title: app_db
+          nullable: true
+      title: Capability
       additionalProperties: false
-      description: "References a .tql file stored in the Context Library. The file is rendered\n to SQL at fetch time and executed against the provided connector. Template\n parameter values are JSON-encoded in `params_json` (e.g. {\"region\":\"EU\"})."
-    textql.rpc.public.dashboard.QueryParameter:
+    textql.rpc.public.app.GetAppMemberStateResponse:
+      type: object
+      properties:
+        valueJson:
+          type: string
+          title: value_json
+          description: JSON object; "{}" when the member has no saved state
+      title: GetAppMemberStateResponse
+      additionalProperties: false
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+      - 1
+      description: Define the version of the Connect protocol
+      const: 1
+      default: 1
+    textql.rpc.public.app.AppDBColumn:
       type: object
       properties:
         name:
           type: string
           title: name
+          description: running | stopped | error
         type:
           type: string
           title: type
-          description: '"string", "int", "float", "date"'
-        default:
-          type: string
-          title: default
-          nullable: true
-      title: QueryParameter
-      additionalProperties: false
-    textql.rpc.public.dashboard.DataSource:
-      type: object
-      allOf:
-      - type: object
-        properties:
-          type:
-            type: string
-            title: type
-            description: '"sql_query", "file", "python_code", "ontology_sql", or "library_tql"'
-          name:
-            type: string
-            title: name
-          parameters:
-            type: array
-            items:
-              $ref: '#/components/schemas/textql.rpc.public.dashboard.QueryParameter'
-            title: parameters
-            description: Parameters for live parameterized queries (sql_query type only)
-          grant:
-            title: grant
-            description: "Optional author allowlist gating this source to specific org roles / members.\n Presence forces the source out of the published snapshot (live-only, viewer-enforced)."
-            $ref: '#/components/schemas/textql.rpc.public.dashboard.Grant'
-      - oneOf:
-        - type: object
-          properties:
-            file:
-              title: file
-              $ref: '#/components/schemas/textql.rpc.public.dashboard.FileSource'
-          title: file
-          required:
-          - file
-        - type: object
-          properties:
-            libraryTql:
-              title: library_tql
-              $ref: '#/components/schemas/textql.rpc.public.dashboard.LibraryTQLSource'
-          title: library_tql
-          required:
-          - libraryTql
-        - type: object
-          properties:
-            ontologySql:
-              title: ontology_sql
-              $ref: '#/components/schemas/textql.rpc.public.dashboard.OntologySqlSource'
-          title: ontology_sql
-          required:
-          - ontologySql
-        - type: object
-          properties:
-            pythonCode:
-              title: python_code
-              $ref: '#/components/schemas/textql.rpc.public.dashboard.PythonCodeSource'
-          title: python_code
-          required:
-          - pythonCode
-        - type: object
-          properties:
-            sqlQuery:
-              title: sql_query
-              $ref: '#/components/schemas/textql.rpc.public.dashboard.SqlQuerySource'
-          title: sql_query
-          required:
-          - sqlQuery
-      title: DataSource
-      additionalProperties: false
-      description: Unified data source for dashboards
-    textql.rpc.public.dashboard.FileSource:
-      type: object
-      properties:
-        datasetId:
-          type: string
-          title: dataset_id
-        fileName:
-          type: string
-          title: file_name
-          description: Original filename for display
-        sheetIndex:
-          type: integer
-          title: sheet_index
-          format: int32
-          description: Zero-based sheet index for multi-sheet files (default 0)
-      title: FileSource
-      additionalProperties: false
-    textql.rpc.public.app.SetFavoriteResponse:
-      type: object
-      properties:
-        favorited:
+          description: import/exec failure of the author module
+        nullable:
           type: boolean
-          title: favorited
-      title: SetFavoriteResponse
+          title: nullable
+        primaryKey:
+          type: boolean
+          title: primary_key
+          description: tail of the server process log, redacted
+      title: AppDBColumn
       additionalProperties: false
-    textql.rpc.public.app.CreateAppResponse:
-      type: object
-      properties:
-        app:
-          title: app
-          $ref: '#/components/schemas/textql.rpc.public.app.App'
-      title: CreateAppResponse
-      additionalProperties: false
-    textql.rpc.public.app.ListAppActivitySinceResponse:
-      type: object
-      properties:
-        records:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.app.AppActivityRecord'
-          title: records
-      title: ListAppActivitySinceResponse
-      additionalProperties: false
-    textql.rpc.public.app.MoveAppToFolderRequest:
+    textql.rpc.public.app.ListMyAppMemberActivityRequest:
       type: object
       properties:
         appId:
           type: string
           title: app_id
-        folderId:
+        type:
           type: string
-          title: folder_id
+          title: type
           nullable: true
-      title: MoveAppToFolderRequest
+        limit:
+          type: integer
+          title: limit
+          format: int32
+          description: server clamps to 200; <=0 means default
+      title: ListMyAppMemberActivityRequest
       additionalProperties: false
-    textql.rpc.public.app.RestoreAppVersionResponse:
-      type: object
-      properties:
-        app:
-          title: app
-          $ref: '#/components/schemas/textql.rpc.public.app.App'
-      title: RestoreAppVersionResponse
-      additionalProperties: false
-    google.protobuf.Timestamp:
-      type: string
-      examples:
-      - '2023-01-15T01:30:15.01Z'
-      - '2024-12-25T12:00:00Z'
-      format: date-time
-      description: "A Timestamp represents a point in time independent of any time zone or local\n calendar, encoded as a count of seconds and fractions of seconds at\n nanosecond resolution. The count is relative to an epoch at UTC midnight on\n January 1, 1970, in the proleptic Gregorian calendar which extends the\n Gregorian calendar backwards to year one.\n\n All minutes are 60 seconds long. Leap seconds are \"smeared\" so that no leap\n second table is needed for interpretation, using a [24-hour linear\n smear](https://developers.google.com/time/smear).\n\n The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By\n restricting to that range, we ensure that we can convert to and from [RFC\n 3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.\n\n # Examples\n\n Example 1: Compute Timestamp from POSIX `time()`.\n\n     Timestamp timestamp;\n     timestamp.set_seconds(time(NULL));\n     timestamp.set_nanos(0);\n\n Example 2: Compute Timestamp from POSIX `gettimeofday()`.\n\n     struct timeval tv;\n     gettimeofday(&tv, NULL);\n\n     Timestamp timestamp;\n     timestamp.set_seconds(tv.tv_sec);\n     timestamp.set_nanos(tv.tv_usec * 1000);\n\n Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.\n\n     FILETIME ft;\n     GetSystemTimeAsFileTime(&ft);\n     UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;\n\n     // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z\n     // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.\n     Timestamp timestamp;\n     timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));\n     timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));\n\n Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.\n\n     long millis = System.currentTimeMillis();\n\n     Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)\n         .setNanos((int) ((millis % 1000) * 1000000)).build();\n\n Example 5: Compute Timestamp from Java `Instant.now()`.\n\n     Instant now = Instant.now();\n\n     Timestamp timestamp =\n         Timestamp.newBuilder().setSeconds(now.getEpochSecond())\n             .setNanos(now.getNano()).build();\n\n Example 6: Compute Timestamp from current time in Python.\n\n     timestamp = Timestamp()\n     timestamp.GetCurrentTime()\n\n # JSON Mapping\n\n In JSON format, the Timestamp type is encoded as a string in the\n [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the\n format is \"{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z\"\n where {year} is always expressed using four digits while {month}, {day},\n {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional\n seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),\n are optional. The \"Z\" suffix indicates the timezone (\"UTC\"); the timezone\n is required. A proto3 JSON serializer should always use UTC (as indicated by\n \"Z\") when printing the Timestamp type and a proto3 JSON parser should be\n able to accept both UTC and other timezones (as indicated by an offset).\n\n For example, \"2017-01-15T01:30:15.01Z\" encodes 15.01 seconds past\n 01:30 UTC on January 15, 2017.\n\n In JavaScript, one can convert a Date object to this format using the\n standard\n [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)\n method. In Python, a standard `datetime.datetime` object can be converted\n to this format using\n [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with\n the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use\n the Joda Time's [`ISODateTimeFormat.dateTime()`](\n http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()\n ) to obtain a formatter capable of generating timestamps in this format."
     textql.rpc.public.app.App:
       type: object
       properties:
@@ -2016,228 +1851,6 @@ components:
           $ref: '#/components/schemas/google.protobuf.Timestamp'
       title: App
       additionalProperties: false
-    textql.rpc.public.app.UpdateAppRequest:
-      type: object
-      properties:
-        appId:
-          type: string
-          title: app_id
-        name:
-          type: string
-          title: name
-          nullable: true
-        description:
-          type: string
-          title: description
-          nullable: true
-        code:
-          type: string
-          title: code
-          nullable: true
-        dataSources:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.dashboard.DataSource'
-          title: data_sources
-        replaceDataSources:
-          type: boolean
-          title: replace_data_sources
-          nullable: true
-        publish:
-          type: boolean
-          title: publish
-          nullable: true
-          deprecated: true
-        stalenessWindowSeconds:
-          type: integer
-          title: staleness_window_seconds
-          format: int32
-          nullable: true
-        computeFunctions:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.app.ComputeFunction'
-          title: compute_functions
-        replaceComputeFunctions:
-          type: boolean
-          title: replace_compute_functions
-          nullable: true
-        files:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.app.AppFile'
-          title: files
-        replaceFiles:
-          type: boolean
-          title: replace_files
-          nullable: true
-        scheduleEnabled:
-          type: boolean
-          title: schedule_enabled
-          nullable: true
-        cronString:
-          type: string
-          title: cron_string
-          nullable: true
-        capabilities:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.app.Capability'
-          title: capabilities
-        replaceCapabilities:
-          type: boolean
-          title: replace_capabilities
-          nullable: true
-        appDbSetup:
-          type: array
-          items:
-            type: string
-          title: app_db_setup
-        replaceAppDbSetup:
-          type: boolean
-          title: replace_app_db_setup
-          nullable: true
-      title: UpdateAppRequest
-      additionalProperties: false
-    textql.rpc.public.app.PresenceHeartbeatRequest:
-      type: object
-      properties:
-        appId:
-          type: string
-          title: app_id
-        zone:
-          type: string
-          title: zone
-      title: PresenceHeartbeatRequest
-      additionalProperties: false
-    textql.rpc.public.app.AppHeartbeatRequest:
-      type: object
-      properties:
-        appId:
-          type: string
-          title: app_id
-          description: the resolved default after the change; unset when cleared
-      title: AppHeartbeatRequest
-      additionalProperties: false
-    textql.rpc.public.app.DuplicateAppResponse:
-      type: object
-      properties:
-        app:
-          title: app
-          description: optional; empty = current default vendor set
-          $ref: '#/components/schemas/textql.rpc.public.app.App'
-      title: DuplicateAppResponse
-      additionalProperties: false
-    textql.rpc.public.app.RefreshAppRequest:
-      type: object
-      properties:
-        appId:
-          type: string
-          title: app_id
-      title: RefreshAppRequest
-      additionalProperties: false
-    textql.rpc.public.app.AppActivityRecord:
-      type: object
-      properties:
-        seq:
-          type:
-          - integer
-          - string
-          title: seq
-          format: int64
-        memberId:
-          type: string
-          title: member_id
-        displayName:
-          type: string
-          title: display_name
-        type:
-          type: string
-          title: type
-        scope:
-          type: string
-          title: scope
-          nullable: true
-        payloadJson:
-          type: string
-          title: payload_json
-          nullable: true
-        createdAt:
-          title: created_at
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-      title: AppActivityRecord
-      additionalProperties: false
-      description: "One activity row from any member of the app; display_name resolved server-side.\n Never carries email or raw identity fields (names-not-emails is enforced here)."
-    textql.rpc.public.app.GetMembersWithAppsRequest:
-      type: object
-      title: GetMembersWithAppsRequest
-      additionalProperties: false
-    textql.rpc.public.app.GetAppDBSchemaResponse:
-      type: object
-      properties:
-        tables:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.app.AppDBTable'
-          title: tables
-        changeLogBytes:
-          type:
-          - integer
-          - string
-          title: change_log_bytes
-          format: int64
-          description: 'Routing observability: warm | warm_fallback | tql | sql.'
-      title: GetAppDBSchemaResponse
-      additionalProperties: false
-    textql.rpc.public.app.GetAppDBTablePreviewRequest:
-      type: object
-      properties:
-        appId:
-          type: string
-          title: app_id
-          description: normalized relative path, forward slashes, no .. or leading /
-        tableName:
-          type: string
-          title: table_name
-        limit:
-          type: integer
-          title: limit
-          format: int32
-      title: GetAppDBTablePreviewRequest
-      additionalProperties: false
-      description: AppFile is one non-entry file of a multi-file app tree; code remains the entry index.html.
-    textql.rpc.public.dashboard.SqlQuerySource:
-      type: object
-      properties:
-        query:
-          type: string
-          title: query
-        connectorId:
-          type: integer
-          title: connector_id
-          format: int32
-        predicate:
-          type: string
-          title: predicate
-          description: Optional viewer row-filter appended server-side at live-query time; binds :viewer_member_id / :viewer_email. Presence forces the source out of the published snapshot.
-      title: SqlQuerySource
-      additionalProperties: false
-    textql.rpc.public.app.SetFavoriteRequest:
-      type: object
-      properties:
-        primitiveType:
-          type: string
-          title: primitive_type
-        primitiveId:
-          type: string
-          title: primitive_id
-        favorited:
-          type: boolean
-          title: favorited
-          description: '"" = brand/default accent'
-      title: SetFavoriteRequest
-      additionalProperties: false
-      description: "A named Data App design system: the file tree is the source of truth, the\n token fields mirror theme.json (\"\" = brand/default). All fields server-owned."
     textql.rpc.public.app.RecordAppMemberActivityRequest:
       type: object
       properties:
@@ -2264,73 +1877,201 @@ components:
       title: RecordAppMemberActivityRequest
       additionalProperties: false
       description: Per-member activity log
-    textql.rpc.public.app.RecordAppMemberActivityResponse:
-      type: object
-      properties:
-        seq:
-          type:
-          - integer
-          - string
-          title: seq
-          format: int64
-        createdAt:
-          title: created_at
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-      title: RecordAppMemberActivityResponse
-      additionalProperties: false
-    textql.rpc.public.app.ListMyAppMemberActivityRequest:
+    textql.rpc.public.app.GetAppMemberStateRequest:
       type: object
       properties:
         appId:
           type: string
           title: app_id
+      title: GetAppMemberStateRequest
+      additionalProperties: false
+      description: Per-member state
+    google.protobuf.Empty:
+      type: object
+      description: "A generic empty message that you can re-use to avoid defining duplicated\n empty messages in your APIs. A typical example is to use it as the request\n or the response type of an API method. For instance:\n\n     service Foo {\n       rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);\n     }"
+    textql.rpc.public.app.GetAppResponse:
+      type: object
+      properties:
+        app:
+          title: app
+          description: '''app'' | ''dashboard'''
+          $ref: '#/components/schemas/textql.rpc.public.app.App'
+        hasWritePermission:
+          type: boolean
+          title: has_write_permission
+      title: GetAppResponse
+      additionalProperties: false
+    textql.rpc.public.app.ListAppVersionsResponse:
+      type: object
+      properties:
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.app.AppVersion'
+          title: versions
+        totalCount:
+          type: integer
+          title: total_count
+          format: int32
+      title: ListAppVersionsResponse
+      additionalProperties: false
+    textql.rpc.public.app.MoveAppToFolderRequest:
+      type: object
+      properties:
+        appId:
+          type: string
+          title: app_id
+        folderId:
+          type: string
+          title: folder_id
+          nullable: true
+      title: MoveAppToFolderRequest
+      additionalProperties: false
+    textql.rpc.public.app.GetAppDBSchemaRequest:
+      type: object
+      properties:
+        appId:
+          type: string
+          title: app_id
+      title: GetAppDBSchemaRequest
+      additionalProperties: false
+    textql.rpc.public.dashboard.FileSource:
+      type: object
+      properties:
+        datasetId:
+          type: string
+          title: dataset_id
+        fileName:
+          type: string
+          title: file_name
+          description: Original filename for display
+        sheetIndex:
+          type: integer
+          title: sheet_index
+          format: int32
+          description: Zero-based sheet index for multi-sheet files (default 0)
+      title: FileSource
+      additionalProperties: false
+    textql.rpc.public.dashboard.QueryParameter:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
         type:
           type: string
           title: type
+          description: '"string", "int", "float", "date"'
+        default:
+          type: string
+          title: default
           nullable: true
-        limit:
-          type: integer
-          title: limit
-          format: int32
-          description: server clamps to 200; <=0 means default
-      title: ListMyAppMemberActivityRequest
+      title: QueryParameter
       additionalProperties: false
-    textql.rpc.public.app.ListAppVersionsRequest:
+    textql.rpc.public.app.ListAppsResponse:
+      type: object
+      properties:
+        apps:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.app.App'
+          title: apps
+        totalCount:
+          type: integer
+          title: total_count
+          format: int32
+      title: ListAppsResponse
+      additionalProperties: false
+    textql.rpc.public.app.GetMembersWithAppsResponse:
+      type: object
+      properties:
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.identity.MemberPreview'
+          title: members
+      title: GetMembersWithAppsResponse
+      additionalProperties: false
+    textql.rpc.public.app.CreateAppRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+        description:
+          type: string
+          title: description
+          nullable: true
+        code:
+          type: string
+          title: code
+        dataSources:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dashboard.DataSource'
+          title: data_sources
+        computeFunctions:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.app.ComputeFunction'
+          title: compute_functions
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.app.AppFile'
+          title: files
+        capabilities:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.app.Capability'
+          title: capabilities
+        appDbSetup:
+          type: array
+          items:
+            type: string
+          title: app_db_setup
+      title: CreateAppRequest
+      additionalProperties: false
+    textql.rpc.public.dashboard.PythonCodeSource:
+      type: object
+      properties:
+        code:
+          type: string
+          title: code
+      title: PythonCodeSource
+      additionalProperties: false
+    textql.rpc.public.app.RestoreAppVersionRequest:
       type: object
       properties:
         appId:
           type: string
           title: app_id
-        limit:
+        versionNumber:
           type: integer
-          title: limit
+          title: version_number
           format: int32
-        offset:
-          type: integer
-          title: offset
-          format: int32
-      title: ListAppVersionsRequest
+        commitId:
+          type: string
+          title: commit_id
+          nullable: true
+      title: RestoreAppVersionRequest
       additionalProperties: false
-    textql.rpc.identity.MemberPreview:
+    textql.rpc.public.app.AppHeartbeatRequest:
       type: object
       properties:
-        memberId:
+        appId:
           type: string
-          title: member_id
-        memberEmail:
+          title: app_id
+          description: the resolved default after the change; unset when cleared
+      title: AppHeartbeatRequest
+      additionalProperties: false
+    textql.rpc.public.app.RefreshAppRequest:
+      type: object
+      properties:
+        appId:
           type: string
-          title: member_email
-          description: "the fields are optionally populated, depending on the context\n may require RPC fields such as `include_owner` to be set to true"
-          nullable: true
-        memberName:
-          type: string
-          title: member_name
-          nullable: true
-        memberPictureUrl:
-          type: string
-          title: member_picture_url
-          nullable: true
-      title: MemberPreview
+          title: app_id
+      title: RefreshAppRequest
       additionalProperties: false
     textql.rpc.public.app.AppViewerInfo:
       type: object
@@ -2357,6 +2098,183 @@ components:
       title: AppViewerInfo
       additionalProperties: false
       description: "AppServer declares whether the app runs an optional persistent server: a\n long-lived python process in the app's dedicated worker. Its handlers serve\n webhook deliveries and server-handled compute functions, and module globals\n persist between requests (until the worker recycles). The server's source is\n not stored here — it lives in the app's file tree under `server/`, with\n `server/main.py` as the entry module (importing sibling `server/*.py` files)."
+    textql.rpc.public.app.GetAppViewStatsRequest:
+      type: object
+      properties:
+        appId:
+          type: string
+          title: app_id
+      title: GetAppViewStatsRequest
+      additionalProperties: false
+      description: "ComputeFunction is a declared server-side function invocable from the app via the bridge.\n Exactly one of code (python, runs on the app's worker), sql (plain SQL on the app's\n private DB), tql (inline TQL source), or tql_path (a Context Library .tql) must be set.\n TQL variants are real TQL (compiled at save time) executed against a connector; sql is\n the app-state path (:name params bound server-side, reserved :_now / :_uuid)."
+    textql.rpc.public.app.DeleteAppRequest:
+      type: object
+      properties:
+        appId:
+          type: string
+          title: app_id
+          description: full replacement for the calling member
+      title: DeleteAppRequest
+      additionalProperties: false
+    textql.rpc.public.app.InvokeAppComputeFunctionRequest:
+      type: object
+      properties:
+        appId:
+          type: string
+          title: app_id
+        functionName:
+          type: string
+          title: function_name
+        paramsJson:
+          type: string
+          title: params_json
+      title: InvokeAppComputeFunctionRequest
+      additionalProperties: false
+    textql.rpc.public.app.RefreshAppResponse:
+      type: object
+      properties:
+        app:
+          title: app
+          $ref: '#/components/schemas/textql.rpc.public.app.App'
+      title: RefreshAppResponse
+      additionalProperties: false
+    textql.rpc.public.app.ListAppActivitySinceResponse:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.app.AppActivityRecord'
+          title: records
+      title: ListAppActivitySinceResponse
+      additionalProperties: false
+    textql.rpc.public.app.GetAppVersionRequest:
+      type: object
+      properties:
+        appId:
+          type: string
+          title: app_id
+          description: False when the document predates tree publishing and has no runtime to overwrite.
+        versionNumber:
+          type: integer
+          title: version_number
+          format: int32
+        commitId:
+          type: string
+          title: commit_id
+          nullable: true
+      title: GetAppVersionRequest
+      additionalProperties: false
+    textql.rpc.public.app.SetAppMemberStateResponse:
+      type: object
+      title: SetAppMemberStateResponse
+      additionalProperties: false
+    textql.rpc.identity.MemberPreview:
+      type: object
+      properties:
+        memberId:
+          type: string
+          title: member_id
+        memberEmail:
+          type: string
+          title: member_email
+          description: "the fields are optionally populated, depending on the context\n may require RPC fields such as `include_owner` to be set to true"
+          nullable: true
+        memberName:
+          type: string
+          title: member_name
+          nullable: true
+        memberPictureUrl:
+          type: string
+          title: member_picture_url
+          nullable: true
+      title: MemberPreview
+      additionalProperties: false
+    textql.rpc.public.dashboard.DataSource:
+      type: object
+      allOf:
+      - type: object
+        properties:
+          type:
+            type: string
+            title: type
+            description: '"sql_query", "file", "python_code", "ontology_sql", or "library_tql"'
+          name:
+            type: string
+            title: name
+          parameters:
+            type: array
+            items:
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.QueryParameter'
+            title: parameters
+            description: Parameters for live parameterized queries (sql_query type only)
+          grant:
+            title: grant
+            description: "Optional author allowlist gating this source to specific org roles / members.\n Presence forces the source out of the published snapshot (live-only, viewer-enforced)."
+            $ref: '#/components/schemas/textql.rpc.public.dashboard.Grant'
+      - oneOf:
+        - type: object
+          properties:
+            file:
+              title: file
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.FileSource'
+          title: file
+          required:
+          - file
+        - type: object
+          properties:
+            libraryTql:
+              title: library_tql
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.LibraryTQLSource'
+          title: library_tql
+          required:
+          - libraryTql
+        - type: object
+          properties:
+            ontologySql:
+              title: ontology_sql
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.OntologySqlSource'
+          title: ontology_sql
+          required:
+          - ontologySql
+        - type: object
+          properties:
+            pythonCode:
+              title: python_code
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.PythonCodeSource'
+          title: python_code
+          required:
+          - pythonCode
+        - type: object
+          properties:
+            sqlQuery:
+              title: sql_query
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.SqlQuerySource'
+          title: sql_query
+          required:
+          - sqlQuery
+      title: DataSource
+      additionalProperties: false
+      description: Unified data source for dashboards
+    textql.rpc.public.dashboard.LibraryTQLSource:
+      type: object
+      properties:
+        tqlPath:
+          type: string
+          title: tql_path
+          description: path to the .tql file in the Context Library (must end in .tql)
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+          description: SQL connector to execute the rendered query against
+        paramsJson:
+          type: string
+          title: params_json
+          description: JSON object mapping parameter names to values; "" means no params
+      title: LibraryTQLSource
+      additionalProperties: false
+      description: "References a .tql file stored in the Context Library. The file is rendered\n to SQL at fetch time and executed against the provided connector. Template\n parameter values are JSON-encoded in `params_json` (e.g. {\"region\":\"EU\"})."
     connect.error_details.Any:
       type: object
       properties:
@@ -2379,73 +2297,155 @@ components:
           description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
       additionalProperties: true
       description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
-    textql.rpc.public.app.ListMyAppMemberActivityResponse:
+    textql.rpc.public.app.GetAppDBTablePreviewResponse:
       type: object
       properties:
-        rows:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.app.AppMemberActivityRow'
-          title: rows
-      title: ListMyAppMemberActivityResponse
+        arrowData:
+          type: string
+          title: arrow_data
+          format: byte
+      title: GetAppDBTablePreviewResponse
       additionalProperties: false
-    textql.rpc.public.app.ComputeFunction:
+    textql.rpc.public.app.AppMemberActivityRow:
+      type: object
+      properties:
+        seq:
+          type:
+          - integer
+          - string
+          title: seq
+          format: int64
+        type:
+          type: string
+          title: type
+        scope:
+          type: string
+          title: scope
+          nullable: true
+        payloadJson:
+          type: string
+          title: payload_json
+          nullable: true
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: AppMemberActivityRow
+      additionalProperties: false
+    textql.rpc.public.app.ListAppActivitySinceRequest:
+      type: object
+      properties:
+        appId:
+          type: string
+          title: app_id
+        scope:
+          type: string
+          title: scope
+          nullable: true
+        afterSeq:
+          type:
+          - integer
+          - string
+          title: after_seq
+          format: int64
+        limit:
+          type: integer
+          title: limit
+          format: int32
+          description: server clamps to 200; <=0 means default
+      title: ListAppActivitySinceRequest
+      additionalProperties: false
+    textql.rpc.public.app.GetAppRequest:
+      type: object
+      properties:
+        appId:
+          type: string
+          title: app_id
+          description: signed /asset/apptree viewer URL for the published gallery tree
+      title: GetAppRequest
+      additionalProperties: false
+    textql.rpc.public.app.AppDBTable:
       type: object
       properties:
         name:
           type: string
           title: name
-        description:
-          type: string
-          title: description
-        params:
+        columns:
           type: array
           items:
-            $ref: '#/components/schemas/textql.rpc.public.app.ComputeFunctionParam'
-          title: params
-        returns:
-          type: string
-          title: returns
-          description: Filter by specific folder
-          nullable: true
-        code:
-          type: string
-          title: code
-          description: Only show apps with no folder
-        tqlPath:
-          type: string
-          title: tql_path
-          description: Only apps shared with the caller (not authored by them)
-          nullable: true
-        tql:
-          type: string
-          title: tql
-          nullable: true
-        grant:
-          title: grant
-          $ref: '#/components/schemas/textql.rpc.public.dashboard.Grant'
-      title: ComputeFunction
+            $ref: '#/components/schemas/textql.rpc.public.app.AppDBColumn'
+          title: columns
+      title: AppDBTable
       additionalProperties: false
-    textql.rpc.public.app.GetAppMemberStateResponse:
-      type: object
-      properties:
-        valueJson:
-          type: string
-          title: value_json
-          description: JSON object; "{}" when the member has no saved state
-      title: GetAppMemberStateResponse
-      additionalProperties: false
-    textql.rpc.public.app.GetAppResponse:
+    textql.rpc.public.app.DuplicateAppResponse:
       type: object
       properties:
         app:
           title: app
-          description: '''app'' | ''dashboard'''
+          description: optional; empty = current default vendor set
           $ref: '#/components/schemas/textql.rpc.public.app.App'
-        hasWritePermission:
-          type: boolean
-          title: has_write_permission
-      title: GetAppResponse
+      title: DuplicateAppResponse
+      additionalProperties: false
+    textql.rpc.public.app.ListAppVersionsRequest:
+      type: object
+      properties:
+        appId:
+          type: string
+          title: app_id
+        limit:
+          type: integer
+          title: limit
+          format: int32
+        offset:
+          type: integer
+          title: offset
+          format: int32
+      title: ListAppVersionsRequest
+      additionalProperties: false
+    textql.rpc.public.dashboard.SqlQuerySource:
+      type: object
+      properties:
+        query:
+          type: string
+          title: query
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        predicate:
+          type: string
+          title: predicate
+          description: Optional viewer row-filter appended server-side at live-query time; binds :viewer_member_id / :viewer_email. Presence forces the source out of the published snapshot.
+      title: SqlQuerySource
+      additionalProperties: false
+    textql.rpc.public.app.GetAppVersionResponse:
+      type: object
+      properties:
+        version:
+          title: version
+          $ref: '#/components/schemas/textql.rpc.public.app.AppVersion'
+      title: GetAppVersionResponse
+      additionalProperties: false
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    textql.rpc.public.app.GetAppViewStatsResponse:
+      type: object
+      properties:
+        totalViews:
+          type: integer
+          title: total_views
+          format: int32
+        uniqueViewers:
+          type: integer
+          title: unique_viewers
+          format: int32
+        recentViewers:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.app.AppViewerInfo'
+          title: recent_viewers
+      title: GetAppViewStatsResponse
       additionalProperties: false
   securitySchemes:
     apiKey:

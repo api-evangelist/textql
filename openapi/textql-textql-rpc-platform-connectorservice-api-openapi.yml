@@ -45,6 +45,196 @@ paths:
                 $ref: '#/components/schemas/textql.rpc.platform.ListConnectorsResponse'
 components:
   schemas:
+    textql.rpc.public.connector.AuroraMetadata:
+      type: object
+      properties:
+        host:
+          type: string
+          title: host
+        port:
+          type: integer
+          title: port
+          format: int32
+        user:
+          type: string
+          title: user
+        password:
+          type: string
+          title: password
+        database:
+          type: string
+          title: database
+        schema:
+          type: string
+          title: schema
+        dialect:
+          type: string
+          title: dialect
+        sslMode:
+          type: boolean
+          title: ssl_mode
+        auroraAuth:
+          title: aurora_auth
+          $ref: '#/components/schemas/textql.rpc.public.connector.AuroraMetadata.AuroraAuth'
+      title: AuroraMetadata
+      additionalProperties: false
+    google.protobuf.Timestamp:
+      type: string
+      examples:
+      - '2023-01-15T01:30:15.01Z'
+      - '2024-12-25T12:00:00Z'
+      format: date-time
+      description: "A Timestamp represents a point in time independent of any time zone or local\n calendar, encoded as a count of seconds and fractions of seconds at\n nanosecond resolution. The count is relative to an epoch at UTC midnight on\n January 1, 1970, in the proleptic Gregorian calendar which extends the\n Gregorian calendar backwards to year one.\n\n All minutes are 60 seconds long. Leap seconds are \"smeared\" so that no leap\n second table is needed for interpretation, using a [24-hour linear\n smear](https://developers.google.com/time/smear).\n\n The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By\n restricting to that range, we ensure that we can convert to and from [RFC\n 3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.\n\n # Examples\n\n Example 1: Compute Timestamp from POSIX `time()`.\n\n     Timestamp timestamp;\n     timestamp.set_seconds(time(NULL));\n     timestamp.set_nanos(0);\n\n Example 2: Compute Timestamp from POSIX `gettimeofday()`.\n\n     struct timeval tv;\n     gettimeofday(&tv, NULL);\n\n     Timestamp timestamp;\n     timestamp.set_seconds(tv.tv_sec);\n     timestamp.set_nanos(tv.tv_usec * 1000);\n\n Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.\n\n     FILETIME ft;\n     GetSystemTimeAsFileTime(&ft);\n     UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;\n\n     // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z\n     // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.\n     Timestamp timestamp;\n     timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));\n     timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));\n\n Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.\n\n     long millis = System.currentTimeMillis();\n\n     Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)\n         .setNanos((int) ((millis % 1000) * 1000000)).build();\n\n Example 5: Compute Timestamp from Java `Instant.now()`.\n\n     Instant now = Instant.now();\n\n     Timestamp timestamp =\n         Timestamp.newBuilder().setSeconds(now.getEpochSecond())\n             .setNanos(now.getNano()).build();\n\n Example 6: Compute Timestamp from current time in Python.\n\n     timestamp = Timestamp()\n     timestamp.GetCurrentTime()\n\n # JSON Mapping\n\n In JSON format, the Timestamp type is encoded as a string in the\n [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the\n format is \"{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z\"\n where {year} is always expressed using four digits while {month}, {day},\n {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional\n seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),\n are optional. The \"Z\" suffix indicates the timezone (\"UTC\"); the timezone\n is required. A proto3 JSON serializer should always use UTC (as indicated by\n \"Z\") when printing the Timestamp type and a proto3 JSON parser should be\n able to accept both UTC and other timezones (as indicated by an offset).\n\n For example, \"2017-01-15T01:30:15.01Z\" encodes 15.01 seconds past\n 01:30 UTC on January 15, 2017.\n\n In JavaScript, one can convert a Date object to this format using the\n standard\n [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)\n method. In Python, a standard `datetime.datetime` object can be converted\n to this format using\n [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with\n the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use\n the Joda Time's [`ISODateTimeFormat.dateTime()`](\n http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()\n ) to obtain a formatter capable of generating timestamps in this format."
+    textql.rpc.public.connector.SnowflakeMetadata:
+      type: object
+      properties:
+        username:
+          type: string
+          title: username
+        password:
+          type: string
+          title: password
+        privateKey:
+          type: string
+          title: private_key
+        privateKeyPassphrase:
+          type: string
+          title: private_key_passphrase
+        role:
+          type: string
+          title: role
+        schema:
+          type: string
+          title: schema
+        locator:
+          type: string
+          title: locator
+        database:
+          type: string
+          title: database
+        warehouse:
+          type: string
+          title: warehouse
+        oauthAccessToken:
+          type: string
+          title: oauth_access_token
+          description: OAuth fields (used when auth_type = OAUTH)
+        oauthRefreshToken:
+          type: string
+          title: oauth_refresh_token
+        oauthClientId:
+          type: string
+          title: oauth_client_id
+        oauthClientSecret:
+          type: string
+          title: oauth_client_secret
+        enableSsoAuth:
+          type: boolean
+          title: enable_sso_auth
+          description: SSO per-member auth (used when auth_strategy = PER_MEMBER_OAUTH) pass IdP token directly to Snowflake External OAuth
+        tokenExchangeEndpoint:
+          type: string
+          title: token_exchange_endpoint
+          description: IdP token exchange URL (RFC 8693)
+        tokenExchangeAudience:
+          type: string
+          title: token_exchange_audience
+          description: target audience for exchanged token
+        tokenExchangeScope:
+          type: string
+          title: token_exchange_scope
+          description: scope for exchanged token
+      title: SnowflakeMetadata
+      additionalProperties: false
+    textql.rpc.public.connector.TableauMetadata:
+      type: object
+      properties:
+        serverUrl:
+          type: string
+          title: server_url
+        siteName:
+          type: string
+          title: site_name
+        patName:
+          type: string
+          title: pat_name
+        patSecret:
+          type: string
+          title: pat_secret
+        connectedAppClientId:
+          type: string
+          title: connected_app_client_id
+          description: Connected App credentials for view embedding. Optional, generated by system.
+          nullable: true
+        connectedAppSecretId:
+          type: string
+          title: connected_app_secret_id
+          nullable: true
+        connectedAppSecretValue:
+          type: string
+          title: connected_app_secret_value
+          nullable: true
+      title: TableauMetadata
+      additionalProperties: false
+    textql.rpc.public.connector.AzureSynapseMetadata:
+      type: object
+      properties:
+        host:
+          type: string
+          title: host
+        port:
+          type: integer
+          title: port
+          format: int32
+        user:
+          type: string
+          title: user
+        password:
+          type: string
+          title: password
+        database:
+          type: string
+          title: database
+        schema:
+          type: string
+          title: schema
+        authType:
+          type: string
+          title: auth_type
+      title: AzureSynapseMetadata
+      additionalProperties: false
+    textql.rpc.public.connector.SAPHanaMetadata:
+      type: object
+      properties:
+        host:
+          type: string
+          title: host
+        port:
+          type: integer
+          title: port
+          format: int32
+        user:
+          type: string
+          title: user
+        password:
+          type: string
+          title: password
+        database:
+          type: string
+          title: database
+        schemas:
+          type: array
+          items:
+            type: string
+          title: schemas
+        dialect:
+          type: string
+          title: dialect
+        sslMode:
+          type: boolean
+          title: ssl_mode
+      title: SAPHanaMetadata
+      additionalProperties: false
     textql.rpc.public.connector.SupabaseMetadata:
       type: object
       properties:
@@ -77,14 +267,7 @@ components:
           title: ssl_mode
       title: SupabaseMetadata
       additionalProperties: false
-    connect-protocol-version:
-      type: number
-      title: Connect-Protocol-Version
-      enum:
-      - 1
-      description: Define the version of the Connect protocol
-      const: 1
-    textql.rpc.public.connector.DatabricksMetadata.DatabricksAuth.OAuthU2M:
+    textql.rpc.public.connector.DatabricksMetadata.DatabricksAuth.ClientCredentials:
       type: object
       properties:
         clientId:
@@ -93,37 +276,107 @@ components:
         clientSecret:
           type: string
           title: client_secret
-      title: OAuthU2M
+      title: ClientCredentials
       additionalProperties: false
-    textql.rpc.public.connector.AthenaMetadata.AthenaAuth.AccessKeyCredentials:
+    textql.rpc.platform.ListConnectorsResponse:
       type: object
       properties:
-        accessKeyId:
-          type: string
-          title: access_key_id
-        secretAccessKey:
-          type: string
-          title: secret_access_key
-      title: AccessKeyCredentials
+        connectors:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.connector.Connector'
+          title: connectors
+      title: ListConnectorsResponse
       additionalProperties: false
-    textql.rpc.public.connector.DatabricksMetadata.DatabricksAuth.PersonalAccessToken:
+    textql.rpc.public.connector.DatabricksMetadata:
       type: object
       properties:
-        token:
+        host:
           type: string
-          title: token
-      title: PersonalAccessToken
+          title: host
+        httpPath:
+          type: string
+          title: http_path
+        port:
+          type: integer
+          title: port
+          format: int32
+        databricksAuth:
+          title: databricks_auth
+          $ref: '#/components/schemas/textql.rpc.public.connector.DatabricksMetadata.DatabricksAuth'
+        catalog:
+          type: string
+          title: catalog
+        schema:
+          type: string
+          title: schema
+        enableTokenExchange:
+          type: boolean
+          title: enable_token_exchange
+      title: DatabricksMetadata
       additionalProperties: false
-    textql.rpc.public.connector.AthenaMetadata.AthenaAuth.IAMRoleCredentials:
+    textql.rpc.public.connector.MYSQLMetadata:
       type: object
       properties:
-        roleArn:
+        host:
           type: string
-          title: role_arn
-        sessionName:
+          title: host
+        port:
+          type: integer
+          title: port
+          format: int32
+        user:
           type: string
-          title: session_name
-      title: IAMRoleCredentials
+          title: user
+        password:
+          type: string
+          title: password
+        database:
+          type: string
+          title: database
+        schema:
+          type: string
+          title: schema
+        sslMode:
+          type: boolean
+          title: ssl_mode
+      title: MYSQLMetadata
+      additionalProperties: false
+    textql.rpc.public.connector.PowerBIMetadata:
+      type: object
+      properties:
+        tenantId:
+          type: string
+          title: tenant_id
+        clientId:
+          type: string
+          title: client_id
+        clientSecret:
+          type: string
+          title: client_secret
+        objectId:
+          type: string
+          title: object_id
+          nullable: true
+        roles:
+          type: string
+          title: roles
+          nullable: true
+      title: PowerBIMetadata
+      additionalProperties: false
+    textql.rpc.public.connector.AuroraMetadata.AuroraAuth:
+      type: object
+      properties:
+        iamAuth:
+          type: boolean
+          title: iam_auth
+        clusterId:
+          type: string
+          title: cluster_id
+        region:
+          type: string
+          title: region
+      title: AuroraAuth
       additionalProperties: false
     connect.error:
       type: object
@@ -161,149 +414,6 @@ components:
       title: Connect Error
       additionalProperties: true
       description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
-    textql.rpc.public.connector.OracleMetadata:
-      type: object
-      properties:
-        host:
-          type: string
-          title: host
-        port:
-          type: integer
-          title: port
-          format: int32
-        user:
-          type: string
-          title: user
-        password:
-          type: string
-          title: password
-        serviceName:
-          type: string
-          title: service_name
-        dialect:
-          type: string
-          title: dialect
-        sslMode:
-          type: boolean
-          title: ssl_mode
-        connectionType:
-          type: string
-          title: connection_type
-        sid:
-          type: string
-          title: sid
-        connectString:
-          type: string
-          title: connect_string
-        walletZip:
-          type: string
-          title: wallet_zip
-          description: Oracle Wallet fields
-        walletPassword:
-          type: string
-          title: wallet_password
-        tnsAlias:
-          type: string
-          title: tns_alias
-          description: Optional - auto-detected from tnsnames.ora if not provided
-      title: OracleMetadata
-      additionalProperties: false
-    textql.rpc.public.connector.SQLServerMetadata:
-      type: object
-      properties:
-        host:
-          type: string
-          title: host
-        port:
-          type: integer
-          title: port
-          format: int32
-        user:
-          type: string
-          title: user
-        password:
-          type: string
-          title: password
-        database:
-          type: string
-          title: database
-        schema:
-          type: string
-          title: schema
-        sslMode:
-          type: boolean
-          title: ssl_mode
-        authType:
-          type: string
-          title: auth_type
-          enum:
-          - PASSWORD
-          - KERBEROS
-          - CERTIFICATE
-        krb5Realm:
-          type: string
-          title: krb5_realm
-        krb5Config:
-          type: string
-          title: krb5_config
-        krb5Keytab:
-          type: string
-          title: krb5_keytab
-        krb5Spn:
-          type: string
-          title: krb5_spn
-        clientCert:
-          type: string
-          title: client_cert
-        clientKey:
-          type: string
-          title: client_key
-      title: SQLServerMetadata
-      additionalProperties: false
-    textql.rpc.public.connector.DatabricksMetadata.DatabricksAuth.ClientCredentials:
-      type: object
-      properties:
-        clientId:
-          type: string
-          title: client_id
-        clientSecret:
-          type: string
-          title: client_secret
-      title: ClientCredentials
-      additionalProperties: false
-    textql.rpc.public.connector.AuroraMetadata:
-      type: object
-      properties:
-        host:
-          type: string
-          title: host
-        port:
-          type: integer
-          title: port
-          format: int32
-        user:
-          type: string
-          title: user
-        password:
-          type: string
-          title: password
-        database:
-          type: string
-          title: database
-        schema:
-          type: string
-          title: schema
-        dialect:
-          type: string
-          title: dialect
-        sslMode:
-          type: boolean
-          title: ssl_mode
-        auroraAuth:
-          title: aurora_auth
-          $ref: '#/components/schemas/textql.rpc.public.connector.AuroraMetadata.AuroraAuth'
-      title: AuroraMetadata
-      additionalProperties: false
     textql.rpc.public.connector.AthenaMetadata:
       type: object
       properties:
@@ -324,41 +434,31 @@ components:
           $ref: '#/components/schemas/textql.rpc.public.connector.AthenaMetadata.AthenaAuth'
       title: AthenaMetadata
       additionalProperties: false
-    textql.rpc.public.connector.ClickHouseMetadata:
-      type: object
-      properties:
-        host:
-          type: string
-          title: host
-        port:
-          type: integer
-          title: port
-          format: int32
-        user:
-          type: string
-          title: user
-        password:
-          type: string
-          title: password
-        database:
-          type: string
-          title: database
-        useSsl:
-          type: boolean
-          title: use_ssl
-        protocol:
-          type: string
-          title: protocol
-          description: '"http" or "native"'
-      title: ClickHouseMetadata
-      additionalProperties: false
-    textql.rpc.public.connector.MotherduckMetadata:
+    textql.rpc.public.connector.DatabricksMetadata.DatabricksAuth.PersonalAccessToken:
       type: object
       properties:
         token:
           type: string
           title: token
-      title: MotherduckMetadata
+      title: PersonalAccessToken
+      additionalProperties: false
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+      - 1
+      description: Define the version of the Connect protocol
+      const: 1
+    textql.rpc.public.connector.AthenaMetadata.AthenaAuth.IAMRoleCredentials:
+      type: object
+      properties:
+        roleArn:
+          type: string
+          title: role_arn
+        sessionName:
+          type: string
+          title: session_name
+      title: IAMRoleCredentials
       additionalProperties: false
     textql.rpc.public.connector.ConnectorType:
       type: string
@@ -384,64 +484,43 @@ components:
       - MICROSOFT_365
       - SAP_HANA
       - ORACLE
-    textql.rpc.platform.ListConnectorsResponse:
+    textql.rpc.public.connector.GoogleDriveMetadata:
       type: object
       properties:
-        connectors:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.connector.Connector'
-          title: connectors
-      title: ListConnectorsResponse
+        accessToken:
+          type: string
+          title: access_token
+        refreshToken:
+          type: string
+          title: refresh_token
+        memberId:
+          type: string
+          title: member_id
+      title: GoogleDriveMetadata
       additionalProperties: false
-    textql.rpc.public.connector.TableauMetadata:
+    textql.rpc.platform.ListConnectorsRequest:
       type: object
-      properties:
-        serverUrl:
-          type: string
-          title: server_url
-        siteName:
-          type: string
-          title: site_name
-        patName:
-          type: string
-          title: pat_name
-        patSecret:
-          type: string
-          title: pat_secret
-        connectedAppClientId:
-          type: string
-          title: connected_app_client_id
-          description: Connected App credentials for view embedding. Optional, generated by system.
-          nullable: true
-        connectedAppSecretId:
-          type: string
-          title: connected_app_secret_id
-          nullable: true
-        connectedAppSecretValue:
-          type: string
-          title: connected_app_secret_value
-          nullable: true
-      title: TableauMetadata
+      title: ListConnectorsRequest
       additionalProperties: false
-    textql.rpc.public.connector.AuroraMetadata.AuroraAuth:
+    textql.rpc.public.connector.AthenaMetadata.AthenaAuth:
       type: object
-      properties:
-        iamAuth:
-          type: boolean
-          title: iam_auth
-        clusterId:
-          type: string
-          title: cluster_id
-        region:
-          type: string
-          title: region
-      title: AuroraAuth
+      oneOf:
+      - properties:
+          accessKey:
+            title: access_key
+            $ref: '#/components/schemas/textql.rpc.public.connector.AthenaMetadata.AthenaAuth.AccessKeyCredentials'
+        title: access_key
+        required:
+        - accessKey
+      - properties:
+          iamRole:
+            title: iam_role
+            $ref: '#/components/schemas/textql.rpc.public.connector.AthenaMetadata.AthenaAuth.IAMRoleCredentials'
+        title: iam_role
+        required:
+        - iamRole
+      title: AthenaAuth
       additionalProperties: false
-    connect-timeout-header:
-      type: number
-      title: Connect-Timeout-Ms
-      description: Define the timeout, in ms
     textql.rpc.public.connector.Connector:
       type: object
       allOf:
@@ -619,63 +698,50 @@ components:
           - tableauMetadata
       title: Connector
       additionalProperties: false
-    textql.rpc.platform.ListConnectorsRequest:
-      type: object
-      title: ListConnectorsRequest
-      additionalProperties: false
-    textql.rpc.public.connector.AzureSynapseMetadata:
+    textql.rpc.public.connector.MotherduckMetadata:
       type: object
       properties:
-        host:
+        token:
           type: string
-          title: host
-        port:
-          type: integer
-          title: port
-          format: int32
-        user:
-          type: string
-          title: user
-        password:
-          type: string
-          title: password
-        database:
-          type: string
-          title: database
-        schema:
-          type: string
-          title: schema
-        authType:
-          type: string
-          title: auth_type
-      title: AzureSynapseMetadata
+          title: token
+      title: MotherduckMetadata
       additionalProperties: false
-    textql.rpc.public.connector.DatabricksMetadata:
+    textql.rpc.public.connector.DatabricksMetadata.DatabricksAuth:
+      type: object
+      oneOf:
+      - properties:
+          clientCredentials:
+            title: client_credentials
+            $ref: '#/components/schemas/textql.rpc.public.connector.DatabricksMetadata.DatabricksAuth.ClientCredentials'
+        title: client_credentials
+        required:
+        - clientCredentials
+      - properties:
+          oauthU2m:
+            title: oauth_u2m
+            $ref: '#/components/schemas/textql.rpc.public.connector.DatabricksMetadata.DatabricksAuth.OAuthU2M'
+        title: oauth_u2m
+        required:
+        - oauthU2m
+      - properties:
+          pat:
+            title: pat
+            $ref: '#/components/schemas/textql.rpc.public.connector.DatabricksMetadata.DatabricksAuth.PersonalAccessToken'
+        title: pat
+        required:
+        - pat
+      title: DatabricksAuth
+      additionalProperties: false
+    textql.rpc.public.connector.DatabricksMetadata.DatabricksAuth.OAuthU2M:
       type: object
       properties:
-        host:
+        clientId:
           type: string
-          title: host
-        httpPath:
+          title: client_id
+        clientSecret:
           type: string
-          title: http_path
-        port:
-          type: integer
-          title: port
-          format: int32
-        databricksAuth:
-          title: databricks_auth
-          $ref: '#/components/schemas/textql.rpc.public.connector.DatabricksMetadata.DatabricksAuth'
-        catalog:
-          type: string
-          title: catalog
-        schema:
-          type: string
-          title: schema
-        enableTokenExchange:
-          type: boolean
-          title: enable_token_exchange
-      title: DatabricksMetadata
+          title: client_secret
+      title: OAuthU2M
       additionalProperties: false
     textql.rpc.public.connector.Microsoft365Metadata:
       type: object
@@ -713,214 +779,7 @@ components:
           title: scopes
       title: Microsoft365Metadata
       additionalProperties: false
-    google.protobuf.Timestamp:
-      type: string
-      examples:
-      - '2023-01-15T01:30:15.01Z'
-      - '2024-12-25T12:00:00Z'
-      format: date-time
-      description: "A Timestamp represents a point in time independent of any time zone or local\n calendar, encoded as a count of seconds and fractions of seconds at\n nanosecond resolution. The count is relative to an epoch at UTC midnight on\n January 1, 1970, in the proleptic Gregorian calendar which extends the\n Gregorian calendar backwards to year one.\n\n All minutes are 60 seconds long. Leap seconds are \"smeared\" so that no leap\n second table is needed for interpretation, using a [24-hour linear\n smear](https://developers.google.com/time/smear).\n\n The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By\n restricting to that range, we ensure that we can convert to and from [RFC\n 3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.\n\n # Examples\n\n Example 1: Compute Timestamp from POSIX `time()`.\n\n     Timestamp timestamp;\n     timestamp.set_seconds(time(NULL));\n     timestamp.set_nanos(0);\n\n Example 2: Compute Timestamp from POSIX `gettimeofday()`.\n\n     struct timeval tv;\n     gettimeofday(&tv, NULL);\n\n     Timestamp timestamp;\n     timestamp.set_seconds(tv.tv_sec);\n     timestamp.set_nanos(tv.tv_usec * 1000);\n\n Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.\n\n     FILETIME ft;\n     GetSystemTimeAsFileTime(&ft);\n     UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;\n\n     // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z\n     // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.\n     Timestamp timestamp;\n     timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));\n     timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));\n\n Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.\n\n     long millis = System.currentTimeMillis();\n\n     Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)\n         .setNanos((int) ((millis % 1000) * 1000000)).build();\n\n Example 5: Compute Timestamp from Java `Instant.now()`.\n\n     Instant now = Instant.now();\n\n     Timestamp timestamp =\n         Timestamp.newBuilder().setSeconds(now.getEpochSecond())\n             .setNanos(now.getNano()).build();\n\n Example 6: Compute Timestamp from current time in Python.\n\n     timestamp = Timestamp()\n     timestamp.GetCurrentTime()\n\n # JSON Mapping\n\n In JSON format, the Timestamp type is encoded as a string in the\n [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the\n format is \"{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z\"\n where {year} is always expressed using four digits while {month}, {day},\n {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional\n seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),\n are optional. The \"Z\" suffix indicates the timezone (\"UTC\"); the timezone\n is required. A proto3 JSON serializer should always use UTC (as indicated by\n \"Z\") when printing the Timestamp type and a proto3 JSON parser should be\n able to accept both UTC and other timezones (as indicated by an offset).\n\n For example, \"2017-01-15T01:30:15.01Z\" encodes 15.01 seconds past\n 01:30 UTC on January 15, 2017.\n\n In JavaScript, one can convert a Date object to this format using the\n standard\n [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)\n method. In Python, a standard `datetime.datetime` object can be converted\n to this format using\n [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with\n the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use\n the Joda Time's [`ISODateTimeFormat.dateTime()`](\n http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()\n ) to obtain a formatter capable of generating timestamps in this format."
-    textql.rpc.public.connector.SAPHanaMetadata:
-      type: object
-      properties:
-        host:
-          type: string
-          title: host
-        port:
-          type: integer
-          title: port
-          format: int32
-        user:
-          type: string
-          title: user
-        password:
-          type: string
-          title: password
-        database:
-          type: string
-          title: database
-        schemas:
-          type: array
-          items:
-            type: string
-          title: schemas
-        dialect:
-          type: string
-          title: dialect
-        sslMode:
-          type: boolean
-          title: ssl_mode
-      title: SAPHanaMetadata
-      additionalProperties: false
-    textql.rpc.public.connector.BigQueryMetadata:
-      type: object
-      properties:
-        projectId:
-          type: string
-          title: project_id
-        datasetId:
-          type: string
-          title: dataset_id
-        serviceAccountKey:
-          type: string
-          title: service_account_key
-        regionQualifier:
-          type: string
-          title: region_qualifier
-      title: BigQueryMetadata
-      additionalProperties: false
-    textql.rpc.public.connector.PowerBIMetadata:
-      type: object
-      properties:
-        tenantId:
-          type: string
-          title: tenant_id
-        clientId:
-          type: string
-          title: client_id
-        clientSecret:
-          type: string
-          title: client_secret
-        objectId:
-          type: string
-          title: object_id
-          nullable: true
-        roles:
-          type: string
-          title: roles
-          nullable: true
-      title: PowerBIMetadata
-      additionalProperties: false
-    textql.rpc.public.connector.SnowflakeMetadata:
-      type: object
-      properties:
-        username:
-          type: string
-          title: username
-        password:
-          type: string
-          title: password
-        privateKey:
-          type: string
-          title: private_key
-        privateKeyPassphrase:
-          type: string
-          title: private_key_passphrase
-        role:
-          type: string
-          title: role
-        schema:
-          type: string
-          title: schema
-        locator:
-          type: string
-          title: locator
-        database:
-          type: string
-          title: database
-        warehouse:
-          type: string
-          title: warehouse
-        oauthAccessToken:
-          type: string
-          title: oauth_access_token
-          description: OAuth fields (used when auth_type = OAUTH)
-        oauthRefreshToken:
-          type: string
-          title: oauth_refresh_token
-        oauthClientId:
-          type: string
-          title: oauth_client_id
-        oauthClientSecret:
-          type: string
-          title: oauth_client_secret
-        enableSsoAuth:
-          type: boolean
-          title: enable_sso_auth
-          description: SSO per-member auth (used when auth_strategy = PER_MEMBER_OAUTH) pass IdP token directly to Snowflake External OAuth
-        tokenExchangeEndpoint:
-          type: string
-          title: token_exchange_endpoint
-          description: IdP token exchange URL (RFC 8693)
-        tokenExchangeAudience:
-          type: string
-          title: token_exchange_audience
-          description: target audience for exchanged token
-        tokenExchangeScope:
-          type: string
-          title: token_exchange_scope
-          description: scope for exchanged token
-      title: SnowflakeMetadata
-      additionalProperties: false
-    textql.rpc.public.connector.GoogleDriveMetadata:
-      type: object
-      properties:
-        accessToken:
-          type: string
-          title: access_token
-        refreshToken:
-          type: string
-          title: refresh_token
-        memberId:
-          type: string
-          title: member_id
-      title: GoogleDriveMetadata
-      additionalProperties: false
-    connect.error_details.Any:
-      type: object
-      properties:
-        type:
-          type: string
-          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
-        value:
-          type: string
-          format: binary
-          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
-        debug:
-          oneOf:
-          - type: object
-            title: Any
-            additionalProperties: true
-            description: Detailed error information.
-          discriminator:
-            propertyName: type
-          title: Debug
-          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
-      additionalProperties: true
-      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
-    textql.rpc.public.connector.PostgresMetadata:
-      type: object
-      properties:
-        host:
-          type: string
-          title: host
-        port:
-          type: integer
-          title: port
-          format: int32
-        user:
-          type: string
-          title: user
-        password:
-          type: string
-          title: password
-        database:
-          type: string
-          title: database
-        schemas:
-          type: array
-          items:
-            type: string
-          title: schemas
-        dialect:
-          type: string
-          title: dialect
-        sslMode:
-          type: boolean
-          title: ssl_mode
-      title: PostgresMetadata
-      additionalProperties: false
-    textql.rpc.public.connector.MYSQLMetadata:
+    textql.rpc.public.connector.SQLServerMetadata:
       type: object
       properties:
         host:
@@ -945,33 +804,32 @@ components:
         sslMode:
           type: boolean
           title: ssl_mode
-      title: MYSQLMetadata
-      additionalProperties: false
-    textql.rpc.public.connector.DatabricksMetadata.DatabricksAuth:
-      type: object
-      oneOf:
-      - properties:
-          clientCredentials:
-            title: client_credentials
-            $ref: '#/components/schemas/textql.rpc.public.connector.DatabricksMetadata.DatabricksAuth.ClientCredentials'
-        title: client_credentials
-        required:
-        - clientCredentials
-      - properties:
-          oauthU2m:
-            title: oauth_u2m
-            $ref: '#/components/schemas/textql.rpc.public.connector.DatabricksMetadata.DatabricksAuth.OAuthU2M'
-        title: oauth_u2m
-        required:
-        - oauthU2m
-      - properties:
-          pat:
-            title: pat
-            $ref: '#/components/schemas/textql.rpc.public.connector.DatabricksMetadata.DatabricksAuth.PersonalAccessToken'
-        title: pat
-        required:
-        - pat
-      title: DatabricksAuth
+        authType:
+          type: string
+          title: auth_type
+          enum:
+          - PASSWORD
+          - KERBEROS
+          - CERTIFICATE
+        krb5Realm:
+          type: string
+          title: krb5_realm
+        krb5Config:
+          type: string
+          title: krb5_config
+        krb5Keytab:
+          type: string
+          title: krb5_keytab
+        krb5Spn:
+          type: string
+          title: krb5_spn
+        clientCert:
+          type: string
+          title: client_cert
+        clientKey:
+          type: string
+          title: client_key
+      title: SQLServerMetadata
       additionalProperties: false
     textql.rpc.public.connector.RedshiftMetadata:
       type: object
@@ -1005,22 +863,164 @@ components:
           title: ssl_mode
       title: RedshiftMetadata
       additionalProperties: false
-    textql.rpc.public.connector.AthenaMetadata.AthenaAuth:
+    textql.rpc.public.connector.BigQueryMetadata:
       type: object
-      oneOf:
-      - properties:
-          accessKey:
-            title: access_key
-            $ref: '#/components/schemas/textql.rpc.public.connector.AthenaMetadata.AthenaAuth.AccessKeyCredentials'
-        title: access_key
-        required:
-        - accessKey
-      - properties:
-          iamRole:
-            title: iam_role
-            $ref: '#/components/schemas/textql.rpc.public.connector.AthenaMetadata.AthenaAuth.IAMRoleCredentials'
-        title: iam_role
-        required:
-        - iamRole
-      title: AthenaAuth
+      properties:
+        projectId:
+          type: string
+          title: project_id
+        datasetId:
+          type: string
+          title: dataset_id
+        serviceAccountKey:
+          type: string
+          title: service_account_key
+        regionQualifier:
+          type: string
+          title: region_qualifier
+      title: BigQueryMetadata
+      additionalProperties: false
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
+          type: string
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+          - type: object
+            title: Any
+            additionalProperties: true
+            description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
+    textql.rpc.public.connector.OracleMetadata:
+      type: object
+      properties:
+        host:
+          type: string
+          title: host
+        port:
+          type: integer
+          title: port
+          format: int32
+        user:
+          type: string
+          title: user
+        password:
+          type: string
+          title: password
+        serviceName:
+          type: string
+          title: service_name
+        dialect:
+          type: string
+          title: dialect
+        sslMode:
+          type: boolean
+          title: ssl_mode
+        connectionType:
+          type: string
+          title: connection_type
+        sid:
+          type: string
+          title: sid
+        connectString:
+          type: string
+          title: connect_string
+        walletZip:
+          type: string
+          title: wallet_zip
+          description: Oracle Wallet fields
+        walletPassword:
+          type: string
+          title: wallet_password
+        tnsAlias:
+          type: string
+          title: tns_alias
+          description: Optional - auto-detected from tnsnames.ora if not provided
+      title: OracleMetadata
+      additionalProperties: false
+    textql.rpc.public.connector.AthenaMetadata.AthenaAuth.AccessKeyCredentials:
+      type: object
+      properties:
+        accessKeyId:
+          type: string
+          title: access_key_id
+        secretAccessKey:
+          type: string
+          title: secret_access_key
+      title: AccessKeyCredentials
+      additionalProperties: false
+    textql.rpc.public.connector.ClickHouseMetadata:
+      type: object
+      properties:
+        host:
+          type: string
+          title: host
+        port:
+          type: integer
+          title: port
+          format: int32
+        user:
+          type: string
+          title: user
+        password:
+          type: string
+          title: password
+        database:
+          type: string
+          title: database
+        useSsl:
+          type: boolean
+          title: use_ssl
+        protocol:
+          type: string
+          title: protocol
+          description: '"http" or "native"'
+      title: ClickHouseMetadata
+      additionalProperties: false
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    textql.rpc.public.connector.PostgresMetadata:
+      type: object
+      properties:
+        host:
+          type: string
+          title: host
+        port:
+          type: integer
+          title: port
+          format: int32
+        user:
+          type: string
+          title: user
+        password:
+          type: string
+          title: password
+        database:
+          type: string
+          title: database
+        schemas:
+          type: array
+          items:
+            type: string
+          title: schemas
+        dialect:
+          type: string
+          title: dialect
+        sslMode:
+          type: boolean
+          title: ssl_mode
+      title: PostgresMetadata
       additionalProperties: false

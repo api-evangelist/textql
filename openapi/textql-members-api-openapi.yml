@@ -217,16 +217,71 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
+  responses:
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: internal
+              message: Internal server error
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: invalid_request
+              message: Invalid request body
+    Unauthorized:
+      description: Missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: unauthenticated
+              message: Authentication required
+    Forbidden:
+      description: Insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: permission_denied
+              message: Insufficient permissions
+    RateLimited:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: rate_limit_exceeded
+              message: Rate limit exceeded
   schemas:
-    AssignMemberRoleRequest:
+    InviteMemberRequest:
       type: object
       required:
-      - roleId
+      - email
       properties:
-        roleId:
+        email:
           type: string
-          description: Role UUID to assign.
-          example: 80de0196-496f-44fe-9d4c-8013b3b44082
+          description: Email address to invite.
+          example: jane@acme.example
+        role:
+          type: string
+          description: System role name for the new member (`member` or `admin`). Defaults to `member`. Distinct from the RBAC Role entities managed via `/v2/roles` and `/v2/members/{id}/roles`.
+          example: member
     ListMembersResponse:
       type: object
       properties:
@@ -234,35 +289,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Member'
-    Member:
-      type: object
-      properties:
-        id:
-          type: string
-          example: 9b2f7a64-11d0-4c1b-8f3e-2f9c5b7f6e10
-        email:
-          type: string
-          example: jane@acme.example
-        name:
-          type: string
-          example: Jane Doe
-        roles:
-          type: array
-          items:
-            type: string
-          description: Names of the roles assigned to the member. Role ids are not included; resolve them via `GET /v2/members/{id}/roles` or `GET /v2/roles` before assigning or removing roles.
-          example:
-          - admin
-        is_admin:
-          type: boolean
-        is_service_account:
-          type: boolean
-        is_scim_managed:
-          type: boolean
-        created_at:
-          type: string
-          description: RFC 3339 timestamp
-          example: '2026-07-06T19:30:00Z'
     MemberRolesResponse:
       type: object
       properties:
@@ -296,19 +322,44 @@ components:
           type: string
           description: RFC 3339 timestamp
           example: '2026-07-06T19:30:00Z'
-    InviteMemberRequest:
+    AssignMemberRoleRequest:
       type: object
       required:
-      - email
+      - roleId
       properties:
+        roleId:
+          type: string
+          description: Role UUID to assign.
+          example: 80de0196-496f-44fe-9d4c-8013b3b44082
+    Member:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 9b2f7a64-11d0-4c1b-8f3e-2f9c5b7f6e10
         email:
           type: string
-          description: Email address to invite.
           example: jane@acme.example
-        role:
+        name:
           type: string
-          description: System role name for the new member (`member` or `admin`). Defaults to `member`. Distinct from the RBAC Role entities managed via `/v2/roles` and `/v2/members/{id}/roles`.
-          example: member
+          example: Jane Doe
+        roles:
+          type: array
+          items:
+            type: string
+          description: Names of the roles assigned to the member. Role ids are not included; resolve them via `GET /v2/members/{id}/roles` or `GET /v2/roles` before assigning or removing roles.
+          example:
+          - admin
+        is_admin:
+          type: boolean
+        is_service_account:
+          type: boolean
+        is_scim_managed:
+          type: boolean
+        created_at:
+          type: string
+          description: RFC 3339 timestamp
+          example: '2026-07-06T19:30:00Z'
     ErrorResponse:
       type: object
       properties:
@@ -333,66 +384,7 @@ components:
             message:
               type: string
               description: Human-readable error message
-  responses:
-    RateLimited:
-      description: Rate limit exceeded
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: rate_limit_exceeded
-              message: Rate limit exceeded
-    Forbidden:
-      description: Insufficient permissions
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: permission_denied
-              message: Insufficient permissions
-    BadRequest:
-      description: Invalid request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: invalid_request
-              message: Invalid request body
-    InternalError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: internal
-              message: Internal server error
-    Unauthorized:
-      description: Missing or invalid authentication
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: unauthenticated
-              message: Authentication required
   parameters:
-    MemberId:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: string
-        format: uuid
-      description: Member ID
     RoleId:
       name: roleId
       in: path
@@ -401,6 +393,14 @@ components:
         type: string
         format: uuid
       description: Role ID
+    MemberId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Member ID
   securitySchemes:
     bearerAuth:
       type: http

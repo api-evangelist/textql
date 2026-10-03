@@ -112,6 +112,53 @@ components:
           description: SQL to run against the app's private DuckDB database
       title: AppDBTemplate
       additionalProperties: false
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
+          type: string
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+          - type: object
+            title: Any
+            additionalProperties: true
+            description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
+    textql.rpc.public.sandbox_query.SandboxExecuteBashResponse:
+      type: object
+      properties:
+        stdout:
+          type: string
+          title: stdout
+          format: byte
+        stderr:
+          type: string
+          title: stderr
+          format: byte
+        exitCode:
+          type: integer
+          title: exit_code
+          format: int32
+        error:
+          type: string
+          title: error
+          description: non-empty on execution-level failure (timeout, spawn error)
+        refreshedToken:
+          type: string
+          title: refreshed_token
+          nullable: true
+      title: SandboxExecuteBashResponse
+      additionalProperties: false
     textql.rpc.public.sandbox_query.SandboxQueryParam:
       type: object
       properties:
@@ -123,41 +170,42 @@ components:
           title: value
       title: SandboxQueryParam
       additionalProperties: false
-    textql.rpc.public.sandbox_query.SqlQueryTemplate:
+    connect.error:
       type: object
       properties:
-        query:
+        code:
           type: string
-          title: query
-          description: SQL with :param placeholders
-      title: SqlQueryTemplate
-      additionalProperties: false
-    textql.rpc.public.sandbox_query.SandboxExecuteQueryResponse:
-      type: object
-      properties:
-        arrowData:
+          examples:
+          - not_found
+          enum:
+          - canceled
+          - unknown
+          - invalid_argument
+          - deadline_exceeded
+          - not_found
+          - already_exists
+          - permission_denied
+          - resource_exhausted
+          - failed_precondition
+          - aborted
+          - out_of_range
+          - unimplemented
+          - internal
+          - unavailable
+          - data_loss
+          - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
           type: string
-          title: arrow_data
-          format: byte
-        totalRows:
-          type:
-          - integer
-          - string
-          title: total_rows
-          format: int64
-        error:
-          type: string
-          title: error
-        refreshedToken:
-          type: string
-          title: refreshed_token
-          nullable: true
-      title: SandboxExecuteQueryResponse
-      additionalProperties: false
-    connect-timeout-header:
-      type: number
-      title: Connect-Timeout-Ms
-      description: Define the timeout, in ms
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
     connect-protocol-version:
       type: number
       title: Connect-Protocol-Version
@@ -216,6 +264,19 @@ components:
           - sqlQuery
       title: SandboxExecuteQueryRequest
       additionalProperties: false
+    textql.rpc.public.sandbox_query.LibraryTQLTemplate:
+      type: object
+      properties:
+        tqlPath:
+          type: string
+          title: tql_path
+          description: library path to a .tql file
+      title: LibraryTQLTemplate
+      additionalProperties: false
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
     textql.rpc.public.sandbox_query.SandboxExecuteBashRequest:
       type: object
       properties:
@@ -230,98 +291,37 @@ components:
             title: value
       title: SandboxExecuteBashRequest
       additionalProperties: false
-    textql.rpc.public.sandbox_query.LibraryTQLTemplate:
+    textql.rpc.public.sandbox_query.SandboxExecuteQueryResponse:
       type: object
       properties:
-        tqlPath:
+        arrowData:
           type: string
-          title: tql_path
-          description: library path to a .tql file
-      title: LibraryTQLTemplate
-      additionalProperties: false
-    textql.rpc.public.sandbox_query.SandboxExecuteBashResponse:
-      type: object
-      properties:
-        stdout:
-          type: string
-          title: stdout
+          title: arrow_data
           format: byte
-        stderr:
-          type: string
-          title: stderr
-          format: byte
-        exitCode:
-          type: integer
-          title: exit_code
-          format: int32
+        totalRows:
+          type:
+          - integer
+          - string
+          title: total_rows
+          format: int64
         error:
           type: string
           title: error
-          description: non-empty on execution-level failure (timeout, spawn error)
         refreshedToken:
           type: string
           title: refreshed_token
           nullable: true
-      title: SandboxExecuteBashResponse
+      title: SandboxExecuteQueryResponse
       additionalProperties: false
-    connect.error_details.Any:
+    textql.rpc.public.sandbox_query.SqlQueryTemplate:
       type: object
       properties:
-        type:
+        query:
           type: string
-          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
-        value:
-          type: string
-          format: binary
-          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
-        debug:
-          oneOf:
-          - type: object
-            title: Any
-            additionalProperties: true
-            description: Detailed error information.
-          discriminator:
-            propertyName: type
-          title: Debug
-          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
-      additionalProperties: true
-      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
-    connect.error:
-      type: object
-      properties:
-        code:
-          type: string
-          examples:
-          - not_found
-          enum:
-          - canceled
-          - unknown
-          - invalid_argument
-          - deadline_exceeded
-          - not_found
-          - already_exists
-          - permission_denied
-          - resource_exhausted
-          - failed_precondition
-          - aborted
-          - out_of_range
-          - unimplemented
-          - internal
-          - unavailable
-          - data_loss
-          - unauthenticated
-          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
-        message:
-          type: string
-          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/connect.error_details.Any'
-          description: A list of messages that carry the error details. There is no limit on the number of messages.
-      title: Connect Error
-      additionalProperties: true
-      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+          title: query
+          description: SQL with :param placeholders
+      title: SqlQueryTemplate
+      additionalProperties: false
   securitySchemes:
     apiKey:
       type: apiKey

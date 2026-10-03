@@ -819,16 +819,16 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   responses:
-    RateLimited:
-      description: Rate limit exceeded
+    InternalError:
+      description: Internal server error
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
           example:
             error:
-              code: rate_limit_exceeded
-              message: Rate limit exceeded
+              code: internal
+              message: Internal server error
     Forbidden:
       description: Insufficient permissions
       content:
@@ -849,16 +849,6 @@ components:
             error:
               code: not_found
               message: Resource not found
-    InternalError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: internal
-              message: Internal server error
     Unauthorized:
       description: Missing or invalid authentication
       content:
@@ -869,6 +859,16 @@ components:
             error:
               code: unauthenticated
               message: Authentication required
+    RateLimited:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: rate_limit_exceeded
+              message: Rate limit exceeded
     BadRequest:
       description: Invalid request
       content:
@@ -880,128 +880,6 @@ components:
               code: invalid_request
               message: Invalid request body
   schemas:
-    DataframeInfo:
-      type: object
-      properties:
-        name:
-          type: string
-        num_rows:
-          type: integer
-          format: int32
-        num_cols:
-          type: integer
-          format: int32
-        memory_usage_bytes:
-          type: integer
-          format: int64
-    ListSandboxesResponse:
-      type: object
-      required:
-      - sandboxes
-      properties:
-        sandboxes:
-          type: array
-          items:
-            $ref: '#/components/schemas/SandboxSummary'
-        next_cursor:
-          type: string
-          nullable: true
-          description: 'Opaque cursor to pass as `cursor` on the next request. Omitted when
-
-            there are no more results.
-
-            '
-    ListSandboxExecutionsResponse:
-      type: object
-      required:
-      - executions
-      properties:
-        executions:
-          type: array
-          items:
-            $ref: '#/components/schemas/SandboxExecution'
-        next_cursor:
-          type: string
-          description: 'Opaque cursor to pass as `cursor` on the next request. Omitted when
-
-            there are no more results.
-
-            '
-    LibraryChangeDiff:
-      type: object
-      description: One changed file in an Ontology change.
-      properties:
-        name:
-          type: string
-          description: Display name for the change.
-        old_path:
-          type: string
-        new_path:
-          type: string
-        additions:
-          type: integer
-          format: int64
-        deletions:
-          type: integer
-          format: int64
-        is_new:
-          type: boolean
-        is_delete:
-          type: boolean
-        is_rename:
-          type: boolean
-        is_binary:
-          type: boolean
-    SandboxExecution:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique execution identifier
-        kind:
-          type: string
-          enum:
-          - python
-          - bash
-          - sql
-          - tql
-          description: Execution type
-        source:
-          type: string
-          enum:
-          - platform_api
-          - chat
-          - dashboard
-          - playbook
-          - internal
-          description: Product surface that triggered the execution
-        input:
-          type: string
-          description: 'The executed input — code (python/bash), SQL text (sql), or the
-
-            library path (tql).
-
-            '
-        output_preview:
-          type: string
-          description: 'Truncated output preview (up to 16 KB; longer output ends with a
-
-            `…[truncated]` marker). Does not include generated files or
-
-            dataframes.
-
-            '
-        error:
-          type: string
-          description: Error message when the execution failed; empty otherwise.
-        duration_ms:
-          type: integer
-          format: int64
-          description: Execution duration in milliseconds
-        created_at:
-          type: string
-          format: date-time
-          description: When the execution ran
     LoadConnectorDataResponse:
       type: object
       properties:
@@ -1022,30 +900,6 @@ components:
         num_cols:
           type: integer
           format: int64
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-              description: Machine-readable error code
-              enum:
-              - invalid_request
-              - unauthenticated
-              - permission_denied
-              - not_found
-              - conflict
-              - rate_limit_exceeded
-              - internal
-              - timeout
-              - cancelled
-              - execution_failed
-              - no_report
-            message:
-              type: string
-              description: Human-readable error message
     ExecuteCodeResponse:
       type: object
       properties:
@@ -1103,6 +957,161 @@ components:
               num_cols:
                 type: integer
                 format: int64
+    SandboxStatus:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Point-in-time liveness for this sandbox. `stale` and `unknown` are list-only states (see SandboxSummary); this endpoint reports only `running` or `stopped`.
+          enum:
+          - running
+          - stopped
+        memory_usage:
+          type: string
+          description: Human-readable memory usage (only when running)
+        dataframes:
+          type: array
+          description: Loaded dataframes (only when running)
+          items:
+            $ref: '#/components/schemas/DataframeInfo'
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code
+              enum:
+              - invalid_request
+              - unauthenticated
+              - permission_denied
+              - not_found
+              - conflict
+              - rate_limit_exceeded
+              - internal
+              - timeout
+              - cancelled
+              - execution_failed
+              - no_report
+            message:
+              type: string
+              description: Human-readable error message
+    ListSandboxesResponse:
+      type: object
+      required:
+      - sandboxes
+      properties:
+        sandboxes:
+          type: array
+          items:
+            $ref: '#/components/schemas/SandboxSummary'
+        next_cursor:
+          type: string
+          nullable: true
+          description: 'Opaque cursor to pass as `cursor` on the next request. Omitted when
+
+            there are no more results.
+
+            '
+    SandboxSummary:
+      type: object
+      properties:
+        sandbox_id:
+          type: string
+          description: Unique sandbox identifier
+        status:
+          type: string
+          enum:
+          - running
+          - stale
+          - unknown
+          - stopped
+          description: "Sandbox state:\n- `running` — a live worker record was seen recently. Liveness is\n  eventually consistent; a sandbox that died abruptly may report\n  `running` for a short window (up to ~1 hour).\n- `stale` — the lease is open but no live worker record exists; the\n  worker is likely gone. Call `DELETE /v2/sandcastles/{id}` to clear it.\n- `unknown` — liveness could not be determined (cache unavailable);\n  the lease is open.\n- `stopped` — the sandbox has been released.\n\nUse `GET /v2/sandcastles/{id}` for the authoritative live check of a\nsingle sandbox.\n"
+        member_id:
+          type: string
+          nullable: true
+          description: Member that started the sandbox. Null for legacy/open-lease rows.
+        chat_id:
+          type: string
+          nullable: true
+          description: Chat the sandbox is attached to. Null when not attached to a chat.
+        started_at:
+          type: string
+          format: date-time
+          description: When the sandbox was started
+        released_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: When the sandbox was released. Null while the lease is open.
+    ListSandboxExecutionsResponse:
+      type: object
+      required:
+      - executions
+      properties:
+        executions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SandboxExecution'
+        next_cursor:
+          type: string
+          description: 'Opaque cursor to pass as `cursor` on the next request. Omitted when
+
+            there are no more results.
+
+            '
+    SandboxExecution:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique execution identifier
+        kind:
+          type: string
+          enum:
+          - python
+          - bash
+          - sql
+          - tql
+          description: Execution type
+        source:
+          type: string
+          enum:
+          - platform_api
+          - chat
+          - dashboard
+          - playbook
+          - internal
+          description: Product surface that triggered the execution
+        input:
+          type: string
+          description: 'The executed input — code (python/bash), SQL text (sql), or the
+
+            library path (tql).
+
+            '
+        output_preview:
+          type: string
+          description: 'Truncated output preview (up to 16 KB; longer output ends with a
+
+            `…[truncated]` marker). Does not include generated files or
+
+            dataframes.
+
+            '
+        error:
+          type: string
+          description: Error message when the execution failed; empty otherwise.
+        duration_ms:
+          type: integer
+          format: int64
+          description: Execution duration in milliseconds
+        created_at:
+          type: string
+          format: date-time
+          description: When the execution ran
     LoadConnectorDataRequest:
       type: object
       required:
@@ -1160,54 +1169,45 @@ components:
             `reports/revenue.tql`) for `tql_path`.
 
             '
-    SandboxStatus:
+    DataframeInfo:
       type: object
       properties:
-        status:
+        name:
           type: string
-          description: Point-in-time liveness for this sandbox. `stale` and `unknown` are list-only states (see SandboxSummary); this endpoint reports only `running` or `stopped`.
-          enum:
-          - running
-          - stopped
-        memory_usage:
-          type: string
-          description: Human-readable memory usage (only when running)
-        dataframes:
-          type: array
-          description: Loaded dataframes (only when running)
-          items:
-            $ref: '#/components/schemas/DataframeInfo'
-    SandboxSummary:
+        num_rows:
+          type: integer
+          format: int32
+        num_cols:
+          type: integer
+          format: int32
+        memory_usage_bytes:
+          type: integer
+          format: int64
+    LibraryChangeDiff:
       type: object
+      description: One changed file in an Ontology change.
       properties:
-        sandbox_id:
+        name:
           type: string
-          description: Unique sandbox identifier
-        status:
+          description: Display name for the change.
+        old_path:
           type: string
-          enum:
-          - running
-          - stale
-          - unknown
-          - stopped
-          description: "Sandbox state:\n- `running` — a live worker record was seen recently. Liveness is\n  eventually consistent; a sandbox that died abruptly may report\n  `running` for a short window (up to ~1 hour).\n- `stale` — the lease is open but no live worker record exists; the\n  worker is likely gone. Call `DELETE /v2/sandcastles/{id}` to clear it.\n- `unknown` — liveness could not be determined (cache unavailable);\n  the lease is open.\n- `stopped` — the sandbox has been released.\n\nUse `GET /v2/sandcastles/{id}` for the authoritative live check of a\nsingle sandbox.\n"
-        member_id:
+        new_path:
           type: string
-          nullable: true
-          description: Member that started the sandbox. Null for legacy/open-lease rows.
-        chat_id:
-          type: string
-          nullable: true
-          description: Chat the sandbox is attached to. Null when not attached to a chat.
-        started_at:
-          type: string
-          format: date-time
-          description: When the sandbox was started
-        released_at:
-          type: string
-          format: date-time
-          nullable: true
-          description: When the sandbox was released. Null while the lease is open.
+        additions:
+          type: integer
+          format: int64
+        deletions:
+          type: integer
+          format: int64
+        is_new:
+          type: boolean
+        is_delete:
+          type: boolean
+        is_rename:
+          type: boolean
+        is_binary:
+          type: boolean
   parameters:
     SandboxId:
       name: id

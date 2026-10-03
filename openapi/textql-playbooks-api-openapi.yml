@@ -282,7 +282,118 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
+  responses:
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: internal
+              message: Internal server error
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: not_found
+              message: Resource not found
+    Unauthorized:
+      description: Missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: unauthenticated
+              message: Authentication required
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: invalid_request
+              message: Invalid request body
+    Forbidden:
+      description: Insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: permission_denied
+              message: Insufficient permissions
+    RateLimited:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: rate_limit_exceeded
+              message: Rate limit exceeded
   schemas:
+    Asset:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Asset name
+        type:
+          type: string
+          description: Asset type (e.g. chart, image, table, pdf, html, text, download)
+        url:
+          type: string
+          description: Asset URL, freshly signed on every fetch
+        content:
+          type: string
+          description: Inline text content, for text assets served without a URL
+        cell_id:
+          type: string
+          format: uuid
+          description: ID of the cell that produced this asset
+        message_cell_id:
+          type: string
+          format: uuid
+          description: cell_id of the assistant message this asset belongs to (Get Chat only)
+        created_at:
+          type: string
+          format: date-time
+    RunPlaybookResponse:
+      type: object
+      properties:
+        chat_id:
+          type: string
+          format: uuid
+        report:
+          $ref: '#/components/schemas/Report'
+        assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Asset'
+    GetPlaybookResponse:
+      type: object
+      properties:
+        playbook:
+          $ref: '#/components/schemas/Playbook'
+        reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/Report'
+        total_reports_count:
+          type: integer
+          format: int64
     ListPlaybooksResponse:
       type: object
       properties:
@@ -293,44 +404,6 @@ components:
         total_count:
           type: integer
           format: int64
-    Playbook:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        prompt:
-          type: string
-        status:
-          type: string
-          enum:
-          - draft
-          - deployed
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        connector_ids:
-          type: array
-          items:
-            type: integer
-            format: int32
-          description: Connector IDs attached to this playbook
-        cron_string:
-          type: string
-          description: Cron schedule expression. Omitted when not set.
-        email_addresses:
-          type: array
-          items:
-            type: string
-          description: Email addresses for report delivery. Omitted when empty.
-        slack_channel_id:
-          type: string
-          description: Slack channel for report delivery. Omitted when not set.
     ReportBlock:
       type: object
       required:
@@ -381,32 +454,6 @@ components:
         height:
           type: integer
           description: Spacer height in pixels (spacer)
-    Asset:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Asset name
-        type:
-          type: string
-          description: Asset type (e.g. chart, image, table, pdf, html, text, download)
-        url:
-          type: string
-          description: Asset URL, freshly signed on every fetch
-        content:
-          type: string
-          description: Inline text content, for text assets served without a URL
-        cell_id:
-          type: string
-          format: uuid
-          description: ID of the cell that produced this asset
-        message_cell_id:
-          type: string
-          format: uuid
-          description: cell_id of the assistant message this asset belongs to (Get Chat only)
-        created_at:
-          type: string
-          format: date-time
     Report:
       type: object
       properties:
@@ -475,30 +522,44 @@ components:
           items:
             type: string
           description: Template data IDs
-    GetPlaybookResponse:
+    Playbook:
       type: object
       properties:
-        playbook:
-          $ref: '#/components/schemas/Playbook'
-        reports:
-          type: array
-          items:
-            $ref: '#/components/schemas/Report'
-        total_reports_count:
-          type: integer
-          format: int64
-    RunPlaybookResponse:
-      type: object
-      properties:
-        chat_id:
+        id:
           type: string
           format: uuid
-        report:
-          $ref: '#/components/schemas/Report'
-        assets:
+        name:
+          type: string
+        prompt:
+          type: string
+        status:
+          type: string
+          enum:
+          - draft
+          - deployed
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        connector_ids:
           type: array
           items:
-            $ref: '#/components/schemas/Asset'
+            type: integer
+            format: int32
+          description: Connector IDs attached to this playbook
+        cron_string:
+          type: string
+          description: Cron schedule expression. Omitted when not set.
+        email_addresses:
+          type: array
+          items:
+            type: string
+          description: Email addresses for report delivery. Omitted when empty.
+        slack_channel_id:
+          type: string
+          description: Slack channel for report delivery. Omitted when not set.
     ErrorResponse:
       type: object
       properties:
@@ -523,67 +584,6 @@ components:
             message:
               type: string
               description: Human-readable error message
-  responses:
-    Unauthorized:
-      description: Missing or invalid authentication
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: unauthenticated
-              message: Authentication required
-    RateLimited:
-      description: Rate limit exceeded
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: rate_limit_exceeded
-              message: Rate limit exceeded
-    Forbidden:
-      description: Insufficient permissions
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: permission_denied
-              message: Insufficient permissions
-    BadRequest:
-      description: Invalid request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: invalid_request
-              message: Invalid request body
-    NotFound:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: not_found
-              message: Resource not found
-    InternalError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: internal
-              message: Internal server error
   parameters:
     PlaybookId:
       name: id

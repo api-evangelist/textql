@@ -1739,16 +1739,210 @@ paths:
         source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.playbooks.update()\n\n    # Handle response\n    print(res)"
 components:
   schemas:
-    textql.rpc.public.playbook.ListSlackChannelsForContextPlaybookRequest:
+    textql.rpc.public.playbook.RunPlaybookResponse:
+      type: object
+      properties:
+        chatId:
+          type: string
+          title: chat_id
+      title: RunPlaybookResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.SetTeamsChannelContextPlaybookResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: SetTeamsChannelContextPlaybookResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.ListSlackChannelsForContextPlaybookResponse:
+      type: object
+      properties:
+        slackChannelIds:
+          type: array
+          items:
+            type: string
+          title: slack_channel_ids
+          description: e.g., ["C123", "C456"]
+      title: ListSlackChannelsForContextPlaybookResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.PlaybookPreview:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        name:
+          type: string
+          title: name
+        status:
+          title: status
+          $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookStatus'
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: PlaybookPreview
+      additionalProperties: false
+    textql.rpc.public.playbook.DeployPlaybookRequest:
       type: object
       properties:
         playbookId:
           type: string
           title: playbook_id
-          description: UUID
-      title: ListSlackChannelsForContextPlaybookRequest
+      title: DeployPlaybookRequest
       additionalProperties: false
-      description: Lists Slack channel IDs that have this playbook set as the context playbook.
+    textql.rpc.public.playbook.GetMembersWithPlaybooksRequest:
+      type: object
+      title: GetMembersWithPlaybooksRequest
+      additionalProperties: false
+    textql.rpc.public.playbook.TeamsChannelPlaybookMapping:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+        teamsChannelId:
+          type: string
+          title: teams_channel_id
+      title: TeamsChannelPlaybookMapping
+      additionalProperties: false
+    textql.rpc.public.playbook.GetActiveSubscribedPlaybooksCountRequest:
+      type: object
+      title: GetActiveSubscribedPlaybooksCountRequest
+      additionalProperties: false
+    textql.rpc.public.playbook.PlaybookTriggerType:
+      type: string
+      title: PlaybookTriggerType
+      enum:
+      - TRIGGER_TYPE_UNKNOWN
+      - TRIGGER_TYPE_CRON
+      - TRIGGER_TYPE_WEBHOOK
+    textql.rpc.public.dataset.TableauData:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        projectId:
+          type: string
+          title: project_id
+        projectName:
+          type: string
+          title: project_name
+        views:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.tableau.TableauView'
+          title: views
+        datasources:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.tableau.TableauDatasource'
+          title: datasources
+      title: TableauData
+      additionalProperties: false
+    textql.rpc.public.playbook.RunPlaybookRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+        dryRun:
+          type: boolean
+          title: dry_run
+          description: If true, runs without sending notifications
+        templateId:
+          type: string
+          title: template_id
+          nullable: true
+      title: RunPlaybookRequest
+      additionalProperties: false
+    textql.rpc.public.playbook.GetReportsWithFiltersRequest:
+      type: object
+      properties:
+        filters:
+          title: filters
+          $ref: '#/components/schemas/textql.rpc.public.playbook.ReportFilters'
+      title: GetReportsWithFiltersRequest
+      additionalProperties: false
+    textql.rpc.public.playbook.SetSlackChannelContextPlaybookRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+          description: The playbook to associate
+        slackChannelId:
+          type: string
+          title: slack_channel_id
+          description: Slack channel ID (e.g., C123...)
+      title: SetSlackChannelContextPlaybookRequest
+      additionalProperties: false
+      description: Associates a playbook to a Slack channel as its context playbook.
+    textql.rpc.public.playbook.GetPlaybooksRequest:
+      type: object
+      properties:
+        memberOnly:
+          type: boolean
+          title: member_only
+        limit:
+          type: integer
+          title: limit
+          format: int32
+        offset:
+          type: integer
+          title: offset
+          format: int32
+        searchTerm:
+          type: string
+          title: search_term
+          nullable: true
+        statusFilter:
+          title: status_filter
+          description: single-select; superseded by `statuses` when that is non-empty
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookStatus'
+        creatorMemberId:
+          type: string
+          title: creator_member_id
+          description: single-select; superseded by `creator_member_ids` when that is non-empty
+          nullable: true
+        sortBy:
+          title: sort_by
+          $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookSortField'
+        sortDirection:
+          title: sort_direction
+          $ref: '#/components/schemas/textql.rpc.public.common.SortDirection'
+        subscribedFirst:
+          type: boolean
+          title: subscribed_first
+          nullable: true
+        onlySubscribed:
+          type: boolean
+          title: only_subscribed
+          nullable: true
+        sharedWithMe:
+          type: boolean
+          title: shared_with_me
+          nullable: true
+        includeSharedDrafts:
+          type: boolean
+          title: include_shared_drafts
+          nullable: true
+        statuses:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookStatus'
+          title: statuses
+          description: Multi-select filters (union). Each supersedes its single-value counterpart when non-empty.
+        creatorMemberIds:
+          type: array
+          items:
+            type: string
+          title: creator_member_ids
+      title: GetPlaybooksRequest
+      additionalProperties: false
     textql.rpc.public.cells.ReportCell:
       type: object
       properties:
@@ -1774,294 +1968,45 @@ components:
           title: report_id
       title: ReportCell
       additionalProperties: false
-    textql.rpc.public.playbook.ChatReportSummary:
+    textql.rpc.public.playbook.UnsetSlackChannelContextPlaybookRequest:
       type: object
       properties:
-        id:
+        slackChannelId:
           type: string
-          title: id
-        chatId:
-          type: string
-          title: chat_id
-        subject:
-          type: string
-          title: subject
-        summary:
-          type: string
-          title: summary
-        createdAt:
-          title: created_at
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        heroImageUrl:
-          type: string
-          title: hero_image_url
-          description: First hero block image if present
-          nullable: true
-      title: ChatReportSummary
+          title: slack_channel_id
+      title: UnsetSlackChannelContextPlaybookRequest
       additionalProperties: false
-      description: Lightweight report summary for chat drawer - excludes full blocks
-    textql.rpc.public.playbook.GetActiveSubscribedPlaybooksCountRequest:
-      type: object
-      title: GetActiveSubscribedPlaybooksCountRequest
-      additionalProperties: false
-    textql.rpc.public.playbook.SubscribeToPlaybookRequest:
+      description: Unsets the context playbook for a Slack channel by channel ID only.
+    textql.rpc.public.playbook.PlaybookAttachDatasetRequest:
       type: object
       properties:
         playbookId:
           type: string
           title: playbook_id
-      title: SubscribeToPlaybookRequest
-      additionalProperties: false
-    textql.rpc.public.playbook.GetPlaybooksPreviewsRequest:
-      type: object
-      properties:
-        onlySubscribed:
-          type: boolean
-          title: only_subscribed
-        statusFilter:
-          title: status_filter
-          nullable: true
-          $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookStatus'
-      title: GetPlaybooksPreviewsRequest
-      additionalProperties: false
-    textql.rpc.public.paradigm.UniversalOptions:
-      type: object
-      properties:
-        connectorIds:
-          type: array
-          items:
-            type: integer
-            format: int32
-          title: connector_ids
         datasetId:
           type: string
           title: dataset_id
-          nullable: true
-        webSearchEnabled:
-          type: boolean
-          title: web_search_enabled
-        sqlEnabled:
-          type: boolean
-          title: sql_enabled
-        ontologyEnabled:
-          type: boolean
-          title: ontology_enabled
-        ontologyEditingEnabled:
-          type: boolean
-          title: ontology_editing_enabled
-        pythonEnabled:
-          type: boolean
-          title: python_enabled
-        autoApproveEnabled:
-          type: boolean
-          title: auto_approve_enabled
-        googleDriveEnabled:
-          type: boolean
-          title: google_drive_enabled
-        powerbiEnabled:
-          type: boolean
-          title: powerbi_enabled
-        contextEditingEnabled:
-          type: boolean
-          title: context_editing_enabled
-        formEditorEnabled:
-          type: boolean
-          title: form_editor_enabled
-        playbookToolsEnabled:
-          type: boolean
-          title: playbook_tools_enabled
-        microsoft365Enabled:
-          type: boolean
-          title: microsoft365_enabled
-        feedExplorerEnabled:
-          type: boolean
-          title: feed_explorer_enabled
-        bashEnabled:
-          type: boolean
-          title: bash_enabled
-        javascriptEnabled:
-          type: boolean
-          title: javascript_enabled
-        feedPostEnabled:
-          type: boolean
-          title: feed_post_enabled
-        feedCommentEnabled:
-          type: boolean
-          title: feed_comment_enabled
-        feedEngageEnabled:
-          type: boolean
-          title: feed_engage_enabled
-        streamlitEnabled:
-          type: boolean
-          title: streamlit_enabled
-        compactionDisabled:
-          type: boolean
-          title: compaction_disabled
-        gmailEnabled:
-          type: boolean
-          title: gmail_enabled
-        chatHistorySearchEnabled:
-          type: boolean
-          title: chat_history_search_enabled
-        googleCalendarEnabled:
-          type: boolean
-          title: google_calendar_enabled
-        emailOutputEnabled:
-          type: boolean
-          title: email_output_enabled
-        powerbiSelections:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.powerbi_selection.PowerBISelection'
-          title: powerbi_selections
-        smsMode:
-          type: boolean
-          title: sms_mode
-        apiAccessKeyIds:
-          type: array
-          items:
-            type: string
-          title: api_access_key_ids
-        feedEnabled:
-          type: boolean
-          title: feed_enabled
-          nullable: true
-        fileGenerationDisabled:
-          type: boolean
-          title: file_generation_disabled
-      title: UniversalOptions
+      title: PlaybookAttachDatasetRequest
       additionalProperties: false
-    textql.rpc.public.dashboard.OntologySqlSource:
+    textql.rpc.public.playbook.FavoriteReportResponse:
       type: object
       properties:
-        query:
-          type: string
-          title: query
-        dataset:
-          type: string
-          title: dataset
-        ontologyId:
-          type: integer
-          title: ontology_id
-          format: int32
-      title: OntologySqlSource
+        success:
+          type: boolean
+          title: success
+      title: FavoriteReportResponse
       additionalProperties: false
-    textql.rpc.public.dashboard.Dashboard:
+    textql.rpc.public.playbook.PreviewSlackReportResponse:
+      type: object
+      title: PreviewSlackReportResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.DeactivatePlaybookRequest:
       type: object
       properties:
-        id:
+        playbookId:
           type: string
-          title: id
-        orgId:
-          type: string
-          title: org_id
-        creatorId:
-          type: string
-          title: creator_id
-        name:
-          type: string
-          title: name
-        description:
-          type: string
-          title: description
-          nullable: true
-        code:
-          type: string
-          title: code
-        type:
-          title: type
-          $ref: '#/components/schemas/textql.rpc.public.dashboard.DashboardType'
-        chatId:
-          type: string
-          title: chat_id
-          nullable: true
-        cellId:
-          type: string
-          title: cell_id
-          nullable: true
-        isPublic:
-          type: boolean
-          title: is_public
-        screenshotUrl:
-          type: string
-          title: screenshot_url
-          nullable: true
-        htmlUrl:
-          type: string
-          title: html_url
-          description: URL for serving HTML dashboards
-          nullable: true
-        createdAt:
-          title: created_at
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        updatedAt:
-          title: updated_at
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        refreshedAt:
-          title: refreshed_at
-          description: Last time dashboard was executed (manual or scheduled)
-          nullable: true
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        creator:
-          title: creator
-          description: Enriched fields (not stored in DB)
-          nullable: true
-          $ref: '#/components/schemas/textql.rpc.public.dashboard.DashboardCreator'
-        streamlitUrl:
-          type: string
-          title: streamlit_url
-          description: Active URL if spawned
-          nullable: true
-        status:
-          title: status
-          description: Workflow fields
-          $ref: '#/components/schemas/textql.rpc.public.dashboard.DashboardStatus'
-        publishedCode:
-          type: string
-          title: published_code
-          nullable: true
-        publishedAt:
-          title: published_at
-          nullable: true
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        hasUnpublishedChanges:
-          type: boolean
-          title: has_unpublished_changes
-          description: 'Computed: code != published_code'
-        dataSources:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.dashboard.DataSource'
-          title: data_sources
-          description: Data sources (SQL queries, uploaded files, etc.)
-        scheduleEnabled:
-          type: boolean
-          title: schedule_enabled
-          description: Scheduling
-        cronString:
-          type: string
-          title: cron_string
-          nullable: true
-        latestScheduledRunAt:
-          title: latest_scheduled_run_at
-          description: Last time scheduled run was triggered
-          nullable: true
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        folderId:
-          type: string
-          title: folder_id
-          description: Folder
-          nullable: true
-        configSource:
-          title: config_source
-          description: "Config-management metadata (ADR-0014/0021). Present ⇒ the dashboard is defined\n by a `.dashboard` Library file: it is read-only in the UI (mutating RPCs are\n rejected) and changed only by editing its file. Clients detect config-management\n by presence, the same way they do for playbooks."
-          nullable: true
-          $ref: '#/components/schemas/textql.rpc.public.config_source.ConfigSource'
-        isFavorited:
-          type: boolean
-          title: is_favorited
-          description: per-caller pin state (enriched, not stored on the dashboard)
-      title: Dashboard
+          title: playbook_id
+      title: DeactivatePlaybookRequest
       additionalProperties: false
     textql.rpc.public.playbook.Playbook:
       type: object
@@ -2257,57 +2202,421 @@ components:
           title: api_access_key_ids
       title: Playbook
       additionalProperties: false
-    textql.rpc.public.playbook.PlaybookReportStyle:
-      type: string
-      title: PlaybookReportStyle
-      enum:
-      - REPORT_STYLE_UNKNOWN
-      - EXECUTIVE_REPORT
-      - VERBOSE
-      - CONCISE
-    textql.rpc.public.tableau.TableauView:
+    textql.rpc.public.playbook.ChatReportSummary:
       type: object
       properties:
         id:
           type: string
           title: id
+        chatId:
+          type: string
+          title: chat_id
+        subject:
+          type: string
+          title: subject
+        summary:
+          type: string
+          title: summary
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        heroImageUrl:
+          type: string
+          title: hero_image_url
+          description: First hero block image if present
+          nullable: true
+      title: ChatReportSummary
+      additionalProperties: false
+      description: Lightweight report summary for chat drawer - excludes full blocks
+    textql.rpc.public.dashboard.QueryParameter:
+      type: object
+      properties:
         name:
           type: string
           title: name
-        contentUrl:
+        type:
           type: string
-          title: content_url
-        workbookId:
+          title: type
+          description: '"string", "int", "float", "date"'
+        default:
           type: string
-          title: workbook_id
-        workbookName:
+          title: default
+          nullable: true
+      title: QueryParameter
+      additionalProperties: false
+    textql.rpc.public.dashboard.PythonCodeSource:
+      type: object
+      properties:
+        code:
           type: string
-          title: workbook_name
+          title: code
+      title: PythonCodeSource
+      additionalProperties: false
+    textql.rpc.public.reports.ImageTextBlock:
+      type: object
+      properties:
+        imageUrl:
+          type: string
+          title: image_url
+        imageAlt:
+          type: string
+          title: image_alt
+          nullable: true
+        variant:
+          title: variant
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.reports.ImageVariant'
+        heading:
+          type: string
+          title: heading
+          nullable: true
+        content:
+          type: string
+          title: content
+          nullable: true
+      title: ImageTextBlock
+      additionalProperties: false
+    textql.rpc.public.dashboard.Dashboard:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        orgId:
+          type: string
+          title: org_id
+        creatorId:
+          type: string
+          title: creator_id
+        name:
+          type: string
+          title: name
+        description:
+          type: string
+          title: description
+          nullable: true
+        code:
+          type: string
+          title: code
+        type:
+          title: type
+          $ref: '#/components/schemas/textql.rpc.public.dashboard.DashboardType'
+        chatId:
+          type: string
+          title: chat_id
+          nullable: true
+        cellId:
+          type: string
+          title: cell_id
+          nullable: true
+        isPublic:
+          type: boolean
+          title: is_public
+        screenshotUrl:
+          type: string
+          title: screenshot_url
+          nullable: true
+        htmlUrl:
+          type: string
+          title: html_url
+          description: URL for serving HTML dashboards
+          nullable: true
         createdAt:
           title: created_at
           $ref: '#/components/schemas/google.protobuf.Timestamp'
         updatedAt:
           title: updated_at
           $ref: '#/components/schemas/google.protobuf.Timestamp'
-        embedUrl:
+        refreshedAt:
+          title: refreshed_at
+          description: Last time dashboard was executed (manual or scheduled)
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        creator:
+          title: creator
+          description: Enriched fields (not stored in DB)
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.dashboard.DashboardCreator'
+        streamlitUrl:
           type: string
-          title: embed_url
-      title: TableauView
+          title: streamlit_url
+          description: Active URL if spawned
+          nullable: true
+        status:
+          title: status
+          description: Workflow fields
+          $ref: '#/components/schemas/textql.rpc.public.dashboard.DashboardStatus'
+        publishedCode:
+          type: string
+          title: published_code
+          nullable: true
+        publishedAt:
+          title: published_at
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        hasUnpublishedChanges:
+          type: boolean
+          title: has_unpublished_changes
+          description: 'Computed: code != published_code'
+        dataSources:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dashboard.DataSource'
+          title: data_sources
+          description: Data sources (SQL queries, uploaded files, etc.)
+        scheduleEnabled:
+          type: boolean
+          title: schedule_enabled
+          description: Scheduling
+        cronString:
+          type: string
+          title: cron_string
+          nullable: true
+        latestScheduledRunAt:
+          title: latest_scheduled_run_at
+          description: Last time scheduled run was triggered
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        folderId:
+          type: string
+          title: folder_id
+          description: Folder
+          nullable: true
+        configSource:
+          title: config_source
+          description: "Config-management metadata (ADR-0014/0021). Present ⇒ the dashboard is defined\n by a `.dashboard` Library file: it is read-only in the UI (mutating RPCs are\n rejected) and changed only by editing its file. Clients detect config-management\n by presence, the same way they do for playbooks."
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.config_source.ConfigSource'
+        isFavorited:
+          type: boolean
+          title: is_favorited
+          description: per-caller pin state (enriched, not stored on the dashboard)
+      title: Dashboard
       additionalProperties: false
-    textql.rpc.public.playbook.MarkReportAsReadResponse:
+    textql.rpc.public.playbook.PreviewSlackReportRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+        cell:
+          title: cell
+          $ref: '#/components/schemas/textql.rpc.public.cells.ReportCell'
+        chatId:
+          type: string
+          title: chat_id
+        slackChannelId:
+          type: string
+          title: slack_channel_id
+      title: PreviewSlackReportRequest
+      additionalProperties: false
+    textql.rpc.public.playbook.PlaybookAttachDashboardRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+        dashboardId:
+          type: string
+          title: dashboard_id
+      title: PlaybookAttachDashboardRequest
+      additionalProperties: false
+    textql.rpc.public.playbook.ReportFilters:
+      type: object
+      properties:
+        playbookIds:
+          type: array
+          items:
+            type: string
+          title: playbook_ids
+        searchTerm:
+          type: string
+          title: search_term
+          nullable: true
+        startTime:
+          title: start_time
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        endTime:
+          title: end_time
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        sortBy:
+          type: string
+          title: sort_by
+        sortDirection:
+          title: sort_direction
+          $ref: '#/components/schemas/textql.rpc.public.common.SortDirection'
+        limit:
+          type: integer
+          title: limit
+          format: int32
+          nullable: true
+        offset:
+          type: integer
+          title: offset
+          format: int32
+          nullable: true
+        onlySubscribed:
+          type: boolean
+          title: only_subscribed
+          nullable: true
+        includeHeader:
+          type: boolean
+          title: include_header
+          nullable: true
+        includeWithHeader:
+          type: boolean
+          title: include_with_header
+          nullable: true
+        chatId:
+          type: string
+          title: chat_id
+          nullable: true
+      title: ReportFilters
+      additionalProperties: false
+    textql.rpc.public.playbook.ChatAccessOverrideList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.playbook.ChatAccessOverride'
+          title: items
+      title: ChatAccessOverrideList
+      additionalProperties: false
+    textql.rpc.public.playbook.ListPlaybookBatchRunsRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+          description: UUID
+        limit:
+          type: integer
+          title: limit
+          format: int32
+          description: 'Max number of results (default: 50)'
+          nullable: true
+        offset:
+          type: integer
+          title: offset
+          format: int32
+          description: 'Offset for pagination (default: 0)'
+          nullable: true
+      title: ListPlaybookBatchRunsRequest
+      additionalProperties: false
+      description: Request to list batch runs for a playbook
+    textql.rpc.identity.MemberPreview:
+      type: object
+      properties:
+        memberId:
+          type: string
+          title: member_id
+        memberEmail:
+          type: string
+          title: member_email
+          description: "the fields are optionally populated, depending on the context\n may require RPC fields such as `include_owner` to be set to true"
+          nullable: true
+        memberName:
+          type: string
+          title: member_name
+          nullable: true
+        memberPictureUrl:
+          type: string
+          title: member_picture_url
+          nullable: true
+      title: MemberPreview
+      additionalProperties: false
+    textql.rpc.public.dashboard.DataSource:
+      type: object
+      allOf:
+      - type: object
+        properties:
+          type:
+            type: string
+            title: type
+            description: '"sql_query", "file", "python_code", "ontology_sql", or "library_tql"'
+          name:
+            type: string
+            title: name
+          parameters:
+            type: array
+            items:
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.QueryParameter'
+            title: parameters
+            description: Parameters for live parameterized queries (sql_query type only)
+          grant:
+            title: grant
+            description: "Optional author allowlist gating this source to specific org roles / members.\n Presence forces the source out of the published snapshot (live-only, viewer-enforced)."
+            $ref: '#/components/schemas/textql.rpc.public.dashboard.Grant'
+      - oneOf:
+        - type: object
+          properties:
+            file:
+              title: file
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.FileSource'
+          title: file
+          required:
+          - file
+        - type: object
+          properties:
+            libraryTql:
+              title: library_tql
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.LibraryTQLSource'
+          title: library_tql
+          required:
+          - libraryTql
+        - type: object
+          properties:
+            ontologySql:
+              title: ontology_sql
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.OntologySqlSource'
+          title: ontology_sql
+          required:
+          - ontologySql
+        - type: object
+          properties:
+            pythonCode:
+              title: python_code
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.PythonCodeSource'
+          title: python_code
+          required:
+          - pythonCode
+        - type: object
+          properties:
+            sqlQuery:
+              title: sql_query
+              $ref: '#/components/schemas/textql.rpc.public.dashboard.SqlQuerySource'
+          title: sql_query
+          required:
+          - sqlQuery
+      title: DataSource
+      additionalProperties: false
+      description: Unified data source for dashboards
+    textql.rpc.public.playbook.UnsetTeamsChannelContextPlaybookResponse:
       type: object
       properties:
         success:
           type: boolean
           title: success
-        readAt:
-          title: read_at
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-      title: MarkReportAsReadResponse
+      title: UnsetTeamsChannelContextPlaybookResponse
       additionalProperties: false
-    textql.rpc.public.playbook.CreatePlaybookRequest:
+    textql.rpc.public.playbook.UnsetSlackChannelContextPlaybookResponse:
       type: object
-      title: CreatePlaybookRequest
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: UnsetSlackChannelContextPlaybookResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.UnsubscribeFromPlaybookRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+      title: UnsubscribeFromPlaybookRequest
       additionalProperties: false
     textql.rpc.public.reports.ReportBlock:
       type: object
@@ -2378,117 +2687,39 @@ components:
         - text
       title: ReportBlock
       additionalProperties: false
-    textql.rpc.public.playbook.PlaybookAttachDashboardRequest:
+    textql.rpc.public.dataset.SandboxDataFrame:
       type: object
       properties:
-        playbookId:
-          type: string
-          title: playbook_id
-        dashboardId:
-          type: string
-          title: dashboard_id
-      title: PlaybookAttachDashboardRequest
+        info:
+          title: info
+          $ref: '#/components/schemas/textql.rpc.public.dataframe.DataFrameInfo'
+      title: SandboxDataFrame
       additionalProperties: false
-    textql.rpc.public.playbook.ReportFilters:
-      type: object
-      properties:
-        playbookIds:
-          type: array
-          items:
-            type: string
-          title: playbook_ids
-        searchTerm:
-          type: string
-          title: search_term
-          nullable: true
-        startTime:
-          title: start_time
-          nullable: true
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        endTime:
-          title: end_time
-          nullable: true
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        sortBy:
-          type: string
-          title: sort_by
-        sortDirection:
-          title: sort_direction
-          $ref: '#/components/schemas/textql.rpc.public.common.SortDirection'
-        limit:
-          type: integer
-          title: limit
-          format: int32
-          nullable: true
-        offset:
-          type: integer
-          title: offset
-          format: int32
-          nullable: true
-        onlySubscribed:
-          type: boolean
-          title: only_subscribed
-          nullable: true
-        includeHeader:
-          type: boolean
-          title: include_header
-          nullable: true
-        includeWithHeader:
-          type: boolean
-          title: include_with_header
-          nullable: true
-        chatId:
-          type: string
-          title: chat_id
-          nullable: true
-      title: ReportFilters
-      additionalProperties: false
-    textql.rpc.public.playbook.StringList:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            type: string
-          title: items
-      title: StringList
-      additionalProperties: false
-    textql.rpc.public.playbook.ChatAccessMode:
-      type: string
-      title: ChatAccessMode
-      enum:
-      - CHAT_ACCESS_MODE_INHERIT
-      - CHAT_ACCESS_MODE_CUSTOM
-    textql.rpc.public.playbook.SetSlackChannelContextPlaybookResponse:
+    textql.rpc.public.playbook.CancelTemplateExecutionResponse:
       type: object
       properties:
         success:
           type: boolean
           title: success
-      title: SetSlackChannelContextPlaybookResponse
+        cancelledCount:
+          type: integer
+          title: cancelled_count
+          format: int32
+          description: Number of template executions that were cancelled
+      title: CancelTemplateExecutionResponse
       additionalProperties: false
-    textql.rpc.public.dashboard.LibraryTQLSource:
+      description: Response from canceling template execution
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    textql.rpc.public.playbook.ListTeamsChannelsForContextPlaybookRequest:
       type: object
       properties:
-        tqlPath:
+        playbookId:
           type: string
-          title: tql_path
-          description: path to the .tql file in the Context Library (must end in .tql)
-        connectorId:
-          type: integer
-          title: connector_id
-          format: int32
-          description: SQL connector to execute the rendered query against
-        paramsJson:
-          type: string
-          title: params_json
-          description: JSON object mapping parameter names to values; "" means no params
-      title: LibraryTQLSource
-      additionalProperties: false
-      description: "References a .tql file stored in the Context Library. The file is rendered\n to SQL at fetch time and executed against the provided connector. Template\n parameter values are JSON-encoded in `params_json` (e.g. {\"region\":\"EU\"})."
-    textql.rpc.public.playbook.ListAllTeamsChannelContextPlaybooksRequest:
-      type: object
-      title: ListAllTeamsChannelContextPlaybooksRequest
+          title: playbook_id
+      title: ListTeamsChannelsForContextPlaybookRequest
       additionalProperties: false
     textql.rpc.public.chat.LlmModel:
       type: string
@@ -2520,340 +2751,24 @@ components:
       - MODEL_DEEPSEEK_V4_FLASH_0731
       - MODEL_MUSE_SPARK_1_1
       - MODEL_MUSE_SPARK_1_2
-    textql.rpc.public.dashboard.DashboardType:
-      type: string
-      title: DashboardType
-      enum:
-      - DASHBOARD_TYPE_UNSPECIFIED
-      - DASHBOARD_TYPE_STREAMLIT
-      - DASHBOARD_TYPE_HTML
-      - DASHBOARD_TYPE_DASH
-    textql.rpc.public.playbook.CancelTemplateExecutionResponse:
+    textql.rpc.public.playbook.GetPlaybookLineageResponse:
       type: object
       properties:
-        success:
-          type: boolean
-          title: success
-        cancelledCount:
-          type: integer
-          title: cancelled_count
-          format: int32
-          description: Number of template executions that were cancelled
-      title: CancelTemplateExecutionResponse
-      additionalProperties: false
-      description: Response from canceling template execution
-    textql.rpc.public.paradigm.ParadigmOptions:
-      type: object
-      oneOf:
-      - type: object
-        properties:
-          universal:
-            title: universal
-            $ref: '#/components/schemas/textql.rpc.public.paradigm.UniversalOptions'
-        title: universal
-        required:
-        - universal
-      title: ParadigmOptions
-      additionalProperties: false
-    textql.rpc.public.dataset.TabularFile:
-      type: object
-      properties:
-        category:
-          title: category
-          $ref: '#/components/schemas/textql.rpc.public.dataset.TabularFileCategory'
-        rowCount:
-          type:
-          - integer
-          - string
-          title: row_count
-          format: int64
-        columnCount:
-          type:
-          - integer
-          - string
-          title: column_count
-          format: int64
-        sheetCount:
-          type: integer
-          title: sheet_count
-          format: int32
-      title: TabularFile
-      additionalProperties: false
-    textql.rpc.public.playbook.GetPlaybookReportsResponse:
-      type: object
-      properties:
-        reports:
+        parent:
+          title: parent
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookLineageNode'
+        duplicates:
           type: array
           items:
-            $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookReport'
-          title: reports
-        totalCount:
-          type: integer
-          title: total_count
-          format: int32
-      title: GetPlaybookReportsResponse
+            $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookLineageNode'
+          title: duplicates
+        originPlaybookId:
+          type: string
+          title: origin_playbook_id
+          nullable: true
+      title: GetPlaybookLineageResponse
       additionalProperties: false
-    textql.rpc.public.playbook.GetPlaybooksRequest:
-      type: object
-      properties:
-        memberOnly:
-          type: boolean
-          title: member_only
-        limit:
-          type: integer
-          title: limit
-          format: int32
-        offset:
-          type: integer
-          title: offset
-          format: int32
-        searchTerm:
-          type: string
-          title: search_term
-          nullable: true
-        statusFilter:
-          title: status_filter
-          description: single-select; superseded by `statuses` when that is non-empty
-          nullable: true
-          $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookStatus'
-        creatorMemberId:
-          type: string
-          title: creator_member_id
-          description: single-select; superseded by `creator_member_ids` when that is non-empty
-          nullable: true
-        sortBy:
-          title: sort_by
-          $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookSortField'
-        sortDirection:
-          title: sort_direction
-          $ref: '#/components/schemas/textql.rpc.public.common.SortDirection'
-        subscribedFirst:
-          type: boolean
-          title: subscribed_first
-          nullable: true
-        onlySubscribed:
-          type: boolean
-          title: only_subscribed
-          nullable: true
-        sharedWithMe:
-          type: boolean
-          title: shared_with_me
-          nullable: true
-        includeSharedDrafts:
-          type: boolean
-          title: include_shared_drafts
-          nullable: true
-        statuses:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookStatus'
-          title: statuses
-          description: Multi-select filters (union). Each supersedes its single-value counterpart when non-empty.
-        creatorMemberIds:
-          type: array
-          items:
-            type: string
-          title: creator_member_ids
-      title: GetPlaybooksRequest
-      additionalProperties: false
-    textql.rpc.public.common.SortDirection:
-      type: string
-      title: SortDirection
-      enum:
-      - SORT_DIRECTION_UNKNOWN
-      - SORT_DIRECTION_ASC
-      - SORT_DIRECTION_DESC
-      description: Common enum for sort direction used across multiple services
-    textql.rpc.public.reports.HeroBlock:
-      type: object
-      properties:
-        imageUrl:
-          type: string
-          title: image_url
-        imageAlt:
-          type: string
-          title: image_alt
-          nullable: true
-      title: HeroBlock
-      additionalProperties: false
-    textql.rpc.public.playbook.PlaybookPreview:
-      type: object
-      properties:
-        id:
-          type: string
-          title: id
-        name:
-          type: string
-          title: name
-        status:
-          title: status
-          $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookStatus'
-        createdAt:
-          title: created_at
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-      title: PlaybookPreview
-      additionalProperties: false
-    textql.rpc.public.playbook.UnsetTeamsChannelContextPlaybookResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          title: success
-      title: UnsetTeamsChannelContextPlaybookResponse
-      additionalProperties: false
-    textql.rpc.public.playbook.PlaybookLineageNode:
-      type: object
-      properties:
-        playbookId:
-          type: string
-          title: playbook_id
-        name:
-          type: string
-          title: name
-        status:
-          title: status
-          $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookStatus'
-        duplicatedAt:
-          title: duplicated_at
-          nullable: true
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        duplicatedBy:
-          title: duplicated_by
-          nullable: true
-          $ref: '#/components/schemas/textql.rpc.identity.MemberPreview'
-      title: PlaybookLineageNode
-      additionalProperties: false
-    textql.rpc.public.playbook.PlaybookBatchRun:
-      type: object
-      properties:
-        id:
-          type: string
-          title: id
-          description: UUID
-        playbookId:
-          type: string
-          title: playbook_id
-          description: UUID
-        templateHeaderId:
-          type: string
-          title: template_header_id
-          description: UUID
-        templateDataIds:
-          type: array
-          items:
-            type: string
-          title: template_data_ids
-          description: List of UUID references
-        createdAt:
-          title: created_at
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-      title: PlaybookBatchRun
-      additionalProperties: false
-      description: Batch run record
-    textql.rpc.public.playbook.MarkReportAsReadRequest:
-      type: object
-      properties:
-        reportId:
-          type: string
-          title: report_id
-          description: UUID
-      title: MarkReportAsReadRequest
-      additionalProperties: false
-      description: Report read tracking messages
-    textql.rpc.public.playbook.PlaybookAttachDatasetResponse:
-      type: object
-      properties:
-        dataset:
-          title: dataset
-          $ref: '#/components/schemas/textql.rpc.public.dataset.Dataset'
-      title: PlaybookAttachDatasetResponse
-      additionalProperties: false
-    textql.rpc.public.playbook.ListPlaybookBatchRunsRequest:
-      type: object
-      properties:
-        playbookId:
-          type: string
-          title: playbook_id
-          description: UUID
-        limit:
-          type: integer
-          title: limit
-          format: int32
-          description: 'Max number of results (default: 50)'
-          nullable: true
-        offset:
-          type: integer
-          title: offset
-          format: int32
-          description: 'Offset for pagination (default: 0)'
-          nullable: true
-      title: ListPlaybookBatchRunsRequest
-      additionalProperties: false
-      description: Request to list batch runs for a playbook
-    textql.rpc.public.reports.ImageBlock:
-      type: object
-      properties:
-        imageUrl:
-          type: string
-          title: image_url
-        imageAlt:
-          type: string
-          title: image_alt
-          nullable: true
-        variant:
-          title: variant
-          nullable: true
-          $ref: '#/components/schemas/textql.rpc.public.reports.ImageVariant'
-      title: ImageBlock
-      additionalProperties: false
-    textql.rpc.public.playbook.GetMembersWithPlaybooksResponse:
-      type: object
-      properties:
-        members:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.identity.MemberPreview'
-          title: members
-      title: GetMembersWithPlaybooksResponse
-      additionalProperties: false
-    textql.rpc.public.dashboard.SqlQuerySource:
-      type: object
-      properties:
-        query:
-          type: string
-          title: query
-        connectorId:
-          type: integer
-          title: connector_id
-          format: int32
-        predicate:
-          type: string
-          title: predicate
-          description: Optional viewer row-filter appended server-side at live-query time; binds :viewer_member_id / :viewer_email. Presence forces the source out of the published snapshot.
-      title: SqlQuerySource
-      additionalProperties: false
-    connect.error_details.Any:
-      type: object
-      properties:
-        type:
-          type: string
-          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
-        value:
-          type: string
-          format: binary
-          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
-        debug:
-          oneOf:
-          - type: object
-            title: Any
-            additionalProperties: true
-            description: Detailed error information.
-          discriminator:
-            propertyName: type
-          title: Debug
-          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
-      additionalProperties: true
-      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
     textql.rpc.public.tableau.TableauDatasource:
       type: object
       properties:
@@ -2884,387 +2799,29 @@ components:
       title: TableauDatasource
       additionalProperties: false
       description: 'TODO: Add datasources support'
-    connect-protocol-version:
-      type: number
-      title: Connect-Protocol-Version
-      enum:
-      - 1
-      description: Define the version of the Connect protocol
-      const: 1
-      default: 1
-    textql.rpc.public.playbook.GetPlaybookBatchRunResponse:
+    textql.rpc.public.playbook.UnsetTeamsChannelContextPlaybookRequest:
       type: object
       properties:
-        batchRun:
-          title: batch_run
-          $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookBatchRun'
-      title: GetPlaybookBatchRunResponse
+        teamsChannelId:
+          type: string
+          title: teams_channel_id
+      title: UnsetTeamsChannelContextPlaybookRequest
       additionalProperties: false
-      description: Response containing batch run details
-    textql.rpc.public.playbook.GetReportsWithFiltersResponse:
+    textql.rpc.public.dashboard.OntologySqlSource:
       type: object
       properties:
-        reports:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookReport'
-          title: reports
-        reportsWithHeader:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookReport'
-          title: reports_with_header
-        totalCount:
+        query:
+          type: string
+          title: query
+        dataset:
+          type: string
+          title: dataset
+        ontologyId:
           type: integer
-          title: total_count
+          title: ontology_id
           format: int32
-        unreadCount:
-          type: integer
-          title: unread_count
-          format: int32
-      title: GetReportsWithFiltersResponse
+      title: OntologySqlSource
       additionalProperties: false
-    textql.rpc.public.playbook.GetPlaybookLineageResponse:
-      type: object
-      properties:
-        parent:
-          title: parent
-          nullable: true
-          $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookLineageNode'
-        duplicates:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookLineageNode'
-          title: duplicates
-        originPlaybookId:
-          type: string
-          title: origin_playbook_id
-          nullable: true
-      title: GetPlaybookLineageResponse
-      additionalProperties: false
-    textql.rpc.public.dataset.Document:
-      type: object
-      properties:
-        previewUrl:
-          type: string
-          title: preview_url
-        pageCount:
-          type: integer
-          title: page_count
-          format: int32
-      title: Document
-      additionalProperties: false
-    textql.rpc.public.playbook.DeletePlaybookRequest:
-      type: object
-      properties:
-        playbookId:
-          type: string
-          title: playbook_id
-      title: DeletePlaybookRequest
-      additionalProperties: false
-    textql.rpc.public.reports.ImageTextBlock:
-      type: object
-      properties:
-        imageUrl:
-          type: string
-          title: image_url
-        imageAlt:
-          type: string
-          title: image_alt
-          nullable: true
-        variant:
-          title: variant
-          nullable: true
-          $ref: '#/components/schemas/textql.rpc.public.reports.ImageVariant'
-        heading:
-          type: string
-          title: heading
-          nullable: true
-        content:
-          type: string
-          title: content
-          nullable: true
-      title: ImageTextBlock
-      additionalProperties: false
-    textql.rpc.public.playbook.GetActiveSubscribedPlaybooksCountResponse:
-      type: object
-      properties:
-        count:
-          type: integer
-          title: count
-          format: int32
-      title: GetActiveSubscribedPlaybooksCountResponse
-      additionalProperties: false
-    textql.rpc.public.dataset.DatasetType:
-      type: string
-      title: DatasetType
-      enum:
-      - TYPE_UNKNOWN
-      - TYPE_TABULAR
-      - TYPE_DATAFRAME
-      - TYPE_DOCUMENT
-      - TYPE_TABLEAU
-      - TYPE_IMAGE
-      - TYPE_TEXT
-      - TYPE_POWERBI
-      description: never change the names or numbers of existing dataset types!
-    textql.rpc.public.playbook.PlaybookSortField:
-      type: string
-      title: PlaybookSortField
-      enum:
-      - SORT_FIELD_UNKNOWN
-      - SORT_FIELD_NAME
-      - SORT_FIELD_CREATED_AT
-      - SORT_FIELD_UPDATED_AT
-      - SORT_FIELD_SCHEDULE
-    textql.rpc.public.playbook.CancelTemplateExecutionRequest:
-      type: object
-      properties:
-        templateHeaderId:
-          type: string
-          title: template_header_id
-        playbookId:
-          type: string
-          title: playbook_id
-      title: CancelTemplateExecutionRequest
-      additionalProperties: false
-      description: Request to cancel template execution
-    textql.rpc.public.playbook.PlaybookRemoveDashboardResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          title: success
-      title: PlaybookRemoveDashboardResponse
-      additionalProperties: false
-    textql.rpc.public.dashboard.Grant:
-      type: object
-      properties:
-        roles:
-          type: array
-          items:
-            type: string
-          title: roles
-          description: org role names
-        members:
-          type: array
-          items:
-            type: string
-          title: members
-          description: explicit member ids
-      title: Grant
-      additionalProperties: false
-      description: "Grant is an author allowlist gating a data source or compute function. A viewer whose\n effective role names intersect roles, or whose member id is listed in members, may call it.\n Absent grant = org-visible (today's behavior); an empty grant object is invalid."
-    textql.rpc.public.playbook.SubscribeToPlaybookResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          title: success
-      title: SubscribeToPlaybookResponse
-      additionalProperties: false
-    textql.rpc.public.playbook.GetPlaybookReportsBatchRequest:
-      type: object
-      properties:
-        playbookId:
-          type: string
-          title: playbook_id
-          description: UUID
-        templateDataIds:
-          type: array
-          items:
-            type: string
-          title: template_data_ids
-          description: List of template data UUIDs to fetch reports for
-        limitPerTemplate:
-          type: integer
-          title: limit_per_template
-          format: int32
-          description: 'Max reports to return per template_data_id (default: 100)'
-        batchRunId:
-          type: string
-          title: batch_run_id
-          description: UUID - filter reports and artifacts by batch run
-          nullable: true
-      title: GetPlaybookReportsBatchRequest
-      additionalProperties: false
-      description: Batch request to get reports for multiple template data IDs efficiently
-    textql.rpc.public.reports.TextBlock:
-      type: object
-      properties:
-        heading:
-          type: string
-          title: heading
-          nullable: true
-        content:
-          type: string
-          title: content
-          nullable: true
-      title: TextBlock
-      additionalProperties: false
-    textql.rpc.public.playbook.GetPlaybookBatchRunRequest:
-      type: object
-      properties:
-        batchRunId:
-          type: string
-          title: batch_run_id
-          description: UUID
-      title: GetPlaybookBatchRunRequest
-      additionalProperties: false
-      description: Request to get a specific batch run
-    textql.rpc.public.playbook.RunPlaybookResponse:
-      type: object
-      properties:
-        chatId:
-          type: string
-          title: chat_id
-      title: RunPlaybookResponse
-      additionalProperties: false
-    textql.rpc.public.playbook.DeployPlaybookResponse:
-      type: object
-      properties:
-        playbookId:
-          type: string
-          title: playbook_id
-        deployedAt:
-          title: deployed_at
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-      title: DeployPlaybookResponse
-      additionalProperties: false
-    textql.rpc.public.playbook.SetTeamsChannelContextPlaybookResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          title: success
-      title: SetTeamsChannelContextPlaybookResponse
-      additionalProperties: false
-    connect-timeout-header:
-      type: number
-      title: Connect-Timeout-Ms
-      description: Define the timeout, in ms
-    textql.rpc.public.playbook.DuplicatePlaybookRequest:
-      type: object
-      properties:
-        playbookId:
-          type: string
-          title: playbook_id
-      title: DuplicatePlaybookRequest
-      additionalProperties: false
-    textql.rpc.public.playbook.RunPlaybookRequest:
-      type: object
-      properties:
-        playbookId:
-          type: string
-          title: playbook_id
-        dryRun:
-          type: boolean
-          title: dry_run
-          description: If true, runs without sending notifications
-        templateId:
-          type: string
-          title: template_id
-          nullable: true
-      title: RunPlaybookRequest
-      additionalProperties: false
-    textql.rpc.public.playbook.GetReportByIdResponse:
-      type: object
-      properties:
-        report:
-          title: report
-          $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookReport'
-      title: GetReportByIdResponse
-      additionalProperties: false
-    textql.rpc.public.playbook.PreviewSlackReportResponse:
-      type: object
-      title: PreviewSlackReportResponse
-      additionalProperties: false
-    textql.rpc.public.playbook.GetMembersWithPlaybooksRequest:
-      type: object
-      title: GetMembersWithPlaybooksRequest
-      additionalProperties: false
-    textql.rpc.public.dashboard.QueryParameter:
-      type: object
-      properties:
-        name:
-          type: string
-          title: name
-        type:
-          type: string
-          title: type
-          description: '"string", "int", "float", "date"'
-        default:
-          type: string
-          title: default
-          nullable: true
-      title: QueryParameter
-      additionalProperties: false
-    textql.rpc.public.dashboard.DataSource:
-      type: object
-      allOf:
-      - type: object
-        properties:
-          type:
-            type: string
-            title: type
-            description: '"sql_query", "file", "python_code", "ontology_sql", or "library_tql"'
-          name:
-            type: string
-            title: name
-          parameters:
-            type: array
-            items:
-              $ref: '#/components/schemas/textql.rpc.public.dashboard.QueryParameter'
-            title: parameters
-            description: Parameters for live parameterized queries (sql_query type only)
-          grant:
-            title: grant
-            description: "Optional author allowlist gating this source to specific org roles / members.\n Presence forces the source out of the published snapshot (live-only, viewer-enforced)."
-            $ref: '#/components/schemas/textql.rpc.public.dashboard.Grant'
-      - oneOf:
-        - type: object
-          properties:
-            file:
-              title: file
-              $ref: '#/components/schemas/textql.rpc.public.dashboard.FileSource'
-          title: file
-          required:
-          - file
-        - type: object
-          properties:
-            libraryTql:
-              title: library_tql
-              $ref: '#/components/schemas/textql.rpc.public.dashboard.LibraryTQLSource'
-          title: library_tql
-          required:
-          - libraryTql
-        - type: object
-          properties:
-            ontologySql:
-              title: ontology_sql
-              $ref: '#/components/schemas/textql.rpc.public.dashboard.OntologySqlSource'
-          title: ontology_sql
-          required:
-          - ontologySql
-        - type: object
-          properties:
-            pythonCode:
-              title: python_code
-              $ref: '#/components/schemas/textql.rpc.public.dashboard.PythonCodeSource'
-          title: python_code
-          required:
-          - pythonCode
-        - type: object
-          properties:
-            sqlQuery:
-              title: sql_query
-              $ref: '#/components/schemas/textql.rpc.public.dashboard.SqlQuerySource'
-          title: sql_query
-          required:
-          - sqlQuery
-      title: DataSource
-      additionalProperties: false
-      description: Unified data source for dashboards
     textql.rpc.public.playbook.DeletePlaybookResponse:
       type: object
       properties:
@@ -3275,503 +2832,6 @@ components:
           title: deleted_at
           $ref: '#/components/schemas/google.protobuf.Timestamp'
       title: DeletePlaybookResponse
-      additionalProperties: false
-    textql.rpc.public.playbook.DeployPlaybookRequest:
-      type: object
-      properties:
-        playbookId:
-          type: string
-          title: playbook_id
-      title: DeployPlaybookRequest
-      additionalProperties: false
-    google.protobuf.Timestamp:
-      type: string
-      examples:
-      - '2023-01-15T01:30:15.01Z'
-      - '2024-12-25T12:00:00Z'
-      format: date-time
-      description: "A Timestamp represents a point in time independent of any time zone or local\n calendar, encoded as a count of seconds and fractions of seconds at\n nanosecond resolution. The count is relative to an epoch at UTC midnight on\n January 1, 1970, in the proleptic Gregorian calendar which extends the\n Gregorian calendar backwards to year one.\n\n All minutes are 60 seconds long. Leap seconds are \"smeared\" so that no leap\n second table is needed for interpretation, using a [24-hour linear\n smear](https://developers.google.com/time/smear).\n\n The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By\n restricting to that range, we ensure that we can convert to and from [RFC\n 3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.\n\n # Examples\n\n Example 1: Compute Timestamp from POSIX `time()`.\n\n     Timestamp timestamp;\n     timestamp.set_seconds(time(NULL));\n     timestamp.set_nanos(0);\n\n Example 2: Compute Timestamp from POSIX `gettimeofday()`.\n\n     struct timeval tv;\n     gettimeofday(&tv, NULL);\n\n     Timestamp timestamp;\n     timestamp.set_seconds(tv.tv_sec);\n     timestamp.set_nanos(tv.tv_usec * 1000);\n\n Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.\n\n     FILETIME ft;\n     GetSystemTimeAsFileTime(&ft);\n     UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;\n\n     // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z\n     // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.\n     Timestamp timestamp;\n     timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));\n     timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));\n\n Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.\n\n     long millis = System.currentTimeMillis();\n\n     Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)\n         .setNanos((int) ((millis % 1000) * 1000000)).build();\n\n Example 5: Compute Timestamp from Java `Instant.now()`.\n\n     Instant now = Instant.now();\n\n     Timestamp timestamp =\n         Timestamp.newBuilder().setSeconds(now.getEpochSecond())\n             .setNanos(now.getNano()).build();\n\n Example 6: Compute Timestamp from current time in Python.\n\n     timestamp = Timestamp()\n     timestamp.GetCurrentTime()\n\n # JSON Mapping\n\n In JSON format, the Timestamp type is encoded as a string in the\n [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the\n format is \"{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z\"\n where {year} is always expressed using four digits while {month}, {day},\n {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional\n seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),\n are optional. The \"Z\" suffix indicates the timezone (\"UTC\"); the timezone\n is required. A proto3 JSON serializer should always use UTC (as indicated by\n \"Z\") when printing the Timestamp type and a proto3 JSON parser should be\n able to accept both UTC and other timezones (as indicated by an offset).\n\n For example, \"2017-01-15T01:30:15.01Z\" encodes 15.01 seconds past\n 01:30 UTC on January 15, 2017.\n\n In JavaScript, one can convert a Date object to this format using the\n standard\n [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)\n method. In Python, a standard `datetime.datetime` object can be converted\n to this format using\n [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with\n the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use\n the Joda Time's [`ISODateTimeFormat.dateTime()`](\n http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()\n ) to obtain a formatter capable of generating timestamps in this format."
-    textql.rpc.public.playbook.SetSlackChannelContextPlaybookRequest:
-      type: object
-      properties:
-        playbookId:
-          type: string
-          title: playbook_id
-          description: The playbook to associate
-        slackChannelId:
-          type: string
-          title: slack_channel_id
-          description: Slack channel ID (e.g., C123...)
-      title: SetSlackChannelContextPlaybookRequest
-      additionalProperties: false
-      description: Associates a playbook to a Slack channel as its context playbook.
-    textql.rpc.public.dataset.SandboxDataFrame:
-      type: object
-      properties:
-        info:
-          title: info
-          $ref: '#/components/schemas/textql.rpc.public.dataframe.DataFrameInfo'
-      title: SandboxDataFrame
-      additionalProperties: false
-    textql.rpc.public.playbook.ChatAccessOverride:
-      type: object
-      properties:
-        memberId:
-          type: string
-          title: member_id
-          nullable: true
-        roleId:
-          type: string
-          title: role_id
-          nullable: true
-        accessType:
-          type: string
-          title: access_type
-          description: '"owner", "editor", "viewer"'
-      title: ChatAccessOverride
-      additionalProperties: false
-    textql.rpc.public.playbook.UpdatePlaybookResponse:
-      type: object
-      properties:
-        playbook:
-          title: playbook
-          $ref: '#/components/schemas/textql.rpc.public.playbook.Playbook'
-      title: UpdatePlaybookResponse
-      additionalProperties: false
-    textql.rpc.public.reports.ImageVariant:
-      type: string
-      title: ImageVariant
-      enum:
-      - IMAGE_VARIANT_CIRCULAR
-      - IMAGE_VARIANT_ROUNDED
-      - IMAGE_VARIANT_PILL
-      - IMAGE_VARIANT_NONE
-    textql.rpc.powerbi_selection.PowerBISelection:
-      type: object
-      properties:
-        workspaceId:
-          type: string
-          title: workspace_id
-        reportIds:
-          type: array
-          items:
-            type: string
-          title: report_ids
-        datasetIds:
-          type: array
-          items:
-            type: string
-          title: dataset_ids
-        workspaceName:
-          type: string
-          title: workspace_name
-        connectorId:
-          type: integer
-          title: connector_id
-          format: int32
-      title: PowerBISelection
-      additionalProperties: false
-      description: "PowerBISelection captures a chosen PowerBI workspace (and optionally the\n specific reports/datasets within it) for attaching to a chat. Field shape\n mirrors textql.rpc.public.paradigm.PowerBISelection; kept in a standalone\n package so it can be shared by paradigm_params without an import cycle\n (public/paradigm.proto already imports paradigm_params.proto)."
-    textql.rpc.identity.MemberPreview:
-      type: object
-      properties:
-        memberId:
-          type: string
-          title: member_id
-        memberEmail:
-          type: string
-          title: member_email
-          description: "the fields are optionally populated, depending on the context\n may require RPC fields such as `include_owner` to be set to true"
-          nullable: true
-        memberName:
-          type: string
-          title: member_name
-          nullable: true
-        memberPictureUrl:
-          type: string
-          title: member_picture_url
-          nullable: true
-      title: MemberPreview
-      additionalProperties: false
-    textql.rpc.public.playbook.GetPlaybookReportsRequest:
-      type: object
-      properties:
-        playbookId:
-          type: string
-          title: playbook_id
-          description: UUID
-        limit:
-          type: integer
-          title: limit
-          format: int32
-        offset:
-          type: integer
-          title: offset
-          format: int32
-        chatId:
-          type: string
-          title: chat_id
-          description: UUID
-          nullable: true
-        templateDataId:
-          type: string
-          title: template_data_id
-          description: UUID
-          nullable: true
-        batchRunId:
-          type: string
-          title: batch_run_id
-          description: UUID - filter reports by batch run
-          nullable: true
-      title: GetPlaybookReportsRequest
-      additionalProperties: false
-    textql.rpc.public.playbook.FavoriteReportResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          title: success
-      title: FavoriteReportResponse
-      additionalProperties: false
-    textql.rpc.public.playbook.GetPlaybooksPreviewsResponse:
-      type: object
-      properties:
-        playbooks:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookPreview'
-          title: playbooks
-      title: GetPlaybooksPreviewsResponse
-      additionalProperties: false
-    textql.rpc.public.playbook.DemoPlaybookResponse:
-      type: object
-      title: DemoPlaybookResponse
-      additionalProperties: false
-    textql.rpc.public.playbook.CreatePlaybookResponse:
-      type: object
-      properties:
-        playbook:
-          title: playbook
-          $ref: '#/components/schemas/textql.rpc.public.playbook.Playbook'
-      title: CreatePlaybookResponse
-      additionalProperties: false
-    textql.rpc.public.playbook.PlaybookStatus:
-      type: string
-      title: PlaybookStatus
-      enum:
-      - STATUS_UNKNOWN
-      - STATUS_ACTIVE
-      - STATUS_INACTIVE
-      - STATUS_EMPTY
-      - ALL_PLAYBOOKS
-    textql.rpc.public.reports.CardBlock:
-      type: object
-      properties:
-        blocks:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.reports.ReportBlock'
-          title: blocks
-      title: CardBlock
-      additionalProperties: false
-    textql.rpc.public.dashboard.PythonCodeSource:
-      type: object
-      properties:
-        code:
-          type: string
-          title: code
-      title: PythonCodeSource
-      additionalProperties: false
-    textql.rpc.public.playbook.UnsubscribeFromPlaybookRequest:
-      type: object
-      properties:
-        playbookId:
-          type: string
-          title: playbook_id
-      title: UnsubscribeFromPlaybookRequest
-      additionalProperties: false
-    textql.rpc.public.playbook.PlaybookRemoveDashboardRequest:
-      type: object
-      properties:
-        playbookId:
-          type: string
-          title: playbook_id
-        dashboardId:
-          type: string
-          title: dashboard_id
-      title: PlaybookRemoveDashboardRequest
-      additionalProperties: false
-    textql.rpc.public.playbook.PlaybookRemoveDatasetRequest:
-      type: object
-      properties:
-        playbookId:
-          type: string
-          title: playbook_id
-        datasetId:
-          type: string
-          title: dataset_id
-      title: PlaybookRemoveDatasetRequest
-      additionalProperties: false
-    textql.rpc.public.playbook.GetPlaybookRequest:
-      type: object
-      properties:
-        playbookId:
-          type: string
-          title: playbook_id
-        limit:
-          type: integer
-          title: limit
-          format: int32
-        offset:
-          type: integer
-          title: offset
-          format: int32
-      title: GetPlaybookRequest
-      additionalProperties: false
-    textql.rpc.public.playbook.UnsetSlackChannelContextPlaybookRequest:
-      type: object
-      properties:
-        slackChannelId:
-          type: string
-          title: slack_channel_id
-      title: UnsetSlackChannelContextPlaybookRequest
-      additionalProperties: false
-      description: Unsets the context playbook for a Slack channel by channel ID only.
-    connect.error:
-      type: object
-      properties:
-        code:
-          type: string
-          examples:
-          - not_found
-          enum:
-          - canceled
-          - unknown
-          - invalid_argument
-          - deadline_exceeded
-          - not_found
-          - already_exists
-          - permission_denied
-          - resource_exhausted
-          - failed_precondition
-          - aborted
-          - out_of_range
-          - unimplemented
-          - internal
-          - unavailable
-          - data_loss
-          - unauthenticated
-          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
-        message:
-          type: string
-          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/connect.error_details.Any'
-          description: A list of messages that carry the error details. There is no limit on the number of messages.
-      title: Connect Error
-      additionalProperties: true
-      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
-    textql.rpc.public.config_source.ConfigSource:
-      type: object
-      properties:
-        filePath:
-          type: string
-          title: file_path
-          description: Library file that defines the object
-        syncStatus:
-          title: sync_status
-          $ref: '#/components/schemas/textql.rpc.public.config_source.ConfigSyncStatus'
-        syncError:
-          type: string
-          title: sync_error
-          description: set only when sync_status = ERROR
-          nullable: true
-        breakingPatchId:
-          type: string
-          title: breaking_patch_id
-          description: patch that drove it to ERROR (Quick Revert target)
-          nullable: true
-      title: ConfigSource
-      additionalProperties: false
-      description: "Config-management metadata (provenance + reconcile state) for any file-based\n object. Presence on an object ⇒ the object is config-managed."
-    textql.rpc.public.playbook.SetTeamsChannelContextPlaybookRequest:
-      type: object
-      properties:
-        playbookId:
-          type: string
-          title: playbook_id
-        teamsChannelId:
-          type: string
-          title: teams_channel_id
-      title: SetTeamsChannelContextPlaybookRequest
-      additionalProperties: false
-    textql.rpc.public.playbook.SlackChannelPlaybookMapping:
-      type: object
-      properties:
-        playbookId:
-          type: string
-          title: playbook_id
-        slackChannelId:
-          type: string
-          title: slack_channel_id
-      title: SlackChannelPlaybookMapping
-      additionalProperties: false
-      description: Maps playbook to its associated Slack channel
-    textql.rpc.public.playbook.GetPlaybookLineageRequest:
-      type: object
-      properties:
-        playbookId:
-          type: string
-          title: playbook_id
-      title: GetPlaybookLineageRequest
-      additionalProperties: false
-    textql.rpc.paradigm_params.ParadigmType:
-      type: string
-      title: ParadigmType
-      enum:
-      - TYPE_UNKNOWN
-      - TYPE_UNIVERSAL
-    textql.rpc.public.playbook.Int32List:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            type: integer
-            format: int32
-          title: items
-      title: Int32List
-      additionalProperties: false
-    textql.rpc.public.playbook.DemoPlaybookRequest:
-      type: object
-      properties:
-        chatId:
-          type: string
-          title: chat_id
-        personName:
-          type: string
-          title: person_name
-        jobTitle:
-          type: string
-          title: job_title
-        targetEmail:
-          type: string
-          title: target_email
-      title: DemoPlaybookRequest
-      additionalProperties: false
-    textql.rpc.public.playbook.GetPlaybookReportsBatchResponse:
-      type: object
-      properties:
-        templateDataReports:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.playbook.TemplateDataReports'
-          title: template_data_reports
-      title: GetPlaybookReportsBatchResponse
-      additionalProperties: false
-      description: Batch response with reports grouped by template_data_id
-    textql.rpc.public.playbook.TemplateDataReports:
-      type: object
-      properties:
-        templateDataId:
-          type: string
-          title: template_data_id
-          description: UUID
-        reports:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookReport'
-          title: reports
-        totalCount:
-          type: integer
-          title: total_count
-          format: int32
-          description: Total number of reports for this template_data_id
-        previewCells:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.cells.PreviewCellRef'
-          title: preview_cells
-          description: Execution artifacts (charts, CSVs, etc.) from latest execution
-      title: TemplateDataReports
-      additionalProperties: false
-      description: Grouped reports by template_data_id
-    textql.rpc.public.playbook.ListAllTeamsChannelContextPlaybooksResponse:
-      type: object
-      properties:
-        mappings:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.playbook.TeamsChannelPlaybookMapping'
-          title: mappings
-      title: ListAllTeamsChannelContextPlaybooksResponse
-      additionalProperties: false
-    textql.rpc.public.dataset.PowerBIData:
-      type: object
-      properties:
-        connectorId:
-          type: integer
-          title: connector_id
-          format: int32
-        reportIds:
-          type: array
-          items:
-            type: string
-          title: report_ids
-        datasetIds:
-          type: array
-          items:
-            type: string
-          title: dataset_ids
-        reportNames:
-          type: array
-          items:
-            type: string
-          title: report_names
-        datasetNames:
-          type: array
-          items:
-            type: string
-          title: dataset_names
-        workspaceId:
-          type: string
-          title: workspace_id
-        workspaceName:
-          type: string
-          title: workspace_name
-      title: PowerBIData
-      additionalProperties: false
-    textql.rpc.public.dataframe.DataFrameInfo:
-      type: object
-      properties:
-        name:
-          type: string
-          title: name
-        external:
-          type: boolean
-          title: external
-        numRows:
-          type:
-          - integer
-          - string
-          title: num_rows
-          format: int64
-        numCols:
-          type:
-          - integer
-          - string
-          title: num_cols
-          format: int64
-        memoryUsage:
-          type:
-          - integer
-          - string
-          title: memory_usage
-          format: int64
-          description: in bytes
-      title: DataFrameInfo
       additionalProperties: false
     textql.rpc.public.playbook.UpdatePlaybookRequest:
       type: object
@@ -3901,389 +2961,27 @@ components:
           $ref: '#/components/schemas/textql.rpc.public.playbook.StringList'
       title: UpdatePlaybookRequest
       additionalProperties: false
-    textql.rpc.public.playbook.FilterCondition:
+    textql.rpc.public.playbook.MarkReportAsReadResponse:
       type: object
       properties:
-        field:
-          type: string
-          title: field
-          description: JSON field name
-        operator:
-          type: string
-          title: operator
-          description: '"equals", "contains", "starts_with", "ends_with", "gt", "gte", "lt", "lte"'
-        value:
-          type: string
-          title: value
-          description: Value to filter by
-      title: FilterCondition
-      additionalProperties: false
-      description: Filter condition for template data searches
-    textql.rpc.public.reports.SpacerBlock:
-      type: object
-      properties:
-        height:
-          type: integer
-          title: height
-          format: int32
-          nullable: true
-      title: SpacerBlock
-      additionalProperties: false
-    textql.rpc.public.playbook.GetReportByIdRequest:
-      type: object
-      properties:
-        reportId:
-          type: string
-          title: report_id
-      title: GetReportByIdRequest
-      additionalProperties: false
-    textql.rpc.public.playbook.FilterConditionList:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.playbook.FilterCondition'
-          title: items
-      title: FilterConditionList
-      additionalProperties: false
-    textql.rpc.public.reports.ListBlock:
-      type: object
-      properties:
-        heading:
-          type: string
-          title: heading
-          nullable: true
-        items:
-          type: array
-          items:
-            type: string
-          title: items
-      title: ListBlock
-      additionalProperties: false
-    textql.rpc.public.playbook.ListAllSlackChannelContextPlaybooksResponse:
-      type: object
-      properties:
-        mappings:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.playbook.SlackChannelPlaybookMapping'
-          title: mappings
-      title: ListAllSlackChannelContextPlaybooksResponse
-      additionalProperties: false
-    textql.rpc.public.playbook.FavoriteReportRequest:
-      type: object
-      properties:
-        playbookId:
-          type: string
-          title: playbook_id
-          description: UUID
-        reportId:
-          type: string
-          title: report_id
-          description: UUID
-      title: FavoriteReportRequest
-      additionalProperties: false
-      description: Favorite report messages
-    textql.rpc.public.playbook.GetPlaybooksResponse:
-      type: object
-      properties:
-        playbooks:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.playbook.Playbook'
-          title: playbooks
-        totalCount:
-          type: integer
-          title: total_count
-          format: int32
-      title: GetPlaybooksResponse
-      additionalProperties: false
-    textql.rpc.public.playbook.PlaybookReport:
-      type: object
-      properties:
-        id:
-          type: string
-          title: id
-          description: UUID
-        chatId:
-          type: string
-          title: chat_id
-          description: UUID
-        cellId:
-          type: string
-          title: cell_id
-          description: UUID
-        createdAt:
-          title: created_at
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        subject:
-          type: string
-          title: subject
-        summary:
-          type: string
-          title: summary
-        blocks:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.reports.ReportBlock'
-          title: blocks
-        htmlPreview:
-          type: string
-          title: html_preview
-        playbookId:
-          type: string
-          title: playbook_id
-          description: UUID
+        success:
+          type: boolean
+          title: success
         readAt:
           title: read_at
-          description: When the current member read this report, not present if the current member hasn't read it
-          nullable: true
           $ref: '#/components/schemas/google.protobuf.Timestamp'
-        playbookTemplateDataId:
-          type: string
-          title: playbook_template_data_id
-          description: References UUID
-          nullable: true
-      title: PlaybookReport
+      title: MarkReportAsReadResponse
       additionalProperties: false
-    textql.rpc.public.playbook.ListTeamsChannelsForContextPlaybookRequest:
+    textql.rpc.public.playbook.PlaybookRemoveDashboardRequest:
       type: object
       properties:
         playbookId:
           type: string
           title: playbook_id
-      title: ListTeamsChannelsForContextPlaybookRequest
-      additionalProperties: false
-    textql.rpc.public.playbook.ListSlackChannelsForContextPlaybookResponse:
-      type: object
-      properties:
-        slackChannelIds:
-          type: array
-          items:
-            type: string
-          title: slack_channel_ids
-          description: e.g., ["C123", "C456"]
-      title: ListSlackChannelsForContextPlaybookResponse
-      additionalProperties: false
-    textql.rpc.public.dashboard.DashboardStatus:
-      type: string
-      title: DashboardStatus
-      enum:
-      - DASHBOARD_STATUS_UNSPECIFIED
-      - DASHBOARD_STATUS_DRAFT
-      - DASHBOARD_STATUS_PUBLISHED
-    textql.rpc.public.playbook.UnsetTeamsChannelContextPlaybookRequest:
-      type: object
-      properties:
-        teamsChannelId:
+        dashboardId:
           type: string
-          title: teams_channel_id
-      title: UnsetTeamsChannelContextPlaybookRequest
-      additionalProperties: false
-    google.protobuf.Empty:
-      type: object
-      description: "A generic empty message that you can re-use to avoid defining duplicated\n empty messages in your APIs. A typical example is to use it as the request\n or the response type of an API method. For instance:\n\n     service Foo {\n       rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);\n     }"
-    textql.rpc.public.playbook.GetPlaybookResponse:
-      type: object
-      properties:
-        playbook:
-          title: playbook
-          $ref: '#/components/schemas/textql.rpc.public.playbook.Playbook'
-        reports:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookReport'
-          title: reports
-        totalReportsCount:
-          type: integer
-          title: total_reports_count
-          format: int32
-      title: GetPlaybookResponse
-      additionalProperties: false
-    textql.rpc.public.playbook.TeamsChannelPlaybookMapping:
-      type: object
-      properties:
-        playbookId:
-          type: string
-          title: playbook_id
-        teamsChannelId:
-          type: string
-          title: teams_channel_id
-      title: TeamsChannelPlaybookMapping
-      additionalProperties: false
-    textql.rpc.public.playbook.PreviewSlackReportRequest:
-      type: object
-      properties:
-        playbookId:
-          type: string
-          title: playbook_id
-        cell:
-          title: cell
-          $ref: '#/components/schemas/textql.rpc.public.cells.ReportCell'
-        chatId:
-          type: string
-          title: chat_id
-        slackChannelId:
-          type: string
-          title: slack_channel_id
-      title: PreviewSlackReportRequest
-      additionalProperties: false
-    textql.rpc.public.playbook.PlaybookRemoveDatasetResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          title: success
-      title: PlaybookRemoveDatasetResponse
-      additionalProperties: false
-    textql.rpc.public.playbook.ChatAccessOverrideList:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.playbook.ChatAccessOverride'
-          title: items
-      title: ChatAccessOverrideList
-      additionalProperties: false
-    textql.rpc.public.playbook.ListAllSlackChannelContextPlaybooksRequest:
-      type: object
-      title: ListAllSlackChannelContextPlaybooksRequest
-      additionalProperties: false
-      description: List all Slack channel context playbook mappings for organization
-    textql.rpc.public.cells.PreviewCellRef:
-      type: object
-      properties:
-        target:
-          type: string
-          title: target
-        previewType:
-          type: string
-          title: preview_type
-        name:
-          type: string
-          title: name
-        url:
-          type: string
-          title: url
-          nullable: true
-      title: PreviewCellRef
-      additionalProperties: false
-      description: Preview cell reference for report history
-    textql.rpc.public.playbook.PlaybookAttachDatasetRequest:
-      type: object
-      properties:
-        playbookId:
-          type: string
-          title: playbook_id
-        datasetId:
-          type: string
-          title: dataset_id
-      title: PlaybookAttachDatasetRequest
-      additionalProperties: false
-    textql.rpc.public.playbook.ListPlaybookBatchRunsResponse:
-      type: object
-      properties:
-        batchRuns:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookBatchRun'
-          title: batch_runs
-        totalCount:
-          type: integer
-          title: total_count
-          format: int32
-          description: Total number of batch runs for this playbook
-      title: ListPlaybookBatchRunsResponse
-      additionalProperties: false
-      description: Response containing list of batch runs
-    textql.rpc.public.playbook.GetChatReportsSummaryRequest:
-      type: object
-      properties:
-        chatId:
-          type: string
-          title: chat_id
-      title: GetChatReportsSummaryRequest
-      additionalProperties: false
-    textql.rpc.public.dashboard.DashboardCreator:
-      type: object
-      properties:
-        memberId:
-          type: string
-          title: member_id
-        memberEmail:
-          type: string
-          title: member_email
-          nullable: true
-        memberName:
-          type: string
-          title: member_name
-          nullable: true
-      title: DashboardCreator
-      additionalProperties: false
-    textql.rpc.public.playbook.UnsetSlackChannelContextPlaybookResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          title: success
-      title: UnsetSlackChannelContextPlaybookResponse
-      additionalProperties: false
-    textql.rpc.public.config_source.ConfigSyncStatus:
-      type: string
-      title: ConfigSyncStatus
-      enum:
-      - CONFIG_SYNC_STATUS_UNSPECIFIED
-      - CONFIG_SYNC_STATUS_SYNCING
-      - CONFIG_SYNC_STATUS_SYNCED
-      - CONFIG_SYNC_STATUS_ERROR
-    textql.rpc.public.playbook.GetChatReportsSummaryResponse:
-      type: object
-      properties:
-        reports:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.playbook.ChatReportSummary'
-          title: reports
-      title: GetChatReportsSummaryResponse
-      additionalProperties: false
-    textql.rpc.public.playbook.PlaybookAttachDashboardResponse:
-      type: object
-      properties:
-        dashboard:
-          title: dashboard
-          $ref: '#/components/schemas/textql.rpc.public.dashboard.Dashboard'
-      title: PlaybookAttachDashboardResponse
-      additionalProperties: false
-    textql.rpc.public.playbook.GetReportsWithFiltersRequest:
-      type: object
-      properties:
-        filters:
-          title: filters
-          $ref: '#/components/schemas/textql.rpc.public.playbook.ReportFilters'
-      title: GetReportsWithFiltersRequest
-      additionalProperties: false
-    textql.rpc.public.reports.DividerBlock:
-      type: object
-      title: DividerBlock
-      additionalProperties: false
-    textql.rpc.public.dashboard.FileSource:
-      type: object
-      properties:
-        datasetId:
-          type: string
-          title: dataset_id
-        fileName:
-          type: string
-          title: file_name
-          description: Original filename for display
-        sheetIndex:
-          type: integer
-          title: sheet_index
-          format: int32
-          description: Zero-based sheet index for multi-sheet files (default 0)
-      title: FileSource
+          title: dashboard_id
+      title: PlaybookRemoveDashboardRequest
       additionalProperties: false
     textql.rpc.public.dataset.Dataset:
       type: object
@@ -4370,21 +3068,242 @@ components:
           - tabularFile
       title: Dataset
       additionalProperties: false
-    textql.rpc.public.playbook.DuplicatePlaybookResponse:
-      type: object
-      properties:
-        playbook:
-          title: playbook
-          $ref: '#/components/schemas/textql.rpc.public.playbook.Playbook'
-      title: DuplicatePlaybookResponse
-      additionalProperties: false
-    textql.rpc.public.playbook.DeactivatePlaybookRequest:
+    textql.rpc.public.playbook.SubscribeToPlaybookRequest:
       type: object
       properties:
         playbookId:
           type: string
           title: playbook_id
-      title: DeactivatePlaybookRequest
+      title: SubscribeToPlaybookRequest
+      additionalProperties: false
+    textql.rpc.public.reports.CardBlock:
+      type: object
+      properties:
+        blocks:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.reports.ReportBlock'
+          title: blocks
+      title: CardBlock
+      additionalProperties: false
+    textql.rpc.public.playbook.PlaybookRemoveDatasetResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: PlaybookRemoveDatasetResponse
+      additionalProperties: false
+    textql.rpc.public.dashboard.Grant:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            type: string
+          title: roles
+          description: org role names
+        members:
+          type: array
+          items:
+            type: string
+          title: members
+          description: explicit member ids
+      title: Grant
+      additionalProperties: false
+      description: "Grant is an author allowlist gating a data source or compute function. A viewer whose\n effective role names intersect roles, or whose member id is listed in members, may call it.\n Absent grant = org-visible (today's behavior); an empty grant object is invalid."
+    textql.rpc.public.playbook.ListAllTeamsChannelContextPlaybooksRequest:
+      type: object
+      title: ListAllTeamsChannelContextPlaybooksRequest
+      additionalProperties: false
+    textql.rpc.public.reports.ImageVariant:
+      type: string
+      title: ImageVariant
+      enum:
+      - IMAGE_VARIANT_CIRCULAR
+      - IMAGE_VARIANT_ROUNDED
+      - IMAGE_VARIANT_PILL
+      - IMAGE_VARIANT_NONE
+    textql.rpc.public.playbook.GetReportsWithFiltersResponse:
+      type: object
+      properties:
+        reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookReport'
+          title: reports
+        reportsWithHeader:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookReport'
+          title: reports_with_header
+        totalCount:
+          type: integer
+          title: total_count
+          format: int32
+        unreadCount:
+          type: integer
+          title: unread_count
+          format: int32
+      title: GetReportsWithFiltersResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.GetReportByIdResponse:
+      type: object
+      properties:
+        report:
+          title: report
+          $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookReport'
+      title: GetReportByIdResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.DuplicatePlaybookRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+      title: DuplicatePlaybookRequest
+      additionalProperties: false
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+          - not_found
+          enum:
+          - canceled
+          - unknown
+          - invalid_argument
+          - deadline_exceeded
+          - not_found
+          - already_exists
+          - permission_denied
+          - resource_exhausted
+          - failed_precondition
+          - aborted
+          - out_of_range
+          - unimplemented
+          - internal
+          - unavailable
+          - data_loss
+          - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    textql.rpc.public.playbook.GetReportByIdRequest:
+      type: object
+      properties:
+        reportId:
+          type: string
+          title: report_id
+      title: GetReportByIdRequest
+      additionalProperties: false
+    textql.rpc.public.reports.ListBlock:
+      type: object
+      properties:
+        heading:
+          type: string
+          title: heading
+          nullable: true
+        items:
+          type: array
+          items:
+            type: string
+          title: items
+      title: ListBlock
+      additionalProperties: false
+    textql.rpc.public.reports.SpacerBlock:
+      type: object
+      properties:
+        height:
+          type: integer
+          title: height
+          format: int32
+          nullable: true
+      title: SpacerBlock
+      additionalProperties: false
+    textql.rpc.public.playbook.PlaybookLineageNode:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+        name:
+          type: string
+          title: name
+        status:
+          title: status
+          $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookStatus'
+        duplicatedAt:
+          title: duplicated_at
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        duplicatedBy:
+          title: duplicated_by
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.identity.MemberPreview'
+      title: PlaybookLineageNode
+      additionalProperties: false
+    textql.rpc.powerbi_selection.PowerBISelection:
+      type: object
+      properties:
+        workspaceId:
+          type: string
+          title: workspace_id
+        reportIds:
+          type: array
+          items:
+            type: string
+          title: report_ids
+        datasetIds:
+          type: array
+          items:
+            type: string
+          title: dataset_ids
+        workspaceName:
+          type: string
+          title: workspace_name
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+      title: PowerBISelection
+      additionalProperties: false
+      description: "PowerBISelection captures a chosen PowerBI workspace (and optionally the\n specific reports/datasets within it) for attaching to a chat. Field shape\n mirrors textql.rpc.public.paradigm.PowerBISelection; kept in a standalone\n package so it can be shared by paradigm_params without an import cycle\n (public/paradigm.proto already imports paradigm_params.proto)."
+    textql.rpc.public.playbook.SlackChannelPlaybookMapping:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+        slackChannelId:
+          type: string
+          title: slack_channel_id
+      title: SlackChannelPlaybookMapping
+      additionalProperties: false
+      description: Maps playbook to its associated Slack channel
+    textql.rpc.paradigm_params.ParadigmType:
+      type: string
+      title: ParadigmType
+      enum:
+      - TYPE_UNKNOWN
+      - TYPE_UNIVERSAL
+    textql.rpc.public.playbook.SetSlackChannelContextPlaybookResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: SetSlackChannelContextPlaybookResponse
       additionalProperties: false
     textql.rpc.public.playbook.ListTeamsChannelsForContextPlaybookResponse:
       type: object
@@ -4396,45 +3315,409 @@ components:
           title: teams_channel_ids
       title: ListTeamsChannelsForContextPlaybookResponse
       additionalProperties: false
-    textql.rpc.public.playbook.PlaybookTriggerType:
-      type: string
-      title: PlaybookTriggerType
-      enum:
-      - TRIGGER_TYPE_UNKNOWN
-      - TRIGGER_TYPE_CRON
-      - TRIGGER_TYPE_WEBHOOK
-    textql.rpc.public.playbook.UnsubscribeFromPlaybookResponse:
+    textql.rpc.public.paradigm.UniversalOptions:
+      type: object
+      properties:
+        connectorIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+          title: connector_ids
+        datasetId:
+          type: string
+          title: dataset_id
+          nullable: true
+        webSearchEnabled:
+          type: boolean
+          title: web_search_enabled
+        sqlEnabled:
+          type: boolean
+          title: sql_enabled
+        ontologyEnabled:
+          type: boolean
+          title: ontology_enabled
+        ontologyEditingEnabled:
+          type: boolean
+          title: ontology_editing_enabled
+        pythonEnabled:
+          type: boolean
+          title: python_enabled
+        autoApproveEnabled:
+          type: boolean
+          title: auto_approve_enabled
+        googleDriveEnabled:
+          type: boolean
+          title: google_drive_enabled
+        powerbiEnabled:
+          type: boolean
+          title: powerbi_enabled
+        contextEditingEnabled:
+          type: boolean
+          title: context_editing_enabled
+        formEditorEnabled:
+          type: boolean
+          title: form_editor_enabled
+        playbookToolsEnabled:
+          type: boolean
+          title: playbook_tools_enabled
+        microsoft365Enabled:
+          type: boolean
+          title: microsoft365_enabled
+        feedExplorerEnabled:
+          type: boolean
+          title: feed_explorer_enabled
+        bashEnabled:
+          type: boolean
+          title: bash_enabled
+        javascriptEnabled:
+          type: boolean
+          title: javascript_enabled
+        feedPostEnabled:
+          type: boolean
+          title: feed_post_enabled
+        feedCommentEnabled:
+          type: boolean
+          title: feed_comment_enabled
+        feedEngageEnabled:
+          type: boolean
+          title: feed_engage_enabled
+        streamlitEnabled:
+          type: boolean
+          title: streamlit_enabled
+        compactionDisabled:
+          type: boolean
+          title: compaction_disabled
+        gmailEnabled:
+          type: boolean
+          title: gmail_enabled
+        chatHistorySearchEnabled:
+          type: boolean
+          title: chat_history_search_enabled
+        googleCalendarEnabled:
+          type: boolean
+          title: google_calendar_enabled
+        emailOutputEnabled:
+          type: boolean
+          title: email_output_enabled
+        powerbiSelections:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.powerbi_selection.PowerBISelection'
+          title: powerbi_selections
+        smsMode:
+          type: boolean
+          title: sms_mode
+        apiAccessKeyIds:
+          type: array
+          items:
+            type: string
+          title: api_access_key_ids
+        feedEnabled:
+          type: boolean
+          title: feed_enabled
+          nullable: true
+        fileGenerationDisabled:
+          type: boolean
+          title: file_generation_disabled
+      title: UniversalOptions
+      additionalProperties: false
+    textql.rpc.public.playbook.StringList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: string
+          title: items
+      title: StringList
+      additionalProperties: false
+    textql.rpc.public.paradigm.ParadigmOptions:
+      type: object
+      oneOf:
+      - type: object
+        properties:
+          universal:
+            title: universal
+            $ref: '#/components/schemas/textql.rpc.public.paradigm.UniversalOptions'
+        title: universal
+        required:
+        - universal
+      title: ParadigmOptions
+      additionalProperties: false
+    textql.rpc.public.playbook.PlaybookAttachDatasetResponse:
+      type: object
+      properties:
+        dataset:
+          title: dataset
+          $ref: '#/components/schemas/textql.rpc.public.dataset.Dataset'
+      title: PlaybookAttachDatasetResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.PlaybookReport:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+          description: UUID
+        chatId:
+          type: string
+          title: chat_id
+          description: UUID
+        cellId:
+          type: string
+          title: cell_id
+          description: UUID
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        subject:
+          type: string
+          title: subject
+        summary:
+          type: string
+          title: summary
+        blocks:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.reports.ReportBlock'
+          title: blocks
+        htmlPreview:
+          type: string
+          title: html_preview
+        playbookId:
+          type: string
+          title: playbook_id
+          description: UUID
+        readAt:
+          title: read_at
+          description: When the current member read this report, not present if the current member hasn't read it
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        playbookTemplateDataId:
+          type: string
+          title: playbook_template_data_id
+          description: References UUID
+          nullable: true
+      title: PlaybookReport
+      additionalProperties: false
+    textql.rpc.public.reports.HeroBlock:
+      type: object
+      properties:
+        imageUrl:
+          type: string
+          title: image_url
+        imageAlt:
+          type: string
+          title: image_alt
+          nullable: true
+      title: HeroBlock
+      additionalProperties: false
+    textql.rpc.public.dataset.Document:
+      type: object
+      properties:
+        previewUrl:
+          type: string
+          title: preview_url
+        pageCount:
+          type: integer
+          title: page_count
+          format: int32
+      title: Document
+      additionalProperties: false
+    textql.rpc.public.playbook.CancelTemplateExecutionRequest:
+      type: object
+      properties:
+        templateHeaderId:
+          type: string
+          title: template_header_id
+        playbookId:
+          type: string
+          title: playbook_id
+      title: CancelTemplateExecutionRequest
+      additionalProperties: false
+      description: Request to cancel template execution
+    textql.rpc.public.playbook.GetPlaybooksPreviewsRequest:
+      type: object
+      properties:
+        onlySubscribed:
+          type: boolean
+          title: only_subscribed
+        statusFilter:
+          title: status_filter
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookStatus'
+      title: GetPlaybooksPreviewsRequest
+      additionalProperties: false
+    textql.rpc.public.playbook.GetPlaybookReportsBatchRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+          description: UUID
+        templateDataIds:
+          type: array
+          items:
+            type: string
+          title: template_data_ids
+          description: List of template data UUIDs to fetch reports for
+        limitPerTemplate:
+          type: integer
+          title: limit_per_template
+          format: int32
+          description: 'Max reports to return per template_data_id (default: 100)'
+        batchRunId:
+          type: string
+          title: batch_run_id
+          description: UUID - filter reports and artifacts by batch run
+          nullable: true
+      title: GetPlaybookReportsBatchRequest
+      additionalProperties: false
+      description: Batch request to get reports for multiple template data IDs efficiently
+    textql.rpc.public.playbook.GetPlaybookLineageRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+      title: GetPlaybookLineageRequest
+      additionalProperties: false
+    textql.rpc.public.playbook.DeletePlaybookRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+      title: DeletePlaybookRequest
+      additionalProperties: false
+    textql.rpc.public.reports.DividerBlock:
+      type: object
+      title: DividerBlock
+      additionalProperties: false
+    textql.rpc.public.dataframe.DataFrameInfo:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+        external:
+          type: boolean
+          title: external
+        numRows:
+          type:
+          - integer
+          - string
+          title: num_rows
+          format: int64
+        numCols:
+          type:
+          - integer
+          - string
+          title: num_cols
+          format: int64
+        memoryUsage:
+          type:
+          - integer
+          - string
+          title: memory_usage
+          format: int64
+          description: in bytes
+      title: DataFrameInfo
+      additionalProperties: false
+    textql.rpc.public.dashboard.LibraryTQLSource:
+      type: object
+      properties:
+        tqlPath:
+          type: string
+          title: tql_path
+          description: path to the .tql file in the Context Library (must end in .tql)
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+          description: SQL connector to execute the rendered query against
+        paramsJson:
+          type: string
+          title: params_json
+          description: JSON object mapping parameter names to values; "" means no params
+      title: LibraryTQLSource
+      additionalProperties: false
+      description: "References a .tql file stored in the Context Library. The file is rendered\n to SQL at fetch time and executed against the provided connector. Template\n parameter values are JSON-encoded in `params_json` (e.g. {\"region\":\"EU\"})."
+    textql.rpc.public.playbook.PlaybookRemoveDashboardResponse:
       type: object
       properties:
         success:
           type: boolean
           title: success
-      title: UnsubscribeFromPlaybookResponse
+      title: PlaybookRemoveDashboardResponse
       additionalProperties: false
-    textql.rpc.public.dataset.TableauData:
+    textql.rpc.public.playbook.DemoPlaybookResponse:
+      type: object
+      title: DemoPlaybookResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.SetTeamsChannelContextPlaybookRequest:
       type: object
       properties:
-        connectorId:
-          type: integer
-          title: connector_id
-          format: int32
-        projectId:
+        playbookId:
           type: string
-          title: project_id
-        projectName:
+          title: playbook_id
+        teamsChannelId:
           type: string
-          title: project_name
-        views:
+          title: teams_channel_id
+      title: SetTeamsChannelContextPlaybookRequest
+      additionalProperties: false
+    textql.rpc.public.playbook.SubscribeToPlaybookResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: SubscribeToPlaybookResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.PlaybookAttachDashboardResponse:
+      type: object
+      properties:
+        dashboard:
+          title: dashboard
+          $ref: '#/components/schemas/textql.rpc.public.dashboard.Dashboard'
+      title: PlaybookAttachDashboardResponse
+      additionalProperties: false
+    textql.rpc.public.dataset.DatasetType:
+      type: string
+      title: DatasetType
+      enum:
+      - TYPE_UNKNOWN
+      - TYPE_TABULAR
+      - TYPE_DATAFRAME
+      - TYPE_DOCUMENT
+      - TYPE_TABLEAU
+      - TYPE_IMAGE
+      - TYPE_TEXT
+      - TYPE_POWERBI
+      description: never change the names or numbers of existing dataset types!
+    textql.rpc.public.playbook.GetChatReportsSummaryResponse:
+      type: object
+      properties:
+        reports:
           type: array
           items:
-            $ref: '#/components/schemas/textql.rpc.public.tableau.TableauView'
-          title: views
-        datasources:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.tableau.TableauDatasource'
-          title: datasources
-      title: TableauData
+            $ref: '#/components/schemas/textql.rpc.public.playbook.ChatReportSummary'
+          title: reports
+      title: GetChatReportsSummaryResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.ListAllSlackChannelContextPlaybooksRequest:
+      type: object
+      title: ListAllSlackChannelContextPlaybooksRequest
+      additionalProperties: false
+      description: List all Slack channel context playbook mappings for organization
+    textql.rpc.public.playbook.GetChatReportsSummaryRequest:
+      type: object
+      properties:
+        chatId:
+          type: string
+          title: chat_id
+      title: GetChatReportsSummaryRequest
       additionalProperties: false
     textql.rpc.public.dataset.TabularFileCategory:
       type: string
@@ -4448,6 +3731,620 @@ components:
       - CATEGORY_PARQUET
       - CATEGORY_ODS
       description: never change the names or numbers of existing tabular file categories!
+    textql.rpc.public.common.SortDirection:
+      type: string
+      title: SortDirection
+      enum:
+      - SORT_DIRECTION_UNKNOWN
+      - SORT_DIRECTION_ASC
+      - SORT_DIRECTION_DESC
+      description: Common enum for sort direction used across multiple services
+    textql.rpc.public.dataset.PowerBIData:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        reportIds:
+          type: array
+          items:
+            type: string
+          title: report_ids
+        datasetIds:
+          type: array
+          items:
+            type: string
+          title: dataset_ids
+        reportNames:
+          type: array
+          items:
+            type: string
+          title: report_names
+        datasetNames:
+          type: array
+          items:
+            type: string
+          title: dataset_names
+        workspaceId:
+          type: string
+          title: workspace_id
+        workspaceName:
+          type: string
+          title: workspace_name
+      title: PowerBIData
+      additionalProperties: false
+    textql.rpc.public.playbook.GetPlaybookReportsRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+          description: UUID
+        limit:
+          type: integer
+          title: limit
+          format: int32
+        offset:
+          type: integer
+          title: offset
+          format: int32
+        chatId:
+          type: string
+          title: chat_id
+          description: UUID
+          nullable: true
+        templateDataId:
+          type: string
+          title: template_data_id
+          description: UUID
+          nullable: true
+        batchRunId:
+          type: string
+          title: batch_run_id
+          description: UUID - filter reports by batch run
+          nullable: true
+      title: GetPlaybookReportsRequest
+      additionalProperties: false
+    textql.rpc.public.playbook.PlaybookRemoveDatasetRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+        datasetId:
+          type: string
+          title: dataset_id
+      title: PlaybookRemoveDatasetRequest
+      additionalProperties: false
+    textql.rpc.public.playbook.ListPlaybookBatchRunsResponse:
+      type: object
+      properties:
+        batchRuns:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookBatchRun'
+          title: batch_runs
+        totalCount:
+          type: integer
+          title: total_count
+          format: int32
+          description: Total number of batch runs for this playbook
+      title: ListPlaybookBatchRunsResponse
+      additionalProperties: false
+      description: Response containing list of batch runs
+    textql.rpc.public.playbook.ListAllSlackChannelContextPlaybooksResponse:
+      type: object
+      properties:
+        mappings:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.playbook.SlackChannelPlaybookMapping'
+          title: mappings
+      title: ListAllSlackChannelContextPlaybooksResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.UpdatePlaybookResponse:
+      type: object
+      properties:
+        playbook:
+          title: playbook
+          $ref: '#/components/schemas/textql.rpc.public.playbook.Playbook'
+      title: UpdatePlaybookResponse
+      additionalProperties: false
+    textql.rpc.public.reports.TextBlock:
+      type: object
+      properties:
+        heading:
+          type: string
+          title: heading
+          nullable: true
+        content:
+          type: string
+          title: content
+          nullable: true
+      title: TextBlock
+      additionalProperties: false
+    textql.rpc.public.playbook.GetMembersWithPlaybooksResponse:
+      type: object
+      properties:
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.identity.MemberPreview'
+          title: members
+      title: GetMembersWithPlaybooksResponse
+      additionalProperties: false
+    textql.rpc.public.cells.PreviewCellRef:
+      type: object
+      properties:
+        target:
+          type: string
+          title: target
+        previewType:
+          type: string
+          title: preview_type
+        name:
+          type: string
+          title: name
+        url:
+          type: string
+          title: url
+          nullable: true
+      title: PreviewCellRef
+      additionalProperties: false
+      description: Preview cell reference for report history
+    textql.rpc.public.dataset.TabularFile:
+      type: object
+      properties:
+        category:
+          title: category
+          $ref: '#/components/schemas/textql.rpc.public.dataset.TabularFileCategory'
+        rowCount:
+          type:
+          - integer
+          - string
+          title: row_count
+          format: int64
+        columnCount:
+          type:
+          - integer
+          - string
+          title: column_count
+          format: int64
+        sheetCount:
+          type: integer
+          title: sheet_count
+          format: int32
+      title: TabularFile
+      additionalProperties: false
+    textql.rpc.public.playbook.FilterConditionList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.playbook.FilterCondition'
+          title: items
+      title: FilterConditionList
+      additionalProperties: false
+    textql.rpc.public.playbook.GetPlaybookReportsBatchResponse:
+      type: object
+      properties:
+        templateDataReports:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.playbook.TemplateDataReports'
+          title: template_data_reports
+      title: GetPlaybookReportsBatchResponse
+      additionalProperties: false
+      description: Batch response with reports grouped by template_data_id
+    textql.rpc.public.playbook.PlaybookSortField:
+      type: string
+      title: PlaybookSortField
+      enum:
+      - SORT_FIELD_UNKNOWN
+      - SORT_FIELD_NAME
+      - SORT_FIELD_CREATED_AT
+      - SORT_FIELD_UPDATED_AT
+      - SORT_FIELD_SCHEDULE
+    textql.rpc.public.playbook.UnsubscribeFromPlaybookResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: UnsubscribeFromPlaybookResponse
+      additionalProperties: false
+    textql.rpc.public.dashboard.FileSource:
+      type: object
+      properties:
+        datasetId:
+          type: string
+          title: dataset_id
+        fileName:
+          type: string
+          title: file_name
+          description: Original filename for display
+        sheetIndex:
+          type: integer
+          title: sheet_index
+          format: int32
+          description: Zero-based sheet index for multi-sheet files (default 0)
+      title: FileSource
+      additionalProperties: false
+    textql.rpc.public.playbook.DeployPlaybookResponse:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+        deployedAt:
+          title: deployed_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: DeployPlaybookResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.PlaybookReportStyle:
+      type: string
+      title: PlaybookReportStyle
+      enum:
+      - REPORT_STYLE_UNKNOWN
+      - EXECUTIVE_REPORT
+      - VERBOSE
+      - CONCISE
+    textql.rpc.public.playbook.MarkReportAsReadRequest:
+      type: object
+      properties:
+        reportId:
+          type: string
+          title: report_id
+          description: UUID
+      title: MarkReportAsReadRequest
+      additionalProperties: false
+      description: Report read tracking messages
+    textql.rpc.public.playbook.ListSlackChannelsForContextPlaybookRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+          description: UUID
+      title: ListSlackChannelsForContextPlaybookRequest
+      additionalProperties: false
+      description: Lists Slack channel IDs that have this playbook set as the context playbook.
+    textql.rpc.public.playbook.FavoriteReportRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+          description: UUID
+        reportId:
+          type: string
+          title: report_id
+          description: UUID
+      title: FavoriteReportRequest
+      additionalProperties: false
+      description: Favorite report messages
+    textql.rpc.public.playbook.CreatePlaybookResponse:
+      type: object
+      properties:
+        playbook:
+          title: playbook
+          $ref: '#/components/schemas/textql.rpc.public.playbook.Playbook'
+      title: CreatePlaybookResponse
+      additionalProperties: false
+    textql.rpc.public.tableau.TableauView:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        name:
+          type: string
+          title: name
+        contentUrl:
+          type: string
+          title: content_url
+        workbookId:
+          type: string
+          title: workbook_id
+        workbookName:
+          type: string
+          title: workbook_name
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        embedUrl:
+          type: string
+          title: embed_url
+      title: TableauView
+      additionalProperties: false
+    textql.rpc.public.playbook.GetPlaybooksResponse:
+      type: object
+      properties:
+        playbooks:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.playbook.Playbook'
+          title: playbooks
+        totalCount:
+          type: integer
+          title: total_count
+          format: int32
+      title: GetPlaybooksResponse
+      additionalProperties: false
+    textql.rpc.public.dashboard.DashboardStatus:
+      type: string
+      title: DashboardStatus
+      enum:
+      - DASHBOARD_STATUS_UNSPECIFIED
+      - DASHBOARD_STATUS_DRAFT
+      - DASHBOARD_STATUS_PUBLISHED
+    textql.rpc.public.playbook.DemoPlaybookRequest:
+      type: object
+      properties:
+        chatId:
+          type: string
+          title: chat_id
+        personName:
+          type: string
+          title: person_name
+        jobTitle:
+          type: string
+          title: job_title
+        targetEmail:
+          type: string
+          title: target_email
+      title: DemoPlaybookRequest
+      additionalProperties: false
+    textql.rpc.public.dashboard.DashboardType:
+      type: string
+      title: DashboardType
+      enum:
+      - DASHBOARD_TYPE_UNSPECIFIED
+      - DASHBOARD_TYPE_STREAMLIT
+      - DASHBOARD_TYPE_HTML
+      - DASHBOARD_TYPE_DASH
+    google.protobuf.Timestamp:
+      type: string
+      examples:
+      - '2023-01-15T01:30:15.01Z'
+      - '2024-12-25T12:00:00Z'
+      format: date-time
+      description: "A Timestamp represents a point in time independent of any time zone or local\n calendar, encoded as a count of seconds and fractions of seconds at\n nanosecond resolution. The count is relative to an epoch at UTC midnight on\n January 1, 1970, in the proleptic Gregorian calendar which extends the\n Gregorian calendar backwards to year one.\n\n All minutes are 60 seconds long. Leap seconds are \"smeared\" so that no leap\n second table is needed for interpretation, using a [24-hour linear\n smear](https://developers.google.com/time/smear).\n\n The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By\n restricting to that range, we ensure that we can convert to and from [RFC\n 3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.\n\n # Examples\n\n Example 1: Compute Timestamp from POSIX `time()`.\n\n     Timestamp timestamp;\n     timestamp.set_seconds(time(NULL));\n     timestamp.set_nanos(0);\n\n Example 2: Compute Timestamp from POSIX `gettimeofday()`.\n\n     struct timeval tv;\n     gettimeofday(&tv, NULL);\n\n     Timestamp timestamp;\n     timestamp.set_seconds(tv.tv_sec);\n     timestamp.set_nanos(tv.tv_usec * 1000);\n\n Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.\n\n     FILETIME ft;\n     GetSystemTimeAsFileTime(&ft);\n     UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;\n\n     // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z\n     // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.\n     Timestamp timestamp;\n     timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));\n     timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));\n\n Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.\n\n     long millis = System.currentTimeMillis();\n\n     Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)\n         .setNanos((int) ((millis % 1000) * 1000000)).build();\n\n Example 5: Compute Timestamp from Java `Instant.now()`.\n\n     Instant now = Instant.now();\n\n     Timestamp timestamp =\n         Timestamp.newBuilder().setSeconds(now.getEpochSecond())\n             .setNanos(now.getNano()).build();\n\n Example 6: Compute Timestamp from current time in Python.\n\n     timestamp = Timestamp()\n     timestamp.GetCurrentTime()\n\n # JSON Mapping\n\n In JSON format, the Timestamp type is encoded as a string in the\n [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the\n format is \"{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z\"\n where {year} is always expressed using four digits while {month}, {day},\n {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional\n seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),\n are optional. The \"Z\" suffix indicates the timezone (\"UTC\"); the timezone\n is required. A proto3 JSON serializer should always use UTC (as indicated by\n \"Z\") when printing the Timestamp type and a proto3 JSON parser should be\n able to accept both UTC and other timezones (as indicated by an offset).\n\n For example, \"2017-01-15T01:30:15.01Z\" encodes 15.01 seconds past\n 01:30 UTC on January 15, 2017.\n\n In JavaScript, one can convert a Date object to this format using the\n standard\n [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)\n method. In Python, a standard `datetime.datetime` object can be converted\n to this format using\n [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with\n the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use\n the Joda Time's [`ISODateTimeFormat.dateTime()`](\n http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()\n ) to obtain a formatter capable of generating timestamps in this format."
+    textql.rpc.public.config_source.ConfigSyncStatus:
+      type: string
+      title: ConfigSyncStatus
+      enum:
+      - CONFIG_SYNC_STATUS_UNSPECIFIED
+      - CONFIG_SYNC_STATUS_SYNCING
+      - CONFIG_SYNC_STATUS_SYNCED
+      - CONFIG_SYNC_STATUS_ERROR
+    textql.rpc.public.playbook.ChatAccessMode:
+      type: string
+      title: ChatAccessMode
+      enum:
+      - CHAT_ACCESS_MODE_INHERIT
+      - CHAT_ACCESS_MODE_CUSTOM
+    textql.rpc.public.playbook.GetActiveSubscribedPlaybooksCountResponse:
+      type: object
+      properties:
+        count:
+          type: integer
+          title: count
+          format: int32
+      title: GetActiveSubscribedPlaybooksCountResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.GetPlaybookRequest:
+      type: object
+      properties:
+        playbookId:
+          type: string
+          title: playbook_id
+        limit:
+          type: integer
+          title: limit
+          format: int32
+        offset:
+          type: integer
+          title: offset
+          format: int32
+      title: GetPlaybookRequest
+      additionalProperties: false
+    textql.rpc.public.playbook.GetPlaybookBatchRunResponse:
+      type: object
+      properties:
+        batchRun:
+          title: batch_run
+          $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookBatchRun'
+      title: GetPlaybookBatchRunResponse
+      additionalProperties: false
+      description: Response containing batch run details
+    textql.rpc.public.playbook.GetPlaybookBatchRunRequest:
+      type: object
+      properties:
+        batchRunId:
+          type: string
+          title: batch_run_id
+          description: UUID
+      title: GetPlaybookBatchRunRequest
+      additionalProperties: false
+      description: Request to get a specific batch run
+    textql.rpc.public.playbook.TemplateDataReports:
+      type: object
+      properties:
+        templateDataId:
+          type: string
+          title: template_data_id
+          description: UUID
+        reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookReport'
+          title: reports
+        totalCount:
+          type: integer
+          title: total_count
+          format: int32
+          description: Total number of reports for this template_data_id
+        previewCells:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.cells.PreviewCellRef'
+          title: preview_cells
+          description: Execution artifacts (charts, CSVs, etc.) from latest execution
+      title: TemplateDataReports
+      additionalProperties: false
+      description: Grouped reports by template_data_id
+    textql.rpc.public.playbook.PlaybookStatus:
+      type: string
+      title: PlaybookStatus
+      enum:
+      - STATUS_UNKNOWN
+      - STATUS_ACTIVE
+      - STATUS_INACTIVE
+      - STATUS_EMPTY
+      - ALL_PLAYBOOKS
+    textql.rpc.public.playbook.ListAllTeamsChannelContextPlaybooksResponse:
+      type: object
+      properties:
+        mappings:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.playbook.TeamsChannelPlaybookMapping'
+          title: mappings
+      title: ListAllTeamsChannelContextPlaybooksResponse
+      additionalProperties: false
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+      - 1
+      description: Define the version of the Connect protocol
+      const: 1
+      default: 1
+    textql.rpc.public.config_source.ConfigSource:
+      type: object
+      properties:
+        filePath:
+          type: string
+          title: file_path
+          description: Library file that defines the object
+        syncStatus:
+          title: sync_status
+          $ref: '#/components/schemas/textql.rpc.public.config_source.ConfigSyncStatus'
+        syncError:
+          type: string
+          title: sync_error
+          description: set only when sync_status = ERROR
+          nullable: true
+        breakingPatchId:
+          type: string
+          title: breaking_patch_id
+          description: patch that drove it to ERROR (Quick Revert target)
+          nullable: true
+      title: ConfigSource
+      additionalProperties: false
+      description: "Config-management metadata (provenance + reconcile state) for any file-based\n object. Presence on an object ⇒ the object is config-managed."
+    textql.rpc.public.playbook.DuplicatePlaybookResponse:
+      type: object
+      properties:
+        playbook:
+          title: playbook
+          $ref: '#/components/schemas/textql.rpc.public.playbook.Playbook'
+      title: DuplicatePlaybookResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.ChatAccessOverride:
+      type: object
+      properties:
+        memberId:
+          type: string
+          title: member_id
+          nullable: true
+        roleId:
+          type: string
+          title: role_id
+          nullable: true
+        accessType:
+          type: string
+          title: access_type
+          description: '"owner", "editor", "viewer"'
+      title: ChatAccessOverride
+      additionalProperties: false
+    google.protobuf.Empty:
+      type: object
+      description: "A generic empty message that you can re-use to avoid defining duplicated\n empty messages in your APIs. A typical example is to use it as the request\n or the response type of an API method. For instance:\n\n     service Foo {\n       rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);\n     }"
+    textql.rpc.public.playbook.GetPlaybookReportsResponse:
+      type: object
+      properties:
+        reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookReport'
+          title: reports
+        totalCount:
+          type: integer
+          title: total_count
+          format: int32
+      title: GetPlaybookReportsResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.GetPlaybookResponse:
+      type: object
+      properties:
+        playbook:
+          title: playbook
+          $ref: '#/components/schemas/textql.rpc.public.playbook.Playbook'
+        reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookReport'
+          title: reports
+        totalReportsCount:
+          type: integer
+          title: total_reports_count
+          format: int32
+      title: GetPlaybookResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.GetPlaybooksPreviewsResponse:
+      type: object
+      properties:
+        playbooks:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.playbook.PlaybookPreview'
+          title: playbooks
+      title: GetPlaybooksPreviewsResponse
+      additionalProperties: false
+    textql.rpc.public.playbook.PlaybookBatchRun:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+          description: UUID
+        playbookId:
+          type: string
+          title: playbook_id
+          description: UUID
+        templateHeaderId:
+          type: string
+          title: template_header_id
+          description: UUID
+        templateDataIds:
+          type: array
+          items:
+            type: string
+          title: template_data_ids
+          description: List of UUID references
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: PlaybookBatchRun
+      additionalProperties: false
+      description: Batch run record
     textql.rpc.public.dataset.DatasetPermission:
       type: string
       title: DatasetPermission
@@ -4456,6 +4353,109 @@ components:
       - PERMISSION_READ
       - PERMISSION_EDIT
       - PERMISSION_ADMIN
+    textql.rpc.public.playbook.CreatePlaybookRequest:
+      type: object
+      title: CreatePlaybookRequest
+      additionalProperties: false
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
+          type: string
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+          - type: object
+            title: Any
+            additionalProperties: true
+            description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
+    textql.rpc.public.dashboard.DashboardCreator:
+      type: object
+      properties:
+        memberId:
+          type: string
+          title: member_id
+        memberEmail:
+          type: string
+          title: member_email
+          nullable: true
+        memberName:
+          type: string
+          title: member_name
+          nullable: true
+      title: DashboardCreator
+      additionalProperties: false
+    textql.rpc.public.playbook.FilterCondition:
+      type: object
+      properties:
+        field:
+          type: string
+          title: field
+          description: JSON field name
+        operator:
+          type: string
+          title: operator
+          description: '"equals", "contains", "starts_with", "ends_with", "gt", "gte", "lt", "lte"'
+        value:
+          type: string
+          title: value
+          description: Value to filter by
+      title: FilterCondition
+      additionalProperties: false
+      description: Filter condition for template data searches
+    textql.rpc.public.reports.ImageBlock:
+      type: object
+      properties:
+        imageUrl:
+          type: string
+          title: image_url
+        imageAlt:
+          type: string
+          title: image_alt
+          nullable: true
+        variant:
+          title: variant
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.public.reports.ImageVariant'
+      title: ImageBlock
+      additionalProperties: false
+    textql.rpc.public.playbook.Int32List:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: integer
+            format: int32
+          title: items
+      title: Int32List
+      additionalProperties: false
+    textql.rpc.public.dashboard.SqlQuerySource:
+      type: object
+      properties:
+        query:
+          type: string
+          title: query
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        predicate:
+          type: string
+          title: predicate
+          description: Optional viewer row-filter appended server-side at live-query time; binds :viewer_member_id / :viewer_email. Presence forces the source out of the published snapshot.
+      title: SqlQuerySource
+      additionalProperties: false
   securitySchemes:
     apiKey:
       type: apiKey

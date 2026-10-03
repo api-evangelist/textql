@@ -361,185 +361,68 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
+  responses:
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: internal
+              message: Internal server error
+    Forbidden:
+      description: Insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: permission_denied
+              message: Insufficient permissions
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: not_found
+              message: Resource not found
+    Unauthorized:
+      description: Missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: unauthenticated
+              message: Authentication required
+    RateLimited:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: rate_limit_exceeded
+              message: Rate limit exceeded
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: invalid_request
+              message: Invalid request body
   schemas:
-    ListChatsResponse:
-      type: object
-      required:
-      - chats
-      - total_count
-      properties:
-        chats:
-          type: array
-          items:
-            $ref: '#/components/schemas/ChatSummary'
-        total_count:
-          type: integer
-          format: int32
-    ChatMessage:
-      type: object
-      properties:
-        role:
-          type: string
-          enum:
-          - user
-          - assistant
-        content:
-          type: string
-          description: Markdown content
-        created_at:
-          type: string
-          format: date-time
-        cell_id:
-          type: string
-          format: uuid
-          description: ID of the cell this message came from. Assets reference it via their message_cell_id.
-        assets:
-          type: array
-          items:
-            $ref: '#/components/schemas/Asset'
-          description: Assets produced while generating this message. Only present on assistant messages.
-    ChatSummary:
-      type: object
-      required:
-      - id
-      properties:
-        id:
-          type: string
-          format: uuid
-        summary:
-          type: string
-          description: Chat title or summary
-        timestamp:
-          type: string
-          format: date-time
-          description: When the chat was created
-        updated_at:
-          type: string
-          format: date-time
-          description: When the chat was last updated
-        creator_email:
-          type: string
-          description: Email of the user who created the chat
-        preview:
-          type: string
-          description: Snippet of the first user message (up to 200 characters)
-        source:
-          type: string
-          description: Chat source (e.g. thread, playbook, slack, feed)
-        model:
-          type: string
-          description: LLM model name (e.g. default, sonnet_4, opus_4)
-        is_running:
-          type: boolean
-          description: Whether the chat is currently processing a request
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-              description: Machine-readable error code
-              enum:
-              - invalid_request
-              - unauthenticated
-              - permission_denied
-              - not_found
-              - conflict
-              - rate_limit_exceeded
-              - internal
-              - timeout
-              - cancelled
-              - execution_failed
-              - no_report
-            message:
-              type: string
-              description: Human-readable error message
-    ChatRequest:
-      type: object
-      required:
-      - question
-      properties:
-        question:
-          type: string
-          description: The question to ask
-        chat_id:
-          type: string
-          format: uuid
-          description: Existing chat ID to continue a conversation
-        model:
-          type: string
-          description: Optional model to run this chat on, as an `id` from `GET /v2/models` (e.g. `gemini_3_5_flash`). Omit to use the organization's default model. Only valid on new chats — supplying it together with `chat_id` returns 400, and a model the caller's org/role does not permit returns 403.
-          example: gemini_3_5_flash
-        tools:
-          type: object
-          description: Tool configuration. Enable specific tools for this chat session.
-          properties:
-            connector_ids:
-              type: array
-              items:
-                type: integer
-                format: int32
-              description: Connector IDs to query
-            sql_enabled:
-              type: boolean
-              description: Enable SQL query generation
-            python_enabled:
-              type: boolean
-              description: Enable Python code execution
-            web_search_enabled:
-              type: boolean
-              description: Enable web search
-            ontology_enabled:
-              type: boolean
-              description: Enable ontology-based queries
-            tableau_enabled:
-              type: boolean
-              description: Enable Tableau integration
-            powerbi_enabled:
-              type: boolean
-              description: Enable Power BI integration
-            google_drive_enabled:
-              type: boolean
-              description: Enable Google Drive integration
-        connector_ids:
-          type: array
-          items:
-            type: integer
-            format: int32
-          description: Connector IDs to query (shorthand for tools.connector_ids)
-    ListModelsResponse:
-      type: object
-      properties:
-        models:
-          type: array
-          items:
-            $ref: '#/components/schemas/Model'
-      required:
-      - models
-    Model:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Model identifier — pass this as the `model` field on POST /v2/chats.
-          example: gemini_3_5_flash
-        provider:
-          type: string
-          description: Inference provider for the model.
-          example: google
-        supports_fast_mode:
-          type: boolean
-          description: Whether the model can run in fast mode.
-        default:
-          type: boolean
-          description: Whether this is the model the org default currently resolves to.
-      required:
-      - id
-      - provider
-      - supports_fast_mode
-      - default
     ChatCell:
       type: object
       properties:
@@ -603,6 +486,19 @@ components:
           items:
             $ref: '#/components/schemas/Asset'
           description: Assets this cell produced
+    GetChatCellsResponse:
+      type: object
+      properties:
+        chat_id:
+          type: string
+          format: uuid
+        cells:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatCell'
+        has_more:
+          type: boolean
+          description: Whether older cells exist beyond this page
     GetChatResponse:
       type: object
       properties:
@@ -623,19 +519,128 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Asset'
-    GetChatCellsResponse:
+    ChatRequest:
       type: object
+      required:
+      - question
       properties:
+        question:
+          type: string
+          description: The question to ask
         chat_id:
           type: string
           format: uuid
-        cells:
+          description: Existing chat ID to continue a conversation
+        model:
+          type: string
+          description: Optional model to run this chat on, as an `id` from `GET /v2/models` (e.g. `gemini_3_5_flash`). Omit to use the organization's default model. Only valid on new chats — supplying it together with `chat_id` returns 400, and a model the caller's org/role does not permit returns 403.
+          example: gemini_3_5_flash
+        tools:
+          type: object
+          description: Tool configuration. Enable specific tools for this chat session.
+          properties:
+            connector_ids:
+              type: array
+              items:
+                type: integer
+                format: int32
+              description: Connector IDs to query
+            sql_enabled:
+              type: boolean
+              description: Enable SQL query generation
+            python_enabled:
+              type: boolean
+              description: Enable Python code execution
+            web_search_enabled:
+              type: boolean
+              description: Enable web search
+            ontology_enabled:
+              type: boolean
+              description: Enable ontology-based queries
+            tableau_enabled:
+              type: boolean
+              description: Enable Tableau integration
+            powerbi_enabled:
+              type: boolean
+              description: Enable Power BI integration
+            google_drive_enabled:
+              type: boolean
+              description: Enable Google Drive integration
+        connector_ids:
           type: array
           items:
-            $ref: '#/components/schemas/ChatCell'
-        has_more:
-          type: boolean
-          description: Whether older cells exist beyond this page
+            type: integer
+            format: int32
+          description: Connector IDs to query (shorthand for tools.connector_ids)
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code
+              enum:
+              - invalid_request
+              - unauthenticated
+              - permission_denied
+              - not_found
+              - conflict
+              - rate_limit_exceeded
+              - internal
+              - timeout
+              - cancelled
+              - execution_failed
+              - no_report
+            message:
+              type: string
+              description: Human-readable error message
+    ChatMessage:
+      type: object
+      properties:
+        role:
+          type: string
+          enum:
+          - user
+          - assistant
+        content:
+          type: string
+          description: Markdown content
+        created_at:
+          type: string
+          format: date-time
+        cell_id:
+          type: string
+          format: uuid
+          description: ID of the cell this message came from. Assets reference it via their message_cell_id.
+        assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Asset'
+          description: Assets produced while generating this message. Only present on assistant messages.
+    ListModelsResponse:
+      type: object
+      properties:
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/Model'
+      required:
+      - models
+    ListChatsResponse:
+      type: object
+      required:
+      - chats
+      - total_count
+      properties:
+        chats:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatSummary'
+        total_count:
+          type: integer
+          format: int32
     Asset:
       type: object
       properties:
@@ -687,67 +692,62 @@ components:
           items:
             $ref: '#/components/schemas/Asset'
           description: Assets produced by this response. Earlier turns' assets are available via Get Chat.
-  responses:
-    RateLimited:
-      description: Rate limit exceeded
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: rate_limit_exceeded
-              message: Rate limit exceeded
-    Forbidden:
-      description: Insufficient permissions
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: permission_denied
-              message: Insufficient permissions
-    NotFound:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: not_found
-              message: Resource not found
-    InternalError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: internal
-              message: Internal server error
-    Unauthorized:
-      description: Missing or invalid authentication
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: unauthenticated
-              message: Authentication required
-    BadRequest:
-      description: Invalid request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: invalid_request
-              message: Invalid request body
+    ChatSummary:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
+          format: uuid
+        summary:
+          type: string
+          description: Chat title or summary
+        timestamp:
+          type: string
+          format: date-time
+          description: When the chat was created
+        updated_at:
+          type: string
+          format: date-time
+          description: When the chat was last updated
+        creator_email:
+          type: string
+          description: Email of the user who created the chat
+        preview:
+          type: string
+          description: Snippet of the first user message (up to 200 characters)
+        source:
+          type: string
+          description: Chat source (e.g. thread, playbook, slack, feed)
+        model:
+          type: string
+          description: LLM model name (e.g. default, sonnet_4, opus_4)
+        is_running:
+          type: boolean
+          description: Whether the chat is currently processing a request
+    Model:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Model identifier — pass this as the `model` field on POST /v2/chats.
+          example: gemini_3_5_flash
+        provider:
+          type: string
+          description: Inference provider for the model.
+          example: google
+        supports_fast_mode:
+          type: boolean
+          description: Whether the model can run in fast mode.
+        default:
+          type: boolean
+          description: Whether this is the model the org default currently resolves to.
+      required:
+      - id
+      - provider
+      - supports_fast_mode
+      - default
   parameters:
     ChatId:
       name: id
