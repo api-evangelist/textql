@@ -111,6 +111,26 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   responses:
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: invalid_request
+              message: Invalid request body
+    RateLimited:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: rate_limit_exceeded
+              message: Rate limit exceeded
     InternalError:
       description: Internal server error
       content:
@@ -141,16 +161,6 @@ components:
             error:
               code: unauthenticated
               message: Authentication required
-    BadRequest:
-      description: Invalid request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: invalid_request
-              message: Invalid request body
     Forbidden:
       description: Insufficient permissions
       content:
@@ -161,24 +171,18 @@ components:
             error:
               code: permission_denied
               message: Insufficient permissions
-    RateLimited:
-      description: Rate limit exceeded
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: rate_limit_exceeded
-              message: Rate limit exceeded
   schemas:
-    ListRolesResponse:
+    CreateRoleRequest:
       type: object
+      required:
+      - name
       properties:
-        roles:
-          type: array
-          items:
-            $ref: '#/components/schemas/Role'
+        name:
+          type: string
+          description: Role name, unique within the organization.
+          example: analyst
+        description:
+          type: string
     Role:
       type: object
       properties:
@@ -203,17 +207,6 @@ components:
           type: string
           description: RFC 3339 timestamp
           example: '2026-07-06T19:30:00Z'
-    CreateRoleRequest:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-          description: Role name, unique within the organization.
-          example: analyst
-        description:
-          type: string
     UpdateRoleRequest:
       type: object
       properties:
@@ -261,6 +254,13 @@ components:
             message:
               type: string
               description: Human-readable error message
+    ListRolesResponse:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
   securitySchemes:
     bearerAuth:
       type: http

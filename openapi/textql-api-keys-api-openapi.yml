@@ -204,6 +204,26 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   responses:
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: invalid_request
+              message: Invalid request body
+    RateLimited:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: rate_limit_exceeded
+              message: Rate limit exceeded
     InternalError:
       description: Internal server error
       content:
@@ -234,16 +254,6 @@ components:
             error:
               code: unauthenticated
               message: Authentication required
-    BadRequest:
-      description: Invalid request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: invalid_request
-              message: Invalid request body
     Forbidden:
       description: Insufficient permissions
       content:
@@ -254,48 +264,7 @@ components:
             error:
               code: permission_denied
               message: Insufficient permissions
-    RateLimited:
-      description: Rate limit exceeded
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: rate_limit_exceeded
-              message: Rate limit exceeded
   schemas:
-    CreateApiKeyRequest:
-      type: object
-      properties:
-        expirySeconds:
-          type: integer
-          description: Optional TTL in seconds. Omit for a non-expiring key; short-lived keys are recommended for per-session embedding flows.
-          example: 3600
-        assumedRoles:
-          type: array
-          items:
-            type: string
-          description: Role UUIDs to scope the key to. Callers may only specify roles they hold; API-key callers may only specify a subset of their own assumed roles.
-          example:
-          - 80de0196-496f-44fe-9d4c-8013b3b44082
-        inheritAllRoles:
-          type: boolean
-          description: Set to true to inherit all of the creating member's roles. Required when assumedRoles is empty.
-        name:
-          type: string
-          description: Optional display name for the key.
-          example: acme-session-key
-        targetMemberId:
-          type: string
-          description: Mint the key for this member instead of the caller. Requires organization:write and a service-account target.
-        clientId:
-          type: string
-          description: Optional client metadata stored on the key. Prefer a JSON object string (a JSON-encoded string, not a nested object); TQL row-level security reads its fields as `_tql.client_attributes_json.<field>`.
-          example: '{"tenant_id": "acme", "user_email": "jane@acme.example"}'
-        fullMemberAccess:
-          type: boolean
-          description: When true, the key retains the target member's direct object grants alongside its assumed-role grants. API-key callers may enable this only when their own key already has full member access.
     RotateApiKeyResponse:
       type: object
       properties:
@@ -308,15 +277,6 @@ components:
         revoked_api_key_id:
           type: string
           description: The id of the key that was revoked by this rotation.
-    CreateApiKeyResponse:
-      type: object
-      properties:
-        key:
-          type: string
-          description: 'The full bearer credential. Shown exactly once; store it securely. Use as `Authorization: Bearer <key>`.'
-          example: BEARER_SECRET_SHOWN_ONCE
-        api_key:
-          $ref: '#/components/schemas/PlatformApiKey'
     PlatformApiKey:
       type: object
       properties:
@@ -379,6 +339,37 @@ components:
             message:
               type: string
               description: Human-readable error message
+    CreateApiKeyRequest:
+      type: object
+      properties:
+        expirySeconds:
+          type: integer
+          description: Optional TTL in seconds. Omit for a non-expiring key; short-lived keys are recommended for per-session embedding flows.
+          example: 3600
+        assumedRoles:
+          type: array
+          items:
+            type: string
+          description: Role UUIDs to scope the key to. Callers may only specify roles they hold; API-key callers may only specify a subset of their own assumed roles.
+          example:
+          - 80de0196-496f-44fe-9d4c-8013b3b44082
+        inheritAllRoles:
+          type: boolean
+          description: Set to true to inherit all of the creating member's roles. Required when assumedRoles is empty.
+        name:
+          type: string
+          description: Optional display name for the key.
+          example: acme-session-key
+        targetMemberId:
+          type: string
+          description: Mint the key for this member instead of the caller. Requires organization:write and a service-account target.
+        clientId:
+          type: string
+          description: Optional client metadata stored on the key. Prefer a JSON object string (a JSON-encoded string, not a nested object); TQL row-level security reads its fields as `_tql.client_attributes_json.<field>`.
+          example: '{"tenant_id": "acme", "user_email": "jane@acme.example"}'
+        fullMemberAccess:
+          type: boolean
+          description: When true, the key retains the target member's direct object grants alongside its assumed-role grants. API-key callers may enable this only when their own key already has full member access.
     ListApiKeysResponse:
       type: object
       properties:
@@ -389,6 +380,15 @@ components:
         next_page_token:
           type: string
           description: Present when more pages exist; pass back as `page_token`.
+    CreateApiKeyResponse:
+      type: object
+      properties:
+        key:
+          type: string
+          description: 'The full bearer credential. Shown exactly once; store it securely. Use as `Authorization: Bearer <key>`.'
+          example: BEARER_SECRET_SHOWN_ONCE
+        api_key:
+          $ref: '#/components/schemas/PlatformApiKey'
   securitySchemes:
     bearerAuth:
       type: http

@@ -268,6 +268,26 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   responses:
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: invalid_request
+              message: Invalid request body
+    RateLimited:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: rate_limit_exceeded
+              message: Rate limit exceeded
     InternalError:
       description: Internal server error
       content:
@@ -298,16 +318,6 @@ components:
             error:
               code: unauthenticated
               message: Authentication required
-    BadRequest:
-      description: Invalid request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: invalid_request
-              message: Invalid request body
     Forbidden:
       description: Insufficient permissions
       content:
@@ -318,30 +328,32 @@ components:
             error:
               code: permission_denied
               message: Insufficient permissions
-    RateLimited:
-      description: Rate limit exceeded
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: rate_limit_exceeded
-              message: Rate limit exceeded
   schemas:
-    SuccessResponse:
+    LibraryChangeDiff:
       type: object
+      description: One changed file in an Ontology change.
       properties:
-        success:
-          type: boolean
-    ExpectedGitRefBody:
-      type: object
-      required:
-      - expected_git_ref
-      properties:
-        expected_git_ref:
+        name:
           type: string
-          description: The change git_ref the caller reviewed; a stale value returns 409.
+          description: Display name for the change.
+        old_path:
+          type: string
+        new_path:
+          type: string
+        additions:
+          type: integer
+          format: int64
+        deletions:
+          type: integer
+          format: int64
+        is_new:
+          type: boolean
+        is_delete:
+          type: boolean
+        is_rename:
+          type: boolean
+        is_binary:
+          type: boolean
     Change:
       type: object
       description: A reviewable Ontology change.
@@ -397,6 +409,18 @@ components:
             $ref: '#/components/schemas/LibraryChangeDiff'
         capabilities:
           $ref: '#/components/schemas/ChangeCapabilities'
+    ChangeCapabilities:
+      type: object
+      description: Actions the calling member may take on a change.
+      properties:
+        can_approve:
+          type: boolean
+        can_deny:
+          type: boolean
+        can_restore:
+          type: boolean
+        caller_approved:
+          type: boolean
     ErrorResponse:
       type: object
       properties:
@@ -421,43 +445,19 @@ components:
             message:
               type: string
               description: Human-readable error message
-    LibraryChangeDiff:
+    SuccessResponse:
       type: object
-      description: One changed file in an Ontology change.
       properties:
-        name:
-          type: string
-          description: Display name for the change.
-        old_path:
-          type: string
-        new_path:
-          type: string
-        additions:
-          type: integer
-          format: int64
-        deletions:
-          type: integer
-          format: int64
-        is_new:
+        success:
           type: boolean
-        is_delete:
-          type: boolean
-        is_rename:
-          type: boolean
-        is_binary:
-          type: boolean
-    ChangeCapabilities:
+    ExpectedGitRefBody:
       type: object
-      description: Actions the calling member may take on a change.
+      required:
+      - expected_git_ref
       properties:
-        can_approve:
-          type: boolean
-        can_deny:
-          type: boolean
-        can_restore:
-          type: boolean
-        caller_approved:
-          type: boolean
+        expected_git_ref:
+          type: string
+          description: The change git_ref the caller reviewed; a stale value returns 409.
   parameters:
     ChangeId:
       name: id

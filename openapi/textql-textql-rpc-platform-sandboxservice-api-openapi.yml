@@ -226,66 +226,6 @@ paths:
                 $ref: '#/components/schemas/textql.rpc.platform.UploadFileResponse'
 components:
   schemas:
-    textql.rpc.platform.LoadConnectorDataRequest:
-      type: object
-      properties:
-        sandboxId:
-          type: string
-          title: sandbox_id
-        connectorId:
-          type: integer
-          title: connector_id
-          format: int32
-        query:
-          type: string
-          title: query
-          description: SQL query to execute against the connector
-        dataframeName:
-          type: string
-          title: dataframe_name
-          description: Optional name for the resulting DataFrame. Auto-generated if not provided.
-          nullable: true
-      required:
-      - sandboxId
-      - connectorId
-      - query
-      title: LoadConnectorDataRequest
-      additionalProperties: false
-    google.protobuf.Timestamp:
-      type: string
-      examples:
-      - '2023-01-15T01:30:15.01Z'
-      - '2024-12-25T12:00:00Z'
-      format: date-time
-      description: A Timestamp represents a point in time independent of any time zone or local calendar, encoded as a count of seconds and fractions of seconds at nanosecond resolution. In JSON format, the Timestamp type is encoded as a string in the RFC 3339 format.
-    textql.rpc.platform.StopSandboxResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          title: success
-      title: StopSandboxResponse
-      additionalProperties: false
-    textql.rpc.platform.UploadFileRequest:
-      type: object
-      properties:
-        sandboxId:
-          type: string
-          title: sandbox_id
-        filename:
-          type: string
-          title: filename
-        content:
-          type: string
-          title: content
-          format: byte
-          description: File content, base64-encoded
-      required:
-      - sandboxId
-      - filename
-      - content
-      title: UploadFileRequest
-      additionalProperties: false
     textql.rpc.platform.GetSandboxStatusRequest:
       type: object
       properties:
@@ -295,53 +235,6 @@ components:
       required:
       - sandboxId
       title: GetSandboxStatusRequest
-      additionalProperties: false
-    textql.rpc.platform.ExecuteCodeRequest:
-      type: object
-      properties:
-        sandboxId:
-          type: string
-          title: sandbox_id
-        code:
-          type: string
-          title: code
-          description: Python code to execute
-      required:
-      - sandboxId
-      - code
-      title: ExecuteCodeRequest
-      additionalProperties: false
-    textql.rpc.platform.ExecuteCodeResponse:
-      type: object
-      properties:
-        output:
-          type: array
-          items:
-            type: string
-          title: output
-          description: Lines of stdout output
-        error:
-          type: string
-          title: error
-          description: Error message if execution failed
-          nullable: true
-        files:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.platform.FileOutput'
-          title: files
-          description: Files generated during execution
-        dataframes:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.platform.DataFrameOutput'
-          title: dataframes
-          description: DataFrames created or modified during execution
-        executionTimeMs:
-          type: integer
-          title: execution_time_ms
-          format: int64
-      title: ExecuteCodeResponse
       additionalProperties: false
     textql.rpc.platform.FileOutput:
       type: object
@@ -357,42 +250,13 @@ components:
           title: mime_type
       title: FileOutput
       additionalProperties: false
-    connect.error:
-      type: object
-      properties:
-        code:
-          type: string
-          examples:
-          - not_found
-          enum:
-          - canceled
-          - unknown
-          - invalid_argument
-          - deadline_exceeded
-          - not_found
-          - already_exists
-          - permission_denied
-          - resource_exhausted
-          - failed_precondition
-          - aborted
-          - out_of_range
-          - unimplemented
-          - internal
-          - unavailable
-          - data_loss
-          - unauthenticated
-          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
-        message:
-          type: string
-          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/connect.error_details.Any'
-          description: A list of messages that carry the error details. There is no limit on the number of messages.
-      title: Connect Error
-      additionalProperties: true
-      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+      - 1
+      description: Define the version of the Connect protocol
+      const: 1
     textql.rpc.platform.DataFrameOutput:
       type: object
       properties:
@@ -409,91 +273,13 @@ components:
           format: int32
       title: DataFrameOutput
       additionalProperties: false
-    textql.rpc.platform.StartSandboxResponse:
+    textql.rpc.platform.StopSandboxResponse:
       type: object
       properties:
-        sandboxId:
-          type: string
-          title: sandbox_id
-        createdAt:
-          title: created_at
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-      title: StartSandboxResponse
-      additionalProperties: false
-    connect-protocol-version:
-      type: number
-      title: Connect-Protocol-Version
-      enum:
-      - 1
-      description: Define the version of the Connect protocol
-      const: 1
-    textql.rpc.platform.UploadFileResponse:
-      type: object
-      properties:
-        filename:
-          type: string
-          title: filename
-        sizeBytes:
-          type: integer
-          title: size_bytes
-          format: int64
-      title: UploadFileResponse
-      additionalProperties: false
-    textql.rpc.platform.StopSandboxRequest:
-      type: object
-      properties:
-        sandboxId:
-          type: string
-          title: sandbox_id
-      required:
-      - sandboxId
-      title: StopSandboxRequest
-      additionalProperties: false
-    textql.rpc.platform.StartSandboxRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          title: name
-          description: Optional human-readable name for the sandbox
-          nullable: true
-      title: StartSandboxRequest
-      additionalProperties: false
-    textql.rpc.platform.GetSandboxStatusResponse:
-      type: object
-      properties:
-        status:
-          type: string
-          title: status
-        memoryUsage:
-          type: string
-          title: memory_usage
-        dataframes:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.platform.DataFrameInfo'
-          title: dataframes
-      title: GetSandboxStatusResponse
-      additionalProperties: false
-    textql.rpc.platform.LoadConnectorDataResponse:
-      type: object
-      properties:
-        dataframeName:
-          type: string
-          title: dataframe_name
-        numRows:
-          type: integer
-          title: num_rows
-          format: int64
-        numCols:
-          type: integer
-          title: num_cols
-          format: int64
-        preview:
-          type: string
-          title: preview
-          description: Text preview of the loaded data
-      title: LoadConnectorDataResponse
+        success:
+          type: boolean
+          title: success
+      title: StopSandboxResponse
       additionalProperties: false
     connect.error_details.Any:
       type: object
@@ -541,3 +327,217 @@ components:
       type: number
       title: Connect-Timeout-Ms
       description: Define the timeout, in ms
+    textql.rpc.platform.LoadConnectorDataRequest:
+      type: object
+      properties:
+        sandboxId:
+          type: string
+          title: sandbox_id
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        query:
+          type: string
+          title: query
+          description: SQL query to execute against the connector
+        dataframeName:
+          type: string
+          title: dataframe_name
+          description: Optional name for the resulting DataFrame. Auto-generated if not provided.
+          nullable: true
+      required:
+      - sandboxId
+      - connectorId
+      - query
+      title: LoadConnectorDataRequest
+      additionalProperties: false
+    textql.rpc.platform.StartSandboxRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+          description: Optional human-readable name for the sandbox
+          nullable: true
+      title: StartSandboxRequest
+      additionalProperties: false
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+          - not_found
+          enum:
+          - canceled
+          - unknown
+          - invalid_argument
+          - deadline_exceeded
+          - not_found
+          - already_exists
+          - permission_denied
+          - resource_exhausted
+          - failed_precondition
+          - aborted
+          - out_of_range
+          - unimplemented
+          - internal
+          - unavailable
+          - data_loss
+          - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    textql.rpc.platform.StartSandboxResponse:
+      type: object
+      properties:
+        sandboxId:
+          type: string
+          title: sandbox_id
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: StartSandboxResponse
+      additionalProperties: false
+    textql.rpc.platform.StopSandboxRequest:
+      type: object
+      properties:
+        sandboxId:
+          type: string
+          title: sandbox_id
+      required:
+      - sandboxId
+      title: StopSandboxRequest
+      additionalProperties: false
+    textql.rpc.platform.LoadConnectorDataResponse:
+      type: object
+      properties:
+        dataframeName:
+          type: string
+          title: dataframe_name
+        numRows:
+          type: integer
+          title: num_rows
+          format: int64
+        numCols:
+          type: integer
+          title: num_cols
+          format: int64
+        preview:
+          type: string
+          title: preview
+          description: Text preview of the loaded data
+      title: LoadConnectorDataResponse
+      additionalProperties: false
+    textql.rpc.platform.ExecuteCodeRequest:
+      type: object
+      properties:
+        sandboxId:
+          type: string
+          title: sandbox_id
+        code:
+          type: string
+          title: code
+          description: Python code to execute
+      required:
+      - sandboxId
+      - code
+      title: ExecuteCodeRequest
+      additionalProperties: false
+    textql.rpc.platform.UploadFileResponse:
+      type: object
+      properties:
+        filename:
+          type: string
+          title: filename
+        sizeBytes:
+          type: integer
+          title: size_bytes
+          format: int64
+      title: UploadFileResponse
+      additionalProperties: false
+    textql.rpc.platform.ExecuteCodeResponse:
+      type: object
+      properties:
+        output:
+          type: array
+          items:
+            type: string
+          title: output
+          description: Lines of stdout output
+        error:
+          type: string
+          title: error
+          description: Error message if execution failed
+          nullable: true
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.platform.FileOutput'
+          title: files
+          description: Files generated during execution
+        dataframes:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.platform.DataFrameOutput'
+          title: dataframes
+          description: DataFrames created or modified during execution
+        executionTimeMs:
+          type: integer
+          title: execution_time_ms
+          format: int64
+      title: ExecuteCodeResponse
+      additionalProperties: false
+    textql.rpc.platform.UploadFileRequest:
+      type: object
+      properties:
+        sandboxId:
+          type: string
+          title: sandbox_id
+        filename:
+          type: string
+          title: filename
+        content:
+          type: string
+          title: content
+          format: byte
+          description: File content, base64-encoded
+      required:
+      - sandboxId
+      - filename
+      - content
+      title: UploadFileRequest
+      additionalProperties: false
+    textql.rpc.platform.GetSandboxStatusResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          title: status
+        memoryUsage:
+          type: string
+          title: memory_usage
+        dataframes:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.platform.DataFrameInfo'
+          title: dataframes
+      title: GetSandboxStatusResponse
+      additionalProperties: false
+    google.protobuf.Timestamp:
+      type: string
+      examples:
+      - '2023-01-15T01:30:15.01Z'
+      - '2024-12-25T12:00:00Z'
+      format: date-time
+      description: A Timestamp represents a point in time independent of any time zone or local calendar, encoded as a count of seconds and fractions of seconds at nanosecond resolution. In JSON format, the Timestamp type is encoded as a string in the RFC 3339 format.

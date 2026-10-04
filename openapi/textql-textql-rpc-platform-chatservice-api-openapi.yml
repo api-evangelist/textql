@@ -151,15 +151,6 @@ paths:
                 $ref: '#/components/schemas/textql.rpc.public.chat.GetChatsResponse'
 components:
   schemas:
-    textql.rpc.public.paradigm.PublicDemoOptions:
-      type: object
-      properties:
-        connectorId:
-          type: integer
-          title: connector_id
-          format: int32
-      title: PublicDemoOptions
-      additionalProperties: false
     textql.rpc.public.chat.GetChatResponse:
       type: object
       properties:
@@ -178,139 +169,34 @@ components:
           title: assets
       title: GetChatResponse
       additionalProperties: false
-    textql.rpc.public.chat.Methodology:
-      type: string
-      title: Methodology
-      enum:
-      - METHODOLOGY_UNKNOWN
-      - METHODOLOGY_ADAPTIVE
-      - METHODOLOGY_PRESCRIPTIVE
-      - METHODOLOGY_THOROUGH
-      - METHODOLOGY_CAREFUL
-    textql.rpc.public.chat.LlmModel:
-      type: string
-      title: LlmModel
-      enum:
-      - MODEL_UNKNOWN
-      - MODEL_DEFAULT_SMALL
-      - MODEL_DEFAULT
-      - MODEL_DEFAULT_LARGE
-      - MODEL_DEFAULT_REASONING
-      - MODEL_HAIKU_3
-      - MODEL_HAIKU_3_5
-      - MODEL_SONNET_3_5
-      - MODEL_SONNET_3_6
-      - MODEL_SONNET_3_7
-      - MODEL_SONNET_4
-      - MODEL_OPUS_4
-      - MODEL_SONNET_4_5
-      - MODEL_HAIKU_4_5
-      - MODEL_OPUS_4_5
-      - MODEL_OPUS_4_6
-      - MODEL_SONNET_4_6
-      - MODEL_GPT_4
-      - MODEL_GPT_4_TURBO
-      - MODEL_GPT_4O
-      - MODEL_GPT_4_1
-      - MODEL_GPT_4_1_MINI
-      - MODEL_GPT_4_1_NANO
-      - MODEL_O_1
-      - MODEL_O_1_MINI
-      - MODEL_O_3
-      - MODEL_O_3_MINI
-      - MODEL_O_4_MINI
-      - MODEL_GPT_5
-      - MODEL_GPT_5_MINI
-      - MODEL_GPT_5_NANO
-      - MODEL_GPT_5_2
-      - MODEL_GPT_5_2_PRO
-      - MODEL_GPT_5_4
-      - MODEL_GPT_5_4_MINI
-      - MODEL_GPT_5_5
-      - MODEL_GPT_5_6_SOL
-      - MODEL_GPT_5_6_TERRA
-      - MODEL_GPT_5_6_LUNA
-      - MODEL_GEMINI_3_FLASH
-      - MODEL_GEMINI_3_PRO
-      - MODEL_GEMINI_3_1_PRO
-      - MODEL_GEMINI_3_5_FLASH
-      - MODEL_KIMI_K2_INSTRUCT
-      - MODEL_QWEN3_CODER
-      - MODEL_QWEN3_CODER_SMALL
-      - MODEL_GPT_OSS
-      - MODEL_GPT_OSS_SMALL
-      - MODEL_GLM_4_5
-      - MODEL_GLM_4_6
-      - MODEL_KIMI_K2_THINKING
-      - MODEL_KIMI_K2_5
-      - MODEL_DEEPSEEK_3_2
-      - MODEL_GLM_5
-      - MODEL_KIMI_K2_6
-      - MODEL_GLM_5_2
-      - MODEL_KIMI_K2_7_CODE
-      - MODEL_KIMI_K3
-      - MODEL_QWEN3_7_PLUS
-      - MODEL_MUSE_SPARK_1_1
-      - MODEL_MUSE_SPARK_1_2
-    google.protobuf.Timestamp:
-      type: string
-      examples:
-      - '2023-01-15T01:30:15.01Z'
-      - '2024-12-25T12:00:00Z'
-      format: date-time
-      description: "A Timestamp represents a point in time independent of any time zone or local\n calendar, encoded as a count of seconds and fractions of seconds at\n nanosecond resolution. The count is relative to an epoch at UTC midnight on\n January 1, 1970, in the proleptic Gregorian calendar which extends the\n Gregorian calendar backwards to year one.\n\n All minutes are 60 seconds long. Leap seconds are \"smeared\" so that no leap\n second table is needed for interpretation, using a [24-hour linear\n smear](https://developers.google.com/time/smear).\n\n The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By\n restricting to that range, we ensure that we can convert to and from [RFC\n 3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.\n\n # Examples\n\n Example 1: Compute Timestamp from POSIX `time()`.\n\n     Timestamp timestamp;\n     timestamp.set_seconds(time(NULL));\n     timestamp.set_nanos(0);\n\n Example 2: Compute Timestamp from POSIX `gettimeofday()`.\n\n     struct timeval tv;\n     gettimeofday(&tv, NULL);\n\n     Timestamp timestamp;\n     timestamp.set_seconds(tv.tv_sec);\n     timestamp.set_nanos(tv.tv_usec * 1000);\n\n Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.\n\n     FILETIME ft;\n     GetSystemTimeAsFileTime(&ft);\n     UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;\n\n     // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z\n     // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.\n     Timestamp timestamp;\n     timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));\n     timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));\n\n Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.\n\n     long millis = System.currentTimeMillis();\n\n     Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)\n         .setNanos((int) ((millis % 1000) * 1000000)).build();\n\n Example 5: Compute Timestamp from Java `Instant.now()`.\n\n     Instant now = Instant.now();\n\n     Timestamp timestamp =\n         Timestamp.newBuilder().setSeconds(now.getEpochSecond())\n             .setNanos(now.getNano()).build();\n\n Example 6: Compute Timestamp from current time in Python.\n\n     timestamp = Timestamp()\n     timestamp.GetCurrentTime()\n\n # JSON Mapping\n\n In JSON format, the Timestamp type is encoded as a string in the\n [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the\n format is \"{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z\"\n where {year} is always expressed using four digits while {month}, {day},\n {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional\n seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),\n are optional. The \"Z\" suffix indicates the timezone (\"UTC\"); the timezone\n is required. A proto3 JSON serializer should always use UTC (as indicated by\n \"Z\") when printing the Timestamp type and a proto3 JSON parser should be\n able to accept both UTC and other timezones (as indicated by an offset).\n\n For example, \"2017-01-15T01:30:15.01Z\" encodes 15.01 seconds past\n 01:30 UTC on January 15, 2017.\n\n In JavaScript, one can convert a Date object to this format using the\n standard\n [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)\n method. In Python, a standard `datetime.datetime` object can be converted\n to this format using\n [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with\n the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use\n the Joda Time's [`ISODateTimeFormat.dateTime()`](\n http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()\n ) to obtain a formatter capable of generating timestamps in this format."
-    textql.rpc.platform.ChatTools:
+    textql.rpc.public.cells.PreviewCell:
       type: object
       properties:
-        connectorIds:
-          type: array
-          items:
-            type: integer
-            format: int32
-          title: connector_ids
-        webSearchEnabled:
-          type: boolean
-          title: web_search_enabled
-        sqlEnabled:
-          type: boolean
-          title: sql_enabled
-        ontologyEnabled:
-          type: boolean
-          title: ontology_enabled
-        experimentalEnabled:
-          type: boolean
-          title: experimental_enabled
-        tableauEnabled:
-          type: boolean
-          title: tableau_enabled
-        autoApproveEnabled:
-          type: boolean
-          title: auto_approve_enabled
-        pythonEnabled:
-          type: boolean
-          title: python_enabled
-        googleDriveEnabled:
-          type: boolean
-          title: google_drive_enabled
-        powerbiEnabled:
-          type: boolean
-          title: powerbi_enabled
-      title: ChatTools
+        target:
+          type: string
+          title: target
+        previewType:
+          type: string
+          title: preview_type
+          description: '"image", "table", "pdf", "html", "dataframe", "download"'
+        name:
+          type: string
+          title: name
+        url:
+          type: string
+          title: url
+          nullable: true
+        content:
+          type: string
+          title: content
+          nullable: true
+        error:
+          type: string
+          title: error
+          nullable: true
+      title: PreviewCell
       additionalProperties: false
-    textql.rpc.public.paradigm.ExperimentalOptions:
-      type: object
-      properties:
-        connectorIds:
-          type: array
-          items:
-            type: integer
-            format: int32
-          title: connector_ids
-        autoApproveEnabled:
-          type: boolean
-          title: auto_approve_enabled
-      title: ExperimentalOptions
-      additionalProperties: false
+      description: primary interface for ana to render sandbox assets client side
     textql.rpc.public.chat.Chat:
       type: object
       properties:
@@ -399,85 +285,13 @@ components:
           $ref: '#/components/schemas/textql.rpc.public.chat.Methodology'
       title: Chat
       additionalProperties: false
-    textql.rpc.public.chat.GetChatsRequest:
-      type: object
-      properties:
-        memberOnly:
-          type: boolean
-          title: member_only
-          default: false
-          description: Whether to return only the user's chats (true) or all org chats (false)
-        searchTerm:
-          type: string
-          title: search_term
-          description: Filter chats by summary or first message content
-        limit:
-          type: integer
-          format: int32
-          title: limit
-          description: Maximum number of chats to return
-          minimum: 0
-        offset:
-          type: integer
-          format: int32
-          title: offset
-          description: Number of chats to skip
-          minimum: 0
-        sortBy:
-          type: integer
-          title: sort_by
-          description: 'Sort field (0: unknown, 1: name, 2: created_at, 3: updated_at)'
-          enum:
-          - 0
-          - 1
-          - 2
-          - 3
-        sortDirection:
-          type: integer
-          title: sort_direction
-          description: 'Sort direction (0: unknown, 1: asc, 2: desc)'
-          enum:
-          - 0
-          - 1
-          - 2
-      title: GetChatsRequest
-      additionalProperties: false
-    textql.rpc.platform.ChatRequest:
-      type: object
-      properties:
-        question:
-          type: string
-          title: question
-          minLength: 3
-        chatId:
-          type: string
-          title: chat_id
-          nullable: true
-        tools:
-          title: tools
-          nullable: true
-          $ref: '#/components/schemas/textql.rpc.platform.ChatTools'
-      title: ChatRequest
-      additionalProperties: false
-    textql.rpc.public.paradigm.ResearchOptions:
-      type: object
-      properties:
-        connectorIds:
-          type: array
-          items:
-            type: integer
-            format: int32
-          title: connector_ids
-        backgroundColor:
-          type: string
-          title: background_color
-          nullable: true
-        logo:
-          type: string
-          title: logo
-          nullable: true
-      title: ResearchOptions
-      additionalProperties: false
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+      - 1
+      description: Define the version of the Connect protocol
+      const: 1
     textql.rpc.platform.ChatResponse:
       type: object
       properties:
@@ -519,54 +333,170 @@ components:
           description: id of dataset_version_tableau.dataset_id to use
       title: TableauOptions
       additionalProperties: false
-    connect.error:
+    textql.rpc.public.chat.GetChatsResponse:
       type: object
       properties:
-        code:
-          type: string
-          examples:
-          - not_found
-          enum:
-          - canceled
-          - unknown
-          - invalid_argument
-          - deadline_exceeded
-          - not_found
-          - already_exists
-          - permission_denied
-          - resource_exhausted
-          - failed_precondition
-          - aborted
-          - out_of_range
-          - unimplemented
-          - internal
-          - unavailable
-          - data_loss
-          - unauthenticated
-          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
-        message:
-          type: string
-          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
-        details:
+        chats:
           type: array
           items:
-            $ref: '#/components/schemas/connect.error_details.Any'
-          description: A list of messages that carry the error details. There is no limit on the number of messages.
-      title: Connect Error
-      additionalProperties: true
-      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
-    connect-protocol-version:
-      type: number
-      title: Connect-Protocol-Version
-      enum:
-      - 1
-      description: Define the version of the Connect protocol
-      const: 1
+            $ref: '#/components/schemas/textql.rpc.public.chat.Chat'
+          title: chats
+        totalCount:
+          type: integer
+          format: int32
+          title: total_count
+      title: GetChatsResponse
+      additionalProperties: false
     textql.rpc.public.paradigm.BasicOptions:
       type: object
       title: BasicOptions
       additionalProperties: false
       description: "This is a placeholder for future basic options.\n Currently, it does not contain any fields."
+    textql.rpc.public.chat.CancelStreamRequest:
+      type: object
+      properties:
+        chatId:
+          type: string
+          title: chat_id
+      title: CancelStreamRequest
+      additionalProperties: false
+    textql.rpc.public.chat.ChatMessage:
+      type: object
+      properties:
+        role:
+          type: string
+          title: role
+          description: '"user" or "assistant"'
+        content:
+          type: string
+          title: content
+        createdAt:
+          title: created_at
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: ChatMessage
+      additionalProperties: false
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
+          type: string
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+          - type: object
+            title: Any
+            additionalProperties: true
+            description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    textql.rpc.public.chat.LlmModel:
+      type: string
+      title: LlmModel
+      enum:
+      - MODEL_UNKNOWN
+      - MODEL_DEFAULT_SMALL
+      - MODEL_DEFAULT
+      - MODEL_DEFAULT_LARGE
+      - MODEL_DEFAULT_REASONING
+      - MODEL_HAIKU_3
+      - MODEL_HAIKU_3_5
+      - MODEL_SONNET_3_5
+      - MODEL_SONNET_3_6
+      - MODEL_SONNET_3_7
+      - MODEL_SONNET_4
+      - MODEL_OPUS_4
+      - MODEL_SONNET_4_5
+      - MODEL_HAIKU_4_5
+      - MODEL_OPUS_4_5
+      - MODEL_OPUS_4_6
+      - MODEL_SONNET_4_6
+      - MODEL_GPT_4
+      - MODEL_GPT_4_TURBO
+      - MODEL_GPT_4O
+      - MODEL_GPT_4_1
+      - MODEL_GPT_4_1_MINI
+      - MODEL_GPT_4_1_NANO
+      - MODEL_O_1
+      - MODEL_O_1_MINI
+      - MODEL_O_3
+      - MODEL_O_3_MINI
+      - MODEL_O_4_MINI
+      - MODEL_GPT_5
+      - MODEL_GPT_5_MINI
+      - MODEL_GPT_5_NANO
+      - MODEL_GPT_5_2
+      - MODEL_GPT_5_2_PRO
+      - MODEL_GPT_5_4
+      - MODEL_GPT_5_4_MINI
+      - MODEL_GPT_5_5
+      - MODEL_GPT_5_6_SOL
+      - MODEL_GPT_5_6_TERRA
+      - MODEL_GPT_5_6_LUNA
+      - MODEL_GEMINI_3_FLASH
+      - MODEL_GEMINI_3_PRO
+      - MODEL_GEMINI_3_1_PRO
+      - MODEL_GEMINI_3_5_FLASH
+      - MODEL_KIMI_K2_INSTRUCT
+      - MODEL_QWEN3_CODER
+      - MODEL_QWEN3_CODER_SMALL
+      - MODEL_GPT_OSS
+      - MODEL_GPT_OSS_SMALL
+      - MODEL_GLM_4_5
+      - MODEL_GLM_4_6
+      - MODEL_KIMI_K2_THINKING
+      - MODEL_KIMI_K2_5
+      - MODEL_DEEPSEEK_3_2
+      - MODEL_GLM_5
+      - MODEL_KIMI_K2_6
+      - MODEL_GLM_5_2
+      - MODEL_KIMI_K2_7_CODE
+      - MODEL_KIMI_K3
+      - MODEL_QWEN3_7_PLUS
+      - MODEL_MUSE_SPARK_1_1
+      - MODEL_MUSE_SPARK_1_2
+    textql.rpc.public.paradigm.ResearchOptions:
+      type: object
+      properties:
+        connectorIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+          title: connector_ids
+        backgroundColor:
+          type: string
+          title: background_color
+          nullable: true
+        logo:
+          type: string
+          title: logo
+          nullable: true
+      title: ResearchOptions
+      additionalProperties: false
+    textql.rpc.public.chat.ChatSource:
+      type: string
+      title: ChatSource
+      enum:
+      - CHAT_SOURCE_UNKNOWN
+      - CHAT_SOURCE_THREAD
+      - CHAT_SOURCE_PLAYBOOK
+      - CHAT_SOURCE_TEMPLATE
+      - CHAT_SOURCE_SLACK
+      - CHAT_SOURCE_AGENT
+      - CHAT_SOURCE_FEED
     textql.rpc.public.paradigm.OntologyOptions:
       type: object
       properties:
@@ -584,19 +514,15 @@ components:
           title: ontology_ids
       title: OntologyOptions
       additionalProperties: false
-    textql.rpc.paradigm_params.ParadigmType:
+    textql.rpc.public.chat.Methodology:
       type: string
-      title: ParadigmType
+      title: Methodology
       enum:
-      - TYPE_UNKNOWN
-      - TYPE_SQL
-      - TYPE_RESEARCH
-      - TYPE_ONTOLOGY
-      - TYPE_BASIC
-      - TYPE_TABLEAU
-      - TYPE_EXPERIMENTAL
-      - TYPE_UNIVERSAL
-      - TYPE_PUBLIC_DEMO
+      - METHODOLOGY_UNKNOWN
+      - METHODOLOGY_ADAPTIVE
+      - METHODOLOGY_PRESCRIPTIVE
+      - METHODOLOGY_THOROUGH
+      - METHODOLOGY_CAREFUL
     textql.rpc.public.paradigm.Paradigm:
       type: object
       properties:
@@ -613,6 +539,15 @@ components:
       title: Paradigm
       additionalProperties: false
       description: ChatParadigm includes paradigm options
+    textql.rpc.public.paradigm.PublicDemoOptions:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+      title: PublicDemoOptions
+      additionalProperties: false
     textql.rpc.public.paradigm.UniversalOptions:
       type: object
       properties:
@@ -682,6 +617,194 @@ components:
           title: feed_engage_enabled
       title: UniversalOptions
       additionalProperties: false
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+          - not_found
+          enum:
+          - canceled
+          - unknown
+          - invalid_argument
+          - deadline_exceeded
+          - not_found
+          - already_exists
+          - permission_denied
+          - resource_exhausted
+          - failed_precondition
+          - aborted
+          - out_of_range
+          - unimplemented
+          - internal
+          - unavailable
+          - data_loss
+          - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    textql.rpc.public.chat.CancelStreamResponse:
+      type: object
+      properties:
+        exists:
+          type: boolean
+          title: exists
+      title: CancelStreamResponse
+      additionalProperties: false
+    textql.rpc.platform.ChatTools:
+      type: object
+      properties:
+        connectorIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+          title: connector_ids
+        webSearchEnabled:
+          type: boolean
+          title: web_search_enabled
+        sqlEnabled:
+          type: boolean
+          title: sql_enabled
+        ontologyEnabled:
+          type: boolean
+          title: ontology_enabled
+        experimentalEnabled:
+          type: boolean
+          title: experimental_enabled
+        tableauEnabled:
+          type: boolean
+          title: tableau_enabled
+        autoApproveEnabled:
+          type: boolean
+          title: auto_approve_enabled
+        pythonEnabled:
+          type: boolean
+          title: python_enabled
+        googleDriveEnabled:
+          type: boolean
+          title: google_drive_enabled
+        powerbiEnabled:
+          type: boolean
+          title: powerbi_enabled
+      title: ChatTools
+      additionalProperties: false
+    textql.rpc.public.chat.GetChatsRequest:
+      type: object
+      properties:
+        memberOnly:
+          type: boolean
+          title: member_only
+          default: false
+          description: Whether to return only the user's chats (true) or all org chats (false)
+        searchTerm:
+          type: string
+          title: search_term
+          description: Filter chats by summary or first message content
+        limit:
+          type: integer
+          format: int32
+          title: limit
+          description: Maximum number of chats to return
+          minimum: 0
+        offset:
+          type: integer
+          format: int32
+          title: offset
+          description: Number of chats to skip
+          minimum: 0
+        sortBy:
+          type: integer
+          title: sort_by
+          description: 'Sort field (0: unknown, 1: name, 2: created_at, 3: updated_at)'
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+        sortDirection:
+          type: integer
+          title: sort_direction
+          description: 'Sort direction (0: unknown, 1: asc, 2: desc)'
+          enum:
+          - 0
+          - 1
+          - 2
+      title: GetChatsRequest
+      additionalProperties: false
+    textql.rpc.platform.ChatRequest:
+      type: object
+      properties:
+        question:
+          type: string
+          title: question
+          minLength: 3
+        chatId:
+          type: string
+          title: chat_id
+          nullable: true
+        tools:
+          title: tools
+          nullable: true
+          $ref: '#/components/schemas/textql.rpc.platform.ChatTools'
+      title: ChatRequest
+      additionalProperties: false
+    textql.rpc.public.chat.GetChatRequest:
+      type: object
+      properties:
+        chatId:
+          type: string
+          title: chat_id
+      title: GetChatRequest
+      additionalProperties: false
+    textql.rpc.public.paradigm.ExperimentalOptions:
+      type: object
+      properties:
+        connectorIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+          title: connector_ids
+        autoApproveEnabled:
+          type: boolean
+          title: auto_approve_enabled
+      title: ExperimentalOptions
+      additionalProperties: false
+    textql.rpc.paradigm_params.ParadigmType:
+      type: string
+      title: ParadigmType
+      enum:
+      - TYPE_UNKNOWN
+      - TYPE_SQL
+      - TYPE_RESEARCH
+      - TYPE_ONTOLOGY
+      - TYPE_BASIC
+      - TYPE_TABLEAU
+      - TYPE_EXPERIMENTAL
+      - TYPE_UNIVERSAL
+      - TYPE_PUBLIC_DEMO
+    textql.rpc.public.paradigm.SqlOptions:
+      type: object
+      properties:
+        connectorIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+          title: connector_ids
+      title: SqlOptions
+      additionalProperties: false
     textql.rpc.public.paradigm.ParadigmOptions:
       type: object
       oneOf:
@@ -743,133 +866,10 @@ components:
         - universal
       title: ParadigmOptions
       additionalProperties: false
-    textql.rpc.public.chat.ChatSource:
+    google.protobuf.Timestamp:
       type: string
-      title: ChatSource
-      enum:
-      - CHAT_SOURCE_UNKNOWN
-      - CHAT_SOURCE_THREAD
-      - CHAT_SOURCE_PLAYBOOK
-      - CHAT_SOURCE_TEMPLATE
-      - CHAT_SOURCE_SLACK
-      - CHAT_SOURCE_AGENT
-      - CHAT_SOURCE_FEED
-    textql.rpc.public.chat.CancelStreamRequest:
-      type: object
-      properties:
-        chatId:
-          type: string
-          title: chat_id
-      title: CancelStreamRequest
-      additionalProperties: false
-    textql.rpc.public.chat.GetChatRequest:
-      type: object
-      properties:
-        chatId:
-          type: string
-          title: chat_id
-      title: GetChatRequest
-      additionalProperties: false
-    textql.rpc.public.paradigm.SqlOptions:
-      type: object
-      properties:
-        connectorIds:
-          type: array
-          items:
-            type: integer
-            format: int32
-          title: connector_ids
-      title: SqlOptions
-      additionalProperties: false
-    textql.rpc.public.chat.ChatMessage:
-      type: object
-      properties:
-        role:
-          type: string
-          title: role
-          description: '"user" or "assistant"'
-        content:
-          type: string
-          title: content
-        createdAt:
-          title: created_at
-          nullable: true
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-      title: ChatMessage
-      additionalProperties: false
-    connect.error_details.Any:
-      type: object
-      properties:
-        type:
-          type: string
-          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
-        value:
-          type: string
-          format: binary
-          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
-        debug:
-          oneOf:
-          - type: object
-            title: Any
-            additionalProperties: true
-            description: Detailed error information.
-          discriminator:
-            propertyName: type
-          title: Debug
-          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
-      additionalProperties: true
-      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
-    textql.rpc.public.cells.PreviewCell:
-      type: object
-      properties:
-        target:
-          type: string
-          title: target
-        previewType:
-          type: string
-          title: preview_type
-          description: '"image", "table", "pdf", "html", "dataframe", "download"'
-        name:
-          type: string
-          title: name
-        url:
-          type: string
-          title: url
-          nullable: true
-        content:
-          type: string
-          title: content
-          nullable: true
-        error:
-          type: string
-          title: error
-          nullable: true
-      title: PreviewCell
-      additionalProperties: false
-      description: primary interface for ana to render sandbox assets client side
-    textql.rpc.public.chat.CancelStreamResponse:
-      type: object
-      properties:
-        exists:
-          type: boolean
-          title: exists
-      title: CancelStreamResponse
-      additionalProperties: false
-    textql.rpc.public.chat.GetChatsResponse:
-      type: object
-      properties:
-        chats:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.chat.Chat'
-          title: chats
-        totalCount:
-          type: integer
-          format: int32
-          title: total_count
-      title: GetChatsResponse
-      additionalProperties: false
-    connect-timeout-header:
-      type: number
-      title: Connect-Timeout-Ms
-      description: Define the timeout, in ms
+      examples:
+      - '2023-01-15T01:30:15.01Z'
+      - '2024-12-25T12:00:00Z'
+      format: date-time
+      description: "A Timestamp represents a point in time independent of any time zone or local\n calendar, encoded as a count of seconds and fractions of seconds at\n nanosecond resolution. The count is relative to an epoch at UTC midnight on\n January 1, 1970, in the proleptic Gregorian calendar which extends the\n Gregorian calendar backwards to year one.\n\n All minutes are 60 seconds long. Leap seconds are \"smeared\" so that no leap\n second table is needed for interpretation, using a [24-hour linear\n smear](https://developers.google.com/time/smear).\n\n The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By\n restricting to that range, we ensure that we can convert to and from [RFC\n 3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.\n\n # Examples\n\n Example 1: Compute Timestamp from POSIX `time()`.\n\n     Timestamp timestamp;\n     timestamp.set_seconds(time(NULL));\n     timestamp.set_nanos(0);\n\n Example 2: Compute Timestamp from POSIX `gettimeofday()`.\n\n     struct timeval tv;\n     gettimeofday(&tv, NULL);\n\n     Timestamp timestamp;\n     timestamp.set_seconds(tv.tv_sec);\n     timestamp.set_nanos(tv.tv_usec * 1000);\n\n Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.\n\n     FILETIME ft;\n     GetSystemTimeAsFileTime(&ft);\n     UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;\n\n     // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z\n     // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.\n     Timestamp timestamp;\n     timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));\n     timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));\n\n Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.\n\n     long millis = System.currentTimeMillis();\n\n     Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)\n         .setNanos((int) ((millis % 1000) * 1000000)).build();\n\n Example 5: Compute Timestamp from Java `Instant.now()`.\n\n     Instant now = Instant.now();\n\n     Timestamp timestamp =\n         Timestamp.newBuilder().setSeconds(now.getEpochSecond())\n             .setNanos(now.getNano()).build();\n\n Example 6: Compute Timestamp from current time in Python.\n\n     timestamp = Timestamp()\n     timestamp.GetCurrentTime()\n\n # JSON Mapping\n\n In JSON format, the Timestamp type is encoded as a string in the\n [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the\n format is \"{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z\"\n where {year} is always expressed using four digits while {month}, {day},\n {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional\n seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),\n are optional. The \"Z\" suffix indicates the timezone (\"UTC\"); the timezone\n is required. A proto3 JSON serializer should always use UTC (as indicated by\n \"Z\") when printing the Timestamp type and a proto3 JSON parser should be\n able to accept both UTC and other timezones (as indicated by an offset).\n\n For example, \"2017-01-15T01:30:15.01Z\" encodes 15.01 seconds past\n 01:30 UTC on January 15, 2017.\n\n In JavaScript, one can convert a Date object to this format using the\n standard\n [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)\n method. In Python, a standard `datetime.datetime` object can be converted\n to this format using\n [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with\n the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use\n the Joda Time's [`ISODateTimeFormat.dateTime()`](\n http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()\n ) to obtain a formatter capable of generating timestamps in this format."

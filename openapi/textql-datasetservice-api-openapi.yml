@@ -632,29 +632,107 @@ paths:
         source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.datasets.update_dataset()\n\n    # Handle response\n    print(res)"
 components:
   schemas:
-    textql.rpc.public.dataset.GetFoldersResponse:
+    textql.rpc.public.dataset.DeleteDatasetResponse:
       type: object
       properties:
-        folders:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.dataset.DatasetFolder'
-          title: folders
-      title: GetFoldersResponse
+        success:
+          type: boolean
+          title: success
+      title: DeleteDatasetResponse
       additionalProperties: false
-    textql.rpc.public.dataset.CreateFolderRequest:
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+      - 1
+      description: Define the version of the Connect protocol
+      const: 1
+      default: 1
+    textql.rpc.public.dataframe.Int64Values:
       type: object
       properties:
-        parentPath:
+        values:
           type: array
           items:
-            type: string
-          title: parent_path
-          description: parent folders must already exist
+            type:
+            - integer
+            - string
+            format: int64
+          title: values
+      title: Int64Values
+      additionalProperties: false
+    textql.rpc.public.dataframe.Int32Values:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            type: integer
+            format: int32
+          title: values
+      title: Int32Values
+      additionalProperties: false
+    textql.rpc.public.dataset.TableauData:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        projectId:
+          type: string
+          title: project_id
+        projectName:
+          type: string
+          title: project_name
+        views:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.tableau.TableauView'
+          title: views
+        datasources:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.tableau.TableauDatasource'
+          title: datasources
+      title: TableauData
+      additionalProperties: false
+    textql.rpc.public.powerbi.PowerBIDataset:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
         name:
           type: string
           title: name
-      title: CreateFolderRequest
+        addRowsApiEnabled:
+          type: boolean
+          title: add_rows_api_enabled
+        configuredBy:
+          type: string
+          title: configured_by
+        isRefreshable:
+          type: boolean
+          title: is_refreshable
+        isEffectiveIdentityRequired:
+          type: boolean
+          title: is_effective_identity_required
+        isEffectiveIdentityRolesRequired:
+          type: boolean
+          title: is_effective_identity_roles_required
+        isOnPremGatewayRequired:
+          type: boolean
+          title: is_on_prem_gateway_required
+        createdDate:
+          title: created_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        tableNames:
+          type: array
+          items:
+            type: string
+          title: table_names
+      title: PowerBIDataset
       additionalProperties: false
     textql.rpc.public.dataframe.DataFrameRecord:
       type: object
@@ -666,55 +744,27 @@ components:
           title: columns
       title: DataFrameRecord
       additionalProperties: false
-    google.protobuf.Timestamp:
-      type: string
-      examples:
-      - '2023-01-15T01:30:15.01Z'
-      - '2024-12-25T12:00:00Z'
-      format: date-time
-      description: "A Timestamp represents a point in time independent of any time zone or local\n calendar, encoded as a count of seconds and fractions of seconds at\n nanosecond resolution. The count is relative to an epoch at UTC midnight on\n January 1, 1970, in the proleptic Gregorian calendar which extends the\n Gregorian calendar backwards to year one.\n\n All minutes are 60 seconds long. Leap seconds are \"smeared\" so that no leap\n second table is needed for interpretation, using a [24-hour linear\n smear](https://developers.google.com/time/smear).\n\n The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By\n restricting to that range, we ensure that we can convert to and from [RFC\n 3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.\n\n # Examples\n\n Example 1: Compute Timestamp from POSIX `time()`.\n\n     Timestamp timestamp;\n     timestamp.set_seconds(time(NULL));\n     timestamp.set_nanos(0);\n\n Example 2: Compute Timestamp from POSIX `gettimeofday()`.\n\n     struct timeval tv;\n     gettimeofday(&tv, NULL);\n\n     Timestamp timestamp;\n     timestamp.set_seconds(tv.tv_sec);\n     timestamp.set_nanos(tv.tv_usec * 1000);\n\n Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.\n\n     FILETIME ft;\n     GetSystemTimeAsFileTime(&ft);\n     UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;\n\n     // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z\n     // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.\n     Timestamp timestamp;\n     timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));\n     timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));\n\n Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.\n\n     long millis = System.currentTimeMillis();\n\n     Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)\n         .setNanos((int) ((millis % 1000) * 1000000)).build();\n\n Example 5: Compute Timestamp from Java `Instant.now()`.\n\n     Instant now = Instant.now();\n\n     Timestamp timestamp =\n         Timestamp.newBuilder().setSeconds(now.getEpochSecond())\n             .setNanos(now.getNano()).build();\n\n Example 6: Compute Timestamp from current time in Python.\n\n     timestamp = Timestamp()\n     timestamp.GetCurrentTime()\n\n # JSON Mapping\n\n In JSON format, the Timestamp type is encoded as a string in the\n [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the\n format is \"{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z\"\n where {year} is always expressed using four digits while {month}, {day},\n {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional\n seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),\n are optional. The \"Z\" suffix indicates the timezone (\"UTC\"); the timezone\n is required. A proto3 JSON serializer should always use UTC (as indicated by\n \"Z\") when printing the Timestamp type and a proto3 JSON parser should be\n able to accept both UTC and other timezones (as indicated by an offset).\n\n For example, \"2017-01-15T01:30:15.01Z\" encodes 15.01 seconds past\n 01:30 UTC on January 15, 2017.\n\n In JavaScript, one can convert a Date object to this format using the\n standard\n [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)\n method. In Python, a standard `datetime.datetime` object can be converted\n to this format using\n [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with\n the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use\n the Joda Time's [`ISODateTimeFormat.dateTime()`](\n http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()\n ) to obtain a formatter capable of generating timestamps in this format."
-    textql.rpc.public.tableau.TableauDatasource:
+    textql.rpc.public.dataset.GetFoldersRequest:
       type: object
       properties:
-        id:
+        path:
           type: string
-          title: id
-        name:
-          type: string
-          title: name
-        type:
-          type: string
-          title: type
-        createdAt:
-          title: created_at
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        updatedAt:
-          title: updated_at
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        isPublished:
-          type: boolean
-          title: is_published
-        projectId:
-          type: string
-          title: project_id
-        projectName:
-          type: string
-          title: project_name
-      title: TableauDatasource
+          title: path
+      title: GetFoldersRequest
       additionalProperties: false
-      description: 'TODO: Add datasources support'
-    textql.rpc.public.dataset.TabularFileCategory:
-      type: string
-      title: TabularFileCategory
-      enum:
-      - CATEGORY_UNKNOWN
-      - CATEGORY_CSV
-      - CATEGORY_TSV
-      - CATEGORY_XLSX
-      - CATEGORY_XLS
-      - CATEGORY_PARQUET
-      - CATEGORY_ODS
-      description: never change the names or numbers of existing tabular file categories!
+    textql.rpc.public.dataset.DeleteDatasetRequest:
+      type: object
+      properties:
+        datasetId:
+          type: string
+          title: dataset_id
+      title: DeleteDatasetRequest
+      additionalProperties: false
+    textql.rpc.public.dataset.GetDatasetStatsResponse:
+      type: object
+      title: GetDatasetStatsResponse
+      additionalProperties: false
+      description: unimplemented for now
     textql.rpc.public.dataset.GetDatasetsRequest:
       type: object
       properties:
@@ -755,6 +805,119 @@ components:
           nullable: true
       title: GetDatasetsRequest
       additionalProperties: false
+    textql.rpc.public.dataset.CreateFolderResponse:
+      type: object
+      properties:
+        path:
+          type: array
+          items:
+            type: string
+          title: path
+          description: path to new folder
+      title: CreateFolderResponse
+      additionalProperties: false
+    textql.rpc.public.dataset.DatasetPermission:
+      type: string
+      title: DatasetPermission
+      enum:
+      - PERMISSION_UNKNOWN
+      - PERMISSION_READ
+      - PERMISSION_EDIT
+      - PERMISSION_ADMIN
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
+          type: string
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+          - type: object
+            title: Any
+            additionalProperties: true
+            description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
+    textql.rpc.public.dataframe.DoubleValues:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            type: number
+            format: double
+          title: values
+      title: DoubleValues
+      additionalProperties: false
+    textql.rpc.public.dataframe.StringValues:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            type: string
+          title: values
+      title: StringValues
+      additionalProperties: false
+    textql.rpc.public.dataframe.DataFrameField:
+      type: object
+      properties:
+        columnName:
+          type: string
+          title: column_name
+        columnType:
+          type: string
+          title: column_type
+        columnIndex:
+          type: integer
+          title: column_index
+          format: int32
+      title: DataFrameField
+      additionalProperties: false
+    textql.rpc.public.dataset.GetDatasetRequest:
+      type: object
+      properties:
+        datasetId:
+          type: string
+          title: dataset_id
+      title: GetDatasetRequest
+      additionalProperties: false
+    textql.rpc.public.dataset.ProcessUploadPresignUrlResponse:
+      type: object
+      properties:
+        dataset:
+          title: dataset
+          $ref: '#/components/schemas/textql.rpc.public.dataset.Dataset'
+      title: ProcessUploadPresignUrlResponse
+      additionalProperties: false
+    textql.rpc.public.dataset.ExportDatasetResponse:
+      type: object
+      properties:
+        presignedUrl:
+          type: string
+          title: presigned_url
+      title: ExportDatasetResponse
+      additionalProperties: false
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    textql.rpc.public.dataset.CreateTableauDatasetResponse:
+      type: object
+      properties:
+        dataset:
+          title: dataset
+          $ref: '#/components/schemas/textql.rpc.public.dataset.Dataset'
+      title: CreateTableauDatasetResponse
+      additionalProperties: false
     textql.rpc.public.dataframe.TimestampValues:
       type: object
       properties:
@@ -765,22 +928,6 @@ components:
           title: values
       title: TimestampValues
       additionalProperties: false
-    textql.rpc.public.dataset.CreatePowerBIDatasetResponse:
-      type: object
-      properties:
-        dataset:
-          title: dataset
-          $ref: '#/components/schemas/textql.rpc.public.dataset.Dataset'
-      title: CreatePowerBIDatasetResponse
-      additionalProperties: false
-    textql.rpc.public.dataset.DatasetsSort:
-      type: string
-      title: DatasetsSort
-      enum:
-      - SORT_UNKNOWN
-      - SORT_LATEST
-      - SORT_OLDEST
-      - SORT_RELEVANT
     textql.rpc.public.dataset.Dataset:
       type: object
       allOf:
@@ -866,53 +1013,6 @@ components:
           - tabularFile
       title: Dataset
       additionalProperties: false
-    textql.rpc.public.dataset.ProcessUploadPresignUrlRequest:
-      type: object
-      properties:
-        datasetId:
-          type: string
-          title: dataset_id
-        datasetVersion:
-          type: integer
-          title: dataset_version
-          format: int32
-      title: ProcessUploadPresignUrlRequest
-      additionalProperties: false
-    textql.rpc.public.dataset.PowerBIData:
-      type: object
-      properties:
-        connectorId:
-          type: integer
-          title: connector_id
-          format: int32
-        reportIds:
-          type: array
-          items:
-            type: string
-          title: report_ids
-        datasetIds:
-          type: array
-          items:
-            type: string
-          title: dataset_ids
-        reportNames:
-          type: array
-          items:
-            type: string
-          title: report_names
-        datasetNames:
-          type: array
-          items:
-            type: string
-          title: dataset_names
-        workspaceId:
-          type: string
-          title: workspace_id
-        workspaceName:
-          type: string
-          title: workspace_name
-      title: PowerBIData
-      additionalProperties: false
     textql.rpc.public.dataframe.ByteValues:
       type: object
       properties:
@@ -923,6 +1023,201 @@ components:
             format: byte
           title: values
       title: ByteValues
+      additionalProperties: false
+    textql.rpc.public.dataset.SandboxDataFrame:
+      type: object
+      properties:
+        info:
+          title: info
+          $ref: '#/components/schemas/textql.rpc.public.dataframe.DataFrameInfo'
+      title: SandboxDataFrame
+      additionalProperties: false
+    textql.rpc.public.dataframe.BoolValues:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            type: boolean
+          title: values
+      title: BoolValues
+      additionalProperties: false
+    textql.rpc.public.dataset.GetDatasetResponse:
+      type: object
+      properties:
+        dataset:
+          title: dataset
+          $ref: '#/components/schemas/textql.rpc.public.dataset.Dataset'
+      title: GetDatasetResponse
+      additionalProperties: false
+    textql.rpc.public.dataset.CreateUploadPresignUrlResponse:
+      type: object
+      properties:
+        datasetId:
+          type: string
+          title: dataset_id
+        datasetVersion:
+          type: integer
+          title: dataset_version
+          format: int32
+        presignUrl:
+          type: string
+          title: presign_url
+      title: CreateUploadPresignUrlResponse
+      additionalProperties: false
+    textql.rpc.public.dataset.CreateFolderRequest:
+      type: object
+      properties:
+        parentPath:
+          type: array
+          items:
+            type: string
+          title: parent_path
+          description: parent folders must already exist
+        name:
+          type: string
+          title: name
+      title: CreateFolderRequest
+      additionalProperties: false
+    textql.rpc.public.dataset.GetDatasetsByIdsResponse:
+      type: object
+      properties:
+        datasets:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dataset.Dataset'
+          title: datasets
+      title: GetDatasetsByIdsResponse
+      additionalProperties: false
+    textql.rpc.public.dataset.Document:
+      type: object
+      properties:
+        previewUrl:
+          type: string
+          title: preview_url
+        pageCount:
+          type: integer
+          title: page_count
+          format: int32
+      title: Document
+      additionalProperties: false
+    textql.rpc.public.dataframe.Uint32Values:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            type: integer
+          title: values
+      title: Uint32Values
+      additionalProperties: false
+    textql.rpc.public.powerbi.PowerBIReport:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        name:
+          type: string
+          title: name
+        webUrl:
+          type: string
+          title: web_url
+        embedUrl:
+          type: string
+          title: embed_url
+        datasetId:
+          type: string
+          title: dataset_id
+        createdBy:
+          type: string
+          title: created_by
+        createdDate:
+          title: created_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: PowerBIReport
+      additionalProperties: false
+    textql.rpc.public.tableau.TableauView:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        name:
+          type: string
+          title: name
+        contentUrl:
+          type: string
+          title: content_url
+        workbookId:
+          type: string
+          title: workbook_id
+        workbookName:
+          type: string
+          title: workbook_name
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        embedUrl:
+          type: string
+          title: embed_url
+      title: TableauView
+      additionalProperties: false
+    textql.rpc.public.dataset.CreateUploadPresignUrlRequest:
+      type: object
+      properties:
+        type:
+          title: type
+          $ref: '#/components/schemas/textql.rpc.public.dataset.DatasetType'
+        fileName:
+          type: string
+          title: file_name
+        folderPath:
+          type: array
+          items:
+            type: string
+          title: folder_path
+          description: if this dataset lives in a folder
+        ephemeral:
+          type: boolean
+          title: ephemeral
+        expiresInDays:
+          type: integer
+          title: expires_in_days
+          nullable: true
+      title: CreateUploadPresignUrlRequest
+      additionalProperties: false
+    textql.rpc.identity.MemberPreview:
+      type: object
+      properties:
+        memberId:
+          type: string
+          title: member_id
+        memberEmail:
+          type: string
+          title: member_email
+          description: "the fields are optionally populated, depending on the context\n may require RPC fields such as `include_owner` to be set to true"
+          nullable: true
+        memberName:
+          type: string
+          title: member_name
+          nullable: true
+        memberPictureUrl:
+          type: string
+          title: member_picture_url
+          nullable: true
+      title: MemberPreview
+      additionalProperties: false
+    textql.rpc.public.dataset.CreatePowerBIDatasetResponse:
+      type: object
+      properties:
+        dataset:
+          title: dataset
+          $ref: '#/components/schemas/textql.rpc.public.dataset.Dataset'
+      title: CreatePowerBIDatasetResponse
       additionalProperties: false
     textql.rpc.public.dataset.GetDatasetValuesRequest:
       type: object
@@ -954,145 +1249,6 @@ components:
           description: for multi-sheet excels
           nullable: true
       title: GetDatasetValuesRequest
-      additionalProperties: false
-    textql.rpc.public.dataframe.DataFrameField:
-      type: object
-      properties:
-        columnName:
-          type: string
-          title: column_name
-        columnType:
-          type: string
-          title: column_type
-        columnIndex:
-          type: integer
-          title: column_index
-          format: int32
-      title: DataFrameField
-      additionalProperties: false
-    textql.rpc.public.dataset.GetDatasetsByIdsRequest:
-      type: object
-      properties:
-        datasetIds:
-          type: array
-          items:
-            type: string
-          title: dataset_ids
-      title: GetDatasetsByIdsRequest
-      additionalProperties: false
-    textql.rpc.public.dataset.TableauData:
-      type: object
-      properties:
-        connectorId:
-          type: integer
-          title: connector_id
-          format: int32
-        projectId:
-          type: string
-          title: project_id
-        projectName:
-          type: string
-          title: project_name
-        views:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.tableau.TableauView'
-          title: views
-        datasources:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.tableau.TableauDatasource'
-          title: datasources
-      title: TableauData
-      additionalProperties: false
-    textql.rpc.public.powerbi.PowerBIReport:
-      type: object
-      properties:
-        id:
-          type: string
-          title: id
-        name:
-          type: string
-          title: name
-        webUrl:
-          type: string
-          title: web_url
-        embedUrl:
-          type: string
-          title: embed_url
-        datasetId:
-          type: string
-          title: dataset_id
-        createdBy:
-          type: string
-          title: created_by
-        createdDate:
-          title: created_date
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-      title: PowerBIReport
-      additionalProperties: false
-    textql.rpc.public.dataset.GetDatasetsResponse:
-      type: object
-      properties:
-        datasets:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.dataset.Dataset'
-          title: datasets
-          description: returns only the latest dataset versions
-      title: GetDatasetsResponse
-      additionalProperties: false
-    textql.rpc.public.dataset.CreateTableauDatasetResponse:
-      type: object
-      properties:
-        dataset:
-          title: dataset
-          $ref: '#/components/schemas/textql.rpc.public.dataset.Dataset'
-      title: CreateTableauDatasetResponse
-      additionalProperties: false
-    textql.rpc.public.dataset.GetDatasetsByIdsResponse:
-      type: object
-      properties:
-        datasets:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.dataset.Dataset'
-          title: datasets
-      title: GetDatasetsByIdsResponse
-      additionalProperties: false
-    textql.rpc.public.dataframe.Uint64Values:
-      type: object
-      properties:
-        values:
-          type: array
-          items:
-            type:
-            - integer
-            - string
-            format: int64
-          title: values
-      title: Uint64Values
-      additionalProperties: false
-    textql.rpc.public.dataset.ExportFormat:
-      type: string
-      title: ExportFormat
-      enum:
-      - FORMAT_UNKNOWN
-      - FORMAT_CSV
-      - FORMAT_EXCEL
-      - FORMAT_PARQUET
-    textql.rpc.public.dataset.UpdateDatasetRequest:
-      type: object
-      properties:
-        datasetId:
-          type: string
-          title: dataset_id
-        name:
-          type: string
-          title: name
-          description: Add other updatable fields as needed
-          nullable: true
-      title: UpdateDatasetRequest
       additionalProperties: false
     connect.error:
       type: object
@@ -1130,13 +1286,196 @@ components:
       title: Connect Error
       additionalProperties: true
       description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
-    textql.rpc.public.dataset.GetDatasetRequest:
+    textql.rpc.public.dataframe.FloatValues:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            type: number
+            format: float
+          title: values
+      title: FloatValues
+      additionalProperties: false
+    textql.rpc.public.dataframe.DataFrame:
+      type: object
+      properties:
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dataframe.DataFrameField'
+          title: schema
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dataframe.DataFrameRecord'
+          title: records
+      title: DataFrame
+      additionalProperties: false
+    textql.rpc.public.tableau.TableauDatasource:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+        name:
+          type: string
+          title: name
+        type:
+          type: string
+          title: type
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        isPublished:
+          type: boolean
+          title: is_published
+        projectId:
+          type: string
+          title: project_id
+        projectName:
+          type: string
+          title: project_name
+      title: TableauDatasource
+      additionalProperties: false
+      description: 'TODO: Add datasources support'
+    textql.rpc.public.dataset.ProcessUploadPresignUrlRequest:
       type: object
       properties:
         datasetId:
           type: string
           title: dataset_id
-      title: GetDatasetRequest
+        datasetVersion:
+          type: integer
+          title: dataset_version
+          format: int32
+      title: ProcessUploadPresignUrlRequest
+      additionalProperties: false
+    textql.rpc.public.dataframe.Uint64Values:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            type:
+            - integer
+            - string
+            format: int64
+          title: values
+      title: Uint64Values
+      additionalProperties: false
+    textql.rpc.public.dataset.UpdateDatasetRequest:
+      type: object
+      properties:
+        datasetId:
+          type: string
+          title: dataset_id
+        name:
+          type: string
+          title: name
+          description: Add other updatable fields as needed
+          nullable: true
+      title: UpdateDatasetRequest
+      additionalProperties: false
+    textql.rpc.public.dataset.TabularFile:
+      type: object
+      properties:
+        category:
+          title: category
+          $ref: '#/components/schemas/textql.rpc.public.dataset.TabularFileCategory'
+        rowCount:
+          type:
+          - integer
+          - string
+          title: row_count
+          format: int64
+        columnCount:
+          type:
+          - integer
+          - string
+          title: column_count
+          format: int64
+        sheetCount:
+          type: integer
+          title: sheet_count
+          format: int32
+      title: TabularFile
+      additionalProperties: false
+    textql.rpc.public.dataset.UpdateDatasetResponse:
+      type: object
+      properties:
+        dataset:
+          title: dataset
+          $ref: '#/components/schemas/textql.rpc.public.dataset.Dataset'
+      title: UpdateDatasetResponse
+      additionalProperties: false
+    textql.rpc.public.dataset.DatasetsSort:
+      type: string
+      title: DatasetsSort
+      enum:
+      - SORT_UNKNOWN
+      - SORT_LATEST
+      - SORT_OLDEST
+      - SORT_RELEVANT
+    textql.rpc.public.dataset.CreateTableauDatasetRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        name:
+          type: string
+          title: name
+        folderPath:
+          type: array
+          items:
+            type: string
+          title: folder_path
+        projectId:
+          type: string
+          title: project_id
+        projectName:
+          type: string
+          title: project_name
+        views:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.tableau.TableauView'
+          title: views
+        datasources:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.tableau.TableauDatasource'
+          title: datasources
+      title: CreateTableauDatasetRequest
+      additionalProperties: false
+    textql.rpc.public.dataset.GetDatasetsResponse:
+      type: object
+      properties:
+        datasets:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dataset.Dataset'
+          title: datasets
+          description: returns only the latest dataset versions
+      title: GetDatasetsResponse
+      additionalProperties: false
+    textql.rpc.public.dataset.GetDatasetStatsRequest:
+      type: object
+      properties:
+        datasetId:
+          type: string
+          title: dataset_id
+        versionId:
+          type: integer
+          title: version_id
+          format: int32
+          nullable: true
+      title: GetDatasetStatsRequest
       additionalProperties: false
     textql.rpc.public.dataset.CreatePowerBIDatasetRequest:
       type: object
@@ -1171,120 +1510,49 @@ components:
           title: datasets
       title: CreatePowerBIDatasetRequest
       additionalProperties: false
-    connect-protocol-version:
-      type: number
-      title: Connect-Protocol-Version
-      enum:
-      - 1
-      description: Define the version of the Connect protocol
-      const: 1
-      default: 1
-    textql.rpc.public.dataset.GetFoldersRequest:
+    textql.rpc.public.dataframe.DataFrameInfo:
       type: object
       properties:
-        path:
+        name:
           type: string
-          title: path
-      title: GetFoldersRequest
-      additionalProperties: false
-    textql.rpc.public.dataset.TabularFile:
-      type: object
-      properties:
-        category:
-          title: category
-          $ref: '#/components/schemas/textql.rpc.public.dataset.TabularFileCategory'
-        rowCount:
-          type:
-          - integer
-          - string
-          title: row_count
-          format: int64
-        columnCount:
-          type:
-          - integer
-          - string
-          title: column_count
-          format: int64
-        sheetCount:
-          type: integer
-          title: sheet_count
-          format: int32
-      title: TabularFile
-      additionalProperties: false
-    textql.rpc.public.dataset.CreateUploadPresignUrlResponse:
-      type: object
-      properties:
-        datasetId:
-          type: string
-          title: dataset_id
-        datasetVersion:
-          type: integer
-          title: dataset_version
-          format: int32
-        presignUrl:
-          type: string
-          title: presign_url
-      title: CreateUploadPresignUrlResponse
-      additionalProperties: false
-    textql.rpc.public.dataset.UpdateDatasetResponse:
-      type: object
-      properties:
-        dataset:
-          title: dataset
-          $ref: '#/components/schemas/textql.rpc.public.dataset.Dataset'
-      title: UpdateDatasetResponse
-      additionalProperties: false
-    textql.rpc.public.dataset.CreateUploadPresignUrlRequest:
-      type: object
-      properties:
-        type:
-          title: type
-          $ref: '#/components/schemas/textql.rpc.public.dataset.DatasetType'
-        fileName:
-          type: string
-          title: file_name
-        folderPath:
-          type: array
-          items:
-            type: string
-          title: folder_path
-          description: if this dataset lives in a folder
-        ephemeral:
+          title: name
+        external:
           type: boolean
-          title: ephemeral
-        expiresInDays:
-          type: integer
-          title: expires_in_days
-          nullable: true
-      title: CreateUploadPresignUrlRequest
-      additionalProperties: false
-    textql.rpc.public.dataset.ExportDatasetResponse:
-      type: object
-      properties:
-        presignedUrl:
-          type: string
-          title: presigned_url
-      title: ExportDatasetResponse
-      additionalProperties: false
-    textql.rpc.public.dataset.GetDatasetValuesResponse:
-      type: object
-      properties:
-        df:
-          title: df
-          $ref: '#/components/schemas/textql.rpc.public.dataframe.DataFrame'
-        numCols:
-          type:
-          - integer
-          - string
-          title: num_cols
-          format: int64
+          title: external
         numRows:
           type:
           - integer
           - string
           title: num_rows
           format: int64
-      title: GetDatasetValuesResponse
+        numCols:
+          type:
+          - integer
+          - string
+          title: num_cols
+          format: int64
+        memoryUsage:
+          type:
+          - integer
+          - string
+          title: memory_usage
+          format: int64
+          description: in bytes
+      title: DataFrameInfo
+      additionalProperties: false
+    textql.rpc.public.dataset.DatasetFolder:
+      type: object
+      properties:
+        path:
+          type: string
+          title: path
+        owner:
+          title: owner
+          $ref: '#/components/schemas/textql.rpc.identity.MemberPreview'
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: DatasetFolder
       additionalProperties: false
     textql.rpc.public.dataframe.DataFrameColumn:
       type: object
@@ -1378,154 +1646,14 @@ components:
           - uint64
       title: DataFrameColumn
       additionalProperties: false
-    textql.rpc.public.dataset.CreateFolderResponse:
-      type: object
-      properties:
-        path:
-          type: array
-          items:
-            type: string
-          title: path
-          description: path to new folder
-      title: CreateFolderResponse
-      additionalProperties: false
-    textql.rpc.public.dataset.CreateTableauDatasetRequest:
-      type: object
-      properties:
-        connectorId:
-          type: integer
-          title: connector_id
-          format: int32
-        name:
-          type: string
-          title: name
-        folderPath:
-          type: array
-          items:
-            type: string
-          title: folder_path
-        projectId:
-          type: string
-          title: project_id
-        projectName:
-          type: string
-          title: project_name
-        views:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.tableau.TableauView'
-          title: views
-        datasources:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.tableau.TableauDatasource'
-          title: datasources
-      title: CreateTableauDatasetRequest
-      additionalProperties: false
-    textql.rpc.public.dataframe.Int64Values:
-      type: object
-      properties:
-        values:
-          type: array
-          items:
-            type:
-            - integer
-            - string
-            format: int64
-          title: values
-      title: Int64Values
-      additionalProperties: false
-    textql.rpc.public.powerbi.PowerBIDataset:
-      type: object
-      properties:
-        id:
-          type: string
-          title: id
-        name:
-          type: string
-          title: name
-        addRowsApiEnabled:
-          type: boolean
-          title: add_rows_api_enabled
-        configuredBy:
-          type: string
-          title: configured_by
-        isRefreshable:
-          type: boolean
-          title: is_refreshable
-        isEffectiveIdentityRequired:
-          type: boolean
-          title: is_effective_identity_required
-        isEffectiveIdentityRolesRequired:
-          type: boolean
-          title: is_effective_identity_roles_required
-        isOnPremGatewayRequired:
-          type: boolean
-          title: is_on_prem_gateway_required
-        createdDate:
-          title: created_date
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        tableNames:
-          type: array
-          items:
-            type: string
-          title: table_names
-      title: PowerBIDataset
-      additionalProperties: false
-    textql.rpc.public.dataset.DeleteDatasetResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          title: success
-      title: DeleteDatasetResponse
-      additionalProperties: false
-    textql.rpc.public.dataset.DatasetPermission:
+    textql.rpc.public.dataset.ExportFormat:
       type: string
-      title: DatasetPermission
+      title: ExportFormat
       enum:
-      - PERMISSION_UNKNOWN
-      - PERMISSION_READ
-      - PERMISSION_EDIT
-      - PERMISSION_ADMIN
-    textql.rpc.public.dataframe.BoolValues:
-      type: object
-      properties:
-        values:
-          type: array
-          items:
-            type: boolean
-          title: values
-      title: BoolValues
-      additionalProperties: false
-    textql.rpc.public.dataframe.FloatValues:
-      type: object
-      properties:
-        values:
-          type: array
-          items:
-            type: number
-            format: float
-          title: values
-      title: FloatValues
-      additionalProperties: false
-    textql.rpc.public.dataset.GetDatasetStatsResponse:
-      type: object
-      title: GetDatasetStatsResponse
-      additionalProperties: false
-      description: unimplemented for now
-    textql.rpc.public.dataset.Document:
-      type: object
-      properties:
-        previewUrl:
-          type: string
-          title: preview_url
-        pageCount:
-          type: integer
-          title: page_count
-          format: int32
-      title: Document
-      additionalProperties: false
+      - FORMAT_UNKNOWN
+      - FORMAT_CSV
+      - FORMAT_EXCEL
+      - FORMAT_PARQUET
     textql.rpc.public.dataset.ExportDatasetRequest:
       type: object
       properties:
@@ -1544,228 +1672,6 @@ components:
           nullable: true
       title: ExportDatasetRequest
       additionalProperties: false
-    textql.rpc.public.dataframe.Uint32Values:
-      type: object
-      properties:
-        values:
-          type: array
-          items:
-            type: integer
-          title: values
-      title: Uint32Values
-      additionalProperties: false
-    textql.rpc.public.dataset.DatasetFolder:
-      type: object
-      properties:
-        path:
-          type: string
-          title: path
-        owner:
-          title: owner
-          $ref: '#/components/schemas/textql.rpc.identity.MemberPreview'
-        createdAt:
-          title: created_at
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-      title: DatasetFolder
-      additionalProperties: false
-    textql.rpc.public.dataset.DeleteDatasetRequest:
-      type: object
-      properties:
-        datasetId:
-          type: string
-          title: dataset_id
-      title: DeleteDatasetRequest
-      additionalProperties: false
-    textql.rpc.identity.MemberPreview:
-      type: object
-      properties:
-        memberId:
-          type: string
-          title: member_id
-        memberEmail:
-          type: string
-          title: member_email
-          description: "the fields are optionally populated, depending on the context\n may require RPC fields such as `include_owner` to be set to true"
-          nullable: true
-        memberName:
-          type: string
-          title: member_name
-          nullable: true
-        memberPictureUrl:
-          type: string
-          title: member_picture_url
-          nullable: true
-      title: MemberPreview
-      additionalProperties: false
-    textql.rpc.public.dataframe.DataFrameInfo:
-      type: object
-      properties:
-        name:
-          type: string
-          title: name
-        external:
-          type: boolean
-          title: external
-        numRows:
-          type:
-          - integer
-          - string
-          title: num_rows
-          format: int64
-        numCols:
-          type:
-          - integer
-          - string
-          title: num_cols
-          format: int64
-        memoryUsage:
-          type:
-          - integer
-          - string
-          title: memory_usage
-          format: int64
-          description: in bytes
-      title: DataFrameInfo
-      additionalProperties: false
-    textql.rpc.public.dataframe.StringValues:
-      type: object
-      properties:
-        values:
-          type: array
-          items:
-            type: string
-          title: values
-      title: StringValues
-      additionalProperties: false
-    textql.rpc.public.dataframe.Int32Values:
-      type: object
-      properties:
-        values:
-          type: array
-          items:
-            type: integer
-            format: int32
-          title: values
-      title: Int32Values
-      additionalProperties: false
-    textql.rpc.public.dataset.GetDatasetResponse:
-      type: object
-      properties:
-        dataset:
-          title: dataset
-          $ref: '#/components/schemas/textql.rpc.public.dataset.Dataset'
-      title: GetDatasetResponse
-      additionalProperties: false
-    textql.rpc.public.tableau.TableauView:
-      type: object
-      properties:
-        id:
-          type: string
-          title: id
-        name:
-          type: string
-          title: name
-        contentUrl:
-          type: string
-          title: content_url
-        workbookId:
-          type: string
-          title: workbook_id
-        workbookName:
-          type: string
-          title: workbook_name
-        createdAt:
-          title: created_at
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        updatedAt:
-          title: updated_at
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        embedUrl:
-          type: string
-          title: embed_url
-      title: TableauView
-      additionalProperties: false
-    connect.error_details.Any:
-      type: object
-      properties:
-        type:
-          type: string
-          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
-        value:
-          type: string
-          format: binary
-          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
-        debug:
-          oneOf:
-          - type: object
-            title: Any
-            additionalProperties: true
-            description: Detailed error information.
-          discriminator:
-            propertyName: type
-          title: Debug
-          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
-      additionalProperties: true
-      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
-    textql.rpc.public.dataset.GetDatasetStatsRequest:
-      type: object
-      properties:
-        datasetId:
-          type: string
-          title: dataset_id
-        versionId:
-          type: integer
-          title: version_id
-          format: int32
-          nullable: true
-      title: GetDatasetStatsRequest
-      additionalProperties: false
-    textql.rpc.public.dataset.SandboxDataFrame:
-      type: object
-      properties:
-        info:
-          title: info
-          $ref: '#/components/schemas/textql.rpc.public.dataframe.DataFrameInfo'
-      title: SandboxDataFrame
-      additionalProperties: false
-    textql.rpc.public.dataset.ProcessUploadPresignUrlResponse:
-      type: object
-      properties:
-        dataset:
-          title: dataset
-          $ref: '#/components/schemas/textql.rpc.public.dataset.Dataset'
-      title: ProcessUploadPresignUrlResponse
-      additionalProperties: false
-    textql.rpc.public.dataframe.DoubleValues:
-      type: object
-      properties:
-        values:
-          type: array
-          items:
-            type: number
-            format: double
-          title: values
-      title: DoubleValues
-      additionalProperties: false
-    connect-timeout-header:
-      type: number
-      title: Connect-Timeout-Ms
-      description: Define the timeout, in ms
-    textql.rpc.public.dataframe.DataFrame:
-      type: object
-      properties:
-        schema:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.dataframe.DataFrameField'
-          title: schema
-        records:
-          type: array
-          items:
-            $ref: '#/components/schemas/textql.rpc.public.dataframe.DataFrameRecord'
-          title: records
-      title: DataFrame
-      additionalProperties: false
     textql.rpc.public.dataset.DatasetType:
       type: string
       title: DatasetType
@@ -1779,6 +1685,100 @@ components:
       - TYPE_TEXT
       - TYPE_POWERBI
       description: never change the names or numbers of existing dataset types!
+    textql.rpc.public.dataset.TabularFileCategory:
+      type: string
+      title: TabularFileCategory
+      enum:
+      - CATEGORY_UNKNOWN
+      - CATEGORY_CSV
+      - CATEGORY_TSV
+      - CATEGORY_XLSX
+      - CATEGORY_XLS
+      - CATEGORY_PARQUET
+      - CATEGORY_ODS
+      description: never change the names or numbers of existing tabular file categories!
+    textql.rpc.public.dataset.GetDatasetsByIdsRequest:
+      type: object
+      properties:
+        datasetIds:
+          type: array
+          items:
+            type: string
+          title: dataset_ids
+      title: GetDatasetsByIdsRequest
+      additionalProperties: false
+    textql.rpc.public.dataset.PowerBIData:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+          title: connector_id
+          format: int32
+        reportIds:
+          type: array
+          items:
+            type: string
+          title: report_ids
+        datasetIds:
+          type: array
+          items:
+            type: string
+          title: dataset_ids
+        reportNames:
+          type: array
+          items:
+            type: string
+          title: report_names
+        datasetNames:
+          type: array
+          items:
+            type: string
+          title: dataset_names
+        workspaceId:
+          type: string
+          title: workspace_id
+        workspaceName:
+          type: string
+          title: workspace_name
+      title: PowerBIData
+      additionalProperties: false
+    textql.rpc.public.dataset.GetDatasetValuesResponse:
+      type: object
+      properties:
+        df:
+          title: df
+          $ref: '#/components/schemas/textql.rpc.public.dataframe.DataFrame'
+        numCols:
+          type:
+          - integer
+          - string
+          title: num_cols
+          format: int64
+        numRows:
+          type:
+          - integer
+          - string
+          title: num_rows
+          format: int64
+      title: GetDatasetValuesResponse
+      additionalProperties: false
+    google.protobuf.Timestamp:
+      type: string
+      examples:
+      - '2023-01-15T01:30:15.01Z'
+      - '2024-12-25T12:00:00Z'
+      format: date-time
+      description: "A Timestamp represents a point in time independent of any time zone or local\n calendar, encoded as a count of seconds and fractions of seconds at\n nanosecond resolution. The count is relative to an epoch at UTC midnight on\n January 1, 1970, in the proleptic Gregorian calendar which extends the\n Gregorian calendar backwards to year one.\n\n All minutes are 60 seconds long. Leap seconds are \"smeared\" so that no leap\n second table is needed for interpretation, using a [24-hour linear\n smear](https://developers.google.com/time/smear).\n\n The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By\n restricting to that range, we ensure that we can convert to and from [RFC\n 3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.\n\n # Examples\n\n Example 1: Compute Timestamp from POSIX `time()`.\n\n     Timestamp timestamp;\n     timestamp.set_seconds(time(NULL));\n     timestamp.set_nanos(0);\n\n Example 2: Compute Timestamp from POSIX `gettimeofday()`.\n\n     struct timeval tv;\n     gettimeofday(&tv, NULL);\n\n     Timestamp timestamp;\n     timestamp.set_seconds(tv.tv_sec);\n     timestamp.set_nanos(tv.tv_usec * 1000);\n\n Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.\n\n     FILETIME ft;\n     GetSystemTimeAsFileTime(&ft);\n     UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;\n\n     // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z\n     // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.\n     Timestamp timestamp;\n     timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));\n     timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));\n\n Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.\n\n     long millis = System.currentTimeMillis();\n\n     Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)\n         .setNanos((int) ((millis % 1000) * 1000000)).build();\n\n Example 5: Compute Timestamp from Java `Instant.now()`.\n\n     Instant now = Instant.now();\n\n     Timestamp timestamp =\n         Timestamp.newBuilder().setSeconds(now.getEpochSecond())\n             .setNanos(now.getNano()).build();\n\n Example 6: Compute Timestamp from current time in Python.\n\n     timestamp = Timestamp()\n     timestamp.GetCurrentTime()\n\n # JSON Mapping\n\n In JSON format, the Timestamp type is encoded as a string in the\n [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the\n format is \"{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z\"\n where {year} is always expressed using four digits while {month}, {day},\n {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional\n seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),\n are optional. The \"Z\" suffix indicates the timezone (\"UTC\"); the timezone\n is required. A proto3 JSON serializer should always use UTC (as indicated by\n \"Z\") when printing the Timestamp type and a proto3 JSON parser should be\n able to accept both UTC and other timezones (as indicated by an offset).\n\n For example, \"2017-01-15T01:30:15.01Z\" encodes 15.01 seconds past\n 01:30 UTC on January 15, 2017.\n\n In JavaScript, one can convert a Date object to this format using the\n standard\n [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)\n method. In Python, a standard `datetime.datetime` object can be converted\n to this format using\n [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with\n the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use\n the Joda Time's [`ISODateTimeFormat.dateTime()`](\n http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()\n ) to obtain a formatter capable of generating timestamps in this format."
+    textql.rpc.public.dataset.GetFoldersResponse:
+      type: object
+      properties:
+        folders:
+          type: array
+          items:
+            $ref: '#/components/schemas/textql.rpc.public.dataset.DatasetFolder'
+          title: folders
+      title: GetFoldersResponse
+      additionalProperties: false
   securitySchemes:
     apiKey:
       type: apiKey
