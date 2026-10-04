@@ -1,0 +1,85 @@
+slug: textql
+provider: TextQL
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 7
+edges:
+- tag: DashboardService
+  spec_file: textql-dashboardservice-api-openapi.yml
+  capability_id: BC-610.50
+  capability_id_l1: BC-610
+  capability_name: Analytics & BI Management
+  confidence: 0.85
+  evidence: DashboardService/CreateDashboard 'CRUD operations', CreateDashboardFolder 'Folder management',
+    GetDashboardViewStats 'View analytics', UpdateDashboardScheduleRequest
+  reason: Dashboard creation, versioning, folder organisation, scheduling and view analytics are squarely
+    BI/reporting delivery.
+- tag: RBAC Service
+  spec_file: textql-rbac-service-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: '''AssignPermissionToRole'', ''AssignRoleToMember'', ''CreateServiceAccount'', ''CreateApiKey'',
+    ''ApproveAccessRequest'''
+  reason: 'Role-based access control: roles, permissions, service accounts, API keys, access requests
+    and object sharing. This is squarely Identity & Access Management.'
+- tag: PlaybookService
+  spec_file: textql-playbookservice-api-openapi.yml
+  capability_id: BC-610.50
+  capability_id_l1: BC-610
+  capability_name: Analytics & BI Management
+  confidence: 0.75
+  evidence: PlaybookService/RunPlaybookRequest, DeployPlaybook, GetChatReportsSummary, FavoriteReport
+    'Favorite report management', PreviewSlackReportResponse
+  reason: 'Playbooks are the vendor''s scheduled-report objects: create, deploy, run, preview and distribute
+    reports to Slack/Teams channels — reporting and BI delivery.'
+- tag: PowerBIService
+  spec_file: textql-powerbiservice-api-openapi.yml
+  capability_id: BC-610.50
+  capability_id_l1: BC-610
+  capability_name: Analytics & BI Management
+  confidence: 0.75
+  evidence: '''ListPowerBIReports'', ''ListPowerBIWorkspaces'', ''GeneratePowerBIEmbedToken'', ''SyncPowerBIItems'''
+  reason: Operations list, sync and embed Power BI reports, datasets and workspaces — integration with
+    a BI tool for report delivery, which is Analytics & BI Management. Not a tenant or infrastructure
+    concern.
+- tag: Members
+  spec_file: textql-members-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: POST /v2/members/invite Invite Member; POST /v2/members/{id}/roles Assign Role to Member;
+    DELETE /v2/members/{id}/roles/{roleId} Remove Role from Member
+  reason: Workspace user invitation plus role grant/revoke is access administration (IAM), not HR employee
+    records. Role-based access management is the plain reading.
+- tag: Roles
+  spec_file: textql-roles-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: '''GET /v2/roles List Roles'', ''POST /v2/roles Create Role'', schema ''Role, CreateRoleRequest'''
+  reason: Thin CRUD over authorisation roles, the REST counterpart of the RBAC service; role administration
+    is Identity & Access Management. Confidence moderated because only three generic CRUD operations are
+    shown.
+- tag: TableauService
+  spec_file: textql-tableauservice-api-openapi.yml
+  capability_id: BC-610.50
+  capability_id_l1: BC-610
+  capability_name: Analytics & BI Management
+  confidence: 0.7
+  evidence: '"List Tableau workbooks", "List Tableau datasources", "Generate JWT token for embedding views"'
+  reason: The operations enumerate and surface BI artefacts (workbooks, views, projects, datasources)
+    from Tableau and generate embed tokens for rendering them, which is business intelligence / analytics
+    delivery. Some risk it is read as pure connector plumbing, hence moderate confidence.
