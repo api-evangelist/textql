@@ -267,68 +267,19 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
-  responses:
-    BadRequest:
-      description: Invalid request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: invalid_request
-              message: Invalid request body
-    RateLimited:
-      description: Rate limit exceeded
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: rate_limit_exceeded
-              message: Rate limit exceeded
-    InternalError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: internal
-              message: Internal server error
-    NotFound:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: not_found
-              message: Resource not found
-    Unauthorized:
-      description: Missing or invalid authentication
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: unauthenticated
-              message: Authentication required
-    Forbidden:
-      description: Insufficient permissions
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: permission_denied
-              message: Insufficient permissions
   schemas:
+    ChangeCapabilities:
+      type: object
+      description: Actions the calling member may take on a change.
+      properties:
+        can_approve:
+          type: boolean
+        can_deny:
+          type: boolean
+        can_restore:
+          type: boolean
+        caller_approved:
+          type: boolean
     LibraryChangeDiff:
       type: object
       description: One changed file in an Ontology change.
@@ -409,18 +360,19 @@ components:
             $ref: '#/components/schemas/LibraryChangeDiff'
         capabilities:
           $ref: '#/components/schemas/ChangeCapabilities'
-    ChangeCapabilities:
+    SuccessResponse:
       type: object
-      description: Actions the calling member may take on a change.
       properties:
-        can_approve:
+        success:
           type: boolean
-        can_deny:
-          type: boolean
-        can_restore:
-          type: boolean
-        caller_approved:
-          type: boolean
+    ExpectedGitRefBody:
+      type: object
+      required:
+      - expected_git_ref
+      properties:
+        expected_git_ref:
+          type: string
+          description: The change git_ref the caller reviewed; a stale value returns 409.
     ErrorResponse:
       type: object
       properties:
@@ -445,19 +397,6 @@ components:
             message:
               type: string
               description: Human-readable error message
-    SuccessResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-    ExpectedGitRefBody:
-      type: object
-      required:
-      - expected_git_ref
-      properties:
-        expected_git_ref:
-          type: string
-          description: The change git_ref the caller reviewed; a stale value returns 409.
   parameters:
     ChangeId:
       name: id
@@ -466,6 +405,67 @@ components:
       schema:
         type: string
       description: Change ID
+  responses:
+    Unauthorized:
+      description: Missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: unauthenticated
+              message: Authentication required
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: invalid_request
+              message: Invalid request body
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: not_found
+              message: Resource not found
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: internal
+              message: Internal server error
+    Forbidden:
+      description: Insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: permission_denied
+              message: Insufficient permissions
+    RateLimited:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: rate_limit_exceeded
+              message: Rate limit exceeded
   securitySchemes:
     bearerAuth:
       type: http

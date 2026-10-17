@@ -818,49 +818,173 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
+  parameters:
+    SandboxFilePath:
+      name: path
+      in: path
+      required: true
+      schema:
+        type: string
+      description: File path within the sandbox working directory (slashes allowed).
+    SandboxId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Sandbox ID
+  responses:
+    RateLimited:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: rate_limit_exceeded
+              message: Rate limit exceeded
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: internal
+              message: Internal server error
+    Unauthorized:
+      description: Missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: unauthenticated
+              message: Authentication required
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: invalid_request
+              message: Invalid request body
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: not_found
+              message: Resource not found
+    Forbidden:
+      description: Insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: permission_denied
+              message: Insufficient permissions
   schemas:
-    LibraryChangeDiff:
+    ListSandboxExecutionsResponse:
       type: object
-      description: One changed file in an Ontology change.
+      required:
+      - executions
       properties:
-        name:
-          type: string
-          description: Display name for the change.
-        old_path:
-          type: string
-        new_path:
-          type: string
-        additions:
-          type: integer
-          format: int64
-        deletions:
-          type: integer
-          format: int64
-        is_new:
-          type: boolean
-        is_delete:
-          type: boolean
-        is_rename:
-          type: boolean
-        is_binary:
-          type: boolean
-    SandboxStatus:
-      type: object
-      properties:
-        status:
-          type: string
-          description: Point-in-time liveness for this sandbox. `stale` and `unknown` are list-only states (see SandboxSummary); this endpoint reports only `running` or `stopped`.
-          enum:
-          - running
-          - stopped
-        memory_usage:
-          type: string
-          description: Human-readable memory usage (only when running)
-        dataframes:
+        executions:
           type: array
-          description: Loaded dataframes (only when running)
           items:
-            $ref: '#/components/schemas/DataframeInfo'
+            $ref: '#/components/schemas/SandboxExecution'
+        next_cursor:
+          type: string
+          description: 'Opaque cursor to pass as `cursor` on the next request. Omitted when
+
+            there are no more results.
+
+            '
+    SandboxExecution:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique execution identifier
+        kind:
+          type: string
+          enum:
+          - python
+          - bash
+          - sql
+          - tql
+          description: Execution type
+        source:
+          type: string
+          enum:
+          - platform_api
+          - chat
+          - dashboard
+          - playbook
+          - internal
+          description: Product surface that triggered the execution
+        input:
+          type: string
+          description: 'The executed input — code (python/bash), SQL text (sql), or the
+
+            library path (tql).
+
+            '
+        output_preview:
+          type: string
+          description: 'Truncated output preview (up to 16 KB; longer output ends with a
+
+            `…[truncated]` marker). Does not include generated files or
+
+            dataframes.
+
+            '
+        error:
+          type: string
+          description: Error message when the execution failed; empty otherwise.
+        duration_ms:
+          type: integer
+          format: int64
+          description: Execution duration in milliseconds
+        created_at:
+          type: string
+          format: date-time
+          description: When the execution ran
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code
+              enum:
+              - invalid_request
+              - unauthenticated
+              - permission_denied
+              - not_found
+              - conflict
+              - rate_limit_exceeded
+              - internal
+              - timeout
+              - cancelled
+              - execution_failed
+              - no_report
+            message:
+              type: string
+              description: Human-readable error message
     DataframeInfo:
       type: object
       properties:
@@ -875,74 +999,38 @@ components:
         memory_usage_bytes:
           type: integer
           format: int64
-    LoadConnectorDataRequest:
+    LoadConnectorDataResponse:
       type: object
-      required:
-      - connector_id
       properties:
-        connector_id:
-          type: integer
-          format: int32
-          description: Connector to query
-        query:
+        preview:
           type: string
-          description: 'Inline SQL query to execute. Mutually exclusive with `tql_path` —
+          description: 'Text summary of the loaded data. Format varies by size: for smaller results,
 
-            provide exactly one of the two (`400 invalid_request` otherwise).
+            a dataframe preview string from the sandbox; for larger results (2048+ rows),
 
-            '
-        tql_path:
-          type: string
-          description: 'Ontology path of a saved `.tql` file to run (must end in
-
-            `.tql`). Only files already visible to the member''s roles can be
-
-            run — a path that is not visible returns `404 not_found`,
-
-            indistinguishable from a path that does not exist. Mutually
-
-            exclusive with `query` — provide exactly one of the two
-
-            (`400 invalid_request` otherwise).
-
-            '
-        params:
-          type: object
-          description: 'Parameter values passed to the saved `.tql` file when it is
-
-            rendered. Only used with `tql_path`. If rendering fails, the
-
-            request returns `400` with the renderer''s message included.
-
-            '
-        max_rows:
-          type: integer
-          format: int64
-          description: 'Maximum number of rows to load. Only applies to the `tql_path`
-
-            branch; clamped to the range 1–2,000,000 (default 2,000,000).
+            a markdown table of the first 100 rows.
 
             '
         dataframe_name:
           type: string
-          description: 'Name for the resulting dataframe. Defaults to `connector_{id}` for
-
-            `query`, or to the `.tql` filename stem (e.g. `revenue` for
-
-            `reports/revenue.tql`) for `tql_path`.
-
-            '
-    ListSandboxExecutionsResponse:
+        num_rows:
+          type: integer
+          format: int64
+        num_cols:
+          type: integer
+          format: int64
+    ListSandboxesResponse:
       type: object
       required:
-      - executions
+      - sandboxes
       properties:
-        executions:
+        sandboxes:
           type: array
           items:
-            $ref: '#/components/schemas/SandboxExecution'
+            $ref: '#/components/schemas/SandboxSummary'
         next_cursor:
           type: string
+          nullable: true
           description: 'Opaque cursor to pass as `cursor` on the next request. Omitted when
 
             there are no more results.
@@ -1036,193 +1124,105 @@ components:
               num_cols:
                 type: integer
                 format: int64
-    ErrorResponse:
+    LibraryChangeDiff:
       type: object
+      description: One changed file in an Ontology change.
       properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-              description: Machine-readable error code
-              enum:
-              - invalid_request
-              - unauthenticated
-              - permission_denied
-              - not_found
-              - conflict
-              - rate_limit_exceeded
-              - internal
-              - timeout
-              - cancelled
-              - execution_failed
-              - no_report
-            message:
-              type: string
-              description: Human-readable error message
-    LoadConnectorDataResponse:
-      type: object
-      properties:
-        preview:
+        name:
           type: string
-          description: 'Text summary of the loaded data. Format varies by size: for smaller results,
+          description: Display name for the change.
+        old_path:
+          type: string
+        new_path:
+          type: string
+        additions:
+          type: integer
+          format: int64
+        deletions:
+          type: integer
+          format: int64
+        is_new:
+          type: boolean
+        is_delete:
+          type: boolean
+        is_rename:
+          type: boolean
+        is_binary:
+          type: boolean
+    LoadConnectorDataRequest:
+      type: object
+      required:
+      - connector_id
+      properties:
+        connector_id:
+          type: integer
+          format: int32
+          description: Connector to query
+        query:
+          type: string
+          description: 'Inline SQL query to execute. Mutually exclusive with `tql_path` —
 
-            a dataframe preview string from the sandbox; for larger results (2048+ rows),
+            provide exactly one of the two (`400 invalid_request` otherwise).
 
-            a markdown table of the first 100 rows.
+            '
+        tql_path:
+          type: string
+          description: 'Ontology path of a saved `.tql` file to run (must end in
+
+            `.tql`). Only files already visible to the member''s roles can be
+
+            run — a path that is not visible returns `404 not_found`,
+
+            indistinguishable from a path that does not exist. Mutually
+
+            exclusive with `query` — provide exactly one of the two
+
+            (`400 invalid_request` otherwise).
+
+            '
+        params:
+          type: object
+          description: 'Parameter values passed to the saved `.tql` file when it is
+
+            rendered. Only used with `tql_path`. If rendering fails, the
+
+            request returns `400` with the renderer''s message included.
+
+            '
+        max_rows:
+          type: integer
+          format: int64
+          description: 'Maximum number of rows to load. Only applies to the `tql_path`
+
+            branch; clamped to the range 1–2,000,000 (default 2,000,000).
 
             '
         dataframe_name:
           type: string
-        num_rows:
-          type: integer
-          format: int64
-        num_cols:
-          type: integer
-          format: int64
-    ListSandboxesResponse:
+          description: 'Name for the resulting dataframe. Defaults to `connector_{id}` for
+
+            `query`, or to the `.tql` filename stem (e.g. `revenue` for
+
+            `reports/revenue.tql`) for `tql_path`.
+
+            '
+    SandboxStatus:
       type: object
-      required:
-      - sandboxes
       properties:
-        sandboxes:
+        status:
+          type: string
+          description: Point-in-time liveness for this sandbox. `stale` and `unknown` are list-only states (see SandboxSummary); this endpoint reports only `running` or `stopped`.
+          enum:
+          - running
+          - stopped
+        memory_usage:
+          type: string
+          description: Human-readable memory usage (only when running)
+        dataframes:
           type: array
+          description: Loaded dataframes (only when running)
           items:
-            $ref: '#/components/schemas/SandboxSummary'
-        next_cursor:
-          type: string
-          nullable: true
-          description: 'Opaque cursor to pass as `cursor` on the next request. Omitted when
-
-            there are no more results.
-
-            '
-    SandboxExecution:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique execution identifier
-        kind:
-          type: string
-          enum:
-          - python
-          - bash
-          - sql
-          - tql
-          description: Execution type
-        source:
-          type: string
-          enum:
-          - platform_api
-          - chat
-          - dashboard
-          - playbook
-          - internal
-          description: Product surface that triggered the execution
-        input:
-          type: string
-          description: 'The executed input — code (python/bash), SQL text (sql), or the
-
-            library path (tql).
-
-            '
-        output_preview:
-          type: string
-          description: 'Truncated output preview (up to 16 KB; longer output ends with a
-
-            `…[truncated]` marker). Does not include generated files or
-
-            dataframes.
-
-            '
-        error:
-          type: string
-          description: Error message when the execution failed; empty otherwise.
-        duration_ms:
-          type: integer
-          format: int64
-          description: Execution duration in milliseconds
-        created_at:
-          type: string
-          format: date-time
-          description: When the execution ran
-  responses:
-    InternalError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: internal
-              message: Internal server error
-    NotFound:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: not_found
-              message: Resource not found
-    BadRequest:
-      description: Invalid request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: invalid_request
-              message: Invalid request body
-    RateLimited:
-      description: Rate limit exceeded
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: rate_limit_exceeded
-              message: Rate limit exceeded
-    Unauthorized:
-      description: Missing or invalid authentication
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: unauthenticated
-              message: Authentication required
-    Forbidden:
-      description: Insufficient permissions
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error:
-              code: permission_denied
-              message: Insufficient permissions
-  parameters:
-    SandboxFilePath:
-      name: path
-      in: path
-      required: true
-      schema:
-        type: string
-      description: File path within the sandbox working directory (slashes allowed).
-    SandboxId:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: string
-      description: Sandbox ID
+            $ref: '#/components/schemas/DataframeInfo'
   securitySchemes:
     bearerAuth:
       type: http

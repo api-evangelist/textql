@@ -103,15 +103,61 @@ paths:
         source: "import os\nfrom textql_sdk import Textql\n\n\nwith Textql(\n    api_key=os.getenv(\"TEXTQL_API_KEY\", \"\"),\n) as textql:\n\n    res = textql.sandbox.execute_query(body={\n        \"sql_query\": {},\n    })\n\n    # Handle response\n    print(res)"
 components:
   schemas:
-    textql.rpc.public.sandbox_query.AppDBTemplate:
+    textql.rpc.public.sandbox_query.SandboxQueryParam:
       type: object
       properties:
-        query:
+        name:
           type: string
-          title: query
-          description: SQL to run against the app's private DuckDB database
-      title: AppDBTemplate
+          title: name
+        value:
+          type: string
+          title: value
+      title: SandboxQueryParam
       additionalProperties: false
+    textql.rpc.public.sandbox_query.SandboxExecuteQueryResponse:
+      type: object
+      properties:
+        arrowData:
+          type: string
+          title: arrow_data
+          format: byte
+        totalRows:
+          type:
+          - integer
+          - string
+          title: total_rows
+          format: int64
+        error:
+          type: string
+          title: error
+        refreshedToken:
+          type: string
+          title: refreshed_token
+          nullable: true
+      title: SandboxExecuteQueryResponse
+      additionalProperties: false
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
+          type: string
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+          - type: object
+            title: Any
+            additionalProperties: true
+            description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
     connect.error:
       type: object
       properties:
@@ -148,27 +194,6 @@ components:
       title: Connect Error
       additionalProperties: true
       description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
-    connect-timeout-header:
-      type: number
-      title: Connect-Timeout-Ms
-      description: Define the timeout, in ms
-    connect-protocol-version:
-      type: number
-      title: Connect-Protocol-Version
-      enum:
-      - 1
-      description: Define the version of the Connect protocol
-      const: 1
-      default: 1
-    textql.rpc.public.sandbox_query.SqlQueryTemplate:
-      type: object
-      properties:
-        query:
-          type: string
-          title: query
-          description: SQL with :param placeholders
-      title: SqlQueryTemplate
-      additionalProperties: false
     textql.rpc.public.sandbox_query.SandboxExecuteQueryRequest:
       type: object
       allOf:
@@ -219,47 +244,19 @@ components:
           - sqlQuery
       title: SandboxExecuteQueryRequest
       additionalProperties: false
-    textql.rpc.public.sandbox_query.SandboxExecuteQueryResponse:
+    textql.rpc.public.sandbox_query.SandboxExecuteBashRequest:
       type: object
       properties:
-        arrowData:
+        script:
           type: string
-          title: arrow_data
-          format: byte
-        totalRows:
-          type:
-          - integer
-          - string
-          title: total_rows
-          format: int64
-        error:
-          type: string
-          title: error
-        refreshedToken:
-          type: string
-          title: refreshed_token
-          nullable: true
-      title: SandboxExecuteQueryResponse
-      additionalProperties: false
-    textql.rpc.public.sandbox_query.LibraryTQLTemplate:
-      type: object
-      properties:
-        tqlPath:
-          type: string
-          title: tql_path
-          description: library path to a .tql file
-      title: LibraryTQLTemplate
-      additionalProperties: false
-    textql.rpc.public.sandbox_query.SandboxQueryParam:
-      type: object
-      properties:
-        name:
-          type: string
-          title: name
-        value:
-          type: string
-          title: value
-      title: SandboxQueryParam
+          title: script
+        env:
+          type: object
+          title: env
+          additionalProperties:
+            type: string
+            title: value
+      title: SandboxExecuteBashRequest
       additionalProperties: false
     textql.rpc.public.sandbox_query.SandboxExecuteBashResponse:
       type: object
@@ -286,41 +283,44 @@ components:
           nullable: true
       title: SandboxExecuteBashResponse
       additionalProperties: false
-    connect.error_details.Any:
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+      - 1
+      description: Define the version of the Connect protocol
+      const: 1
+      default: 1
+    textql.rpc.public.sandbox_query.SqlQueryTemplate:
       type: object
       properties:
-        type:
+        query:
           type: string
-          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
-        value:
-          type: string
-          format: binary
-          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
-        debug:
-          oneOf:
-          - type: object
-            title: Any
-            additionalProperties: true
-            description: Detailed error information.
-          discriminator:
-            propertyName: type
-          title: Debug
-          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
-      additionalProperties: true
-      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
-    textql.rpc.public.sandbox_query.SandboxExecuteBashRequest:
+          title: query
+          description: SQL with :param placeholders
+      title: SqlQueryTemplate
+      additionalProperties: false
+    textql.rpc.public.sandbox_query.LibraryTQLTemplate:
       type: object
       properties:
-        script:
+        tqlPath:
           type: string
-          title: script
-        env:
-          type: object
-          title: env
-          additionalProperties:
-            type: string
-            title: value
-      title: SandboxExecuteBashRequest
+          title: tql_path
+          description: library path to a .tql file
+      title: LibraryTQLTemplate
+      additionalProperties: false
+    textql.rpc.public.sandbox_query.AppDBTemplate:
+      type: object
+      properties:
+        query:
+          type: string
+          title: query
+          description: SQL to run against the app's private DuckDB database
+      title: AppDBTemplate
       additionalProperties: false
   securitySchemes:
     apiKey:
